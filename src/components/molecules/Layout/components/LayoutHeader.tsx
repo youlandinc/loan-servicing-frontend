@@ -52,22 +52,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
   ({ isHomepage = false, actions }) => {
     const store = useMst();
     const { userSetting, session } = store;
-    const {
-      initialized,
-      setting,
-      licensedProduct,
-      fetchUserSetting,
-      fetchUserLicensedProduct,
-    } = userSetting;
-
-    useEffect(
-      () => {
-        fetchUserSetting();
-        fetchUserLicensedProduct();
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [],
-    );
+    const { initialized, setting, licensedProduct } = userSetting;
 
     const router = useRouter();
 

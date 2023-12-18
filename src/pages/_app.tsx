@@ -21,6 +21,8 @@ import { StyledNotification } from '@/components/atoms';
 
 import { useBreakpoints } from '@/hooks';
 
+import { Provider, rootStore } from '@/models/Root';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -39,6 +41,14 @@ export default function MyApp(props: MyAppProps) {
     Router.events.on('routeChangeStart', handleRouteStart);
     Router.events.on('routeChangeComplete', handleRouteDone);
     Router.events.on('routeChangeError', handleRouteDone);
+
+    if (localStorage && localStorage.getItem('USER_LOGIN_INFORMATION')) {
+      rootStore.injectCognitoUserSession({
+        accessToken: localStorage.getItem('USER_LOGIN_INFORMATION') as string,
+        refreshToken: '',
+      });
+    }
+
     return () => {
       Router.events.off('routeChangeStart', handleRouteStart);
       Router.events.off('routeChangeComplete', handleRouteDone);
@@ -47,35 +57,38 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta content="initial-scale=1, width=device-width" name="viewport" />
-        <meta
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-          name="viewport"
-        />
-        <title>YouLand</title>
-      </Head>
-
-      <ThemeProvider theme={lightTheme}>
-        <CssBaseline />
-        <SnackbarProvider
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: ['sm', 'xs'].includes(breakpoints) ? 'center' : 'right',
-          }}
-          Components={{
-            success: StyledNotification,
-            error: StyledNotification,
-            default: StyledNotification,
-            info: StyledNotification,
-            warning: StyledNotification,
-          }}
-          maxSnack={3}
-        >
-          <Component {...pageProps} />
-        </SnackbarProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <Provider value={rootStore}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta content="initial-scale=1, width=device-width" name="viewport" />
+          <meta
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            name="viewport"
+          />
+          <title>YouLand</title>
+        </Head>
+        <ThemeProvider theme={lightTheme}>
+          <CssBaseline />
+          <SnackbarProvider
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: ['sm', 'xs'].includes(breakpoints)
+                ? 'center'
+                : 'right',
+            }}
+            Components={{
+              success: StyledNotification,
+              error: StyledNotification,
+              default: StyledNotification,
+              info: StyledNotification,
+              warning: StyledNotification,
+            }}
+            maxSnack={3}
+          >
+            <Component {...pageProps} />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </Provider>
   );
 }

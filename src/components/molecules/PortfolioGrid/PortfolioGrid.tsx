@@ -2,6 +2,12 @@ import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
+import {
+  PortfolioGridFooter,
+  PortfolioGridPagination,
+  PortfolioGridToolbar,
+} from './index';
+
 const mockData = [
   {
     loanNumber: 123456,
@@ -173,12 +179,22 @@ export const PortfolioGrid: FC = () => {
       <DataGrid
         columns={columns}
         getRowId={(row) => row.loanNumber}
+        pagination
         rowHeight={64}
         rows={mockData}
+        slots={{
+          toolbar: PortfolioGridToolbar,
+          footer: PortfolioGridPagination,
+          //pagination: PortfolioGridPagination,
+        }}
         sx={{
           m: '0 auto',
           width: '90%',
           minWidth: 1440,
+          borderRadius: 4,
+          '.MuiDataGrid-columnHeader': {
+            bgcolor: 'primary.lighter',
+          },
           '.MuiDataGrid-columnSeparator': {
             visibility: 'visible',
           },

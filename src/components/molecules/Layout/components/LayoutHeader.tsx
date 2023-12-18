@@ -1,4 +1,4 @@
-import { FC, ReactNode, useMemo, useState } from 'react';
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -8,6 +8,21 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/router';
+
+import { observer } from 'mobx-react-lite';
+
+import {
+  LAYOUT_HEADER_TAB,
+  URL_DOC,
+  URL_HOME,
+  URL_LOS,
+  URL_POS,
+  URL_PRICING,
+} from '@/constant';
+import { useSwitch } from '@/hooks';
+
+import { StyledButton, StyledDialog } from '@/components/atoms';
 
 import LOGO_PRODUCT_BOX from '@/svg/layout/logo_product_box.svg';
 import LOGO_PRODUCT_HOME from '@/svg/layout/logo_product_home.svg';
@@ -26,12 +41,7 @@ import LOGO_HEADER_SETTING from '@/svg/layout/logo_header_setting.svg';
 
 import LOGO_SETTING from '@/svg/layout/logo_auth_setting.svg';
 import LOGO_SIGN_OUT from '@/svg/layout/logo_auth_out.svg';
-
-import { useRouter } from 'next/router';
-import { LAYOUT_HEADER_TAB } from '@/constant';
-import { observer } from 'mobx-react-lite';
-import { StyledButton, StyledDialog } from '@/components/atoms';
-import { useSwitch } from '@/hooks';
+import { useMst } from '@/models/Root';
 
 export interface LayoutHeaderProps {
   isHomepage: boolean;
@@ -40,6 +50,25 @@ export interface LayoutHeaderProps {
 
 export const LayoutHeader: FC<LayoutHeaderProps> = observer(
   ({ isHomepage = false, actions }) => {
+    const store = useMst();
+    const { userSetting, session } = store;
+    const {
+      initialized,
+      setting,
+      licensedProduct,
+      fetchUserSetting,
+      fetchUserLicensedProduct,
+    } = userSetting;
+
+    useEffect(
+      () => {
+        fetchUserSetting();
+        fetchUserLicensedProduct();
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [],
+    );
+
     const router = useRouter();
 
     const { visible, open, close } = useSwitch(false);
@@ -50,24 +79,34 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const productList = useMemo(() => {
+      if (!initialized) {
+        return [];
+      }
+
       const productsData: Record<string, any> = {
         'Point of Sale': {
           label: 'Point of Sale',
-          //url: '/pos/customers',
+          url: `${URL_POS}/?token=${
+            session?.accessToken?.jwtToken ||
+            localStorage?.getItem('USER_LOGIN_INFORMATION')
+          }`,
           icon: (
             <Icon component={LOGO_PRODUCT_POS} sx={{ width: 32, height: 32 }} />
           ),
         },
         'Loan Origination System': {
           label: 'Loan Origination System',
-          //url: `${productsList()[0].link}/${session?.accessToken}`,
+          url: `${URL_LOS}/?token=${
+            session?.accessToken?.jwtToken ||
+            localStorage?.getItem('USER_LOGIN_INFORMATION')
+          }`,
           icon: (
             <Icon component={LOGO_PRODUCT_LOS} sx={{ width: 32, height: 32 }} />
           ),
         },
         'Pricing Engine': {
           label: 'Pricing Engine',
-          //url: `${productsList()[4].link}?token=${session?.accessToken}`,
+          url: URL_PRICING,
           icon: (
             <Icon
               component={LOGO_PRODUCT_PRICE}
@@ -77,14 +116,17 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
         },
         'Document Engine': {
           label: 'Document Engine',
-          //url: `${productsList()[1].link}?token=${session?.accessToken}`,
+          url: `${URL_DOC}/?token=${
+            session?.accessToken?.jwtToken ||
+            localStorage?.getItem('USER_LOGIN_INFORMATION')
+          }`,
           icon: (
             <Icon component={LOGO_PRODUCT_DOC} sx={{ width: 32, height: 32 }} />
           ),
         },
         'Loan Serving': {
           label: 'Loan Serving',
-          //url: `${productsList()[4].link}?token=${session?.accessToken}`,
+          url: '/portfolio',
           icon: (
             <Icon
               component={LOGO_PRODUCT_SERVING}
@@ -94,13 +136,22 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
         },
       };
 
-      const result = Object.values(productsData);
-      //const productsKeys = Object.keys(productsData);
-      //return products.map(
-      //  (item) => productsKeys.includes(item.name) && productsData[item.name],
-      //);
+      const productsKeys = Object.keys(productsData);
+      const result = licensedProduct.map(
+        (item) => productsKeys.includes(item.name) && productsData[item.name],
+      );
+      result.push({
+        label: 'Loan Serving',
+        url: '/portfolio',
+        icon: (
+          <Icon
+            component={LOGO_PRODUCT_SERVING}
+            sx={{ width: 32, height: 32 }}
+          />
+        ),
+      });
       return result;
-    }, []);
+    }, [initialized, licensedProduct, session?.accessToken?.jwtToken]);
 
     return (
       <>
@@ -236,15 +287,16 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                   fontWeight: 600,
                 }}
               >
-                X
+                {setting?.userInfo?.name?.substring(0, 1)?.toUpperCase()}
               </Avatar>
 
               <Tooltip
+                placement={'bottom-start'}
                 PopperProps={{
                   sx: { zIndex: '99999 !important', maxWidth: 144 },
                   [`${anchorElUser && 'open'}`]: !anchorElUser,
                 }}
-                title={'akjshdgajshgdhjasgdjhagsdjhagsdjhgasjdhghajds'}
+                title={`${setting?.userInfo?.name}`}
               >
                 <Stack width={144}>
                   <Typography
@@ -258,10 +310,10 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                     }}
                     variant={'subtitle1'}
                   >
-                    akjshdgajshgdhjasgdjhagsdjhagsdjhgasjdhghajds
+                    {setting?.userInfo?.name}
                   </Typography>
                   <Typography color={'info.main'} variant={'body3'}>
-                    Admin
+                    {setting?.roles?.[0]?.description}
                   </Typography>
                 </Stack>
               </Tooltip>
@@ -306,6 +358,14 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Typography variant={'h7'}>Switch to</Typography>
             <Icon
               component={LOGO_PRODUCT_HOME}
+              onClick={() =>
+                router.push(
+                  `${URL_HOME}/?token=${
+                    session?.accessToken?.jwtToken ||
+                    localStorage?.getItem('USER_LOGIN_INFORMATION')
+                  }`,
+                )
+              }
               sx={{
                 cursor: 'pointer',
                 '&:hover': {
@@ -327,7 +387,10 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 flexDirection={'row'}
                 gap={1.5}
                 key={`${item.label}_${index}`}
-                //onClick={() => router.push(item.url)}
+                onClick={async () => {
+                  await router.push(item.url);
+                  setAnchorElProduct(null);
+                }}
                 p={1.5}
                 sx={{
                   cursor: 'pointer',
@@ -418,6 +481,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               <StyledButton
                 onClick={() => {
                   close();
+                  store.logout();
                 }}
                 size={'small'}
               >

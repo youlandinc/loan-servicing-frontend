@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+import { rootStore, useMst } from '@/models/Root';
 
 import { utils } from '@/utils';
 
@@ -20,7 +20,7 @@ export const SignIn: FC = observer(() => {
   const { loading } = useAsync(async () => {
     const { token } = utils.getParamsFromUrl(location.href);
     if (!token) {
-      return;
+      return rootStore.logout();
     }
     await _fetchUserInfoWithToken(token)
       .then((res) => {
@@ -35,9 +35,7 @@ export const SignIn: FC = observer(() => {
         router.push('/portfolio');
       })
       .catch((err) => {
-        router.push(
-          `https://${process.env.PREFIX_URL}business.youland.com/auth/login/?reload=true&origin=serving`,
-        );
+        rootStore.logout();
       });
   }, []);
 

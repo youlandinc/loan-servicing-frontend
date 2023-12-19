@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
+import { FC, ReactNode, useMemo, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import {
   LAYOUT_HEADER_TAB,
@@ -41,7 +42,6 @@ import LOGO_HEADER_SETTING from '@/svg/layout/logo_header_setting.svg';
 
 import LOGO_SETTING from '@/svg/layout/logo_auth_setting.svg';
 import LOGO_SIGN_OUT from '@/svg/layout/logo_auth_out.svg';
-import { useMst } from '@/models/Root';
 
 export interface LayoutHeaderProps {
   isHomepage: boolean;
@@ -155,6 +155,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             top: 0,
             boxShadow: 'none',
             zIndex: 999,
+            minWidth: '100%',
           }}
         >
           <Stack
@@ -193,7 +194,12 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               >
                 {LAYOUT_HEADER_TAB.map((item, index) => (
                   <Stack
-                    className={router.pathname === item.url ? 'active' : ''}
+                    className={
+                      router.pathname === item.url ||
+                      router.pathname.includes('loan')
+                        ? 'active'
+                        : ''
+                    }
                     color={'text.primary'}
                     component={'li'}
                     fontSize={{ xl: 16, xs: 14 }}

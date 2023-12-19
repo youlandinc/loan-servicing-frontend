@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
@@ -172,6 +173,7 @@ const columns: GridColDef[] = [
 ];
 
 export const PortfolioGrid: FC = () => {
+  const router = useRouter();
   const lastChildIndex = columns.length;
 
   return (
@@ -179,6 +181,12 @@ export const PortfolioGrid: FC = () => {
       <DataGrid
         columns={columns}
         getRowId={(row) => row.loanNumber}
+        onRowClick={(params) => {
+          router.push({
+            pathname: '/loan/payments',
+            query: { id: params.id },
+          });
+        }}
         pagination
         rowHeight={64}
         rows={mockData}
@@ -190,7 +198,7 @@ export const PortfolioGrid: FC = () => {
         sx={{
           m: '0 auto',
           width: '90%',
-          minWidth: 1440,
+          minWidth: 996,
           borderRadius: 4,
           '.MuiDataGrid-columnHeader': {
             bgcolor: 'primary.lighter',

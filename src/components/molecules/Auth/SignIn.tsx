@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 
@@ -8,7 +9,6 @@ import { rootStore, useMst } from '@/models/Root';
 import { utils } from '@/utils';
 
 import { _fetchUserInfoWithToken } from '@/request/user';
-import { CircularProgress, Stack } from '@mui/material';
 
 export const SignIn: FC = observer(() => {
   const router = useRouter();

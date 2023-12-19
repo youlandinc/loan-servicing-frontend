@@ -24,6 +24,11 @@ module.exports = {
         destination: '/portfolio',
         permanent: true,
       },
+      {
+        source: '/loan',
+        destination: '/portfolio',
+        permanent: true,
+      },
     ];
   },
   typescript: {

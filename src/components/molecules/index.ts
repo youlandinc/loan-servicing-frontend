@@ -1,5 +1,6 @@
-export * from './PortfolioGrid';
-
 export * from './Layout';
+export * from './SideMenu';
 
 export * from './Auth';
+
+export * from './PortfolioGrid';

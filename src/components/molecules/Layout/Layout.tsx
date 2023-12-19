@@ -45,7 +45,14 @@ export const Layout: FC<LayoutProps> = observer(
           width={'100%'}
         >
           {isHomepage ? <LayoutSide /> : sideMenu}
-          <Box height={'100%'} overflow={'auto'} px={3} py={6} width={'100%'}>
+          <Box
+            bgcolor={'primary.lighter'}
+            height={'100%'}
+            overflow={'auto'}
+            px={{ lg: '7.5%', xs: 6 }}
+            py={6}
+            width={'100%'}
+          >
             {children}
           </Box>
         </Stack>

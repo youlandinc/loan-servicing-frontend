@@ -5,9 +5,9 @@ export const utils = {
   findLabel: (options: TOption[], val: number | string | undefined): string => {
     return options.find((item) => item.value === val)?.label || '';
   },
-  formatDollar: (amount: number | undefined, digit = 0): string => {
+  formatDollar: (amount: number | undefined, digit = 2): string => {
     if (!amount) {
-      return '$0';
+      return '$0.00';
     }
     return amount.toLocaleString('en-US', {
       style: 'currency',

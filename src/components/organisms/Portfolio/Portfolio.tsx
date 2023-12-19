@@ -2,9 +2,7 @@ import { FC } from 'react';
 
 import { observer } from 'mobx-react-lite';
 
-import { PortfolioGrid } from '@/components/molecules';
-
-import { Layout } from '@/components/molecules/Layout/Layout';
+import { Layout, PortfolioGrid } from '@/components/molecules';
 
 export const Portfolio: FC = observer(() => {
   return (

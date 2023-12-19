@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Typography } from '@mui/material';
+import { Box, SxProps, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import {
@@ -45,11 +45,12 @@ const mockData = [
 const columns: GridColDef[] = [
   {
     field: 'loanNumber',
-    headerName: 'Loan number',
+    headerName: 'loan number',
     sortable: true,
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => (
       <Typography overflow={'hidden'}>{value}</Typography>
     ),
@@ -61,6 +62,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -70,6 +72,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 200,
     renderCell: ({ value }) => {
       const [line_1, line_2] = value.split('|');
       return (
@@ -87,6 +90,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -96,6 +100,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -105,6 +110,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -114,6 +120,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -123,6 +130,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -132,6 +140,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -141,6 +150,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -150,6 +160,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -159,6 +170,7 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
   {
@@ -168,82 +180,87 @@ const columns: GridColDef[] = [
     flex: 1,
     align: 'center',
     headerAlign: 'center',
+    minWidth: 120,
     renderCell: ({ value }) => <Typography>{value}</Typography>,
   },
 ];
 
-export const PortfolioGrid: FC = () => {
+interface PortfolioGridProps {
+  sx?: SxProps;
+}
+
+export const PortfolioGrid: FC<PortfolioGridProps> = ({
+  sx = { minWidth: 1200 },
+}) => {
   const router = useRouter();
   const lastChildIndex = columns.length;
 
   return (
-    <>
-      <DataGrid
-        columns={columns}
-        getRowId={(row) => row.loanNumber}
-        onRowClick={(params) => {
-          router.push({
-            pathname: '/loan/payments',
-            query: { id: params.id },
-          });
-        }}
-        pagination
-        rowHeight={64}
-        rows={mockData}
-        slots={{
-          toolbar: PortfolioGridToolbar,
-          footer: PortfolioGridPagination,
-          //pagination: PortfolioGridPagination,
-        }}
-        sx={{
-          m: '0 auto',
-          width: '90%',
-          minWidth: 996,
-          borderRadius: 4,
-          '.MuiDataGrid-columnHeader': {
-            bgcolor: 'primary.lighter',
-          },
-          '.MuiDataGrid-columnSeparator': {
-            visibility: 'visible',
-          },
-          '.MuiDataGrid-columnHeadersInner': {
-            [`.MuiDataGrid-columnHeader:nth-child(${lastChildIndex}) > .MuiDataGrid-columnSeparator`]:
-              {
-                visibility: 'hidden',
-              },
-          },
-          '.MuiDataGrid-cell': {
-            overflow: 'unset !important',
-            position: 'relative',
-            '&:focus': {
-              outline: 0,
+    <DataGrid
+      columns={columns}
+      getRowId={(row) => row.loanNumber}
+      onRowClick={(params) => {
+        router.push({
+          pathname: '/loan/payments',
+          query: { id: params.id },
+        });
+      }}
+      pagination
+      rowHeight={64}
+      rows={mockData}
+      slots={{
+        toolbar: PortfolioGridToolbar,
+        footer: PortfolioGridPagination,
+        //pagination: PortfolioGridPagination,
+      }}
+      sx={{
+        m: '0 auto',
+        width: '90%',
+        borderRadius: 4,
+        '.MuiDataGrid-columnHeader': {
+          bgcolor: 'background.homepage',
+        },
+        '.MuiDataGrid-columnSeparator': {
+          visibility: 'visible',
+        },
+        '.MuiDataGrid-columnHeadersInner': {
+          [`.MuiDataGrid-columnHeader:nth-child(${lastChildIndex}) > .MuiDataGrid-columnSeparator`]:
+            {
+              visibility: 'hidden',
             },
+        },
+        '.MuiDataGrid-cell': {
+          overflow: 'unset !important',
+          position: 'relative',
+          '&:focus': {
+            outline: 0,
+          },
+          '&::after': {
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            height: '16px',
+            width: '2px',
+            bgcolor: 'rgb(224,224,224)',
+            top: '50%',
+            right: '-1px',
+            transform: 'translateY(-50%)',
+          },
+          '&:last-of-type': {
             '&::after': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              height: '16px',
-              width: '2px',
-              bgcolor: 'rgb(224,224,224)',
-              top: '50%',
-              right: '-1px',
-              transform: 'translateY(-50%)',
-            },
-            '&:last-of-type': {
-              '&::after': {
-                display: 'none',
-              },
+              display: 'none',
             },
           },
-          '.MuiDataGrid-row': {
-            [`.MuiDataGrid-cell:nth-child(${lastChildIndex})`]: {
-              '&::after': {
-                display: 'none',
-              },
+        },
+        '.MuiDataGrid-row': {
+          [`.MuiDataGrid-cell:nth-child(${lastChildIndex})`]: {
+            '&::after': {
+              display: 'none',
             },
           },
-        }}
-      />
-    </>
+        },
+        ...sx,
+      }}
+    />
   );
 };

@@ -146,7 +146,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
           border={'1px solid'}
           borderColor={'border.normal'}
           flexDirection={'row'}
-          height={{ xl: '88px', xs: '60px' }}
+          height={{ lg: '88px', xs: '60px' }}
           justifyContent={'space-between'}
           px={6}
           sx={{
@@ -171,8 +171,8 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 setAnchorElUser(null);
               }}
               sx={{
-                width: { xl: 40, xs: 32 },
-                height: { xl: 40, xs: 32 },
+                width: { lg: 40, xs: 32 },
+                height: { lg: 40, xs: 32 },
                 cursor: 'pointer',
                 transition: 'all .3s',
               }}
@@ -202,7 +202,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                     }
                     color={'text.primary'}
                     component={'li'}
-                    fontSize={{ xl: 16, xs: 14 }}
+                    fontSize={{ lg: 16, xs: 14 }}
                     fontWeight={600}
                     height={'100%'}
                     justifyContent={'center'}
@@ -292,7 +292,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 <Stack width={144}>
                   <Typography
                     color={'text.primary'}
-                    fontSize={{ xl: 14, xs: 12 }}
+                    fontSize={{ lg: 14, xs: 12 }}
                     sx={{
                       width: '100%',
                       overflow: 'hidden',
@@ -332,7 +332,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               border: '1px solid',
               borderColor: 'border.normal',
               borderRadius: 4,
-              mt: { xl: 5.25, xs: 5 },
+              mt: { lg: 5.25, xs: 5 },
             },
           }}
           transformOrigin={{
@@ -415,7 +415,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               boxShadow:
                 '0px 10px 10px 0px rgba(17, 52, 227, 0.10), 0px 0px 2px 0px rgba(17, 52, 227, 0.10)',
               ml: 3.5,
-              mt: { xl: 1.5, xs: 3 },
+              mt: { lg: 1.5, xs: 3 },
               borderRadius: 2,
             },
           }}

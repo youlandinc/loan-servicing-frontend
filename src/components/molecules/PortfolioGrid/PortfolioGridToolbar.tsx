@@ -23,7 +23,7 @@ export const PortfolioGridToolbar: FC = () => {
         variant={'outlined'}
       />
       <StyledTextFieldInput
-        label={'Loan number'}
+        label={'loan number'}
         onChange={(e) => setLoanNumber(e.target.value)}
         value={loanNumber}
         variant={'outlined'}

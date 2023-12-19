@@ -17,7 +17,7 @@ import MENU_LOGO_05 from './menu_05.svg';
 const MENU_LIST = [
   {
     icon: MENU_LOGO_01,
-    label: 'Payments',
+    label: 'payments',
     key: 'LOAN_PAYMENTS',
     url: '/loan/payments',
   },
@@ -35,7 +35,7 @@ const MENU_LIST = [
   },
   {
     icon: MENU_LOGO_04,
-    label: 'Loan details',
+    label: 'loan details',
     key: 'LOAN_DETAILS',
     url: '/loan/details',
   },
@@ -60,13 +60,16 @@ export const SideMenu: FC = observer(() => {
         borderRight: '1px solid',
         borderColor: 'action.loading',
       }}
-      width={320}
+      width={{ lg: 320, xs: 280 }}
     >
       <Stack gap={1}>
         <StyledButton
           color={'info'}
           onClick={() => router.push('/portfolio')}
-          sx={{ mb: 3 }}
+          sx={{
+            mb: 3,
+            fontSize: { xs: 14, xl: 16 },
+          }}
           variant={'outlined'}
         >
           <Icon component={BACK} sx={{ width: 24, height: 24, mr: 1 }} />
@@ -95,11 +98,18 @@ export const SideMenu: FC = observer(() => {
               '&:hover': {
                 bgcolor: 'primary.background',
                 color: 'primary.contrastBackground',
+                svg: {
+                  path: { fill: '#365EC6' },
+                },
               },
               '&.active': {
                 color: 'primary.main',
                 bgcolor: 'primary.light',
+                svg: {
+                  path: { fill: '#5B76BC' },
+                },
               },
+              fontSize: { xs: 14, xl: 16 },
             }}
             variant={'body1'}
           >

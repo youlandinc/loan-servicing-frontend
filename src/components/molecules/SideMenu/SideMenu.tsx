@@ -52,6 +52,7 @@ export const SideMenu: FC = observer(() => {
 
   return (
     <Box
+      flexShrink={0}
       overflow={'auto'}
       px={2.5}
       py={5.5}

@@ -198,7 +198,7 @@ export const PortfolioGrid: FC = () => {
         sx={{
           m: '0 auto',
           width: '90%',
-          minWidth: 1440,
+          minWidth: 996,
           borderRadius: 4,
           '.MuiDataGrid-columnHeader': {
             bgcolor: 'primary.lighter',

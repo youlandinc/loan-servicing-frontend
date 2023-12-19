@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -41,11 +41,13 @@ export const Layout: FC<LayoutProps> = observer(
           flex={1}
           flexDirection={'row'}
           height={{ xl: 'calc(100% - 88px)', xs: 'calc(100% - 60px)' }}
+          overflow={'hidden'}
+          width={'100%'}
         >
           {isHomepage ? <LayoutSide /> : sideMenu}
-          <Stack flex={1} minWidth={996} overflow={'auto'} py={6}>
+          <Box height={'100%'} overflow={'auto'} px={3} py={6} width={'100%'}>
             {children}
-          </Stack>
+          </Box>
         </Stack>
       </Stack>
     );

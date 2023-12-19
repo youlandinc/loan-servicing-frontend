@@ -155,6 +155,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             top: 0,
             boxShadow: 'none',
             zIndex: 999,
+            minWidth: '100%',
           }}
         >
           <Stack

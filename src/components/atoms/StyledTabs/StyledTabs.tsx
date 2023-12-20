@@ -21,7 +21,7 @@ type StyledTabProps = {
   sx?: SxProps;
 };
 
-export const StyledTab: FC<StyledTabProps> = (props) => {
+export const StyledTabs: FC<StyledTabProps> = (props) => {
   const { tabsData, sx } = props;
 
   const [value, setValue] = useState(0);

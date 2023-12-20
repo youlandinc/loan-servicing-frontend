@@ -1,8 +1,8 @@
-import { FC } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { StyledButton, StyledTabs } from '@/components/atoms';
 
-import { Layout, LoanDetailCard, SideMenu } from '@/components/molecules';
-import { StyledButton, StyledTab } from '@/components/atoms';
+import { Layout, LoanDetailsCard, SideMenu } from '@/components/molecules';
+import { Box, Stack, Typography } from '@mui/material';
+import { FC } from 'react';
 
 export const LoanDetails: FC = () => {
   const loanDetails = {
@@ -76,22 +76,24 @@ export const LoanDetails: FC = () => {
     {
       label: 'Property',
       content: (
-        <LoanDetailCard data={propertyDetails} title={'Property details'} />
+        <LoanDetailsCard data={propertyDetails} title={'Property details'} />
       ),
     },
     {
       label: 'Loan',
-      content: <LoanDetailCard data={loanDetails} title={'Loan details'} />,
+      content: <LoanDetailsCard data={loanDetails} title={'Loan details'} />,
     },
     {
       label: 'Borrower',
       content: (
-        <LoanDetailCard data={borrowerDetails} title={'Borrower details'} />
+        <LoanDetailsCard data={borrowerDetails} title={'Borrower details'} />
       ),
     },
     {
       label: 'Lender',
-      content: <LoanDetailCard data={lenderDetails} title={'Lender details'} />,
+      content: (
+        <LoanDetailsCard data={lenderDetails} title={'Lender details'} />
+      ),
     },
   ];
   return (
@@ -120,13 +122,12 @@ export const LoanDetails: FC = () => {
             lineHeight={1}
             py={0.5}
             textAlign={'center'}
-            variant={'subtitle3'}
             width={80}
           >
             Performing
           </Box>
         </Stack>
-        <StyledTab tabsData={tabs} />
+        <StyledTabs tabsData={tabs} />
       </Stack>
     </Layout>
   );

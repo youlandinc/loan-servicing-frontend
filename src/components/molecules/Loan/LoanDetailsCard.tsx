@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { SxProps, Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, SxProps, Typography } from '@mui/material';
 
 type RenderBoxProps = {
   data: Record<string, any>;
@@ -49,7 +49,7 @@ type LoanDetailCardProps = {
   data: Record<string, unknown>;
 };
 
-export const LoanDetailCard: FC<LoanDetailCardProps> = ({ title, data }) => {
+export const LoanDetailsCard: FC<LoanDetailCardProps> = ({ title, data }) => {
   return (
     <Box
       border={'1px solid'}

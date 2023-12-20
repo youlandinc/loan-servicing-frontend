@@ -294,13 +294,8 @@ const defaultOptions: ThemeOptions = {
       },
     },
     MuiTab: {
-      styleOverrides: {
-        root: {
-          color: '#9095A3',
-          '.Mui-selected': {
-            color: 'primary.main',
-          },
-        },
+      defaultProps: {
+        disableRipple: true,
       },
     },
   },

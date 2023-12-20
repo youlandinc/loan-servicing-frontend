@@ -235,6 +235,14 @@ const columns: GridColDef[] = [
   },
 ];
 
+const LoanPaymentsGridToolbar: FC = () => {
+  return (
+    <Typography pb={1.5} pt={3} px={3} variant={'subtitle1'}>
+      Payment history
+    </Typography>
+  );
+};
+
 export const LoanPaymentsGrid: FC = observer(() => {
   const lastChildIndex = columns.length;
 
@@ -246,9 +254,9 @@ export const LoanPaymentsGrid: FC = observer(() => {
       rowHeight={64}
       rows={mockData}
       slots={{
-        toolbar: PortfolioGridToolbar,
-        footer: PortfolioGridPagination,
-        //pagination: PortfolioGridPagination,
+        toolbar: LoanPaymentsGridToolbar,
+        //footer: PortfolioGridPagination,
+        pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

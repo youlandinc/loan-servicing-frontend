@@ -210,8 +210,8 @@ export const PortfolioGrid: FC<PortfolioGridProps> = ({
       rows={mockData}
       slots={{
         toolbar: PortfolioGridToolbar,
-        footer: PortfolioGridPagination,
-        //pagination: PortfolioGridPagination,
+        //footer: PortfolioGridPagination,
+        pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

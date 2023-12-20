@@ -33,9 +33,6 @@ const RootStore = types.model(RootModel).actions((self) => {
       self.userProfile = profile.userProfile;
     },
     logout() {
-      if (Router.pathname === '/auth/sign_in') {
-        return;
-      }
       self.userSetting.initState();
       localStorage.clear();
       window.location.href = URL_LOGOUT_REDIRECTION;

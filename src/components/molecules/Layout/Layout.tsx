@@ -17,7 +17,8 @@ export const Layout: FC<LayoutProps> = observer(
   ({ isHomepage, actions, sideMenu, children }) => {
     const store = useMst();
     const { userSetting, session } = store;
-    const { fetchUserSetting, fetchUserLicensedProduct } = userSetting;
+    const { fetchUserSetting, fetchUserLicensedProduct, initialized } =
+      userSetting;
 
     useEffect(
       () => {
@@ -27,8 +28,10 @@ export const Layout: FC<LayoutProps> = observer(
         if (!token) {
           return store.logout();
         }
-        fetchUserSetting();
-        fetchUserLicensedProduct();
+        if (!initialized) {
+          fetchUserSetting();
+          fetchUserLicensedProduct();
+        }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [],

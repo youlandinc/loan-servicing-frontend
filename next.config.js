@@ -22,12 +22,12 @@ module.exports = {
       {
         source: '/',
         destination: '/portfolio',
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: '/loan',
         destination: '/portfolio',
-        permanent: true,
+        statusCode: 301,
       },
     ];
   },

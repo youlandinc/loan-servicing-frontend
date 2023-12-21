@@ -17,7 +17,6 @@ const mockData = [
     dateReceived: '11/1/2023',
     dateDue: '11/1/2023',
     pmtDay: 0,
-    reference: 2787035,
     ach: 'ACH',
     paymentType: 'RegPmt',
     totalPmt: utils.formatDollar(30387.5),
@@ -36,7 +35,6 @@ const mockData = [
     dateReceived: '11/1/2023',
     dateDue: '11/1/2023',
     pmtDay: 0,
-    reference: 2787035,
     ach: 'ACH',
     paymentType: 'RegPmt',
     totalPmt: utils.formatDollar(30387.5),
@@ -80,18 +78,6 @@ const columns: GridColDef[] = [
   {
     headerName: 'Pmt day variance',
     field: 'pmtDay',
-    sortable: true,
-    flex: 1,
-    align: 'center',
-    headerAlign: 'center',
-    minWidth: 180,
-    renderCell: ({ value }) => (
-      <Typography overflow={'hidden'}>{value}</Typography>
-    ),
-  },
-  {
-    headerName: 'Reference',
-    field: 'reference',
     sortable: true,
     flex: 1,
     align: 'center',

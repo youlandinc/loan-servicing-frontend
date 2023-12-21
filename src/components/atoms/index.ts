@@ -8,3 +8,5 @@ export * from './StyledSelect';
 
 export * from './StyledTextFieldInput';
 export * from './StyledTextFieldNumber';
+
+export * from './StyledTabs';

@@ -17,7 +17,7 @@ import MENU_LOGO_05 from './menu_05.svg';
 const MENU_LIST = [
   {
     icon: MENU_LOGO_01,
-    label: 'payments',
+    label: 'Payments',
     key: 'LOAN_PAYMENTS',
     url: '/loan/payments',
   },
@@ -35,7 +35,7 @@ const MENU_LIST = [
   },
   {
     icon: MENU_LOGO_04,
-    label: 'loan details',
+    label: 'Loan details',
     key: 'LOAN_DETAILS',
     url: '/loan/details',
   },

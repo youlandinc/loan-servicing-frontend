@@ -112,7 +112,7 @@ const LoanDocumentsGridToolbar: FC = () => {
         value="two"
       />
       <Tab
-        label={'Late Notices'}
+        label={'Late notices'}
         sx={{
           textTransform: 'none',
           p: 0,

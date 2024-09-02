@@ -28,7 +28,7 @@ export const utils = {
     let target = percentageValue;
     //eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    if (this.TypeOf(target) === 'String') {
+    if (this?.TypeOf(target) === 'String') {
       target = parseFloat(target as string);
     }
     return (

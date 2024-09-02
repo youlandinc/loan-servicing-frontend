@@ -52,8 +52,8 @@ export const Layout: FC<LayoutProps> = observer(
             bgcolor={'primary.lighter'}
             height={'100%'}
             overflow={'auto'}
-            px={{ lg: '7.5%', xs: 6 }}
-            py={6}
+            // px={{ lg: '7.5%', xs: 6 }}
+            // py={6}
             width={'100%'}
           >
             {children}

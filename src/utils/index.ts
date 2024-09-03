@@ -1,6 +1,9 @@
 import { TOption } from '@/types';
 import { format } from 'date-fns';
 
+export * from './Handler';
+export * from './TypeOf';
+
 export const utils = {
   findLabel: (options: TOption[], val: number | string | undefined): string => {
     return options.find((item) => item.value === val)?.label || '';

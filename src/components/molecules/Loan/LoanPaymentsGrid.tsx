@@ -1,15 +1,11 @@
-import { FC } from 'react';
+import { PortfolioGridPagination } from '@/components/molecules';
+
+import { utils } from '@/utils';
 import { Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { observer } from 'mobx-react-lite';
-
-import { utils } from '@/utils';
-
-import {
-  PortfolioGridPagination,
-  PortfolioGridToolbar,
-} from '@/components/molecules';
+import { FC } from 'react';
 
 const mockData = [
   {

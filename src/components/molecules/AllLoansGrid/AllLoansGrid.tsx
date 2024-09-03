@@ -1,3 +1,6 @@
+import { useMst } from '@/models/Root';
+import { listModeDefaultStyleProps } from '@/styles/allLoansGridStyles';
+import { observer } from 'mobx-react-lite';
 import { FC, useMemo } from 'react';
 import {
   MRT_ColumnDef,
@@ -6,13 +9,26 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import useSWR from 'swr';
-
-import { commonColumns, AllLoansPagination } from '@/components/molecules';
-import { _getAllLoansList } from '@/request/portfolio/allLoans';
 import { CircularProgress, Stack } from '@mui/material';
 
-export const AllLoansGrid: FC = () => {
-  const { data, isLoading } = useSWR({}, _getAllLoansList);
+import { AllLoansPagination, commonColumns } from '@/components/molecules';
+import { _getAllLoansList } from '@/request/portfolio/allLoans';
+
+export const AllLoansGrid: FC = observer(() => {
+  const {
+    portfolio: { allLoansGridQueryModel },
+  } = useMst();
+
+  const { data, isLoading } = useSWR(
+    {
+      ...allLoansGridQueryModel,
+      searchCondition: {
+        ...allLoansGridQueryModel.searchCondition,
+        investors: [...allLoansGridQueryModel.searchCondition.investors],
+      },
+    },
+    _getAllLoansList,
+  );
 
   const columns = useMemo(() => commonColumns, []);
 
@@ -55,6 +71,7 @@ export const AllLoansGrid: FC = () => {
     getRowId: (row) => row.loanId, //default
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+
     /*    muiTableBodyCellProps: ({ row, column: { id } }) => ({
       onClick: async () => {
         const { original, originalSubRows } = row;
@@ -164,8 +181,8 @@ export const AllLoansGrid: FC = () => {
     },*/
   });
   return (
-    <div>
-      <MRT_TableContainer table={table} />
+    <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
+      <MRT_TableContainer sx={{ borderRadius: 4 }} table={table} />
       <AllLoansPagination
         currentPage={currentPage}
         // onPageChange={(page: number) => {
@@ -185,6 +202,6 @@ export const AllLoansGrid: FC = () => {
         sx={{ borderTop: '1px solid #EDF1FF' }}
         totalLoanAmount={totalLoanAmount}
       />
-    </div>
+    </Stack>
   );
-};
+});

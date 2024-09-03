@@ -60,7 +60,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'brokerName',
+    accessorKey: 'borrowerName',
     header: 'Borrower',
     size: 150,
     minSize: 150,
@@ -139,7 +139,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'maturityDate',
+    accessorKey: 'fciMaturityDate',
     header: 'Maturity date',
     size: 140,
     muiTableBodyCellProps: {
@@ -151,7 +151,8 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     Cell: ({ renderedCellValue }) => {
       return (
         <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
-          {typeof renderedCellValue === 'string' && isValid(renderedCellValue)
+          {typeof renderedCellValue === 'string' &&
+          isValid(new Date(renderedCellValue))
             ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
             : '—'}
         </Typography>
@@ -178,7 +179,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             }}
             variant={'subtitle1'}
           >
-            {utils.formatDollar(renderedCellValue, 0)}
+            {utils.formatDollar(renderedCellValue as number, 0)}
           </Typography>
         </Tooltip>
       );
@@ -204,7 +205,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             }}
             variant={'subtitle1'}
           >
-            {utils.formatDollar(renderedCellValue, 0)}
+            {utils.formatDollar(renderedCellValue as number, 0)}
           </Typography>
         </Tooltip>
       );
@@ -223,7 +224,8 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     Cell: ({ renderedCellValue }) => {
       return (
         <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
-          {typeof renderedCellValue === 'string' && isValid(renderedCellValue)
+          {typeof renderedCellValue === 'string' &&
+          isValid(new Date(renderedCellValue))
             ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
             : '—'}
         </Typography>
@@ -250,7 +252,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             }}
             variant={'subtitle1'}
           >
-            {utils.formatPercent(renderedCellValue)}
+            {utils.formatPercent((renderedCellValue as number) / 100)}
           </Typography>
         </Tooltip>
       );
@@ -276,7 +278,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             }}
             variant={'subtitle1'}
           >
-            {utils.formatDollar(renderedCellValue, 0)}
+            {utils.formatDollar(renderedCellValue as number, 0)}
           </Typography>
         </Tooltip>
       );
@@ -302,7 +304,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             }}
             variant={'subtitle1'}
           >
-            {utils.formatPercent(renderedCellValue)}
+            {utils.formatPercent((renderedCellValue as number) / 100)}
           </Typography>
         </Tooltip>
       );
@@ -321,7 +323,8 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     Cell: ({ renderedCellValue }) => {
       return (
         <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
-          {typeof renderedCellValue === 'string' && isValid(renderedCellValue)
+          {typeof renderedCellValue === 'string' &&
+          isValid(new Date(renderedCellValue))
             ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
             : '—'}
         </Typography>

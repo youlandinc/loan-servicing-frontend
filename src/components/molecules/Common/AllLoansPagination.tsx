@@ -45,11 +45,11 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
     >
       <Stack alignItems={'center'} direction={'row'} spacing={3}>
         {totalLoanAmountShow && (
-          <Typography fontWeight={600} variant={'subtitle1'}>
+          <Typography fontWeight={600} variant={'subtitle2'}>
             Total amount: {utils.formatDollar(totalLoanAmount, 0)}
           </Typography>
         )}{' '}
-        <Typography fontWeight={600} variant={'subtitle1'}>
+        <Typography fontWeight={600} variant={'subtitle2'}>
           Number of loans: {rowCount.toLocaleString()}
         </Typography>
       </Stack>

@@ -1,17 +1,21 @@
 import { createContext, useContext } from 'react';
 import { Instance, types } from 'mobx-state-tree';
-import Router from 'next/router';
-
-import { UserSetting } from './base';
 
 import { User } from '@/types/user';
-
+import { PipelineMode } from '@/types/enum';
 import { URL_LOGOUT_REDIRECTION } from '@/constant';
+
+import { allLoansGridQueryModel } from '@/models/gridModel/allLoansGridModel';
+
+import { UserSetting } from './base';
 
 export const RootModel = {
   session: types.maybe(types.frozen<UserSession>()),
   userSetting: UserSetting,
   userProfile: types.maybe(types.frozen<ClientUserProfile>()),
+  portfolio: types.model({
+    allLoansGridQueryModel: allLoansGridQueryModel,
+  }),
 };
 
 const RootStore = types.model(RootModel).actions((self) => {
@@ -108,6 +112,21 @@ const initialState = {
   },
   userType: void 0,
   loginType: void 0,
+  portfolio: {
+    allLoansGridQueryModel: {
+      size: 50,
+      page: 0,
+      sort: [],
+      searchCondition: {
+        investors: [],
+        propertyAddress: '',
+        maturityStartDate: '',
+        maturityEndDate: '',
+        repaymentStatusList: [],
+      },
+      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+    },
+  },
 };
 
 export const rootStore = RootStore.create(initialState);

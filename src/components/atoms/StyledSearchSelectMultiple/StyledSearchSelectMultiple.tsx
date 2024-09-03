@@ -66,7 +66,7 @@ export const StyledSearchSelectMultiple: FC<
                                 : 'text.primary'*/
             selected.length > 0 ? 'primary' : '#636A7C !important'
           }
-          variant={'subtitle1'}
+          variant={'body2'}
         >
           {label}
         </Typography>

@@ -18,29 +18,35 @@ const BtnDefaultStyle = {
   },
 };
 
+interface StyledSearchDateRangeProps {
+    onChange?: (date: [Date | null, Date | null]) => void;
+    hanelClear?: () => void;
+}
+
 const CustomInput = forwardRef((props: any, ref) => {
   const { onClear, ...rest } = props;
+
   return (
     <StyledButton
       sx={{
         ...BtnDefaultStyle,
         pl: 1.25,
-        color: btnSelected.timeRange ? 'primary' : 'text.primary',
+        color: rest.value!=='' ? 'primary' : '#636A7C !important',
         '&:hover': {
-          bgcolor: btnSelected.timeRange
+          bgcolor:rest.value!==''
             ? 'transparent'
             : 'rgba(54, 94, 198, 0.04)',
         },
       }}
       variant={'text'}
       {...rest}
-      onClick={() => {
-        setBtnSelected({ ...btnSelected, timeRange: true });
-      }}
+      // onClick={() => {
+      //   setBtnSelected({ ...btnSelected, timeRange: true });
+      // }}
       ref={ref}
     >
       <Stack alignItems={'center'} direction={'row'} spacing={0.5}>
-        <Typography variant={'subtitle1'}>
+        <Typography variant={'body2'}>
           {props.value && props.value !== ''
             ? props.value
             : 'Est. closing date'}
@@ -61,7 +67,7 @@ const CustomInput = forwardRef((props: any, ref) => {
   );
 });
 
-export const StyledSearchDateRange: FC = () => {
+export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({onChange,hanelClear}) => {
   const [closingDate, setClosingDate] = useState<[Date | null, Date | null]>([
     null,
     null,
@@ -73,16 +79,18 @@ export const StyledSearchDateRange: FC = () => {
         <CustomInput
           onClear={() => {
             setClosingDate([null, null]);
+              hanelClear?.()
           }}
         />
       }
       dateRange={closingDate}
       label={'Est. closing date'}
       onCalendarClose={() => {
-        setBtnSelected({ ...btnSelected, timeRange: false });
+        // setBtnSelected({ ...btnSelected, timeRange: false });
       }}
       onChange={(date: [Date | null, Date | null]) => {
         setClosingDate(date);
+          onChange?.(date)
       }}
       placeholderText={'Est. closing date'}
       popperPlacement={'bottom-start'}

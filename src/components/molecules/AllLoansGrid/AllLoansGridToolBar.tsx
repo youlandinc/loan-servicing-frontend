@@ -1,30 +1,19 @@
-import { StyledSearchLoanOfficer } from '@/components/atoms/StyledSearchLoanOfficer';
-import { PIPELINE_STATUS } from '@/constant';
-import { isValid } from 'date-fns';
-import { FC, useRef, useState } from 'react';
-import { observer } from 'mobx-react-lite';
-import {
-  Icon,
-  ListItemText,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-} from '@mui/material';
-
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {PIPELINE_STATUS} from '@/constant';
+import {isValid} from 'date-fns';
+import {FC, useRef, useState} from 'react';
+import {observer} from 'mobx-react-lite';
+import {Stack,} from '@mui/material';
 
 import {
-  StyledButton,
-  StyledCheckbox,
-  StyledDateRange,
-  StyledSearchTextFieldInput,
-  StyledSelect,
-  StyledSelectMultiple,
+    StyledSearchDateRange,
+    StyledSearchLoanOfficer,
+    StyledSearchSelectMultiple,
+    StyledSearchTextFieldInput,
+    StyledSelectMultiple,
 } from '@/components/atoms';
 
-import { useMst } from '@/models/Root';
-import { useDebounceFn } from '@/hooks';
+import {useMst} from '@/models/Root';
+import {useDebounceFn} from '@/hooks';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -33,18 +22,18 @@ export const AllLoansGridToolBar: FC = observer(() => {
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
-  const [closingDate, setClosingDate] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
-
   const [, , updateQueryDebounce] = useDebounceFn(
     allLoansGridQueryModel.updateQueryCondition,
     500,
   );
 
+  const [, , updateQueryDateRangeDebounce] = useDebounceFn(
+    allLoansGridQueryModel.updateQueryDateRange,
+    500,
+  );
+
   return (
-    <Stack direction={'row'} gap={1.5}>
+    <Stack alignItems={'center'} direction={'row'} gap={1.5}>
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
@@ -56,53 +45,27 @@ export const AllLoansGridToolBar: FC = observer(() => {
         }}
         variant={'outlined'}
       />
-      <StyledDateRange
-        /*    customInput={
-          <CustomInput
-            onClear={() => {
-              setClosingDate([null, null]);
-              updateSearchParam({
-                ...searchParam,
-                searchCondition: {
-                  ...searchParam.searchCondition,
-                  estClosingStartDate: null,
-                  estClosingEndDate: null,
-                },
-              });
-            }}
-          />
-        }*/
-        dateRange={closingDate}
-        label={'Est. closing date'}
-        // onCalendarClose={() => {
-        //   setBtnSelected({ ...btnSelected, timeRange: false });
-        // }}
-        onChange={(date: [Date | null, Date | null]) => {
-          setClosingDate(date);
-          isValid(date[0]) &&
-            updateQueryDebounce('maturityStartDate', date[0]?.toISOString());
-          isValid(date[1]) &&
-            updateQueryDebounce('maturityEndDate', date[1]?.toISOString());
+      <StyledSearchDateRange
+        hanelClear={() => {
+          updateQueryDateRangeDebounce({
+            startDate: '',
+            endDate: '',
+          });
         }}
-        placeholderText={'Est. closing date'}
-        popperPlacement={'bottom-start'}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          '& .react-datepicker-wrapper': {
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-          },
+        onChange={(date) => {
+          updateQueryDateRangeDebounce({
+            startDate: isValid(date[0]) ? date[0]?.toISOString() : '',
+            endDate: isValid(date[1]) ? date[1]?.toISOString() : '',
+          });
         }}
       />
-      <StyledSelectMultiple
+
+      <StyledSearchSelectMultiple
         label={'Status'}
-        onValueChange={(e) => {
+        onChange={(e) => {
           updateQueryDebounce('status', e);
         }}
         options={PIPELINE_STATUS}
-        sx={{ width: 150, maxHeight: 500 }}
         value={allLoansGridQueryModel.searchCondition.repaymentStatusList}
       />
       <StyledSearchLoanOfficer

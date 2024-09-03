@@ -37,6 +37,11 @@ export const allLoansGridQueryModel = types
     ) {
       self.searchCondition[key] = value;
     },
+      updateQueryDateRange(data: { startDate: string; endDate: string }) {
+        self.searchCondition.maturityStartDate = data.startDate;
+        self.searchCondition.maturityEndDate = data.endDate;
+
+      }
   }));
 
 export type IAllLoansGridModel = SnapshotOut<typeof allLoansGridQueryModel>;

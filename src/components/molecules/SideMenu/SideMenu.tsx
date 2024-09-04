@@ -8,42 +8,49 @@ import { StyledButton } from '@/components/atoms';
 
 import BACK from './back.svg';
 
-import MENU_LOGO_01 from './menu_01.svg';
-import MENU_LOGO_02 from './menu_02.svg';
-import MENU_LOGO_03 from './menu_03.svg';
-import MENU_LOGO_04 from './menu_04.svg';
-import MENU_LOGO_05 from './menu_05.svg';
+import MENU_LOGO_01 from './menu-01.svg';
+import MENU_LOGO_02 from './menu-02.svg';
+import MENU_LOGO_03 from './menu-03.svg';
+import MENU_LOGO_04 from './menu-04.svg';
+import MENU_LOGO_05 from './menu-05.svg';
+import MENU_LOGO_06 from './menu-06.svg';
 
 const MENU_LIST = [
   {
     icon: MENU_LOGO_01,
+    label: 'Overview',
+    key: 'LOAN_OVERVIEW',
+    url: '/loan/overview',
+  },
+  {
+    icon: MENU_LOGO_02,
     label: 'Payments',
     key: 'LOAN_PAYMENTS',
     url: '/loan/payments',
   },
   {
-    icon: MENU_LOGO_02,
-    label: 'Extension request',
-    key: 'LOAN_EXTENSION_REQUEST',
-    url: '/loan/extension_request',
+    icon: MENU_LOGO_03,
+    label: 'Draws',
+    key: 'LOAN_DRAWS',
+    url: '/loan/draws',
   },
   {
-    icon: MENU_LOGO_03,
+    icon: MENU_LOGO_04,
+    label: 'Extension',
+    key: 'LOAN_EXTENSION',
+    url: '/loan/extension',
+  },
+  {
+    icon: MENU_LOGO_05,
     label: 'Payoff',
     key: 'LOAN_PAYOFF',
     url: '/loan/payoff',
   },
   {
-    icon: MENU_LOGO_04,
+    icon: MENU_LOGO_06,
     label: 'Loan details',
     key: 'LOAN_DETAILS',
     url: '/loan/details',
-  },
-  {
-    icon: MENU_LOGO_05,
-    label: 'Documents',
-    key: 'LOAN_DOCUMENTS',
-    url: '/loan/documents',
   },
 ];
 
@@ -85,7 +92,7 @@ export const SideMenu: FC = observer(() => {
             onClick={() =>
               router.push({
                 pathname: item.url,
-                query: { id: router.query.id },
+                query: { loanId: router.query.loanId },
               })
             }
             p={'12px 24px'}

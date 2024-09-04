@@ -10,11 +10,14 @@ import {
 } from 'material-react-table';
 import useSWR from 'swr';
 import { CircularProgress, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { AllLoansPagination, commonColumns } from '@/components/molecules';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
 
 export const AllLoansGrid: FC = observer(() => {
+  const router = useRouter();
+
   const {
     portfolio: { allLoansGridQueryModel },
   } = useMst();
@@ -71,33 +74,16 @@ export const AllLoansGrid: FC = observer(() => {
     getRowId: (row) => row.loanId, //default
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
-
-    /*    muiTableBodyCellProps: ({ row, column: { id } }) => ({
+    muiTableBodyCellProps: ({ row: { original } }) => ({
       onClick: async () => {
-        const { original, originalSubRows } = row;
-        if (originalSubRows?.length) {
-          set(row.toggleExpanded, !row.getIsExpanded());
-          return;
-        }
-        if (
-          originalSubRows?.length ||
-          id === 'loanOfficer' ||
-          id === 'action' ||
-          id === 'stage' ||
-          id === 'appraisalStage'
-        ) {
-          return;
-        }
-        await Router.push({
-          pathname: '/dashboard/pipeline/details/[formKey]',
-          query: {
-            id: original.id,
-            formKey: getFirstSubMenuKey(setting.tenantConfig?.tenantId),
-          },
+        const { loanId } = original;
+        await router.push({
+          pathname: '/loan/overview',
+          query: { loanId },
         });
       },
     }),
-    displayColumnDefOptions: {
+    /* displayColumnDefOptions: {
       'mrt-row-expand': {
         size: 40, //make the expand column wider
         Cell: ({ row, table }) => {

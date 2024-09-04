@@ -61,33 +61,47 @@ export const SideMenu: FC = observer(() => {
     <Box
       flexShrink={0}
       overflow={'auto'}
-      px={2.5}
-      py={5.5}
+      px={1.5}
+      py={3}
       sx={{
         borderRight: '1px solid',
         borderColor: 'action.loading',
       }}
-      width={{ lg: 320, xs: 280 }}
+      width={245}
     >
       <Stack gap={1}>
         <StyledButton
           color={'info'}
           onClick={() => router.push('/portfolio')}
+          size={'small'}
           sx={{
-            mb: 3,
-            fontSize: { xs: 14, xl: 16 },
+            fontSize: 14,
+            fontWeight: '400 !important',
+            borderColor: 'transparent !important',
+            justifyContent: 'flex-start !important',
+            pl: '6px !important',
           }}
           variant={'outlined'}
         >
           <Icon component={BACK} sx={{ width: 24, height: 24, mr: 1 }} />
           Back to portfolio
         </StyledButton>
+
+        <Stack
+          bgcolor={'#D2D6E1'}
+          height={'1px'}
+          mb={1.5}
+          mt={0.5}
+          width={'100%'}
+        />
+
         {MENU_LIST.map((item, index) => (
           <Typography
             border={'1px solid transparent'}
             borderRadius={3}
             className={router.pathname === item.url ? 'active' : ''}
             gap={1}
+            height={40}
             key={`${item.key}_${index}`}
             onClick={() =>
               router.push({
@@ -95,13 +109,14 @@ export const SideMenu: FC = observer(() => {
                 query: { loanId: router.query.loanId },
               })
             }
-            p={'12px 24px'}
+            pl={2.5}
+            py={1.5}
             sx={{
               transition: 'all .3s',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 1.5,
+              gap: 1.25,
               '&:hover': {
                 bgcolor: 'primary.background',
                 color: 'primary.contrastBackground',
@@ -116,7 +131,7 @@ export const SideMenu: FC = observer(() => {
                   path: { fill: '#5B76BC' },
                 },
               },
-              fontSize: { xs: 14, xl: 16 },
+              fontSize: 14,
             }}
             variant={'body1'}
           >

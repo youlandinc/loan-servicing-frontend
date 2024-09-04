@@ -97,7 +97,7 @@ export const LoanDetails: FC = () => {
     },
   ];
   return (
-    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
+    <Layout isHomepage={false} sideMenu={<SideMenu />}>
       <Stack spacing={6}>
         <Stack spacing={1.5}>
           <Stack

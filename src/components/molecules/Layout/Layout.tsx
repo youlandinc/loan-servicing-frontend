@@ -11,11 +11,10 @@ interface LayoutProps {
   sideMenu?: ReactNode;
   actions?: ReactNode;
   children?: ReactNode;
-  isInside?: boolean;
 }
 
 export const Layout: FC<LayoutProps> = observer(
-  ({ isHomepage, actions, sideMenu, children, isInside }) => {
+  ({ isHomepage, actions, sideMenu, children }) => {
     const store = useMst();
     const { userSetting, session } = store;
     const { fetchUserSetting, fetchUserLicensedProduct, initialized } =
@@ -52,9 +51,7 @@ export const Layout: FC<LayoutProps> = observer(
           <Stack
             bgcolor={'primary.lighter'}
             height={'100%'}
-            overflow={'auto'}
-            px={isInside ? { lg: '7.5%', xs: 6 } : 0}
-            py={isInside ? 6 : 0}
+            overflow={'hidden'}
             width={'100%'}
           >
             {children}

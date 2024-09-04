@@ -20,3 +20,5 @@ export * from './StyledCheckbox';
 export * from './StyledSearchLoanOfficer';
 
 export * from './StyledSearchDateRange';
+
+export * from './StyledHeaderAddressInfo';

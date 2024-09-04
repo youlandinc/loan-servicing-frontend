@@ -75,7 +75,7 @@ export const defaultProps = {
         webkitLineClamp: 2,
         display: '-webkit-box',
         whiteSpace: 'normal',
-        color: 'info.A100',
+        color: '#636A7C',
       },
       '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
         mr: '-8px',

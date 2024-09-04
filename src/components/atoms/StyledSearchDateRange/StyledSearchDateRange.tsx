@@ -36,6 +36,7 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
     const { onClear, ...rest } = props;
     return (
       <StyledButton
+        size={'small'}
         sx={{
           ...BtnDefaultStyle,
           pl: 1.25,
@@ -44,6 +45,8 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
             bgcolor:
               rest.value !== '' ? 'transparent' : 'rgba(54, 94, 198, 0.04)',
           },
+          p: '0 !important',
+          height: 'auto !important',
         }}
         variant={'text'}
         {...rest}

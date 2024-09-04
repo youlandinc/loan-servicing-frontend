@@ -20,11 +20,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {renderedCellValue}
           </Typography>
@@ -47,11 +47,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {renderedCellValue}
           </Typography>
@@ -74,11 +74,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {renderedCellValue}
           </Typography>
@@ -100,11 +100,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {renderedCellValue}
           </Typography>
@@ -115,7 +115,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   {
     accessorKey: 'propertyFullAddress',
     header: 'Property address',
-    size: 140,
+    size: 300,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -126,11 +126,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {renderedCellValue}
           </Typography>
@@ -150,7 +150,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
+        <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
           {typeof renderedCellValue === 'string' &&
           isValid(new Date(renderedCellValue))
             ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
@@ -173,11 +173,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {utils.formatDollar(renderedCellValue as number, 0)}
           </Typography>
@@ -199,11 +199,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {utils.formatDollar(renderedCellValue as number, 0)}
           </Typography>
@@ -223,7 +223,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
+        <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
           {typeof renderedCellValue === 'string' &&
           isValid(new Date(renderedCellValue))
             ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
@@ -246,11 +246,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {utils.formatPercent((renderedCellValue as number) / 100)}
           </Typography>
@@ -272,11 +272,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {utils.formatDollar(renderedCellValue as number, 0)}
           </Typography>
@@ -298,11 +298,11 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       return (
         <Tooltip title={renderedCellValue}>
           <Typography
+            fontSize={12}
             sx={{
               ...ellipsisStyle,
               width: '100%',
             }}
-            variant={'subtitle1'}
           >
             {utils.formatPercent((renderedCellValue as number) / 100)}
           </Typography>
@@ -322,7 +322,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
+        <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
           {typeof renderedCellValue === 'string' &&
           isValid(new Date(renderedCellValue))
             ? format(new Date(renderedCellValue), 'MM/dd/yyyy')

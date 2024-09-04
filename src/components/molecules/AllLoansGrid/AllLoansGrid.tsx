@@ -75,6 +75,10 @@ export const AllLoansGrid: FC = observer(() => {
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
     muiTableBodyCellProps: ({ row: { original } }) => ({
+      sx: {
+        px: 1.5,
+        py: 1.5,
+      },
       onClick: async () => {
         const { loanId } = original;
         await router.push({
@@ -83,6 +87,118 @@ export const AllLoansGrid: FC = observer(() => {
         });
       },
     }),
+    muiTableHeadProps: {
+      sx: {
+        opacity: 1,
+        '& .MuiTableRow-head': {
+          boxShadow: 'none',
+        },
+
+        '& .Mui-TableHeadCell-Content-Wrapper': {
+          fontWeight: 600,
+          fontSize: 12,
+          lineHeight: '20px',
+          whiteSpace: 'nowrap',
+        },
+        '& .MuiTableCell-root': {
+          border: 'none',
+        },
+        '& .MuiTableCell-root:last-child': {
+          bgcolor: '#F4F6FA',
+        },
+      },
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        bgcolor: '#F4F6FA',
+        opacity: 1,
+        border: 'none',
+        minHeight: 36,
+        px: 1,
+        py: 1.25,
+        justifyContent: 'center',
+        '& .Mui-TableHeadCell-Content-Labels ': {
+          pl: 0,
+        },
+        '& .Mui-TableHeadCell-Content-Wrapper': {
+          fontWeight: 600,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          webkitBoxOrient: 'vertical',
+          webkitLineClamp: 2,
+          display: '-webkit-box',
+          whiteSpace: 'normal',
+          color: '#636A7C',
+        },
+        '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
+          mr: '-8px',
+        },
+        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
+          borderWidth: 1,
+        },
+        '&[data-pinned="true"]:before': {
+          bgcolor: 'transparent',
+        },
+        /* cursor:
+            pipelineMode === PipelineDisplayMode.LIST_MODE ? 'pointer' : 'unset',
+        '&:hover': {
+          bgcolor:
+              pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
+        },*/
+      },
+    },
+
+    /*    muiTablePaperProps: {
+      sx: {
+        boxShadow: 'none',
+        '& .MuiAlert-message span': {
+          visibility: 'hidden',
+        },
+        borderRadius: 0,
+      },
+    },
+    muiBottomToolbarProps: {
+      sx: {
+        '& .MuiTypography-body2': {
+          fontSize: 14,
+        },
+        '& .MuiInputLabel-root,& .MuiInput-root': {
+          fontSize: 14,
+        },
+      },
+    },
+    muiTableBodyProps: {
+      sx: {
+        '& tr .groupingTitle': {
+          color: 'text.primary',
+        },
+        '& .MuiTableRow-root:last-child .MuiTableCell-root': {
+          borderBottom: 'none',
+        },
+      },
+    },
+    muiPaginationProps: {
+      SelectProps: {
+        sx: {
+          '& .MuiInputBase-input:focus': {
+            bgcolor: 'transparent',
+          },
+        },
+      },
+    },
+    muiSelectCheckboxProps: {
+      sx: {
+        width: 20,
+        height: 20,
+        m: '0 auto',
+      },
+    },
+    muiSelectAllCheckboxProps: {
+      sx: {
+        display: 'block',
+        m: '0 auto',
+      },
+    },*/
     /* displayColumnDefOptions: {
       'mrt-row-expand': {
         size: 40, //make the expand column wider
@@ -166,6 +282,7 @@ export const AllLoansGrid: FC = observer(() => {
       };
     },*/
   });
+
   return (
     <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
       <MRT_TableContainer

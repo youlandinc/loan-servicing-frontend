@@ -1,19 +1,21 @@
-import {PIPELINE_STATUS} from '@/constant';
-import {isValid} from 'date-fns';
-import {FC, useRef, useState} from 'react';
-import {observer} from 'mobx-react-lite';
-import {Stack,} from '@mui/material';
+import { PIPELINE_STATUS } from '@/constant';
+import { PipelineStatusEnum } from '@/types/enum';
+import { isValid } from 'date-fns';
+import { FC, useRef, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { Stack } from '@mui/material';
 
 import {
-    StyledSearchDateRange,
-    StyledSearchLoanOfficer,
-    StyledSearchSelectMultiple,
-    StyledSearchTextFieldInput,
-    StyledSelectMultiple,
+  StyledHeaderAddressInfo,
+  StyledSearchDateRange,
+  StyledSearchLoanOfficer,
+  StyledSearchSelectMultiple,
+  StyledSearchTextFieldInput,
+  StyledSelectMultiple,
 } from '@/components/atoms';
 
-import {useMst} from '@/models/Root';
-import {useDebounceFn} from '@/hooks';
+import { useMst } from '@/models/Root';
+import { useDebounceFn } from '@/hooks';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -76,6 +78,11 @@ export const AllLoansGridToolBar: FC = observer(() => {
         handleClear={() => {
           updateQueryDebounce('investors', []);
         }}
+      />
+      <StyledHeaderAddressInfo
+        address={'5804 Shenandoah Ave, Los Angeles, CA 90056'}
+        loanNumber={'20240807-236C'}
+        status={PipelineStatusEnum.PERFORMING}
       />
     </Stack>
   );

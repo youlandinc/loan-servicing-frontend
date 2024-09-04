@@ -182,7 +182,10 @@ export const AllLoansGrid: FC = observer(() => {
   });
   return (
     <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
-      <MRT_TableContainer sx={{ borderRadius: 4 }} table={table} />
+      <MRT_TableContainer
+        sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+        table={table}
+      />
       <AllLoansPagination
         currentPage={currentPage}
         // onPageChange={(page: number) => {

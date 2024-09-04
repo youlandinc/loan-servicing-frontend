@@ -1,4 +1,36 @@
 import { LoanStatus, PipelineStatusEnum } from '@/types/enum';
+import { LoanProductCategoryEnum, LoanPurposeEnum } from '@/types/overview';
+
+export const LOAN_PRODUCT_CATEGORY: Option[] = [
+  {
+    label: 'Stabilized Bridge',
+    key: LoanProductCategoryEnum.stabilized_bridge,
+    value: LoanProductCategoryEnum.stabilized_bridge,
+  },
+  {
+    label: 'Fix and Flip',
+    key: LoanProductCategoryEnum.fix_and_flip,
+    value: LoanProductCategoryEnum.fix_and_flip,
+  },
+  //{
+  //  label: 'Ground-up Construction',
+  //  key: LoanProductCategoryEnum.ground_up_construction,
+  //  value: LoanProductCategoryEnum.ground_up_construction,
+  //},
+];
+
+export const LOAN_PURPOSE: Option[] = [
+  {
+    label: 'Purchase',
+    key: LoanPurposeEnum.purchase,
+    value: LoanPurposeEnum.purchase,
+  },
+  {
+    label: 'Refinance',
+    key: LoanPurposeEnum.refinance,
+    value: LoanPurposeEnum.refinance,
+  },
+];
 
 export const GRID_STATUS: Option[] = [
   { label: 'Inactive', key: LoanStatus.inactive, value: LoanStatus.inactive },

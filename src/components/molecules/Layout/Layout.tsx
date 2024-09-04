@@ -52,9 +52,7 @@ export const Layout: FC<LayoutProps> = observer(
           <Stack
             bgcolor={'primary.lighter'}
             height={'100%'}
-            overflow={'auto'}
-            px={isInside ? { lg: '7.5%', xs: 6 } : 0}
-            py={isInside ? 6 : 0}
+            overflow={'hidden'}
             width={'100%'}
           >
             {children}

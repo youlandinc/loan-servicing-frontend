@@ -40,21 +40,9 @@ export const utils = {
       ) + '%'
     );
   },
-  formatLocalPercent: (
-    percentageValue: number | undefined,
-    radix = 2,
-  ): string => {
-    if (!percentageValue) {
-      return '0%';
-    }
-    return percentageValue.toLocaleString('en-US', {
-      style: 'percent',
-      minimumFractionDigits: radix,
-    });
-  },
   formatDate: (
     date: string | Date,
-    timeFormat = 'yyyy-MM-dd HH:mm:ss O',
+    timeFormat = 'yyyy/MM/dd',
     options?: {
       locale?: Locale;
       weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -64,6 +52,21 @@ export const utils = {
     },
   ): string => {
     return format(new Date(date), timeFormat, options);
+  },
+  formatUSPhoneToText: (entry = '') => {
+    if (utils.TypeOf(entry) === 'Null') {
+      return '';
+    }
+    const cleaned: string = ('' + entry).replace(/\D/g, '');
+    const match: RegExpMatchArray | null = cleaned.match(
+      /^(\d{3})?(\d{3})(\d{4})$/,
+    );
+    if (match) {
+      const areaCode: string = match[1] ? `(${match[1]}) ` : '';
+      const formattedNumber = `${areaCode}${match[2]}-${match[3]}`;
+      return formattedNumber;
+    }
+    return cleaned;
   },
   getParamsFromUrl(url: string): Record<string, string> {
     const params: Record<string, string> = {};
@@ -78,58 +81,5 @@ export const utils = {
   },
   notUndefined(value: unknown): boolean {
     return Object.prototype.toString.call(value).slice(8, -1) !== 'Undefined';
-  },
-  colorCalculator(val: string | undefined): string {
-    const condition = val?.toLocaleUpperCase()[0];
-    let result = '';
-    switch (condition) {
-      case 'A':
-      case 'B':
-      case 'C':
-        result = '#578887';
-        break;
-      case 'D':
-      case 'E':
-      case 'F':
-        result = '#d8c9af';
-        break;
-      case 'G':
-      case 'H':
-      case 'I':
-        result = '#E99475';
-        break;
-      case 'J':
-      case 'K':
-      case 'L':
-        result = '#91cec2';
-        break;
-      case 'M':
-      case 'N':
-      case 'O':
-        result = '#b08053';
-        break;
-      case 'P':
-      case 'Q':
-      case 'R':
-        result = '#fecb4d';
-        break;
-      case 'S':
-      case 'T':
-        result = '#5ebad9';
-        break;
-      case 'U':
-      case 'V':
-        result = '#4662b2';
-        break;
-      case 'W':
-      case 'X':
-        result = '#a990dd';
-        break;
-      case 'Y':
-      case 'Z':
-        result = '#ab1438';
-        break;
-    }
-    return result;
   },
 };

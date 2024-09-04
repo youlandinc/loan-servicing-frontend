@@ -3,26 +3,27 @@ import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 
-const DynamicLoanDocuments = dynamic(
+const DynamicLoanOverview = dynamic(
   () =>
-    import('@/components/organisms/Loan/LoanDocuments').then(
-      (mod) => mod.LoanDocuments,
+    import('@/components/organisms/Loan/LoanOverview').then(
+      (mod) => mod.LoanOverview,
     ),
   {
     ssr: true,
   },
 );
 
-const LoanDocumentsPage = observer(() => {
+const LoanOverviewPage = observer(() => {
   return (
     <>
       <Head>
         <meta content="YouLand Software Team" name="description" />
+        <meta content="YouLand Point Of Sales System" name="keywords" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <DynamicLoanDocuments />
+      <DynamicLoanOverview />
     </>
   );
 });
 
-export default LoanDocumentsPage;
+export default LoanOverviewPage;

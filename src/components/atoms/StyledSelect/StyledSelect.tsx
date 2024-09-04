@@ -1,24 +1,6 @@
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { FC } from 'react';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
-import { SelectInputProps } from '@mui/material/Select/SelectInput';
-import { TOption } from '@/types';
-
-interface StyledSelectProps {
-  label: string;
-  labelId: string;
-  id: string;
-  value: string | undefined | number;
-  onChange: SelectInputProps['onChange'];
-  options: TOption[];
-  sx?: SxProps;
-  required?: boolean;
-}
+import { StyledSelectProps } from './StyledSelect.types';
 
 export const StyledSelect: FC<StyledSelectProps> = ({
   label,

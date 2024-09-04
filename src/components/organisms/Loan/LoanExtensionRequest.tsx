@@ -4,7 +4,7 @@ import { Layout, SideMenu } from '@/components/molecules';
 
 export const LoanExtensionRequest: FC = () => {
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
       LoanExtensionRequest
     </Layout>
   );

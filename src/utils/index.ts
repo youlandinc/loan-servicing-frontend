@@ -1,6 +1,9 @@
 import { TOption } from '@/types';
 import { format } from 'date-fns';
 
+export * from './Handler';
+export * from './TypeOf';
+
 export const utils = {
   findLabel: (options: TOption[], val: number | string | undefined): string => {
     return options.find((item) => item.value === val)?.label || '';
@@ -28,7 +31,7 @@ export const utils = {
     let target = percentageValue;
     //eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    if (this.TypeOf(target) === 'String') {
+    if (this?.TypeOf(target) === 'String') {
       target = parseFloat(target as string);
     }
     return (

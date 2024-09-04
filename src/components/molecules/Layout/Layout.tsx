@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -11,10 +11,11 @@ interface LayoutProps {
   sideMenu?: ReactNode;
   actions?: ReactNode;
   children?: ReactNode;
+  isInside?: boolean;
 }
 
 export const Layout: FC<LayoutProps> = observer(
-  ({ isHomepage, actions, sideMenu, children }) => {
+  ({ isHomepage, actions, sideMenu, children, isInside }) => {
     const store = useMst();
     const { userSetting, session } = store;
     const { fetchUserSetting, fetchUserLicensedProduct, initialized } =
@@ -48,16 +49,16 @@ export const Layout: FC<LayoutProps> = observer(
           width={'100%'}
         >
           {isHomepage ? <LayoutSide /> : sideMenu}
-          <Box
+          <Stack
             bgcolor={'primary.lighter'}
             height={'100%'}
             overflow={'auto'}
-            // px={{ lg: '7.5%', xs: 6 }}
-            // py={6}
+            px={isInside ? { lg: '7.5%', xs: 6 } : 0}
+            py={isInside ? 6 : 0}
             width={'100%'}
           >
             {children}
-          </Box>
+          </Stack>
         </Stack>
       </Stack>
     );

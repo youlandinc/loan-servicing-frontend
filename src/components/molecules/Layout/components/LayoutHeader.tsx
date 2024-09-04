@@ -1,7 +1,6 @@
 import { FC, ReactNode, useMemo, useState } from 'react';
 import {
   Avatar,
-  Box,
   Icon,
   Popover,
   Stack,
@@ -157,15 +156,21 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
       return setting?.userInfo?.avatar;
     }, [avatarName, setting?.userInfo?.avatar]);
 
+    const avatarFullName = useMemo(() => {
+      return `${
+        setting?.userInfo?.firstName ? `${setting?.userInfo?.firstName} ` : ''
+      }${setting?.userInfo?.lastName}`;
+    }, [setting?.userInfo?.firstName, setting?.userInfo?.lastName]);
+
     return (
       <>
         <Stack
           alignItems={'center'}
           bgcolor={'background.white'}
-          border={'1px solid'}
+          borderBottom={'1px solid'}
           borderColor={'border.normal'}
           flexDirection={'row'}
-          height={{ lg: '88px', xs: '60px' }}
+          height={'60px'}
           justifyContent={'space-between'}
           px={6}
           sx={{
@@ -190,8 +195,8 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 setAnchorElUser(null);
               }}
               sx={{
-                width: { lg: 40, xs: 32 },
-                height: { lg: 40, xs: 32 },
+                width: 32,
+                height: 32,
                 cursor: 'pointer',
                 transition: 'all .3s',
               }}
@@ -221,13 +226,14 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                     }
                     color={'text.primary'}
                     component={'li'}
-                    fontSize={{ lg: 16, xs: 14 }}
+                    fontSize={14}
                     fontWeight={600}
                     height={'100%'}
                     justifyContent={'center'}
                     key={`${item.label}_${index}`}
                     onClick={() => router.push(item.url)}
                     position={'relative'}
+                    px={3}
                     sx={{
                       cursor: 'pointer',
                       '&:hover': { color: 'primary.main' },
@@ -254,7 +260,13 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               </Stack>
             )}
           </Stack>
-          <Stack alignItems={'center'} flexDirection={'row'} height={'100%'}>
+
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={3}
+            height={'100%'}
+          >
             {router.pathname !== '/' && (
               <Tooltip
                 PopperProps={{
@@ -262,7 +274,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 }}
                 title={'Organization settings'}
               >
-                <Box height={24} width={24}>
+                <Stack height={24} width={24}>
                   <Icon
                     component={LOGO_SETTING}
                     sx={{
@@ -271,9 +283,10 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                       cursor: 'pointer',
                     }}
                   />
-                </Box>
+                </Stack>
               </Tooltip>
             )}
+
             <Stack
               alignItems={'center'}
               flexBasis={192}
@@ -291,10 +304,10 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               <Avatar
                 src={avatarUrl}
                 sx={{
-                  bgcolor: utils.colorCalculator(avatarName) || 'info.main',
-                  width: { lg: 36, xs: 30 },
-                  height: { lg: 36, xs: 30 },
-                  fontSize: { lg: 14, xs: 12 },
+                  bgcolor: setting?.userInfo?.backgroundColor,
+                  width: 30,
+                  height: 30,
+                  fontSize: 12,
                   fontWeight: 600,
                 }}
               >
@@ -312,7 +325,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 <Stack width={144}>
                   <Typography
                     color={'text.primary'}
-                    fontSize={{ lg: 14, xs: 12 }}
+                    fontSize={12}
                     sx={{
                       width: '100%',
                       overflow: 'hidden',
@@ -321,7 +334,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                     }}
                     variant={'subtitle1'}
                   >
-                    {setting?.userInfo?.name}
+                    {avatarFullName}
                   </Typography>
                   <Typography color={'info.main'} variant={'body3'}>
                     {setting?.roles?.[0]?.description}
@@ -343,16 +356,18 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
           id={'LAYOUT_HEADER_PRODUCT_POPOVER'}
           onClose={() => setAnchorElProduct(null)}
           open={Boolean(anchorElProduct)}
-          PaperProps={{
-            sx: {
-              px: 3,
-              pt: 3,
-              pb: 6,
-              boxShadow: 'none',
-              border: '1px solid',
-              borderColor: 'border.normal',
-              borderRadius: 4,
-              mt: { lg: 5.25, xs: 5 },
+          slotProps={{
+            paper: {
+              sx: {
+                px: 3,
+                pt: 3,
+                pb: 6,
+                boxShadow: 'none',
+                border: '1px solid',
+                borderColor: 'border.normal',
+                borderRadius: 4,
+                mt: 5,
+              },
             },
           }}
           transformOrigin={{
@@ -430,13 +445,15 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
           id={'LAYOUT_HEADER_USER_POPOVER'}
           onClose={() => setAnchorElUser(null)}
           open={Boolean(anchorElUser)}
-          PaperProps={{
-            sx: {
-              boxShadow:
-                '0px 10px 10px 0px rgba(17, 52, 227, 0.10), 0px 0px 2px 0px rgba(17, 52, 227, 0.10)',
-              ml: 3.5,
-              mt: { lg: 1.5, xs: 3 },
-              borderRadius: 2,
+          slotProps={{
+            paper: {
+              sx: {
+                boxShadow:
+                  '0px 10px 10px 0px rgba(17, 52, 227, 0.10), 0px 0px 2px 0px rgba(17, 52, 227, 0.10)',
+                ml: 3.5,
+                mt: 3,
+                borderRadius: 2,
+              },
             },
           }}
           transformOrigin={{

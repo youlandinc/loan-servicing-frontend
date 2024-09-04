@@ -45,25 +45,25 @@ const mockData = [
 export const LoanPayments: FC = observer(() => {
   const router = useRouter();
 
-  const [id, setId] = useState<string>('');
+  const [loanId, setLoanId] = useState<string>('');
 
   useEffect(
     () => {
-      const { id } = utils.getParamsFromUrl(location.href);
+      const { loanId } = utils.getParamsFromUrl(location.href);
 
-      if (!id) {
+      if (!loanId) {
         router.push('/portfolio');
         return;
       }
 
-      setId(id);
+      setLoanId(loanId);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
       <Stack
         gap={3}
         height={'100%'}
@@ -77,7 +77,7 @@ export const LoanPayments: FC = observer(() => {
           flexDirection={'row'}
           justifyContent={'space-between'}
         >
-          <Typography variant={'h6'}>Payments - {id}</Typography>
+          <Typography variant={'h6'}>Payments - {loanId}</Typography>
           <Stack flexDirection={'row'} gap={1.25}>
             <StyledButton color={'info'} variant={'outlined'}>
               Update late charges

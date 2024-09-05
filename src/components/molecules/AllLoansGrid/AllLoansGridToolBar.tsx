@@ -79,11 +79,6 @@ export const AllLoansGridToolBar: FC = observer(() => {
           updateQueryDebounce('investors', []);
         }}
       />
-      <StyledHeaderAddressInfo
-        address={'5804 Shenandoah Ave, Los Angeles, CA 90056'}
-        loanNumber={'20240807-236C'}
-        status={PipelineStatusEnum.PERFORMING}
-      />
     </Stack>
   );
 });

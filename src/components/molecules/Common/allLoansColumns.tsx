@@ -1,3 +1,6 @@
+import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
+import { PIPELINE_STATUS } from '@/constant';
+import { PipelineStatusEnum } from '@/types/enum';
 import { Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
@@ -19,15 +22,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     Cell: ({ renderedCellValue }) => {
       return (
         <Tooltip title={renderedCellValue}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue}
-          </Typography>
+          <StyledLoanStatus status={renderedCellValue as PipelineStatusEnum} />
         </Tooltip>
       );
     },

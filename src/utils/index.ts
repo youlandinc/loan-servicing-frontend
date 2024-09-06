@@ -53,7 +53,7 @@ export const utils = {
     });
   },
   formatDate: (
-    date: string | Date,
+    date: string | Date | undefined | null,
     timeFormat = 'yyyy-MM-dd HH:mm:ss O',
     options?: {
       locale?: Locale;
@@ -63,6 +63,9 @@ export const utils = {
       useAdditionalDayOfYearTokens?: boolean;
     },
   ): string => {
+    if (!date) {
+      return '';
+    }
     return format(new Date(date), timeFormat, options);
   },
   getParamsFromUrl(url: string): Record<string, string> {
@@ -131,5 +134,19 @@ export const utils = {
         break;
     }
     return result;
+  },
+  formatPhoneNumber: (number: string | undefined | null) => {
+    return typeof number === 'string' && number.length === 10
+      ? `(${number.slice(0, 3)}) ${number.slice(3 - 6)}-${number.slice(6)}`
+      : number;
+  },
+  formatSsn: (ssn: string | null | undefined) => {
+    if (typeof ssn !== 'string') {
+      return '';
+    }
+    const strArr = [...ssn];
+    strArr.splice(3, 0, '-');
+    strArr.splice(6, 0, '-');
+    return strArr.join('');
   },
 };

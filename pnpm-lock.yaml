@@ -59,6 +59,9 @@ importers:
       material-react-table:
         specifier: ^2.13.2
         version: 2.13.2(hm4id6hk6yg42l7pynwd7sc7qu)
+      material-ui-popup-state:
+        specifier: ^5.3.1
+        version: 5.3.1(@mui/material@5.15.0(@emotion/react@11.11.1(@types/react@18.3.5)(react@18.3.1))(@emotion/styled@11.11.0(@emotion/react@11.11.1(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       mobx:
         specifier: ^6.12.0
         version: 6.12.0
@@ -2452,6 +2455,13 @@ packages:
       '@mui/x-date-pickers': '>=6.15.0'
       react: '>=17.0'
       react-dom: '>=17.0'
+
+  material-ui-popup-state@5.3.1:
+    resolution: {integrity: sha512-mmx1DsQwF/2cmcpHvS/QkUwOQG2oAM+cDEQU0DaZVYnvwKyTB3AFgu8l1/E+LQFausmzpSJoljwQSZXkNvt7eA==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@mui/material': ^5.0.0 || ^6.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   mdn-data@2.0.14:
     resolution: {integrity: sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==}
@@ -5924,6 +5934,16 @@ snapshots:
       highlight-words: 1.2.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+
+  material-ui-popup-state@5.3.1(@mui/material@5.15.0(@emotion/react@11.11.1(@types/react@18.3.5)(react@18.3.1))(@emotion/styled@11.11.0(@emotion/react@11.11.1(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.23.6
+      '@mui/material': 5.15.0(@emotion/react@11.11.1(@types/react@18.3.5)(react@18.3.1))(@emotion/styled@11.11.0(@emotion/react@11.11.1(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/prop-types': 15.7.11
+      '@types/react': 18.3.5
+      classnames: 2.3.2
+      prop-types: 15.8.1
+      react: 18.3.1
 
   mdn-data@2.0.14: {}
 

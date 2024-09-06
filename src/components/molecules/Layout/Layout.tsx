@@ -43,7 +43,7 @@ export const Layout: FC<LayoutProps> = observer(
         <Stack
           flex={1}
           flexDirection={'row'}
-          height={{ xl: 'calc(100% - 88px)', xs: 'calc(100% - 60px)' }}
+          height={'calc(100% - 60px)'}
           overflow={'hidden'}
           width={'100%'}
         >

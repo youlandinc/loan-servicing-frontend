@@ -111,7 +111,6 @@ export const LoanOverviewComment: FC<
     } else {
       try {
         await _updateOverviewComment({ id, note: value });
-        await refresh?.();
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {

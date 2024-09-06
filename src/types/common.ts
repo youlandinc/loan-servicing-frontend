@@ -39,3 +39,8 @@ export interface ListPaginationReturn<T = any> {
     totalPages: number;
   };
 }
+
+export enum RequestBizType {
+  for_servicing = 'for_servicing',
+  for_loan = 'for_loan',
+}

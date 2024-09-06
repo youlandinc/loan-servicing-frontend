@@ -63,7 +63,7 @@ export const LoanPayments: FC = observer(() => {
   );
 
   return (
-    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
+    <Layout isHomepage={false} sideMenu={<SideMenu />}>
       <Stack
         gap={3}
         height={'100%'}

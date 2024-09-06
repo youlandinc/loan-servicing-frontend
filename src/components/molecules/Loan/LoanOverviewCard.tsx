@@ -5,7 +5,7 @@ export interface LoanOverviewCardProps {
   header: string;
   headerValue: string;
   headerIcon: any | ReactNode;
-  theme?: 'light' | 'dark';
+  theme?: 'light' | 'dark' | 'warning';
   listData: Array<{ label: ReactNode; value: ReactNode }>;
   tailData?: Array<{ label: ReactNode; value: ReactNode }>;
 }
@@ -38,6 +38,14 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
       result.listData.value = 'text.white';
     }
 
+    if (theme === 'warning') {
+      result.common.bgcolor = 'rgba(255, 238, 234, 1)';
+      result.common.color = 'rgba(205, 81, 53, 1)';
+      result.common.borderColor = 'rgba(205, 81, 53, 1)';
+      result.listData.label = 'text.secondary';
+      result.listData.value = 'text.secondary';
+    }
+
     return result;
   }, [theme]);
 
@@ -65,7 +73,20 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
             {headerValue}
           </Typography>
         </Stack>
-        <Icon component={headerIcon} sx={{ width: 32, height: 32 }} />
+        <Icon
+          component={headerIcon}
+          sx={() => {
+            const result = { width: 32, height: 32 };
+            if (theme === 'warning') {
+              Object.assign(result, {
+                '& path': {
+                  fill: 'rgba(205, 81, 53, 1)',
+                },
+              });
+            }
+            return result;
+          }}
+        />
       </Stack>
       <Stack gap={1.25} mt={0.5} width={'100%'}>
         {listData.map((item, index) => (

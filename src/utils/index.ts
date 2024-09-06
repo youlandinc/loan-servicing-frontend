@@ -8,7 +8,7 @@ export const utils = {
   findLabel: (options: TOption[], val: number | string | undefined): string => {
     return options.find((item) => item.value === val)?.label || '';
   },
-  formatDollar: (amount: number | undefined, digit = 2): string => {
+  formatDollar: (amount: number | undefined | null, digit = 2): string => {
     if (!amount) {
       return '$0.00';
     }
@@ -41,7 +41,7 @@ export const utils = {
     );
   },
   formatDate: (
-    date: string | Date,
+    date: string | Date | null,
     timeFormat = 'yyyy/MM/dd',
     options?: {
       locale?: Locale;
@@ -51,6 +51,9 @@ export const utils = {
       useAdditionalDayOfYearTokens?: boolean;
     },
   ): string => {
+    if (!date) {
+      return '-';
+    }
     return format(new Date(date), timeFormat, options);
   },
   formatUSPhoneToText: (entry = '') => {

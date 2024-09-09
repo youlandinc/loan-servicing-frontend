@@ -3,6 +3,7 @@ import {
   EstFICOScoreEnum,
   LoanPurposeEnum,
   LoanStatus,
+  MaturityDateTypeEnum,
   PipelineStatusEnum,
   ProductCategoryEnum,
   PropertyTypeEnum,
@@ -251,5 +252,18 @@ export const PropertyTypeOpt: Option[] = [
     key: PropertyTypeEnum.UNITS24,
     label: '2 to 4 units',
     value: PropertyTypeEnum.UNITS24,
+  },
+];
+
+export const MATURITY_DATE: Option[] = [
+  {
+    key: MaturityDateTypeEnum.EXTEND_3,
+    label: 'Extend by 3 months',
+    value: MaturityDateTypeEnum.EXTEND_3,
+  },
+  {
+    key: MaturityDateTypeEnum.EXTEND_6,
+    label: 'Extend by 6 months',
+    value: MaturityDateTypeEnum.EXTEND_6,
   },
 ];

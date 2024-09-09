@@ -8,7 +8,7 @@ import {
   PropertyTypeOpt,
 } from '@/constant';
 
-import { _getLoanDetails } from '@/request/loanDetails';
+import { _getLoanDetails } from '@/request';
 import {
   BorrowerTypeEnum,
   LoanPurposeEnum,

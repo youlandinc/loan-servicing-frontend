@@ -117,3 +117,8 @@ export enum PropertyTypeEnum {
 
   UNITS24 = 'UNITS24',
 }
+
+export enum MaturityDateTypeEnum {
+  EXTEND_3 = 'EXTEND_3',
+  EXTEND_6 = 'EXTEND_6',
+}

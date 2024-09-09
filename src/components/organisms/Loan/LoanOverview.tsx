@@ -1,6 +1,8 @@
 import { FC, useRef, useState } from 'react';
 import {
   Box,
+  CircularProgress,
+  Drawer,
   Fade,
   Icon,
   Paper,
@@ -67,6 +69,7 @@ import OVERVIEW_COMMENTS_VIEW from '@/svg/loan/overview/overview-comments-view.s
 import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
 import OVERVIEW_COMMENTS_NO_RESULT from '@/svg/loan/overview/overview-comments-no-result.svg';
 import OVERVIEW_COMMENTS_ADD from '@/svg/loan/overview/overview-comments-add.svg';
+import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
 
 const INITIAL: LoanOverviewCardProps = {
   header: '',
@@ -173,10 +176,9 @@ export const LoanOverview: FC = observer(() => {
   const {
     userSetting: { setting },
   } = useMst();
-
   const { enqueueSnackbar } = useSnackbar();
+  const { open, visible, close } = useSwitch(false);
   const router = useRouter();
-
   const breakpoints = useBreakpoints();
 
   const popupState = usePopupState({
@@ -419,196 +421,369 @@ export const LoanOverview: FC = observer(() => {
 
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      <Fade in={!loading}>
-        <Stack gap={3} height={'100%'} pt={6} width={'100%'}>
-          <Stack
-            alignItems={'flex-end'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            px={6}
-            width={'100%'}
-          >
-            <StyledHeaderAddressInfo {...headerAddressInfo} />
-            {!['xxl'].includes(breakpoints) && (
-              <Stack
-                alignItems={'center'}
-                flexDirection={'row'}
-                gap={0.5}
-                //onClick={open}
-                sx={{
-                  cursor: 'pointer',
-                }}
-              >
-                <Icon
-                  component={OVERVIEW_COMMENTS_VIEW}
-                  sx={{ width: 24, height: 24 }}
-                />
-                <Typography variant={'body2'}>View comments</Typography>
-              </Stack>
-            )}
-          </Stack>
-
-          <Stack
-            flexDirection={'row'}
-            gap={3}
-            height={'calc(100% - 54px)'}
-            overflow={'auto'}
-            px={6}
-          >
+      {loading ? (
+        <Stack
+          alignItems={'center'}
+          height={'100%'}
+          justifyContent={'center'}
+          width={'100%'}
+        >
+          <CircularProgress sx={{ color: '#E3E3EE' }} />
+        </Stack>
+      ) : (
+        <Fade in={!loading}>
+          <Stack gap={3} height={'100%'} pt={6} width={'100%'}>
             <Stack
-              gap={3}
-              height={'100%'}
-              ref={leftRef}
-              width={{ xs: 320, xl: 400 }}
+              alignItems={'flex-end'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              px={6}
+              width={'100%'}
             >
-              <LoanOverviewCard {...currentBalance} />
-              <LoanOverviewCard {...loanInfo} />
-              <LoanOverviewCard {...borrowerInfo} />
-              {brokerInfo && <LoanOverviewCard {...brokerInfo} />}
-              <Stack height={24} width={'100%'}>
-                &nbsp;
-              </Stack>
+              <StyledHeaderAddressInfo {...headerAddressInfo} />
+              {!['xxl'].includes(breakpoints) && (
+                <Stack
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                  gap={0.5}
+                  onClick={open}
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Icon
+                    component={OVERVIEW_COMMENTS_VIEW}
+                    sx={{ width: 24, height: 24 }}
+                  />
+                  <Typography variant={'body2'}>View comments</Typography>
+                </Stack>
+              )}
             </Stack>
 
-            <Stack flex={1} flexShrink={0} gap={3} minWidth={682}>
-              <Stack flexDirection={'row'} gap={3} width={'100%'}>
-                <LoanOverviewCard {...nextDueDate} />
-                <LoanOverviewCard {...maturityDate} />
-              </Stack>
-
-              <LoanOverviewTimeline listData={timeline} />
-
-              <Stack flexShrink={0} height={270}>
-                <LoanOverviewPayablesGrid outstandingPayAbles={loanPayAbles} />
-              </Stack>
-              <Stack flexShrink={0} height={480}>
-                <LoanOverviewPaymentsGrid histories={loanPayments?.histories} />
-              </Stack>
-            </Stack>
-
-            {['xxl'].includes(breakpoints) && (
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              height={'calc(100% - 54px)'}
+              overflow={'auto'}
+              px={6}
+            >
               <Stack
-                borderLeft={'1px solid #EDEDED'}
+                gap={3}
                 height={'100%'}
-                overflow={'hidden'}
-                pl={3}
-                width={320}
+                ref={leftRef}
+                width={{ xs: 320, xl: 400 }}
               >
-                <Stack flex={1} overflow={'auto'}>
-                  <Stack
-                    alignItems={'center'}
-                    flexShrink={0}
-                    gap={3}
-                    height={'calc(100% - 32px)'}
-                  >
-                    {content.length > 0 ? (
-                      content.map((item, index) => (
-                        <Fade in={true} key={`comment-${index}-${item.id}`}>
-                          <Box width={'100%'}>
-                            <LoanOverviewComment
-                              {...item}
-                              refresh={fetchComments}
-                            />
-                          </Box>
-                        </Fade>
-                      ))
-                    ) : (
-                      <Stack
-                        alignItems={'center'}
-                        gap={3}
-                        height={'100%'}
-                        justifyContent={'center'}
-                        maxHeight={'calc(100vh - 234px)'}
-                        minWidth={'300px'}
-                        width={'100%'}
-                      >
-                        <Icon
-                          component={OVERVIEW_COMMENTS_NO_RESULT}
-                          sx={{ height: 120, width: 160 }}
-                        />
-                        <Typography
-                          color={'text.secondary'}
-                          variant={'subtitle2'}
-                        >
-                          No comments added yet
-                        </Typography>
-                      </Stack>
-                    )}
-                  </Stack>
-
-                  <Stack
-                    alignItems={'center'}
-                    alignSelf={'flex-end'}
-                    bgcolor={'#303D6C'}
-                    borderRadius={'50%'}
-                    flexShrink={0}
-                    height={32}
-                    justifyContent={'center'}
-                    mt={'auto'}
-                    sx={{ position: 'fixed', bottom: 24, right: 24 }}
-                    width={32}
-                    {...bindHover(popupState)}
-                  >
-                    <Stack>
-                      <Icon
-                        component={OVERVIEW_COMMENTS_ADD}
-                        sx={{ height: 24, width: 24, ml: '1px' }}
-                      />
-                    </Stack>
-                  </Stack>
-
-                  <Popper
-                    placement={'top-end'}
-                    {...bindPopper(popupState)}
-                    transition
-                  >
-                    {({ TransitionProps }) => (
-                      <Fade
-                        {...TransitionProps}
-                        timeout={100}
-                        unmountOnExit={true}
-                      >
-                        <Paper
-                          sx={{
-                            mb: 3,
-                            border: 'none',
-                            boxShadow: 'none',
-                            bgcolor: 'transparent',
-                          }}
-                        >
-                          <Stack gap={1.5}>
-                            {ACTION_BUTTONS.map((item, index) => (
-                              <StyledButton
-                                color={'secondary'}
-                                key={`${item.label}-${index}`}
-                                onClick={() => onClickAddNote(item.type)}
-                                size={'small'}
-                                sx={{
-                                  boxShadow:
-                                    '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',
-                                  color: 'text.primary',
-                                  alignItems: 'center',
-                                }}
-                              >
-                                <Icon
-                                  component={item.icon}
-                                  sx={{ width: 24, height: 24, mr: 1.25 }}
-                                />
-                                {item.label}
-                              </StyledButton>
-                            ))}
-                          </Stack>
-                        </Paper>
-                      </Fade>
-                    )}
-                  </Popper>
+                <LoanOverviewCard {...currentBalance} />
+                <LoanOverviewCard {...loanInfo} />
+                <LoanOverviewCard {...borrowerInfo} />
+                {brokerInfo && <LoanOverviewCard {...brokerInfo} />}
+                <Stack height={24} width={'100%'}>
+                  &nbsp;
                 </Stack>
               </Stack>
-            )}
+
+              <Stack flex={1} flexShrink={0} gap={3} minWidth={682}>
+                <Stack flexDirection={'row'} gap={3} width={'100%'}>
+                  <LoanOverviewCard {...nextDueDate} />
+                  <LoanOverviewCard {...maturityDate} />
+                </Stack>
+
+                <LoanOverviewTimeline listData={timeline} />
+
+                <Stack flexShrink={0} height={270}>
+                  <LoanOverviewPayablesGrid
+                    outstandingPayAbles={loanPayAbles}
+                  />
+                </Stack>
+                <Stack flexShrink={0} height={480}>
+                  <LoanOverviewPaymentsGrid
+                    histories={loanPayments?.histories}
+                  />
+                </Stack>
+              </Stack>
+
+              {['xxl'].includes(breakpoints) && (
+                <Stack
+                  borderLeft={'1px solid #EDEDED'}
+                  height={'100%'}
+                  overflow={'hidden'}
+                  pl={3}
+                  width={320}
+                >
+                  <Stack flex={1} overflow={'auto'}>
+                    <Stack
+                      alignItems={'center'}
+                      flexShrink={0}
+                      gap={3}
+                      height={'calc(100% - 32px)'}
+                    >
+                      {content.length > 0 ? (
+                        content.map((item, index) => (
+                          <Fade in={true} key={`comment-${index}-${item.id}`}>
+                            <Box width={'100%'}>
+                              <LoanOverviewComment
+                                {...item}
+                                refresh={fetchComments}
+                              />
+                            </Box>
+                          </Fade>
+                        ))
+                      ) : (
+                        <Stack
+                          alignItems={'center'}
+                          gap={3}
+                          height={'100%'}
+                          justifyContent={'center'}
+                          maxHeight={'calc(100vh - 234px)'}
+                          minWidth={'300px'}
+                          width={'100%'}
+                        >
+                          <Icon
+                            component={OVERVIEW_COMMENTS_NO_RESULT}
+                            sx={{ height: 120, width: 160 }}
+                          />
+                          <Typography
+                            color={'text.secondary'}
+                            variant={'subtitle2'}
+                          >
+                            No comments added yet
+                          </Typography>
+                        </Stack>
+                      )}
+                    </Stack>
+
+                    <Stack
+                      alignItems={'center'}
+                      alignSelf={'flex-end'}
+                      bgcolor={'#303D6C'}
+                      borderRadius={'50%'}
+                      flexShrink={0}
+                      height={32}
+                      justifyContent={'center'}
+                      mt={'auto'}
+                      sx={{
+                        position: 'fixed',
+                        bottom: 24,
+                        right: 24,
+                      }}
+                      width={32}
+                      {...bindHover(popupState)}
+                    >
+                      <Stack>
+                        <Icon
+                          component={OVERVIEW_COMMENTS_ADD}
+                          sx={{ height: 24, width: 24, ml: '1px' }}
+                        />
+                      </Stack>
+                    </Stack>
+
+                    <Popper
+                      placement={'top-end'}
+                      {...bindPopper(popupState)}
+                      sx={{ zIndex: 9999 }}
+                      transition
+                    >
+                      {({ TransitionProps }) => (
+                        <Fade
+                          {...TransitionProps}
+                          timeout={100}
+                          unmountOnExit={true}
+                        >
+                          <Paper
+                            sx={{
+                              mb: 3,
+                              border: 'none',
+                              boxShadow: 'none',
+                              bgcolor: 'transparent',
+                            }}
+                          >
+                            <Stack gap={1.5}>
+                              {ACTION_BUTTONS.map((item, index) => (
+                                <StyledButton
+                                  color={'secondary'}
+                                  key={`${item.label}-${index}`}
+                                  onClick={() => onClickAddNote(item.type)}
+                                  size={'small'}
+                                  sx={{
+                                    boxShadow:
+                                      '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',
+                                    color: 'text.primary',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <Icon
+                                    component={item.icon}
+                                    sx={{ width: 24, height: 24, mr: 1.25 }}
+                                  />
+                                  {item.label}
+                                </StyledButton>
+                              ))}
+                            </Stack>
+                          </Paper>
+                        </Fade>
+                      )}
+                    </Popper>
+                  </Stack>
+                </Stack>
+              )}
+            </Stack>
+
+            <Drawer
+              anchor={'right'}
+              open={visible}
+              sx={{
+                '& .MuiPaper-root': {
+                  width: 320,
+                  boxShadow:
+                    '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
+                },
+              }}
+            >
+              <Stack
+                alignItems={'center'}
+                borderBottom={'1px solid #D2D6E1'}
+                flexDirection={'row'}
+                height={72}
+                justifyContent={'space-between'}
+                px={3}
+              >
+                <Typography variant={'subtitle1'}>Comments</Typography>
+                <Icon
+                  component={OVERVIEW_COMMENTS_DELETE}
+                  onClick={close}
+                  sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                />
+              </Stack>
+
+              <Stack flex={1} overflow={'auto'} pt={3} px={3}>
+                <Stack
+                  alignItems={'center'}
+                  flexShrink={0}
+                  gap={3}
+                  height={'100%'}
+                >
+                  {content.length > 0 ? (
+                    content.map((item, index) => (
+                      <Fade in={true} key={`comment-${index}-${item.id}`}>
+                        <Box width={'100%'}>
+                          <LoanOverviewComment
+                            {...item}
+                            refresh={fetchComments}
+                          />
+                        </Box>
+                      </Fade>
+                    ))
+                  ) : (
+                    <Stack
+                      alignItems={'center'}
+                      gap={3}
+                      height={'100%'}
+                      justifyContent={'center'}
+                      maxHeight={'calc(100vh - 72px)'}
+                      minWidth={'300px'}
+                      width={'100%'}
+                    >
+                      <Icon
+                        component={OVERVIEW_COMMENTS_NO_RESULT}
+                        sx={{ height: 120, width: 160 }}
+                      />
+                      <Typography
+                        color={'text.secondary'}
+                        variant={'subtitle2'}
+                      >
+                        No comments added yet
+                      </Typography>
+                    </Stack>
+                  )}
+                  <Box
+                    bgcolor={'transparent'}
+                    color={'transparent'}
+                    height={24}
+                    width={'100%'}
+                  >
+                    &nbsp;
+                  </Box>
+                </Stack>
+
+                <Stack
+                  alignItems={'center'}
+                  alignSelf={'flex-end'}
+                  bgcolor={'#303D6C'}
+                  borderRadius={'50%'}
+                  flexShrink={0}
+                  height={32}
+                  justifyContent={'center'}
+                  mt={'auto'}
+                  sx={{
+                    position: 'fixed',
+                    bottom: 24,
+                    right: 24,
+                    zIndex: 9999,
+                  }}
+                  width={32}
+                  {...bindHover(popupState)}
+                >
+                  <Stack>
+                    <Icon
+                      component={OVERVIEW_COMMENTS_ADD}
+                      sx={{ height: 24, width: 24, ml: '1px' }}
+                    />
+                  </Stack>
+                </Stack>
+
+                <Popper
+                  placement={'top-end'}
+                  {...bindPopper(popupState)}
+                  sx={{
+                    zIndex: 9999,
+                  }}
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Fade
+                      {...TransitionProps}
+                      timeout={100}
+                      unmountOnExit={true}
+                    >
+                      <Paper
+                        sx={{
+                          mb: 3,
+                          border: 'none',
+                          boxShadow: 'none',
+                          bgcolor: 'transparent',
+                        }}
+                      >
+                        <Stack gap={1.5}>
+                          {ACTION_BUTTONS.map((item, index) => (
+                            <StyledButton
+                              color={'secondary'}
+                              key={`${item.label}-${index}`}
+                              onClick={() => onClickAddNote(item.type)}
+                              size={'small'}
+                              sx={{
+                                boxShadow:
+                                  '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',
+                                color: 'text.primary',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Icon
+                                component={item.icon}
+                                sx={{ width: 24, height: 24, mr: 1.25 }}
+                              />
+                              {item.label}
+                            </StyledButton>
+                          ))}
+                        </Stack>
+                      </Paper>
+                    </Fade>
+                  )}
+                </Popper>
+              </Stack>
+            </Drawer>
           </Stack>
-        </Stack>
-        {/*</Stack>*/}
-      </Fade>
+        </Fade>
+      )}
     </Layout>
   );
 });

@@ -1,7 +1,9 @@
 import { FC, useMemo, useState } from 'react';
 import { CommentItemData } from '@/types/overview';
 import { Avatar, Icon, Stack, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
+import { AUTO_HIDE_DURATION } from '@/constant';
 import { utils } from '@/utils';
 import { useSwitch } from '@/hooks';
 
@@ -11,15 +13,14 @@ import {
   StyledTextFieldInput,
 } from '@/components/atoms';
 
-import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
 import {
   _addOverviewComment,
   _deleteOverviewComment,
   _updateOverviewComment,
 } from '@/request/loan/overview';
 import { HttpError } from '@/types/common';
-import { AUTO_HIDE_DURATION } from '@/constant';
-import { useSnackbar } from 'notistack';
+
+import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
 
 export const LoanOverviewComment: FC<
   CommentItemData & {

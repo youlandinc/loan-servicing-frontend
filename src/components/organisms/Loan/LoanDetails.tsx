@@ -442,7 +442,7 @@ export const LoanDetails: FC = () => {
     },
   ];
   return (
-    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
+    <Layout isHomepage={false} sideMenu={<SideMenu />}>
       <Stack spacing={3}>
         <StyledHeaderAddressInfo
           address={address}

@@ -58,7 +58,7 @@ export const LoanExtensionRequest: FC = () => {
   );
 
   return (
-    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
+    <Layout isHomepage={false} sideMenu={<SideMenu />}>
       {value?.data && (
         <Stack m={'0 auto'} maxWidth={900} spacing={3} width={'100%'}>
           <StyledHeaderAddressInfo

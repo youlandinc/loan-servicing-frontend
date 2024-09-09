@@ -13,7 +13,7 @@ import {
 
 export const Portfolio: FC = observer(() => {
   return (
-    <Layout isHomepage={false} isInside={false}>
+    <Layout isHomepage={false}>
       <Stack gap={1.5} pb={3} pt={3} px={6}>
         <Stack
           alignItems={'center'}

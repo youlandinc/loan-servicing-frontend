@@ -1,3 +1,11 @@
+import { IGetExtensionPdfParam } from '@/types/loan/extension';
+import { FC, useRef, useState } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
+import { useRouter } from 'next/router';
+import { enqueueSnackbar } from 'notistack';
+import { useAsync, useAsyncFn } from 'react-use';
+
 import {
   StyledButton,
   StyledDatePicker,
@@ -8,23 +16,19 @@ import {
 import { Layout, SideMenu } from '@/components/molecules';
 import { MATURITY_DATE } from '@/constant';
 
-import { _getExtensionInfo } from '@/request';
+import { _createExtensionPdf, _getExtensionInfo } from '@/request';
 import { MaturityDateTypeEnum } from '@/types/enum';
 import { utils } from '@/utils';
-import { Box, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
-import { FC, useState } from 'react';
-import { useAsync } from 'react-use';
 
 export const LoanExtensionRequest: FC = () => {
   const router = useRouter();
   const { loanId } = router.query;
 
+  const formRef = useRef<HTMLFormElement | null>(null);
+
   const [changeRate, setChangeRate] = useState(12);
   const [extensionFee, setExtensionFee] = useState(1);
-  const [executionDate, setExtensionDate] = useState(dayjs());
+  const [executionDate, setExtensionDate] = useState<Dayjs | null>(dayjs());
   const [maturityDate, setMaturityDate] = useState(
     MaturityDateTypeEnum.EXTEND_3,
   );
@@ -39,6 +43,20 @@ export const LoanExtensionRequest: FC = () => {
       : null;
   }, [loanId]);
 
+  const [state, createExtensionPdf] = useAsyncFn(
+    async (param: IGetExtensionPdfParam) => {
+      if (!formRef.current?.reportValidity()) {
+        return;
+      }
+      return await _createExtensionPdf(param).catch(
+        ({ message, variant, header }) => {
+          enqueueSnackbar(message, { variant, isSimple: !header, header });
+        },
+      );
+    },
+    [formRef.current],
+  );
+
   return (
     <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
       {value?.data && (
@@ -52,7 +70,14 @@ export const LoanExtensionRequest: FC = () => {
             Extension agreement
           </Typography>
           <Stack direction={'row'} gap={3}>
-            <Stack component={'ul'} gap={3} width={'50%'}>
+            <Stack
+              bgcolor={'#F0F4FF'}
+              borderRadius={2}
+              component={'ul'}
+              gap={1.5}
+              p={3}
+              width={'50%'}
+            >
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Typography color={'text.hover'} variant={'body2'}>
                   Current interest rate
@@ -66,7 +91,7 @@ export const LoanExtensionRequest: FC = () => {
                   Extension fee
                 </Typography>
                 <Typography variant={'subtitle2'}>
-                  {utils.formatPercent(extensionFee / 100, 2)}(
+                  {utils.formatPercent(extensionFee / 100, 2)} (
                   {utils.formatDollar(
                     value.data.totalLoanAmount * extensionFee * 0.01,
                   )}
@@ -93,10 +118,18 @@ export const LoanExtensionRequest: FC = () => {
                 <Typography color={'text.hover'} variant={'body2'}>
                   Execution date
                 </Typography>
-                <Typography variant={'subtitle2'}></Typography>
+                <Typography variant={'subtitle2'}>
+                  {dayjs(executionDate).format('MM/DD/YYYY')}
+                </Typography>
               </Stack>
             </Stack>
-            <Stack gap={1.25} width={'50%'}>
+            <Stack
+              autoComplete={'off'}
+              component={'form'}
+              gap={1.25}
+              ref={formRef}
+              width={'50%'}
+            >
               <StyledSelect
                 label={'Maturity date'}
                 onChange={(e) => {
@@ -110,6 +143,7 @@ export const LoanExtensionRequest: FC = () => {
                 onValueChange={(values) => {
                   setExtensionFee(values.floatValue ?? 0);
                 }}
+                required
                 suffix={'%'}
                 value={extensionFee}
               />
@@ -119,18 +153,37 @@ export const LoanExtensionRequest: FC = () => {
                 onValueChange={(values) => {
                   setChangeRate(values.floatValue ?? 0);
                 }}
+                required
                 suffix={'%'}
                 value={changeRate}
               />
               <StyledDatePicker
-                onChange={(value, context) => {
-                  console.log(value, context);
+                label={'Execution date'}
+                onChange={(value) => {
+                  setExtensionDate(value);
+                }}
+                slotProps={{
+                  textField: {
+                    required: true,
+                  },
                 }}
                 value={executionDate}
               />
             </Stack>
           </Stack>
           <StyledButton
+            loading={state.loading}
+            onClick={async () => {
+              if (executionDate !== null) {
+                await createExtensionPdf({
+                  loanId: parseInt(loanId as string),
+                  maturityDate: maturityDate,
+                  extensionFee,
+                  changeInterestRate: changeRate,
+                  executionDate: executionDate.format('YYYY-MM-DD'),
+                });
+              }
+            }}
             size={'small'}
             sx={{ alignSelf: 'flex-start' }}
             variant={'outlined'}

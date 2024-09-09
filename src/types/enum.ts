@@ -119,6 +119,6 @@ export enum PropertyTypeEnum {
 }
 
 export enum MaturityDateTypeEnum {
-  EXTEND_3 = 'EXTEND_3',
-  EXTEND_6 = 'EXTEND_6',
+  EXTEND_3 = 'EXTEND_THREE',
+  EXTEND_6 = 'EXTEND_SIX',
 }

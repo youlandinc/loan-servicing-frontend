@@ -1,9 +1,12 @@
 // import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types';
 
-import { PickerChangeHandlerContext } from '@mui/x-date-pickers';
+import {
+  DatePickerProps,
+  PickerChangeHandlerContext,
+} from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 
-export interface StyledDatePickerProps {
+export interface StyledDatePickerProps extends DatePickerProps<Dayjs> {
   label?: string;
   value: Dayjs | null;
   onChange: (
@@ -15,6 +18,6 @@ export interface StyledDatePickerProps {
   disabled?: boolean;
   disablePast?: boolean;
   disableFuture?: boolean;
-  minDate?: Date;
-  maxDate?: Date;
+  minDate?: Dayjs;
+  maxDate?: Dayjs;
 }

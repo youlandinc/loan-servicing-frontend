@@ -13,8 +13,10 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
   validate,
   disabled = false,
   disableFuture = true,
+  slotProps,
   ...rest
 }) => {
+  const { textField } = slotProps || {};
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
@@ -48,6 +50,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
             },
           },
           textField: {
+            ...textField,
             FormHelperTextProps: {
               // BUG :libraries,mui types bug
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment

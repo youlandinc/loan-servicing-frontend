@@ -21,6 +21,6 @@ export * from './StyledCheckbox';
 
 export * from './StyledSearchLoanOfficer';
 
-export * from './StyledHeaderAddressInfo';
-
 export * from './Transitions';
+
+export * from './StyledHeaderAddressInfo';

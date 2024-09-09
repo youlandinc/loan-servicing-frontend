@@ -1,111 +1,114 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Icon, Stack, Typography } from '@mui/material';
+import { CircularProgress, Fade, Icon, Stack } from '@mui/material';
+import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 
 import { utils } from '@/utils';
 
-import { StyledButton } from '@/components/atoms';
-import {
-  Layout,
-  LoanPaymentsCard,
-  LoanPaymentsGrid,
-  SideMenu,
-} from '@/components/molecules';
+import { StyledHeaderAddressInfo } from '@/components/atoms';
+import { Layout, LoanPaymentsCard, SideMenu } from '@/components/molecules';
+
+import { PipelineStatusEnum } from '@/types/enum';
+import { _fetchPaymentsDetails } from '@/request/loan/payments';
 
 import LOAN_CARD_01 from '@/svg/loan/payments/payment_card_01.svg';
 import LOAN_CARD_02 from '@/svg/loan/payments/payment_card_02.svg';
 import LOAN_CARD_03 from '@/svg/loan/payments/payment_card_03.svg';
 import LOAN_CARD_04 from '@/svg/loan/payments/payment_card_04.svg';
 
-const mockData = [
-  {
-    label: 'Interest received',
-    icon: LOAN_CARD_01,
-    content: utils.formatDollar(30000),
-  },
-  {
-    label: 'Reserve balance',
-    icon: LOAN_CARD_02,
-    content: utils.formatDollar(1100),
-  },
-  {
-    label: 'Late charges',
-    icon: LOAN_CARD_03,
-    content: utils.formatDollar(1100),
-  },
-  {
-    label: 'Maturity date',
-    icon: LOAN_CARD_04,
-    content: utils.formatDate('11/1/2024', 'dd/MM/yyyy'),
-  },
-];
-
 export const LoanPayments: FC = observer(() => {
   const router = useRouter();
 
-  const [loanId, setLoanId] = useState<string>('');
+  const { loading } = useAsync(async () => {
+    const { loanId } = utils.getParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
 
-  useEffect(
-    () => {
-      const { loanId } = utils.getParamsFromUrl(location.href);
+    const { data } = await _fetchPaymentsDetails(loanId);
+    setHeaderAddressInfo({
+      address: data.propertyFullAddress,
+      loanNumber: data.loanNumber,
+      status: data.repaymentStatus as string as PipelineStatusEnum,
+    });
 
-      if (!loanId) {
-        router.push('/portfolio');
-        return;
-      }
+    setSummaries([
+      {
+        label: 'Interest received',
+        icon: LOAN_CARD_01,
+        content: utils.formatDollar(data.interestReceived),
+      },
+      {
+        label: 'Reserve balance',
+        icon: LOAN_CARD_02,
+        content: utils.formatDollar(data.reserveBalance),
+      },
+      {
+        label: 'Late charges',
+        icon: LOAN_CARD_03,
+        content: utils.formatDollar(data.lateChargesReceived),
+      },
+      {
+        label: 'Next due date',
+        icon: LOAN_CARD_04,
+        content: utils.formatDate(data.nextDueDate, 'dd/MM/yyyy'),
+      },
+    ]);
+  }, []);
 
-      setLoanId(loanId);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  const [headerAddressInfo, setHeaderAddressInfo] = useState({
+    address: '',
+    loanNumber: '',
+    status: PipelineStatusEnum.PERFORMING,
+  });
+  const [summaries, setSummaries] = useState<
+    Array<{ label: string; icon: any; content: string }>
+  >([]);
 
   return (
-    <Layout isHomepage={false} isInside={true} sideMenu={<SideMenu />}>
-      <Stack
-        gap={3}
-        height={'100%'}
-        m={'0 auto'}
-        maxWidth={{ lg: 1600, xs: 'auto' }}
-        minWidth={{ lg: 'auto', xs: 990 }}
-        width={'100%'}
-      >
+    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+      {loading ? (
         <Stack
           alignItems={'center'}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-        >
-          <Typography variant={'h6'}>Payments - {loanId}</Typography>
-          <Stack flexDirection={'row'} gap={1.25}>
-            <StyledButton color={'info'} variant={'outlined'}>
-              Update late charges
-            </StyledButton>
-            {/*<StyledButton color={'info'} variant={'outlined'}>*/}
-            {/*  Update interest rate*/}
-            {/*</StyledButton>*/}
-          </Stack>
-        </Stack>
-        <Stack
-          flexDirection={'row'}
-          gap={3}
-          justifyContent={'space-between'}
+          height={'100%'}
+          justifyContent={'center'}
           width={'100%'}
         >
-          {mockData.map((item, index) => (
-            <LoanPaymentsCard
-              content={item.content}
-              icon={
-                <Icon component={item.icon} sx={{ width: 32, height: 32 }} />
-              }
-              key={`${item.label}_${index}`}
-              label={item.label}
-            />
-          ))}
+          <CircularProgress sx={{ color: '#E3E3EE' }} />
         </Stack>
-        <LoanPaymentsGrid />
-      </Stack>
+      ) : (
+        <Fade in={!loading}>
+          <Stack gap={3} height={'100%'} pt={6} width={'100%'}>
+            <Stack px={6} width={'100%'}>
+              <StyledHeaderAddressInfo {...headerAddressInfo} />
+            </Stack>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              px={6}
+              width={'100%'}
+            >
+              {summaries.map((item, index) => (
+                <LoanPaymentsCard
+                  content={item.content}
+                  icon={
+                    <Icon
+                      component={item.icon}
+                      sx={{ width: 32, height: 32 }}
+                    />
+                  }
+                  key={`${item.label}_${index}`}
+                  label={item.label}
+                />
+              ))}
+            </Stack>
+          </Stack>
+        </Fade>
+      )}
     </Layout>
   );
 });

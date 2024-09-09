@@ -1,11 +1,12 @@
 import { PipelineStatusEnum } from '@/types/enum';
 import { FC, ReactNode } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack, SxProps, Typography } from '@mui/material';
 
 interface StyledHeaderAddressInfoProps {
   address: ReactNode;
   loanNumber: ReactNode;
   status: PipelineStatusEnum;
+  sx?: SxProps;
 }
 
 const color: Record<string, any> = {
@@ -33,9 +34,10 @@ export const StyledHeaderAddressInfo: FC<StyledHeaderAddressInfoProps> = ({
   address,
   loanNumber,
   status,
+  sx,
 }) => {
   return (
-    <Stack direction={'row'} gap={1.5}>
+    <Stack direction={'row'} gap={1.5} sx={sx}>
       <Stack>
         <Typography component={'div'} variant={'h6'}>
           {address}

@@ -78,6 +78,8 @@ export const StyledBtnLoanOfficer: FC<StyledBtnLoanOfficerProps> = ({
         lineHeight: '20px',
         borderRadius: 2,
         color: userInfo || value ? 'primary' : '#636A7C !important',
+        p: '0 !important',
+        height: 'auto !important',
       }}
       variant={'text'}
     >

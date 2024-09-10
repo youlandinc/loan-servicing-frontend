@@ -88,4 +88,18 @@ export const utils = {
   notNull(value: unknown): boolean {
     return Object.prototype.toString.call(value).slice(8, -1) !== 'Null';
   },
+  formatPhoneNumber: (number: string | undefined | null) => {
+    return typeof number === 'string' && number.length === 10
+        ? `(${number.slice(0, 3)}) ${number.slice(3 - 6)}-${number.slice(6)}`
+        : number;
+  },
+  formatSsn: (ssn: string | null | undefined) => {
+    if (typeof ssn !== 'string') {
+      return '';
+    }
+    const strArr = [...ssn];
+    strArr.splice(3, 0, '-');
+    strArr.splice(6, 0, '-');
+    return strArr.join('');
+  },
 };

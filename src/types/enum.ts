@@ -77,3 +77,48 @@ export enum PipelineStatusEnum {
   TRANSFERRED_OUT = 'TRANSFERRED_OUT',
   BANKRUPTCY = 'BANKRUPTCY',
 }
+
+export enum ProductCategoryEnum {
+  bridge = 'Stabilized Bridge', //'STABILIZED_BRIDGE',
+  fix = 'Fix and Flip', //'FIX_AND_FLIP',
+  ground = 'Ground-up Construction', //'GROUND_UP_CONSTRUCTION',
+}
+
+export enum LoanPurposeEnum {
+  purchase = 'Purchase', //'PURCHASE',
+  refinance = 'Refinance', //'REFINANCE',
+}
+
+export enum EstFICOScoreEnum {
+  FICO_NOT_AVAILABLE = 'FICO_NOT_AVAILABLE',
+  BELOW_600 = 'BELOW_600',
+  BETWEEN_600_649 = 'BETWEEN_600_649',
+  BETWEEN_650_699 = 'BETWEEN_650_699',
+  BETWEEN_700_749 = 'BETWEEN_700_749',
+  BETWEEN_750_799 = 'BETWEEN_750_799',
+  ABOVE_800 = 'ABOVE_800',
+  NO_FICO = 'NO_FICO',
+}
+
+export enum BorrowerTypeEnum {
+  INDIVIDUAL = 'Individual',
+
+  ENTITY = 'Entity',
+
+  TRUST = 'Trust',
+}
+
+export enum PropertyTypeEnum {
+  SINGLE_FAMILY = 'SINGLE_FAMILY',
+
+  TOWNHOUSE = 'TOWNHOUSE',
+
+  CONDO = 'CONDO',
+
+  UNITS24 = 'UNITS24',
+}
+
+export enum MaturityDateTypeEnum {
+  EXTEND_3 = 'EXTEND_THREE',
+  EXTEND_6 = 'EXTEND_SIX',
+}

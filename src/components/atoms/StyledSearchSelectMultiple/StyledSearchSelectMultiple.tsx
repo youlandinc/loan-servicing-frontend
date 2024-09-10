@@ -48,9 +48,9 @@ export const StyledSearchSelectMultiple: FC<
           fontSize: 14,
           fontWeight: '400 !important',
           // ...sx,
-          // color: btnSelected.stageList
-          //     ? 'primary.main'
-          //     : 'text.primary',
+          color: selected.length > 0 ? 'primary' : '#636A7C !important',
+          p: '0 !important',
+          height: 'auto !important',
           ...sx,
         } as SxProps
       }
@@ -105,7 +105,7 @@ export const StyledSearchSelectMultiple: FC<
           left: 0,
           right: 0,
           zIndex: 1,
-          height: '40px !important',
+          // height: '40px !important',
         }}
         value={selected}
       />

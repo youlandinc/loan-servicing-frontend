@@ -143,7 +143,7 @@ export const LoanOverviewComment: FC<
           {firstName} {lastName}
         </Typography>
         <Typography color={'text.secondary'} variant={'body3'}>
-          {createdAt ? utils.formatDate(createdAt, 'MMM dd, yy') : ''}
+          {createdAt ? utils.formatDate(createdAt, 'MMM dd, yyyy') : ''}
         </Typography>
 
         <Icon

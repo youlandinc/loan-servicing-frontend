@@ -273,6 +273,11 @@ const defaultOptions: ThemeOptions = {
         disableRipple: true,
       },
     },
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
     MuiIconButton: {
       defaultProps: {
         disableRipple: true,

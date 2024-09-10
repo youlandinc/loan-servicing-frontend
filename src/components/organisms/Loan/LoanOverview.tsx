@@ -39,10 +39,9 @@ import {
   LoanOverviewComment,
   LoanOverviewPayablesGrid,
   LoanOverviewPayablesGridProps,
-  LoanOverviewPaymentsGrid,
-  LoanOverviewPaymentsGridProps,
   LoanOverviewTimeline,
   LoanOverviewTimelineProps,
+  LoanPaymentsGrid,
   SideMenu,
 } from '@/components/molecules';
 
@@ -340,12 +339,12 @@ export const LoanOverview: FC = observer(() => {
       }));
       setOutstandingPayAbles(reducedOutstandingPayAbles);
 
-      const { paymentHistory } = data;
-      const reducedPaymentHistory = paymentHistory.histories.map((item) => ({
-        ...item,
-        id: uniqueId(),
-      }));
-      setLoanPayments({ ...paymentHistory, histories: reducedPaymentHistory });
+      //const { paymentHistory } = data;
+      //const reducedPaymentHistory = paymentHistory.histories.map((item) => ({
+      //  ...item,
+      //  id: uniqueId(),
+      //}));
+      //setLoanPayments({ ...paymentHistory, histories: reducedPaymentHistory });
 
       const { repaymentTimeLine } = data;
       setTimeline(repaymentTimeLine || []);
@@ -393,8 +392,6 @@ export const LoanOverview: FC = observer(() => {
     useState<LoanOverviewCardProps>(INITIAL);
   const [loanPayAbles, setOutstandingPayAbles] =
     useState<LoanOverviewPayablesGridProps['outstandingPayAbles']>();
-  const [loanPayments, setLoanPayments] =
-    useState<LoanOverviewPaymentsGridProps>();
   const [timeline, setTimeline] = useState<
     LoanOverviewTimelineProps['listData'] | undefined
   >();
@@ -495,10 +492,13 @@ export const LoanOverview: FC = observer(() => {
                     outstandingPayAbles={loanPayAbles}
                   />
                 </Stack>
-                <Stack flexShrink={0} height={480}>
-                  <LoanOverviewPaymentsGrid
-                    histories={loanPayments?.histories}
-                  />
+                <Stack
+                  border={'1px solid #E4E7EF'}
+                  borderRadius={4}
+                  flexShrink={0}
+                  height={480}
+                >
+                  <LoanPaymentsGrid maxHeight={'478px'} />
                 </Stack>
               </Stack>
 

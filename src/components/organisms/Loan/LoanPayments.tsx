@@ -8,7 +8,12 @@ import { observer } from 'mobx-react-lite';
 import { utils } from '@/utils';
 
 import { StyledHeaderAddressInfo } from '@/components/atoms';
-import { Layout, LoanPaymentsCard, SideMenu } from '@/components/molecules';
+import {
+  Layout,
+  LoanPaymentsCard,
+  LoanPaymentsGrid,
+  SideMenu,
+} from '@/components/molecules';
 
 import { PipelineStatusEnum } from '@/types/enum';
 import { _fetchPaymentsDetails } from '@/request/loan/payments';
@@ -105,6 +110,15 @@ export const LoanPayments: FC = observer(() => {
                   label={item.label}
                 />
               ))}
+            </Stack>
+
+            <Stack
+              border={'1px solid #E4E7EF'}
+              borderRadius={4}
+              maxHeight={'calc(100% - 305px)'}
+              mx={6}
+            >
+              <LoanPaymentsGrid />
             </Stack>
           </Stack>
         </Fade>

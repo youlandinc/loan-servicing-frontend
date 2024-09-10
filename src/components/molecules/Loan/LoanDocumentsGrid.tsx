@@ -7,8 +7,6 @@ import { observer } from 'mobx-react-lite';
 
 import { utils } from '@/utils';
 
-import { PortfolioGridPagination } from '@/components/molecules';
-
 const mockData = [
   {
     id: 123,
@@ -139,7 +137,7 @@ export const LoanDocumentsGrid: FC = observer(() => {
       slots={{
         toolbar: LoanDocumentsGridToolbar,
         //footer: PortfolioGridPagination,
-        pagination: PortfolioGridPagination,
+        //pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

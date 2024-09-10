@@ -1,10 +1,13 @@
 import { FC } from 'react';
-import { useRouter } from 'next/router';
-import { Stack, SxProps, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { utils } from '@/utils';
+import { Icon, Stack, SxProps, Typography } from '@mui/material';
 import { GridRowsProp } from '@mui/x-data-grid/models/gridRows';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useRouter } from 'next/router';
+
+import { utils } from '@/utils';
 import { OverviewOutstandingPayAble } from '@/types/overview';
+
+import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 const mockData = [
   {
@@ -94,7 +97,7 @@ const columns: GridColDef[] = [
   },
   {
     field: 'dueDate',
-    headerName: 'Date Due',
+    headerName: 'Date due',
     sortable: false,
     flex: 1,
     align: 'center',
@@ -136,6 +139,19 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
         toolbar: () => (
           <Stack pb={1} pl={3} pt={2}>
             <Typography variant={'subtitle1'}>Outstanding payables</Typography>
+          </Stack>
+        ),
+        noRowsOverlay: () => (
+          <Stack
+            alignItems={'center'}
+            height={'100%'}
+            justifyContent={'center'}
+            width={'100%'}
+          >
+            <Icon component={TABLE_NO_RESULT} sx={{ width: 120, height: 45 }} />
+            <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>
+              No outstanding payables
+            </Typography>
           </Stack>
         ),
         //footer: PortfolioGridPagination,

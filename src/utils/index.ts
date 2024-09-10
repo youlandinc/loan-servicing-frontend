@@ -99,4 +99,7 @@ export const utils = {
     strArr.splice(6, 0, '-');
     return strArr.join('');
   },
+  notNull(value: unknown): boolean {
+    return Object.prototype.toString.call(value).slice(8, -1) !== 'Null';
+  },
 };

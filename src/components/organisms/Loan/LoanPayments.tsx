@@ -118,7 +118,7 @@ export const LoanPayments: FC = observer(() => {
               maxHeight={'calc(100% - 305px)'}
               mx={6}
             >
-              <LoanPaymentsGrid />
+              <LoanPaymentsGrid maxHeight={'calc(100% - 2px)'} />
             </Stack>
           </Stack>
         </Fade>

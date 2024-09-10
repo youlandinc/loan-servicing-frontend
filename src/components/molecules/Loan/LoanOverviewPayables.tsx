@@ -143,12 +143,14 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
         ),
         noRowsOverlay: () => (
           <Stack
-            alignItems={'center'}
+            //alignItems={'center'}
+            //justifyContent={'center'}
             height={'100%'}
-            justifyContent={'center'}
+            pl={8}
+            pt={4}
             width={'100%'}
           >
-            <Icon component={TABLE_NO_RESULT} sx={{ width: 120, height: 45 }} />
+            {/*<Icon component={TABLE_NO_RESULT} sx={{ width: 120, height: 45 }} />*/}
             <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>
               No outstanding payables
             </Typography>

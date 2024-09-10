@@ -23,7 +23,9 @@ import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 export const LoanPaymentsGrid: FC<{
   maxHeight?: CSSProperties['maxHeight'];
-}> = ({ maxHeight }) => {
+  tableHeight?: CSSProperties['height'];
+  tableMaxHeight?: CSSProperties['maxHeight'];
+}> = ({ maxHeight, tableHeight, tableMaxHeight }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -145,10 +147,10 @@ export const LoanPaymentsGrid: FC<{
       return (
         <Stack
           //alignItems={'center'}
-          height={`calc(${maxHeight} - 150px)`}
           //justifyContent={'center'}
-          pl={4}
-          pt={2}
+          pl={8}
+          pt={4}
+          width={'100%'}
         >
           {/*<Icon component={TABLE_NO_RESULT} sx={{ width: 120, height: 45 }} />*/}
           <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>

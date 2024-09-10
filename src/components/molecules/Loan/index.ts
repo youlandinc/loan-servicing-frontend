@@ -12,3 +12,5 @@ export * from './LoanPaymentsGridFooter';
 
 export * from './LoanDetailsCard';
 export * from './LoanDocumentsGrid';
+
+export * from './LoanDrawsGrid';

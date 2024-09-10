@@ -28,6 +28,9 @@ export const AllLoansGrid: FC = observer(() => {
       searchCondition: {
         ...allLoansGridQueryModel.searchCondition,
         investors: [...allLoansGridQueryModel.searchCondition.investors],
+        repaymentStatusList: [
+          ...allLoansGridQueryModel.searchCondition.repaymentStatusList,
+        ],
       },
     },
     _getAllLoansList,
@@ -74,10 +77,18 @@ export const AllLoansGrid: FC = observer(() => {
     getRowId: (row) => row.loanId, //default
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    muiTableBodyRowProps: {
+      sx: {
+        '& .MuiTableCell-root:last-child': {
+          borderBottom: 'none',
+        },
+      },
+    },
     muiTableBodyCellProps: ({ row: { original } }) => ({
       sx: {
         px: 1.5,
         py: 1.5,
+        borderBottom: 'none',
       },
       onClick: async () => {
         const { loanId } = original;

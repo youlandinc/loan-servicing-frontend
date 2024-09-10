@@ -15,6 +15,7 @@ export const RootModel = {
   userProfile: types.maybe(types.frozen<ClientUserProfile>()),
   portfolio: types.model({
     allLoansGridQueryModel: allLoansGridQueryModel,
+    investorGridQueryModel: allLoansGridQueryModel,
   }),
 };
 
@@ -114,6 +115,19 @@ const initialState = {
   loginType: void 0,
   portfolio: {
     allLoansGridQueryModel: {
+      size: 50,
+      page: 0,
+      sort: [],
+      searchCondition: {
+        investors: [],
+        propertyAddress: '',
+        maturityStartDate: '',
+        maturityEndDate: '',
+        repaymentStatusList: [],
+      },
+      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+    },
+    investorGridQueryModel: {
       size: 50,
       page: 0,
       sort: [],

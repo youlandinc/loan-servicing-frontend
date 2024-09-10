@@ -10,3 +10,14 @@ export const _getExtensionInfo = (loanId: number) => {
 export const _createExtensionPdf = (param: IGetExtensionPdfParam) => {
   return post<number>('/servicing/extension/create', param);
 };
+
+export const _viewExtensionPdf = (downloadId: number) => {
+  return get<string>('/servicing/extension/view', { params: { downloadId } });
+};
+
+export const _downloadExtensionPdf = (downloadId: number) => {
+  return get<string>('/servicing/extension/download', {
+    params: { downloadId },
+    responseType: 'blob',
+  });
+};

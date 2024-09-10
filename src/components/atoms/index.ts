@@ -24,3 +24,5 @@ export * from './StyledSearchLoanOfficer';
 export * from './Transitions';
 
 export * from './StyledHeaderAddressInfo';
+
+export * from './StyledLoading';

@@ -303,6 +303,12 @@ const defaultOptions: ThemeOptions = {
         disableRipple: true,
       },
     },
+    MuiTooltip: {
+      defaultProps: {
+        arrow: true,
+        disableInteractive: true,
+      },
+    },
   },
 };
 

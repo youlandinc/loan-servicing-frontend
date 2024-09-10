@@ -1,7 +1,7 @@
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 import { PIPELINE_STATUS } from '@/constant';
 import { PipelineStatusEnum } from '@/types/enum';
-import { Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -12,7 +12,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   {
     accessorKey: 'repaymentStatus',
     header: 'Status',
-    size: 120,
+    size: 150,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -21,9 +21,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
-          <StyledLoanStatus status={renderedCellValue as PipelineStatusEnum} />
-        </Tooltip>
+        <StyledLoanStatus status={renderedCellValue as PipelineStatusEnum} />
       );
     },
   },

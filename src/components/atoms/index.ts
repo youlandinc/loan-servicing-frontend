@@ -14,11 +14,13 @@ export * from './StyledTextFieldNumber';
 export * from './StyledTabs';
 
 export * from './StyledDateRange';
+export * from './StyledDatePicker';
+export * from './StyledSearchDateRange';
 
 export * from './StyledCheckbox';
 
 export * from './StyledSearchLoanOfficer';
 
-export * from './StyledSearchDateRange';
+export * from './Transitions';
 
 export * from './StyledHeaderAddressInfo';

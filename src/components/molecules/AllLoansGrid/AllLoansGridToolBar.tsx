@@ -1,19 +1,21 @@
-import {PIPELINE_STATUS} from '@/constant';
-import {isValid} from 'date-fns';
-import {FC, useRef, useState} from 'react';
-import {observer} from 'mobx-react-lite';
-import {Stack,} from '@mui/material';
+import { PIPELINE_STATUS } from '@/constant';
+import { PipelineStatusEnum } from '@/types/enum';
+import { isValid } from 'date-fns';
+import { FC, useRef, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { Stack } from '@mui/material';
 
 import {
-    StyledSearchDateRange,
-    StyledSearchLoanOfficer,
-    StyledSearchSelectMultiple,
-    StyledSearchTextFieldInput,
-    StyledSelectMultiple,
+  StyledHeaderAddressInfo,
+  StyledSearchDateRange,
+  StyledSearchLoanOfficer,
+  StyledSearchSelectMultiple,
+  StyledSearchTextFieldInput,
+  StyledSelectMultiple,
 } from '@/components/atoms';
 
-import {useMst} from '@/models/Root';
-import {useDebounceFn} from '@/hooks';
+import { useMst } from '@/models/Root';
+import { useDebounceFn } from '@/hooks';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {

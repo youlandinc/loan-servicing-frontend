@@ -1,3 +1,4 @@
+import { PipelineStatusEnum } from '@/types/enum';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { CSSProperties } from 'react';
@@ -75,7 +76,7 @@ export const defaultProps = {
         webkitLineClamp: 2,
         display: '-webkit-box',
         whiteSpace: 'normal',
-        color: 'info.A100',
+        color: '#636A7C',
       },
       '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
         mr: '-8px',
@@ -218,4 +219,18 @@ export const listModeDefaultStyleProps = {
           },
         };
   },*/
+};
+
+export const allLoansStatusColor: Record<string, any> = {
+  [PipelineStatusEnum.PERFORMING]: '#5B76BC',
+  [PipelineStatusEnum.DELINQUENCY]: '#E38515',
+  [PipelineStatusEnum.FORECLOSURE]: '#A10000',
+  [PipelineStatusEnum.PAID_OFF]: '#69C0A5',
+};
+
+export const allLoansStatusBgcolor: Record<string, any> = {
+  [PipelineStatusEnum.PERFORMING]: 'rgba(17, 52, 227, 0.10)',
+  [PipelineStatusEnum.DELINQUENCY]: 'rgba(225, 132, 65, 0.20)',
+  [PipelineStatusEnum.FORECLOSURE]: 'rgba(235, 10, 10, 0.15)',
+  [PipelineStatusEnum.PAID_OFF]: 'rgba(105, 192, 165, 0.20)',
 };

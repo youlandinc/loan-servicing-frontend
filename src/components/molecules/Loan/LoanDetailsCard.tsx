@@ -1,5 +1,5 @@
+import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
-import { Box, Grid, SxProps, Typography } from '@mui/material';
 
 type RenderBoxProps = {
   data: Record<string, any>;
@@ -10,12 +10,12 @@ export const RenderBox: FC<RenderBoxProps> = (props) => {
   const { data, sx } = props;
   const renderItem = (name: string, value: any) => {
     return (
-      <Grid
+      <Stack
         component={'li'}
-        item
+        direction={'row'}
+        justifyContent={'space-between'}
         key={name}
-        sx={{ display: 'flex', justifyContent: 'space-between' }}
-        xs={1}
+        width={'calc(50% - 12px)'}
       >
         <Typography color={'text.secondary'} variant={'body2'}>
           {name}
@@ -25,40 +25,40 @@ export const RenderBox: FC<RenderBoxProps> = (props) => {
             ? 'N/A'
             : value}
         </Typography>
-      </Grid>
+      </Stack>
     );
   };
   return (
-    <Grid
-      columns={{ xs: 2 }}
-      columnSpacing={{ xs: 3 }}
-      component={'ul'}
-      container
-      rowSpacing={3}
-      sx={sx}
-    >
+    <Stack component={'ul'} direction={'row'} flexWrap={'wrap'} gap={3} sx={sx}>
       {Object.keys(data).map((item) => {
         return renderItem(item, data[item]);
       })}
-    </Grid>
+    </Stack>
   );
 };
 
 type LoanDetailCardProps = {
   title: string | ReactNode;
   data: Record<string, unknown>;
+  sx?: SxProps;
 };
 
-export const LoanDetailsCard: FC<LoanDetailCardProps> = ({ title, data }) => {
+export const LoanDetailsCard: FC<LoanDetailCardProps> = ({
+  title,
+  data,
+  sx,
+}) => {
   return (
     <Box
+      bgcolor={'background.paper'}
       border={'1px solid'}
-      borderColor={'border.normal'}
+      borderColor={'#E4E7EF'}
       borderRadius={2}
       p={3}
+      sx={sx}
     >
       {typeof title === 'string' ? (
-        <Typography pb={3} variant={'h6'}>
+        <Typography component={'p'} pb={3} variant={'h7'}>
           {title}
         </Typography>
       ) : (

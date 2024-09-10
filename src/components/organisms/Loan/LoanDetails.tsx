@@ -443,13 +443,15 @@ export const LoanDetails: FC = () => {
   ];
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      <Stack spacing={3}>
-        <StyledHeaderAddressInfo
-          address={address}
-          loanNumber={loanNumber}
-          status={status}
-        />
-        <StyledTabs tabsData={tabs} />
+      <Stack direction={'row'} justifyContent={'center'} p={6}>
+        <Stack maxWidth={1276} spacing={3} width={'100%'}>
+          <StyledHeaderAddressInfo
+            address={address}
+            loanNumber={loanNumber}
+            status={status}
+          />
+          <StyledTabs tabsData={tabs} />
+        </Stack>
       </Stack>
     </Layout>
   );

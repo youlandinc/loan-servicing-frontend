@@ -1,32 +1,33 @@
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+import { FC, useRef } from 'react';
+
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
+
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
-
 import { useMst } from '@/models/Root';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { FC, useRef } from 'react';
 
-export const AllLoansGridToolBar: FC = observer(() => {
+export const InvestorGridToolBar: FC = observer(() => {
   const {
-    portfolio: { allLoansGridQueryModel },
+    portfolio: { investorGridQueryModel },
   } = useMst();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    allLoansGridQueryModel.updateQueryCondition,
+    investorGridQueryModel.updateQueryCondition,
     500,
   );
 
   const [, , updateQueryDateRangeDebounce] = useDebounceFn(
-    allLoansGridQueryModel.updateQueryDateRange,
+    investorGridQueryModel.updateQueryDateRange,
     500,
   );
 
@@ -61,10 +62,10 @@ export const AllLoansGridToolBar: FC = observer(() => {
       <StyledSearchSelectMultiple
         label={'Status'}
         onChange={(e) => {
-          updateQueryDebounce('repaymentStatusList', e);
+          updateQueryDebounce('status', e);
         }}
         options={PIPELINE_STATUS}
-        value={allLoansGridQueryModel.searchCondition.repaymentStatusList}
+        value={investorGridQueryModel.searchCondition.repaymentStatusList}
       />
       <StyledSearchLoanOfficer
         defaultLabel={'Investor'}

@@ -17,7 +17,7 @@ const searchConditionModel = types.model({
   // delinquentDays: 'ONE_THIRTY',
   // maturityDays: 'MONTH_END',
   repaymentStatusList: types.array(
-    types.enumeration(Object.values(RepaymentStatusEnum)),
+    types.string, //types.enumeration(Object.values(RepaymentStatusEnum)),
   ),
 });
 export type ISearchConditionModel = SnapshotOut<typeof searchConditionModel>;
@@ -37,11 +37,10 @@ export const allLoansGridQueryModel = types
     ) {
       self.searchCondition[key] = value;
     },
-      updateQueryDateRange(data: { startDate: string; endDate: string }) {
-        self.searchCondition.maturityStartDate = data.startDate;
-        self.searchCondition.maturityEndDate = data.endDate;
-
-      }
+    updateQueryDateRange(data: { startDate: string; endDate: string }) {
+      self.searchCondition.maturityStartDate = data.startDate;
+      self.searchCondition.maturityEndDate = data.endDate;
+    },
   }));
 
 export type IAllLoansGridModel = SnapshotOut<typeof allLoansGridQueryModel>;

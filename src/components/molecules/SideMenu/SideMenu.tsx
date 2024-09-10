@@ -28,24 +28,24 @@ const MENU_LIST = [
     key: 'LOAN_PAYMENTS',
     url: '/loan/payments',
   },
-  {
-    icon: MENU_LOGO_03,
-    label: 'Draws',
-    key: 'LOAN_DRAWS',
-    url: '/loan/draws',
-  },
+  // {
+  //   icon: MENU_LOGO_03,
+  //   label: 'Draws',
+  //   key: 'LOAN_DRAWS',
+  //   url: '/loan/draws',
+  // },
   {
     icon: MENU_LOGO_04,
     label: 'Extension',
     key: 'LOAN_EXTENSION',
     url: '/loan/extension',
   },
-  {
-    icon: MENU_LOGO_05,
-    label: 'Payoff',
-    key: 'LOAN_PAYOFF',
-    url: '/loan/payoff',
-  },
+  // {
+  //   icon: MENU_LOGO_05,
+  //   label: 'Payoff',
+  //   key: 'LOAN_PAYOFF',
+  //   url: '/loan/payoff',
+  // },
   {
     icon: MENU_LOGO_06,
     label: 'Loan details',

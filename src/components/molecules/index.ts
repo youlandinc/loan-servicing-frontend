@@ -6,5 +6,6 @@ export * from './Auth';
 export * from './Loan';
 
 export * from './AllLoansGrid';
+export * from './InvestorGrid';
 
 export * from './Common';

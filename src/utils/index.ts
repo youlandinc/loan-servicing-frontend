@@ -85,9 +85,6 @@ export const utils = {
   notUndefined(value: unknown): boolean {
     return Object.prototype.toString.call(value).slice(8, -1) !== 'Undefined';
   },
-  notNull(value: unknown): boolean {
-    return Object.prototype.toString.call(value).slice(8, -1) !== 'Null';
-  },
   formatPhoneNumber: (number: string | undefined | null) => {
     return typeof number === 'string' && number.length === 10
         ? `(${number.slice(0, 3)}) ${number.slice(3 - 6)}-${number.slice(6)}`
@@ -101,5 +98,8 @@ export const utils = {
     strArr.splice(3, 0, '-');
     strArr.splice(6, 0, '-');
     return strArr.join('');
+  },
+  notNull(value: unknown): boolean {
+    return Object.prototype.toString.call(value).slice(8, -1) !== 'Null';
   },
 };

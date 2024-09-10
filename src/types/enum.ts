@@ -122,3 +122,10 @@ export enum MaturityDateTypeEnum {
   EXTEND_3 = 'EXTEND_THREE',
   EXTEND_6 = 'EXTEND_SIX',
 }
+
+export enum PortfolioGridTypeEnum {
+  ALL_LOANS = 'ALL_LOANS',
+  BY_INVESTOR = 'BY_INVESTOR',
+  DELINQUENT = 'DELINQUENT',
+  MATURITY = 'MATURITY',
+}

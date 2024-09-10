@@ -19,6 +19,7 @@ type PipelinePaginationProps = {
   sx?: SxProps;
   totalLoanAmount?: number;
   totalLoanAmountShow?: boolean;
+  showPage?: boolean;
 } & Pick<TablePaginationProps, 'onRowsPerPageChange' | 'rowsPerPage'>;
 
 export const AllLoansPagination: FC<PipelinePaginationProps> = ({
@@ -31,6 +32,7 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
   sx,
   totalLoanAmount = 0,
   totalLoanAmountShow = true,
+  showPage = true,
 }) => {
   return (
     <Stack
@@ -40,6 +42,7 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
         width: '100%',
         alignItems: 'center',
         pl: 2.5,
+        height: 48,
         ...sx,
       }}
     >
@@ -53,65 +56,67 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
           Number of loans: {rowCount.toLocaleString()}
         </Typography>
       </Stack>
-      <Stack alignItems={'center'} direction={'row'} spacing={6}>
-        <TablePagination
-          component={'div'}
-          count={rowCount}
-          onPageChange={() => {
-            return;
-          }}
-          onRowsPerPageChange={onRowsPerPageChange}
-          page={currentPage}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[50, 100]}
-          slotProps={{
-            actions: {
-              previousButton: {
-                sx: { display: 'none' },
+      {showPage && (
+        <Stack alignItems={'center'} direction={'row'} spacing={6}>
+          <TablePagination
+            component={'div'}
+            count={rowCount}
+            onPageChange={() => {
+              return;
+            }}
+            onRowsPerPageChange={onRowsPerPageChange}
+            page={currentPage}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[50, 100]}
+            slotProps={{
+              actions: {
+                previousButton: {
+                  sx: { display: 'none' },
+                },
+                nextButton: {
+                  sx: { display: 'none' },
+                },
               },
-              nextButton: {
-                sx: { display: 'none' },
+            }}
+            sx={{
+              // '& .MuiTablePagination-selectLabel,& .MuiTablePagination-displayedRows':
+              //   {
+              //     fontSize: {
+              //       xs: '14px !important',
+              //       lg: '16px !important',
+              //     },
+              //   },
+              color: 'text.secondary',
+              '& .MuiTablePagination-input': {
+                fontSize: 12,
+                ml: 0,
               },
-            },
-          }}
-          sx={{
-            // '& .MuiTablePagination-selectLabel,& .MuiTablePagination-displayedRows':
-            //   {
-            //     fontSize: {
-            //       xs: '14px !important',
-            //       lg: '16px !important',
-            //     },
-            //   },
-            color: 'text.secondary',
-            '& .MuiTablePagination-input': {
-              fontSize: 12,
-              ml: 0,
-            },
-          }}
-        />
+            }}
+          />
 
-        <Pagination
-          count={pageCount}
-          onChange={(event: React.ChangeEvent<unknown>, value: number) => {
-            onPageChange?.(value - 1);
-          }}
-          page={currentPage + 1}
-          shape="circular"
-          sx={{
-            fontSize: 14,
-            '& .MuiPaginationItem-previousNext': {
-              color: 'text.primary',
-            },
-            '& .Mui-disabled svg path': {
-              fill: '#cdcdcd',
-              '& svg path': {
-                fill: 'background.disabled',
+          <Pagination
+            count={pageCount}
+            onChange={(event: React.ChangeEvent<unknown>, value: number) => {
+              onPageChange?.(value - 1);
+            }}
+            page={currentPage + 1}
+            shape="circular"
+            sx={{
+              fontSize: 14,
+              '& .MuiPaginationItem-previousNext': {
+                color: 'text.primary',
               },
-            },
-          }}
-          variant="text"
-        />
-      </Stack>
+              '& .Mui-disabled svg path': {
+                fill: '#cdcdcd',
+                '& svg path': {
+                  fill: 'background.disabled',
+                },
+              },
+            }}
+            variant="text"
+          />
+        </Stack>
+      )}
     </Stack>
   );
 };

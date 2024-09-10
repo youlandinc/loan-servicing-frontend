@@ -1,7 +1,7 @@
 import { MaturityDateTypeEnum, PipelineStatusEnum } from '@/types/enum';
 
 export interface IExtensionInfo {
-  downloadId: number;
+  downloadId: number | null;
   loanId: number;
   loanNumber: string;
   defaultRate: number;
@@ -10,14 +10,15 @@ export interface IExtensionInfo {
   propertyFullAddress: string;
   repaymentStatusEnum: PipelineStatusEnum;
   currentInterestRate: number;
+  createdTime: string | null;
 }
 
 export interface IGetExtensionPdfParam {
   loanId: number;
   extensionFee: number;
-  // extensionFeeAmount: number;
+  extensionFeeAmount: number;
   changeInterestRate: number;
   executionDate: string;
-  maturityDate: MaturityDateTypeEnum;
-  // extendMonth: MaturityDateTypeEnum;
+  maturityDate: string;
+  extendMonth: MaturityDateTypeEnum;
 }

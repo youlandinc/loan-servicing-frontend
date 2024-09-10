@@ -1,11 +1,22 @@
 import { FC } from 'react';
+import { Stack } from '@mui/material';
 
-import { Layout, SideMenu } from '@/components/molecules';
+import { StyledHeaderAddressInfo } from '@/components/atoms';
+import { Layout, LoanDrawsGrid, SideMenu } from '@/components/molecules';
+
+import { PipelineStatusEnum } from '@/types/enum';
 
 export const LoanDraws: FC = () => {
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      LoanDraws
+      <Stack gap={3} p={6}>
+        <StyledHeaderAddressInfo
+          address={'236 Kingfisher Avenue, Alameda, CA, 94501'}
+          loanNumber={'20240807-236C'}
+          status={PipelineStatusEnum.PERFORMING}
+        />
+        <LoanDrawsGrid />
+      </Stack>
     </Layout>
   );
 };

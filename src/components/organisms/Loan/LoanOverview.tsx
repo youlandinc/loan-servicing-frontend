@@ -495,10 +495,11 @@ export const LoanOverview: FC = observer(() => {
                 <Stack
                   border={'1px solid #E4E7EF'}
                   borderRadius={4}
+                  flex={1}
                   flexShrink={0}
-                  height={480}
+                  maxHeight={480}
                 >
-                  <LoanPaymentsGrid maxHeight={'478px'} />
+                  <LoanPaymentsGrid maxHeight={478} />
                 </Stack>
               </Stack>
 

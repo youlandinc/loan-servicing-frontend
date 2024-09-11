@@ -49,7 +49,9 @@ export const LoanPaymentsGrid: FC<{
       const { data } = await _fetchPaymentsHistory(postData);
 
       const last = {
-        dataReceivedTime: 'Total (4 rc)',
+        dataReceivedTime: `Total (${data.totalItem} row${
+          data.totalItem > 1 ? 's' : ''
+        })`,
         totalPmt: data.accumulateTotalPmt,
         totalInterestReceived: data.accumulateTotalInterestReceived,
         //defaultInterestReceived: data.accumulateDefaultInterestReceived,
@@ -62,11 +64,11 @@ export const LoanPaymentsGrid: FC<{
         id: '-1',
       };
       const list = data?.content || [];
-      list.forEach((item) => Object.assign(item, { id: uniqueId() }));
-      list.push(last);
-      setList(list);
-      //setList([]);
       if (list.length > 0) {
+        list.forEach((item) => Object.assign(item, { id: uniqueId() }));
+        list.push(last);
+        setList(list);
+        //setList([]);
         table.setRowSelection({ '-1': true });
         table.setRowPinning({ bottom: ['-1'] });
       }
@@ -233,11 +235,13 @@ export const LoanPaymentsGrid: FC<{
         Payment history
       </Typography>
       <MRT_TableContainer table={table} />
-      <LoanPaymentsGridFooter
-        onPageChange={(page) => onPageChange(page)}
-        onPageSizeChange={(pageSize) => onPageSizeChange(pageSize)}
-        page={page}
-      />
+      {list.length > 0 && (
+        <LoanPaymentsGridFooter
+          onPageChange={(page) => onPageChange(page)}
+          onPageSizeChange={(pageSize) => onPageSizeChange(pageSize)}
+          page={page}
+        />
+      )}
     </Stack>
   );
 };

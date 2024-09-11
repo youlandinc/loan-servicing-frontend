@@ -37,7 +37,7 @@ export const LoanPaymentsGridFooter: FC<LoanPaymentsGridFooter> = ({
         onRowsPerPageChange={(e) => {
           onPageSizeChange(parseInt(e?.target?.value));
         }}
-        page={page.number}
+        page={page.number - 1}
         rowsPerPage={page.size}
         rowsPerPageOptions={[10, 25, 50]}
         slotProps={{

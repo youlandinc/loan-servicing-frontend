@@ -1,5 +1,5 @@
-import { FC, ReactNode, useMemo } from 'react';
-import { Icon, Stack, Typography } from '@mui/material';
+import { CSSProperties, FC, ReactNode, useMemo } from 'react';
+import { Icon, Stack, Tooltip, Typography } from '@mui/material';
 
 export interface LoanOverviewCardProps {
   header: string;
@@ -8,6 +8,7 @@ export interface LoanOverviewCardProps {
   theme?: 'light' | 'dark' | 'warning';
   listData: Array<{ label: ReactNode; value: ReactNode }>;
   tailData?: Array<{ label: ReactNode; value: ReactNode }>;
+  borderColor?: CSSProperties['borderColor'];
 }
 
 export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
@@ -17,6 +18,7 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
   headerIcon,
   listData,
   tailData = [],
+  borderColor,
 }) => {
   const computedColor = useMemo(() => {
     const result = {
@@ -53,7 +55,7 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
     <Stack
       bgcolor={computedColor.common.bgcolor}
       border={'1px solid'}
-      borderColor={computedColor.common.borderColor}
+      borderColor={borderColor ? borderColor : computedColor.common.borderColor}
       borderRadius={2}
       gap={1}
       p={3}
@@ -96,15 +98,32 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
             justifyContent={'space-between'}
             key={`${item.label}-${item.value}-${index}`}
           >
-            <Typography color={computedColor.listData.label} variant={'body2'}>
+            <Typography
+              color={computedColor.listData.label}
+              sx={{
+                wordBreak: 'break-all',
+              }}
+              variant={'body2'}
+            >
               {item.label}
             </Typography>
-            <Typography
-              color={computedColor.listData.value}
-              variant={'subtitle2'}
-            >
-              {item.value}
-            </Typography>
+            {item.value && (
+              <Tooltip arrow title={item.value}>
+                <Typography
+                  color={computedColor.listData.value}
+                  maxWidth={'40%'}
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                  }}
+                  textAlign={'right'}
+                  variant={'subtitle2'}
+                >
+                  {item.value}
+                </Typography>
+              </Tooltip>
+            )}
           </Stack>
         ))}
       </Stack>
@@ -123,12 +142,21 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
               >
                 {item.label}
               </Typography>
-              <Typography
-                color={computedColor.listData.value}
-                variant={'subtitle2'}
-              >
-                {item.value}
-              </Typography>
+              <Tooltip arrow title={item.value}>
+                <Typography
+                  color={computedColor.listData.value}
+                  maxWidth={'40%'}
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                  }}
+                  textAlign={'right'}
+                  variant={'subtitle2'}
+                >
+                  {item.value}
+                </Typography>
+              </Tooltip>
             </Stack>
           ))}
         </Stack>

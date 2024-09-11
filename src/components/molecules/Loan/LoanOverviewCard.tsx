@@ -67,7 +67,7 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
         justifyContent={'space-between'}
         width={'100%'}
       >
-        <Stack>
+        <Stack gap={0.25}>
           <Typography color={computedColor.common.color} variant={'body3'}>
             {header}
           </Typography>

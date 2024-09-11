@@ -81,7 +81,7 @@ const INITIAL: LoanOverviewCardProps = {
 const ACTION_BUTTONS = [
   {
     icon: OVERVIEW_COMMENTS_VIEW,
-    label: 'Comments',
+    label: 'Add comments',
     type: CommentTypeEnum.text,
   },
   //{
@@ -313,25 +313,9 @@ export const LoanOverview: FC = observer(() => {
         headerIcon: OVERVIEW_MATURITY_DATE,
         listData: [
           {
-            label: (
-              <Typography
-                color={'text.secondary'}
-                component={'span'}
-                onClick={() =>
-                  router.push({
-                    pathname: '/loan/extension',
-                    query: { loanId },
-                  })
-                }
-                sx={{
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                }}
-                variant={'body2'}
-              >
-                Check the extension
-              </Typography>
-            ),
+            label: `Origination date: ${utils.formatDate(
+              balanceInfo.originationDate,
+            )}`,
             value: '',
           },
         ],
@@ -417,7 +401,7 @@ export const LoanOverview: FC = observer(() => {
       isFake: true,
     };
 
-    setContent((prev) => [data, ...prev]);
+    setContent((prev) => [...prev, data]);
     popupState.close();
   };
 
@@ -502,6 +486,7 @@ export const LoanOverview: FC = observer(() => {
                   borderRadius={4}
                   flexShrink={0}
                   maxHeight={480}
+                  minHeight={270}
                 >
                   <LoanPaymentsGrid maxHeight={478} />
                 </Stack>
@@ -561,73 +546,106 @@ export const LoanOverview: FC = observer(() => {
                       alignItems={'center'}
                       alignSelf={'flex-end'}
                       bgcolor={'#303D6C'}
-                      borderRadius={'50%'}
+                      borderRadius={5}
+                      flexDirection={'row'}
                       flexShrink={0}
-                      height={32}
                       justifyContent={'center'}
                       mt={'auto'}
+                      onClick={() => onClickAddNote(CommentTypeEnum.text)}
                       sx={{
                         position: 'fixed',
                         bottom: 24,
                         right: 24,
+                        cursor: 'pointer',
+                        py: 1.5,
+                        px: 2,
+                        gap: 1,
                       }}
-                      width={32}
-                      {...bindHover(popupState)}
                     >
-                      <Stack>
-                        <Icon
-                          component={OVERVIEW_COMMENTS_ADD}
-                          sx={{ height: 24, width: 24, ml: '1px' }}
-                        />
-                      </Stack>
+                      <Icon
+                        component={OVERVIEW_COMMENTS_ADD}
+                        sx={{ height: 16, width: 16 }}
+                      />
+                      <Typography
+                        color={'white'}
+                        fontSize={14}
+                        fontWeight={600}
+                      >
+                        Add comment
+                      </Typography>
                     </Stack>
 
-                    <Popper
-                      placement={'top-end'}
-                      {...bindPopper(popupState)}
-                      sx={{ zIndex: 9999 }}
-                      transition
-                    >
-                      {({ TransitionProps }) => (
-                        <Fade
-                          {...TransitionProps}
-                          timeout={100}
-                          unmountOnExit={true}
-                        >
-                          <Paper
-                            sx={{
-                              mb: 3,
-                              border: 'none',
-                              boxShadow: 'none',
-                              bgcolor: 'transparent',
-                            }}
-                          >
-                            <Stack gap={1.5}>
-                              {ACTION_BUTTONS.map((item, index) => (
-                                <StyledButton
-                                  color={'secondary'}
-                                  key={`${item.label}-${index}`}
-                                  onClick={() => onClickAddNote(item.type)}
-                                  size={'small'}
-                                  sx={{
-                                    boxShadow:
-                                      '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',
-                                    color: 'text.primary',
-                                    alignItems: 'center',
-                                  }}
-                                >
-                                  <Icon
-                                    component={item.icon}
-                                    sx={{ width: 24, height: 24, mr: 1.25 }}
-                                  />
-                                  {item.label}
-                                </StyledButton>
-                              ))}
-                            </Stack>
-                          </Paper>
-                        </Fade>
-                      )}
-                    </Popper>
+                    {/*<Stack*/}
+                    {/*  alignItems={'center'}*/}
+                    {/*  alignSelf={'flex-end'}*/}
+                    {/*  bgcolor={'#303D6C'}*/}
+                    {/*  borderRadius={'50%'}*/}
+                    {/*  flexShrink={0}*/}
+                    {/*  height={40}*/}
+                    {/*  justifyContent={'center'}*/}
+                    {/*  mt={'auto'}*/}
+                    {/*  sx={{*/}
+                    {/*    position: 'fixed',*/}
+                    {/*    bottom: 24,*/}
+                    {/*    right: 24,*/}
+                    {/*  }}*/}
+                    {/*  width={40}*/}
+                    {/*  {...bindHover(popupState)}*/}
+                    {/*>*/}
+                    {/*  <Stack>*/}
+                    {/*    <Icon*/}
+                    {/*      component={OVERVIEW_COMMENTS_ADD}*/}
+                    {/*      sx={{ height: 24, width: 24 }}*/}
+                    {/*    />*/}
+                    {/*  </Stack>*/}
+                    {/*</Stack>*/}
+
+                    {/*<Popper*/}
+                    {/*  placement={'top-end'}*/}
+                    {/*  {...bindPopper(popupState)}*/}
+                    {/*  sx={{ zIndex: 9999 }}*/}
+                    {/*  transition*/}
+                    {/*>*/}
+                    {/*  {({ TransitionProps }) => (*/}
+                    {/*    <Fade*/}
+                    {/*      {...TransitionProps}*/}
+                    {/*      timeout={100}*/}
+                    {/*      unmountOnExit={true}*/}
+                    {/*    >*/}
+                    {/*      <Paper*/}
+                    {/*        sx={{*/}
+                    {/*          mb: 3,*/}
+                    {/*          border: 'none',*/}
+                    {/*          boxShadow: 'none',*/}
+                    {/*          bgcolor: 'transparent',*/}
+                    {/*        }}*/}
+                    {/*      >*/}
+                    {/*        <Stack gap={1.5}>*/}
+                    {/*          {ACTION_BUTTONS.map((item, index) => (*/}
+                    {/*            <StyledButton*/}
+                    {/*              color={'secondary'}*/}
+                    {/*              key={`${item.label}-${index}`}*/}
+                    {/*              onClick={() => onClickAddNote(item.type)}*/}
+                    {/*              size={'small'}*/}
+                    {/*              sx={{*/}
+                    {/*                boxShadow:*/}
+                    {/*                  '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',*/}
+                    {/*                color: 'text.primary',*/}
+                    {/*                alignItems: 'center',*/}
+                    {/*              }}*/}
+                    {/*            >*/}
+                    {/*              <Icon*/}
+                    {/*                component={item.icon}*/}
+                    {/*                sx={{ width: 24, height: 24, mr: 1.25 }}*/}
+                    {/*              />*/}
+                    {/*              {item.label}*/}
+                    {/*            </StyledButton>*/}
+                    {/*          ))}*/}
+                    {/*        </Stack>*/}
+                    {/*      </Paper>*/}
+                    {/*    </Fade>*/}
+                    {/*  )}*/}
+                    {/*</Popper>*/}
                   </Stack>
                 </Stack>
               )}
@@ -714,76 +732,105 @@ export const LoanOverview: FC = observer(() => {
                   alignItems={'center'}
                   alignSelf={'flex-end'}
                   bgcolor={'#303D6C'}
-                  borderRadius={'50%'}
+                  borderRadius={5}
+                  flexDirection={'row'}
                   flexShrink={0}
-                  height={32}
                   justifyContent={'center'}
                   mt={'auto'}
+                  onClick={() => onClickAddNote(CommentTypeEnum.text)}
                   sx={{
                     position: 'fixed',
                     bottom: 24,
                     right: 24,
-                    zIndex: 9999,
+                    cursor: 'pointer',
+                    py: 1.5,
+                    px: 2,
+                    gap: 1,
                   }}
-                  width={32}
-                  {...bindHover(popupState)}
                 >
-                  <Stack>
-                    <Icon
-                      component={OVERVIEW_COMMENTS_ADD}
-                      sx={{ height: 24, width: 24, ml: '1px' }}
-                    />
-                  </Stack>
+                  <Icon
+                    component={OVERVIEW_COMMENTS_ADD}
+                    sx={{ height: 16, width: 16 }}
+                  />
+                  <Typography color={'white'} fontSize={14} fontWeight={600}>
+                    Add comment
+                  </Typography>
                 </Stack>
 
-                <Popper
-                  placement={'top-end'}
-                  {...bindPopper(popupState)}
-                  sx={{
-                    zIndex: 9999,
-                  }}
-                  transition
-                >
-                  {({ TransitionProps }) => (
-                    <Fade
-                      {...TransitionProps}
-                      timeout={100}
-                      unmountOnExit={true}
-                    >
-                      <Paper
-                        sx={{
-                          mb: 3,
-                          border: 'none',
-                          boxShadow: 'none',
-                          bgcolor: 'transparent',
-                        }}
-                      >
-                        <Stack gap={1.5}>
-                          {ACTION_BUTTONS.map((item, index) => (
-                            <StyledButton
-                              color={'secondary'}
-                              key={`${item.label}-${index}`}
-                              onClick={() => onClickAddNote(item.type)}
-                              size={'small'}
-                              sx={{
-                                boxShadow:
-                                  '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',
-                                color: 'text.primary',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <Icon
-                                component={item.icon}
-                                sx={{ width: 24, height: 24, mr: 1.25 }}
-                              />
-                              {item.label}
-                            </StyledButton>
-                          ))}
-                        </Stack>
-                      </Paper>
-                    </Fade>
-                  )}
-                </Popper>
+                {/*<Stack*/}
+                {/*  alignItems={'center'}*/}
+                {/*  alignSelf={'flex-end'}*/}
+                {/*  bgcolor={'#303D6C'}*/}
+                {/*  borderRadius={'50%'}*/}
+                {/*  flexShrink={0}*/}
+                {/*  height={40}*/}
+                {/*  justifyContent={'center'}*/}
+                {/*  mt={'auto'}*/}
+                {/*  sx={{*/}
+                {/*    position: 'fixed',*/}
+                {/*    bottom: 24,*/}
+                {/*    right: 24,*/}
+                {/*    zIndex: 9999,*/}
+                {/*  }}*/}
+                {/*  width={40}*/}
+                {/*  {...bindHover(popupState)}*/}
+                {/*>*/}
+                {/*  <Stack>*/}
+                {/*    <Icon*/}
+                {/*      component={OVERVIEW_COMMENTS_ADD}*/}
+                {/*      sx={{ height: 24, width: 24, ml: '1px' }}*/}
+                {/*    />*/}
+                {/*  </Stack>*/}
+                {/*</Stack>*/}
+
+                {/*<Popper*/}
+                {/*  placement={'top-end'}*/}
+                {/*  {...bindPopper(popupState)}*/}
+                {/*  sx={{*/}
+                {/*    zIndex: 9999,*/}
+                {/*  }}*/}
+                {/*  transition*/}
+                {/*>*/}
+                {/*  {({ TransitionProps }) => (*/}
+                {/*    <Fade*/}
+                {/*      {...TransitionProps}*/}
+                {/*      timeout={100}*/}
+                {/*      unmountOnExit={true}*/}
+                {/*    >*/}
+                {/*      <Paper*/}
+                {/*        sx={{*/}
+                {/*          mb: 3,*/}
+                {/*          border: 'none',*/}
+                {/*          boxShadow: 'none',*/}
+                {/*          bgcolor: 'transparent',*/}
+                {/*        }}*/}
+                {/*      >*/}
+                {/*        <Stack gap={1.5}>*/}
+                {/*          {ACTION_BUTTONS.map((item, index) => (*/}
+                {/*            <StyledButton*/}
+                {/*              color={'secondary'}*/}
+                {/*              key={`${item.label}-${index}`}*/}
+                {/*              onClick={() => onClickAddNote(item.type)}*/}
+                {/*              size={'small'}*/}
+                {/*              sx={{*/}
+                {/*                boxShadow:*/}
+                {/*                  '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',*/}
+                {/*                color: 'text.primary',*/}
+                {/*                alignItems: 'center',*/}
+                {/*              }}*/}
+                {/*            >*/}
+                {/*              <Icon*/}
+                {/*                component={item.icon}*/}
+                {/*                sx={{ width: 24, height: 24, mr: 1.25 }}*/}
+                {/*              />*/}
+                {/*              {item.label}*/}
+                {/*            </StyledButton>*/}
+                {/*          ))}*/}
+                {/*        </Stack>*/}
+                {/*      </Paper>*/}
+                {/*    </Fade>*/}
+                {/*  )}*/}
+                {/*</Popper>*/}
               </Stack>
             </Drawer>
           </Stack>

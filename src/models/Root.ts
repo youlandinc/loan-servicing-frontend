@@ -1,11 +1,17 @@
 import { createContext, useContext } from 'react';
 import { Instance, types } from 'mobx-state-tree';
+import { MaturityGrid } from '@/components/molecules/MaturityGrid';
 
 import { User } from '@/types/user';
-import { PipelineMode } from '@/types/enum';
+import {
+  DelinquentTimeRangeEnum,
+  MaturityTimeRangeEnum,
+  PipelineMode,
+  PortfolioGridTypeEnum,
+} from '@/types/enum';
 import { URL_LOGOUT_REDIRECTION } from '@/constant';
 
-import { allLoansGridQueryModel } from '@/models/gridModel/allLoansGridModel';
+import { allLoansGridQueryModel, portfolioModel } from '@/models/gridModel';
 
 import { UserSetting } from './base';
 
@@ -13,10 +19,7 @@ export const RootModel = {
   session: types.maybe(types.frozen<UserSession>()),
   userSetting: UserSetting,
   userProfile: types.maybe(types.frozen<ClientUserProfile>()),
-  portfolio: types.model({
-    allLoansGridQueryModel: allLoansGridQueryModel,
-    investorGridQueryModel: allLoansGridQueryModel,
-  }),
+  portfolio: portfolioModel,
 };
 
 const RootStore = types.model(RootModel).actions((self) => {
@@ -114,6 +117,7 @@ const initialState = {
   userType: void 0,
   loginType: void 0,
   portfolio: {
+    displayType: PortfolioGridTypeEnum.ALL_LOANS,
     allLoansGridQueryModel: {
       size: 50,
       page: 0,
@@ -137,6 +141,36 @@ const initialState = {
         maturityStartDate: '',
         maturityEndDate: '',
         repaymentStatusList: [],
+      },
+      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+    },
+    delinquentGridQueryModel: {
+      size: 50,
+      page: 0,
+      sort: [],
+      searchCondition: {
+        investors: [],
+        propertyAddress: '',
+        maturityStartDate: '',
+        maturityEndDate: '',
+        repaymentStatusList: [],
+        // delinquentDays: DelinquentTimeRangeEnum.ONE_THIRTY,
+        // maturityDays: MaturityTimeRangeEnum.ALREADY_END,
+      },
+      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+    },
+    maturityGridQueryModel: {
+      size: 50,
+      page: 0,
+      sort: [],
+      searchCondition: {
+        investors: [],
+        propertyAddress: '',
+        maturityStartDate: '',
+        maturityEndDate: '',
+        repaymentStatusList: [],
+        // delinquentDays: DelinquentTimeRangeEnum.ONE_THIRTY,
+        // maturityDays: MaturityTimeRangeEnum.ALREADY_END,
       },
       pipelineMode: PipelineMode.INITIAL_APPROVAL,
     },

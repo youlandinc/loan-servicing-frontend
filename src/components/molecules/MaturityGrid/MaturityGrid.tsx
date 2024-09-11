@@ -11,35 +11,33 @@ import useSWR from 'swr';
 
 import { AllLoansPagination, commonColumns } from '@/components/molecules';
 import { useMst } from '@/models/Root';
-import { _getGroupByInvestor } from '@/request/portfolio/investor';
-
+import { _getGroupMaturity } from '@/request/portfolio/maturity';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import { PortfolioGridTypeEnum } from '@/types/enum';
 
-export const InvestorGrid: FC = observer(() => {
+export const MaturityGrid: FC = observer(() => {
   const router = useRouter();
   const {
-    portfolio: { investorGridQueryModel, displayType },
+    portfolio: { maturityGridQueryModel, displayType },
   } = useMst();
 
   const { data, isLoading, isValidating } = useSWR(
-    displayType === PortfolioGridTypeEnum.BY_INVESTOR
+    displayType === PortfolioGridTypeEnum.MATURITY
       ? [
           {
-            ...investorGridQueryModel,
+            ...maturityGridQueryModel,
             searchCondition: {
-              ...investorGridQueryModel.searchCondition,
-              investors: [...investorGridQueryModel.searchCondition.investors],
+              ...maturityGridQueryModel.searchCondition,
+              investors: [...maturityGridQueryModel.searchCondition.investors],
             },
           },
           displayType,
         ]
       : null,
     async ([p]) => {
-      return await _getGroupByInvestor(p);
+      return await _getGroupMaturity(p);
     },
-    // { revalidateOnMount: true },
   );
 
   const columns = useMemo(
@@ -151,7 +149,7 @@ export const InvestorGrid: FC = observer(() => {
         );
       },
     },
-    muiTableBodyRowProps: {
+    muiTableBodyRowProps: ({ row }) => ({
       sx: {
         '& .MuiTableCell-root:last-child': {
           borderBottom: 'none',
@@ -159,9 +157,10 @@ export const InvestorGrid: FC = observer(() => {
         '& .MuiTableCell-root:first-of-type': {
           width: 40,
           minWidth: 40,
+          // opacity: row.original.servicingLoans ? 1 : 0,
         },
       },
-    },
+    }),
     muiTableBodyCellProps: ({ row }) => ({
       sx: {
         px: 1.5,
@@ -244,11 +243,11 @@ export const InvestorGrid: FC = observer(() => {
           bgcolor: 'transparent',
         },
         /* cursor:
-                    pipelineMode === PipelineDisplayMode.LIST_MODE ? 'pointer' : 'unset',
-                '&:hover': {
-                  bgcolor:
-                      pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
-                },*/
+                            pipelineMode === PipelineDisplayMode.LIST_MODE ? 'pointer' : 'unset',
+                        '&:hover': {
+                          bgcolor:
+                              pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
+                        },*/
       },
     },
     muiTableContainerProps: {
@@ -257,138 +256,138 @@ export const InvestorGrid: FC = observer(() => {
       },
     },
     /*    muiTablePaperProps: {
-          sx: {
-            boxShadow: 'none',
-            '& .MuiAlert-message span': {
-              visibility: 'hidden',
-            },
-            borderRadius: 0,
-          },
-        },
-        muiBottomToolbarProps: {
-          sx: {
-            '& .MuiTypography-body2': {
-              fontSize: 14,
-            },
-            '& .MuiInputLabel-root,& .MuiInput-root': {
-              fontSize: 14,
-            },
-          },
-        },
-        muiTableBodyProps: {
-          sx: {
-            '& tr .groupingTitle': {
-              color: 'text.primary',
-            },
-            '& .MuiTableRow-root:last-child .MuiTableCell-root': {
-              borderBottom: 'none',
-            },
-          },
-        },
-        muiPaginationProps: {
-          SelectProps: {
-            sx: {
-              '& .MuiInputBase-input:focus': {
-                bgcolor: 'transparent',
+              sx: {
+                boxShadow: 'none',
+                '& .MuiAlert-message span': {
+                  visibility: 'hidden',
+                },
+                borderRadius: 0,
               },
             },
-          },
-        },
-        muiSelectCheckboxProps: {
-          sx: {
-            width: 20,
-            height: 20,
-            m: '0 auto',
-          },
-        },
-        muiSelectAllCheckboxProps: {
-          sx: {
-            display: 'block',
-            m: '0 auto',
-          },
-        },*/
+            muiBottomToolbarProps: {
+              sx: {
+                '& .MuiTypography-body2': {
+                  fontSize: 14,
+                },
+                '& .MuiInputLabel-root,& .MuiInput-root': {
+                  fontSize: 14,
+                },
+              },
+            },
+            muiTableBodyProps: {
+              sx: {
+                '& tr .groupingTitle': {
+                  color: 'text.primary',
+                },
+                '& .MuiTableRow-root:last-child .MuiTableCell-root': {
+                  borderBottom: 'none',
+                },
+              },
+            },
+            muiPaginationProps: {
+              SelectProps: {
+                sx: {
+                  '& .MuiInputBase-input:focus': {
+                    bgcolor: 'transparent',
+                  },
+                },
+              },
+            },
+            muiSelectCheckboxProps: {
+              sx: {
+                width: 20,
+                height: 20,
+                m: '0 auto',
+              },
+            },
+            muiSelectAllCheckboxProps: {
+              sx: {
+                display: 'block',
+                m: '0 auto',
+              },
+            },*/
     /* displayColumnDefOptions: {
-          'mrt-row-expand': {
-            size: 40, //make the expand column wider
-            Cell: ({ row, table }) => {
-              return (
-                <>
-                  {row.subRows?.length ? (
-                    <MRT_ExpandButton row={row} table={table} />
-                  ) : null}
-                </>
-              );
+              'mrt-row-expand': {
+                size: 40, //make the expand column wider
+                Cell: ({ row, table }) => {
+                  return (
+                    <>
+                      {row.subRows?.length ? (
+                        <MRT_ExpandButton row={row} table={table} />
+                      ) : null}
+                    </>
+                  );
+                },
+              },
             },
-          },
-        },
-        columnResizeMode: 'onChange',
-        muiExpandAllButtonProps: (props) => {
-          return {
-            onClick: () => {
-              set(
-                props.table.toggleAllRowsExpanded,
-                !props.table.getIsAllRowsExpanded(),
-              );
+            columnResizeMode: 'onChange',
+            muiExpandAllButtonProps: (props) => {
+              return {
+                onClick: () => {
+                  set(
+                    props.table.toggleAllRowsExpanded,
+                    !props.table.getIsAllRowsExpanded(),
+                  );
+                },
+                sx: {
+                  p: 0,
+                  width: 'auto',
+                  height: 'auto',
+                },
+              };
             },
-            sx: {
-              p: 0,
-              width: 'auto',
-              height: 'auto',
+            muiExpandButtonProps: {
+              sx: {
+                p: 0,
+                width: 'auto',
+                height: 'auto',
+              },
             },
-          };
-        },
-        muiExpandButtonProps: {
-          sx: {
-            p: 0,
-            width: 'auto',
-            height: 'auto',
-          },
-        },
-        paginationDisplayMode: 'custom',
-        muiCircularProgressProps: {
-          Component: (
-            <Stack
-              alignItems={'center'}
-              direction={'row'}
-              justifyContent={'center'}
-              mt={8}
-            >
-              <CircularProgress sx={{ fontSize: 18 }} />
-            </Stack>
-          ),
-        },
-        memoMode: 'cells',
-        onColumnPinningChange: setColumnPiningState,
-        ...TableDefaultProps(pipelineType),
-        muiTableHeadCellProps: (props) => {
-          return {
-            sx: { ...defaultProps(pipelineType).muiTableHeadCellProps.sx },
-            onClick: (e) => {
-              if (
-                pipelineType === PipelineDisplayMode.GROUP_MODE ||
-                (e.target as HTMLElement).className?.includes(
-                  'Mui-TableHeadCell-ResizeHandle-Wrapper',
-                ) ||
-                (e.target as HTMLElement).className?.includes(
-                  'Mui-TableHeadCell-ResizeHandle-Divider',
-                )
-              ) {
-                return;
-              }
-              const id = props.column.id;
-              if (id === 'mrt-row-select') {
-                return;
-              }
-              ColumnIdToSortIdMap[props.column.id]
-                ? setHeaderSortDisabled(false)
-                : setHeaderSortDisabled(true);
+            paginationDisplayMode: 'custom',
+            muiCircularProgressProps: {
+              Component: (
+                <Stack
+                  alignItems={'center'}
+                  direction={'row'}
+                  justifyContent={'center'}
+                  mt={8}
+                >
+                  <CircularProgress sx={{ fontSize: 18 }} />
+                </Stack>
+              ),
+            },
+            memoMode: 'cells',
+            onColumnPinningChange: setColumnPiningState,
+            ...TableDefaultProps(pipelineType),
+            muiTableHeadCellProps: (props) => {
+              return {
+                sx: { ...defaultProps(pipelineType).muiTableHeadCellProps.sx },
+                onClick: (e) => {
+                  if (
+                    pipelineType === PipelineDisplayMode.GROUP_MODE ||
+                    (e.target as HTMLElement).className?.includes(
+                      'Mui-TableHeadCell-ResizeHandle-Wrapper',
+                    ) ||
+                    (e.target as HTMLElement).className?.includes(
+                      'Mui-TableHeadCell-ResizeHandle-Divider',
+                    )
+                  ) {
+                    return;
+                  }
+                  const id = props.column.id;
+                  if (id === 'mrt-row-select') {
+                    return;
+                  }
+                  ColumnIdToSortIdMap[props.column.id]
+                    ? setHeaderSortDisabled(false)
+                    : setHeaderSortDisabled(true);
 
-              setAnchorElHeader(e.currentTarget);
-              setTableHeaderIndex(props.column.getIndex());
-              setHeaderColumn(props.column);
-            },
-          };
-        },*/
+                  setAnchorElHeader(e.currentTarget);
+                  setTableHeaderIndex(props.column.getIndex());
+                  setHeaderColumn(props.column);
+                },
+              };
+            },*/
   });
 
   return (

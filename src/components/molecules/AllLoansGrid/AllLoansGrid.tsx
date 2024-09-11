@@ -1,5 +1,6 @@
 import { useMst } from '@/models/Root';
 import { listModeDefaultStyleProps } from '@/styles/allLoansGridStyles';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import { observer } from 'mobx-react-lite';
 import { FC, useMemo } from 'react';
 import {
@@ -19,21 +20,29 @@ export const AllLoansGrid: FC = observer(() => {
   const router = useRouter();
 
   const {
-    portfolio: { allLoansGridQueryModel },
+    portfolio: { allLoansGridQueryModel, displayType },
   } = useMst();
 
-  const { data, isLoading } = useSWR(
-    {
-      ...allLoansGridQueryModel,
-      searchCondition: {
-        ...allLoansGridQueryModel.searchCondition,
-        investors: [...allLoansGridQueryModel.searchCondition.investors],
-        repaymentStatusList: [
-          ...allLoansGridQueryModel.searchCondition.repaymentStatusList,
-        ],
-      },
+  const { data, isLoading, isValidating } = useSWR(
+    displayType === PortfolioGridTypeEnum.ALL_LOANS
+      ? [
+          {
+            ...allLoansGridQueryModel,
+            searchCondition: {
+              ...allLoansGridQueryModel.searchCondition,
+              investors: [...allLoansGridQueryModel.searchCondition.investors],
+              repaymentStatusList: [
+                ...allLoansGridQueryModel.searchCondition.repaymentStatusList,
+              ],
+            },
+          },
+          displayType,
+        ]
+      : null,
+    async ([p]) => {
+      return await _getAllLoansList(p);
     },
-    _getAllLoansList,
+    // { revalidateOnMount: true },
   );
 
   const columns = useMemo(() => commonColumns, []);
@@ -65,8 +74,8 @@ export const AllLoansGrid: FC = observer(() => {
     // getCoreRowModel: getCoreRowModel(),
     state: {
       // columnOrder: configColumnsOrderKeysArr,
-      isLoading,
-      showSkeletons: isLoading,
+      // isLoading: isValidating,
+      showSkeletons: isValidating,
       // columnPinning: columnPiningState,
     },
     initialState: {

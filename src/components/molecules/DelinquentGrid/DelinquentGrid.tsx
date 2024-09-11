@@ -1,3 +1,5 @@
+import { PortfolioGridTypeEnum } from '@/types/enum';
+import React, { CSSProperties, FC, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 import {
   MRT_ColumnDef,
@@ -6,40 +8,38 @@ import {
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
-import React, { CSSProperties, FC, useMemo } from 'react';
 import useSWR from 'swr';
 
 import { AllLoansPagination, commonColumns } from '@/components/molecules';
 import { useMst } from '@/models/Root';
-import { _getGroupByInvestor } from '@/request/portfolio/investor';
-
+import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import { PortfolioGridTypeEnum } from '@/types/enum';
 
-export const InvestorGrid: FC = observer(() => {
+export const DelinquentGrid: FC = observer((props) => {
   const router = useRouter();
   const {
-    portfolio: { investorGridQueryModel, displayType },
+    portfolio: { delinquentGridQueryModel, displayType },
   } = useMst();
 
   const { data, isLoading, isValidating } = useSWR(
-    displayType === PortfolioGridTypeEnum.BY_INVESTOR
+    displayType === PortfolioGridTypeEnum.DELINQUENT
       ? [
           {
-            ...investorGridQueryModel,
+            ...delinquentGridQueryModel,
             searchCondition: {
-              ...investorGridQueryModel.searchCondition,
-              investors: [...investorGridQueryModel.searchCondition.investors],
+              ...delinquentGridQueryModel.searchCondition,
+              investors: [
+                ...delinquentGridQueryModel.searchCondition.investors,
+              ],
             },
           },
           displayType,
         ]
       : null,
     async ([p]) => {
-      return await _getGroupByInvestor(p);
+      return await _getGroupDelinquent(p);
     },
-    // { revalidateOnMount: true },
   );
 
   const columns = useMemo(

@@ -1,6 +1,12 @@
 import { SnapshotOut, types } from 'mobx-state-tree';
 
-import { PipelineMode, RepaymentStatusEnum, SortDirection } from '@/types/enum';
+import {
+  DelinquentTimeRangeEnum,
+  MaturityTimeRangeEnum,
+  PipelineMode,
+  RepaymentStatusEnum,
+  SortDirection,
+} from '@/types/enum';
 
 const SortItemModel = types.model({
   direction: types.enumeration(Object.values(SortDirection)),
@@ -14,10 +20,20 @@ const searchConditionModel = types.model({
   propertyAddress: types.string,
   maturityStartDate: types.string,
   maturityEndDate: types.string,
-  // delinquentDays: 'ONE_THIRTY',
-  // maturityDays: 'MONTH_END',
   repaymentStatusList: types.array(
     types.string, //types.enumeration(Object.values(RepaymentStatusEnum)),
+  ),
+  delinquentDays: types.maybe(
+    types.union(
+      types.enumeration(Object.values(DelinquentTimeRangeEnum)),
+      types.undefined,
+    ),
+  ),
+  maturityDays: types.maybe(
+    types.union(
+      types.enumeration(Object.values(MaturityTimeRangeEnum)),
+      types.undefined,
+    ),
   ),
 });
 export type ISearchConditionModel = SnapshotOut<typeof searchConditionModel>;

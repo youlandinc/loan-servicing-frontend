@@ -1,6 +1,6 @@
 import { PipelineStatusEnum } from '@/types/enum';
 import { FC, ReactNode } from 'react';
-import { Stack, SxProps, Typography } from '@mui/material';
+import { Stack, SxProps, Tooltip, Typography } from '@mui/material';
 
 interface StyledHeaderAddressInfoProps {
   address: ReactNode;
@@ -37,27 +37,29 @@ export const StyledHeaderAddressInfo: FC<StyledHeaderAddressInfoProps> = ({
   sx,
 }) => {
   return (
-    <Stack direction={'row'} gap={1.5} sx={sx}>
-      <Stack>
+    <Stack sx={sx}>
+      <Stack alignItems={'center'} direction={'row'} gap={1.5}>
         <Typography component={'div'} variant={'h6'}>
           {address}
         </Typography>
-        <Typography color={'info.main'} component={'div'}>
-          {loanNumber}
+        <Typography
+          bgcolor={bgcolor[status]}
+          borderRadius={1}
+          color={color[status]}
+          component={'div'}
+          py={0.25}
+          textAlign={'center'}
+          variant={'subtitle3'}
+          width={120}
+        >
+          {statusLabel[status]}
         </Typography>
       </Stack>
-      <Typography
-        alignSelf={'flex-start'}
-        bgcolor={bgcolor[status]}
-        borderRadius={1}
-        color={color[status]}
-        component={'div'}
-        textAlign={'center'}
-        variant={'subtitle3'}
-        width={120}
-      >
-        {statusLabel[status]}
-      </Typography>
+      <Tooltip title={'Loan number'}>
+        <Typography color={'info.main'} component={'div'} width={'fit-content'}>
+          {loanNumber}
+        </Typography>
+      </Tooltip>
     </Stack>
   );
 };

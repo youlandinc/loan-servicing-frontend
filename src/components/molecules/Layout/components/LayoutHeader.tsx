@@ -201,7 +201,6 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 transition: 'all .3s',
               }}
             />
-
             {/*according to different product replace counterpart icon*/}
             <Icon
               component={isHomepage ? LOGO_HEADER_SETTING : LOGO_HEADER_SERVING}
@@ -231,9 +230,9 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                     height={'100%'}
                     justifyContent={'center'}
                     key={`${item.label}_${index}`}
+                    mx={3}
                     onClick={() => router.push(item.url)}
                     position={'relative'}
-                    px={3}
                     sx={{
                       cursor: 'pointer',
                       '&:hover': { color: 'primary.main' },

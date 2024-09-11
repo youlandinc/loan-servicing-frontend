@@ -247,7 +247,7 @@ export const LoanExtensionRequest: FC = () => {
                   }}
                   sx={{ textDecoration: 'underline', cursor: 'pointer' }}
                 >
-                  Extension agreement -
+                  Extension agreement -{' '}
                   {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
                 </Box>
               )}

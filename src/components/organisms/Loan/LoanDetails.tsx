@@ -71,7 +71,7 @@ export const LoanDetails: FC = () => {
     ),
     'Loan to value': wrapper(loanDetail?.loanValue / 100, utils.formatPercent),
     'Interest rate': wrapper(
-      loanDetail?.interestRate / 100,
+      (loanDetail?.interestRate ?? 0) / 100,
       utils.formatPercent,
     ),
     Term: (loanDetail?.loanTerm ?? 0) + ' Months',
@@ -118,7 +118,7 @@ export const LoanDetails: FC = () => {
     ),
     'Loan to value': wrapper(loanDetail?.loanValue / 100, utils.formatPercent),
     'Interest rate': wrapper(
-      loanDetail?.interestRate / 100,
+      (loanDetail?.interestRate ?? 0) / 100,
       utils.formatPercent,
     ),
     'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
@@ -162,7 +162,7 @@ export const LoanDetails: FC = () => {
     'Loan to value': wrapper(loanDetail?.loanValue / 100, utils.formatPercent),
     'Loan to cost': wrapper(loanDetail?.loanCost / 100, utils.formatPercent),
     'Interest rate': wrapper(
-      loanDetail?.interestRate ?? 0 / 100,
+      (loanDetail?.interestRate ?? 0) / 100,
       utils.formatPercent,
     ),
     Term: (loanDetail?.loanTerm ?? 0) + ' Months',
@@ -218,7 +218,7 @@ export const LoanDetails: FC = () => {
     'Loan to cost': wrapper(loanDetail?.loanCost / 100, utils.formatPercent),
     'Loan to value': wrapper(loanDetail?.loanValue / 100, utils.formatPercent),
     'Interest rate': wrapper(
-      loanDetail?.interestRate / 100,
+      (loanDetail?.interestRate ?? 0) / 100,
       utils.formatPercent,
     ),
     'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),

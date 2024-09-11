@@ -21,7 +21,6 @@ import {
   URL_PRICING,
 } from '@/constant';
 import { useSwitch } from '@/hooks';
-import { utils } from '@/utils';
 
 import { StyledButton, StyledDialog } from '@/components/atoms';
 
@@ -204,7 +203,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             {/*according to different product replace counterpart icon*/}
             <Icon
               component={isHomepage ? LOGO_HEADER_SETTING : LOGO_HEADER_SERVING}
-              sx={{ height: '32px', width: 'auto' }}
+              sx={{ height: '24px', width: 'auto' }}
             />
 
             {!isHomepage && (
@@ -273,7 +272,18 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 }}
                 title={'Organization settings'}
               >
-                <Stack height={24} width={24}>
+                <Stack
+                  height={24}
+                  onClick={() =>
+                    router.push(
+                      `${URL_HOME}/settings/organization/general/${
+                        session?.accessToken?.jwtToken ||
+                        localStorage?.getItem('USER_LOGIN_INFORMATION')
+                      }`,
+                    )
+                  }
+                  width={24}
+                >
                   <Icon
                     component={LOGO_SETTING}
                     sx={{

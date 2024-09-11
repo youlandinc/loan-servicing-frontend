@@ -13,6 +13,7 @@ export const LoanPaymentsCard: FC<LoanCardProps> = observer(
   ({ icon, label, content }) => {
     return (
       <Stack
+        bgcolor={'white'}
         border={'1px solid'}
         borderColor={'border.normal'}
         borderRadius={2}

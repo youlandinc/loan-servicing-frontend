@@ -65,6 +65,7 @@ export default function MyApp(props: MyAppProps) {
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
             name="viewport"
           />
+          <link href={'/favicon.svg'} rel="icon" />
           <title>YouLand</title>
         </Head>
         <ThemeProvider theme={lightTheme}>

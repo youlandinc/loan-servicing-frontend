@@ -3,7 +3,7 @@ import { Box, Fade, Stack, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
-import { useAsync, useAsyncFn } from 'react-use';
+import { useAsync, useAsyncFn, useAsyncRetry } from 'react-use';
 
 import { useRenderPdf, useSwitch } from '@/hooks';
 
@@ -47,7 +47,7 @@ export const LoanExtensionRequest: FC = () => {
   const [downloadId, setDownloadId] = useState<number | null>(null);
   const { visible, open, close } = useSwitch();
 
-  const { value } = useAsync(async () => {
+  const { value, retry } = useAsyncRetry(async () => {
     return typeof loanId === 'string'
       ? await _getExtensionInfo(parseInt(loanId as string))
           .then((res) => {
@@ -80,7 +80,7 @@ export const LoanExtensionRequest: FC = () => {
       if (!formRef.current?.reportValidity()) {
         return;
       }
-      return await _createExtensionPdf(param)
+      await _createExtensionPdf(param)
         .then((res) => {
           setDownloadId(res.data);
         })
@@ -226,6 +226,7 @@ export const LoanExtensionRequest: FC = () => {
                     maturityDate: value.data.maturityDate,
                     extensionFeeAmount: 0,
                   });
+                  retry();
                 }
               }}
               size={'small'}
@@ -234,21 +235,22 @@ export const LoanExtensionRequest: FC = () => {
             >
               Generate agreement
             </StyledButton>
-            {typeof value?.data?.createdTime === 'string' && (
-              <Box
-                color={'primary.main'}
-                component={'a'}
-                fontSize={18}
-                onClick={async () => {
-                  open();
-                  await viewExtensionPdf();
-                }}
-                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-              >
-                Extension agreement -
-                {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
-              </Box>
-            )}
+            {typeof value?.data?.createdTime === 'string' &&
+              typeof downloadId === 'number' && (
+                <Box
+                  color={'primary.main'}
+                  component={'a'}
+                  fontSize={18}
+                  onClick={async () => {
+                    open();
+                    await viewExtensionPdf();
+                  }}
+                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                >
+                  Extension agreement -
+                  {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
+                </Box>
+              )}
             <Typography color={'info.main'}>
               The generated extension agreement has been added to the Documents
               folder for this loan.

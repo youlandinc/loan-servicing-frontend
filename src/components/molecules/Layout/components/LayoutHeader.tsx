@@ -108,8 +108,8 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Icon component={LOGO_PRODUCT_DOC} sx={{ width: 32, height: 32 }} />
           ),
         },
-        'Loan Serving': {
-          label: 'Loan Serving',
+        'Loan Servicing': {
+          label: 'Loan Servicing',
           url: '/portfolio',
           icon: (
             <Icon
@@ -125,7 +125,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
         (item) => productsKeys.includes(item.name) && productsData[item.name],
       );
       result.push({
-        label: 'Loan Serving',
+        label: 'Loan Servicing',
         url: '/portfolio',
         icon: (
           <Icon

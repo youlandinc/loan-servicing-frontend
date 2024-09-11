@@ -1,5 +1,6 @@
 import {
   BorrowerTypeEnum,
+  DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
   // LoanPurposeEnum,
   LoanStatus,
@@ -148,7 +149,7 @@ export const PIPELINE_STATUS: Option[] = [
   },
 
   {
-    label: 'Reo',
+    label: 'REO',
     key: PipelineStatusEnum.REO,
     value: PipelineStatusEnum.REO,
   },
@@ -297,5 +298,43 @@ export const MATURITY_DATE: Option[] = [
     key: MaturityDateTypeEnum.EXTEND_6,
     label: 'Extend by 6 months',
     value: MaturityDateTypeEnum.EXTEND_6,
+  },
+];
+
+/*ONE_THIRTY("ont - thirty", "1-30"),
+    THIRTY_ONE_SIXTY("thirty one - sixty", "31-60"),
+    SIXTY_ONE_NINETY("sixty one - ninety", "61-90"),
+    NINETY_ONE_ONE_HUNDRED_TWENTY("ninety one - one hundred twenty", "91-120"),
+    ONE_HUNDRED_TWENTY_ADD("one hundred twenty add", "120+");*/
+export const DelinquentTimeRangeOpt: Option[] = [
+  {
+    key: '',
+    label: 'All',
+    value: '',
+  },
+  {
+    key: DelinquentTimeRangeEnum.ONE_THIRTY,
+    label: '1-30',
+    value: DelinquentTimeRangeEnum.ONE_THIRTY,
+  },
+  {
+    key: DelinquentTimeRangeEnum.THIRTY_ONE_SIXTY,
+    label: '31-60',
+    value: DelinquentTimeRangeEnum.THIRTY_ONE_SIXTY,
+  },
+  {
+    key: DelinquentTimeRangeEnum.SIXTY_ONE_NINETY,
+    label: '61-90',
+    value: DelinquentTimeRangeEnum.SIXTY_ONE_NINETY,
+  },
+  {
+    key: DelinquentTimeRangeEnum.NINETY_ONE_ONE_HUNDRED_TWENTY,
+    label: '91-120',
+    value: DelinquentTimeRangeEnum.NINETY_ONE_ONE_HUNDRED_TWENTY,
+  },
+  {
+    key: DelinquentTimeRangeEnum.ONE_HUNDRED_TWENTY_ADD,
+    label: '120+',
+    value: DelinquentTimeRangeEnum.ONE_HUNDRED_TWENTY_ADD,
   },
 ];

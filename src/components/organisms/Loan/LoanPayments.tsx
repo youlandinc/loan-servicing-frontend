@@ -113,8 +113,9 @@ export const LoanPayments: FC = observer(() => {
             </Stack>
 
             <Stack
+              bgcolor={'white'}
               border={'1px solid #E4E7EF'}
-              borderRadius={4}
+              borderRadius={2}
               maxHeight={'calc(100% - 305px)'}
               mx={6}
             >

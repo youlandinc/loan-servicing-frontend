@@ -470,20 +470,21 @@ export const LoanOverview: FC = observer(() => {
 
               <Stack flex={1} flexShrink={0} gap={3} minWidth={682}>
                 <Stack flexDirection={'row'} gap={3} width={'100%'}>
-                  <LoanOverviewCard borderColor={'#D2D6E1'} {...nextDueDate} />
-                  <LoanOverviewCard borderColor={'#D2D6E1'} {...maturityDate} />
+                  <LoanOverviewCard {...nextDueDate} />
+                  <LoanOverviewCard {...maturityDate} />
                 </Stack>
 
                 <LoanOverviewTimeline listData={timeline} />
 
-                <Stack flexShrink={0} height={270}>
+                <Stack bgcolor={'white'} flexShrink={0} height={270}>
                   <LoanOverviewPayablesGrid
                     outstandingPayAbles={loanPayAbles}
                   />
                 </Stack>
                 <Stack
+                  bgcolor={'white'}
                   border={'1px solid #E4E7EF'}
-                  borderRadius={4}
+                  borderRadius={2}
                   flexShrink={0}
                   maxHeight={480}
                   minHeight={270}

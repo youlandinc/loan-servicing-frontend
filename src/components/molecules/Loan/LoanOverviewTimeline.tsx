@@ -65,6 +65,7 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
 }) => {
   return (
     <Stack
+      bgcolor={'white'}
       border={'1px solid #D2D6E1'}
       borderRadius={2}
       gap={1.5}

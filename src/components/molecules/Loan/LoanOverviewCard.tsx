@@ -8,7 +8,6 @@ export interface LoanOverviewCardProps {
   theme?: 'light' | 'dark' | 'warning';
   listData: Array<{ label: ReactNode; value: ReactNode }>;
   tailData?: Array<{ label: ReactNode; value: ReactNode }>;
-  borderColor?: CSSProperties['borderColor'];
 }
 
 export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
@@ -18,14 +17,13 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
   headerIcon,
   listData,
   tailData = [],
-  borderColor,
 }) => {
   const computedColor = useMemo(() => {
     const result = {
       common: {
         bgcolor: '#FFFFFF',
         color: 'text.primary',
-        borderColor: 'primary.main',
+        borderColor: '#D2D6E1',
       },
       listData: {
         label: 'text.secondary',
@@ -55,7 +53,7 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
     <Stack
       bgcolor={computedColor.common.bgcolor}
       border={'1px solid'}
-      borderColor={borderColor ? borderColor : computedColor.common.borderColor}
+      borderColor={computedColor.common.borderColor}
       borderRadius={2}
       gap={1}
       p={3}

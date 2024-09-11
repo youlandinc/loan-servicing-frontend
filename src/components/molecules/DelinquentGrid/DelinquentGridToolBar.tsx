@@ -3,7 +3,7 @@ import { DelinquentTimeRangeOpt } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { Stack } from '@mui/material';
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 export const DelinquentGridToolBar: FC = () => {
   const {
@@ -16,6 +16,13 @@ export const DelinquentGridToolBar: FC = () => {
     delinquentGridQueryModel.updateQueryCondition,
     500,
   );
+
+  useEffect(() => {
+    if (propertyAddressRef.current) {
+      propertyAddressRef.current.value =
+        delinquentGridQueryModel.searchCondition.propertyAddress;
+    }
+  }, []);
 
   return (
     <Stack alignItems={'center'} direction={'row'} gap={1.5}>

@@ -141,7 +141,7 @@ export const StyledBtnLoanOfficer: FC<StyledBtnLoanOfficerProps> = ({
             }}
             sx={{ fontSize: 14 }}
           >
-            <Typography ml={1} variant={'subtitle1'}>
+            <Typography ml={1} variant={'body2'}>
               {item}
             </Typography>
           </MenuItem>

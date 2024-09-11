@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { isValid } from 'date-fns';
 import { observer } from 'mobx-react-lite';
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 import {
   StyledSearchDateRange,
@@ -30,6 +30,13 @@ export const InvestorGridToolBar: FC = observer(() => {
     investorGridQueryModel.updateQueryDateRange,
     500,
   );
+
+  useEffect(() => {
+    if (propertyAddressRef.current) {
+      propertyAddressRef.current.value =
+        investorGridQueryModel.searchCondition.propertyAddress;
+    }
+  }, []);
 
   return (
     <Stack alignItems={'center'} direction={'row'} gap={1.5}>

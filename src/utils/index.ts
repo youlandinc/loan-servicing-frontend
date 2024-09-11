@@ -42,7 +42,7 @@ export const utils = {
   },
   formatDate: (
     date: string | Date | null,
-    timeFormat = 'yyyy/MM/dd',
+    timeFormat = 'MM/dd/yyyy',
     options?: {
       locale?: Locale;
       weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -87,8 +87,8 @@ export const utils = {
   },
   formatPhoneNumber: (number: string | undefined | null) => {
     return typeof number === 'string' && number.length === 10
-        ? `(${number.slice(0, 3)}) ${number.slice(3 - 6)}-${number.slice(6)}`
-        : number;
+      ? `(${number.slice(0, 3)}) ${number.slice(3 - 6)}-${number.slice(6)}`
+      : number;
   },
   formatSsn: (ssn: string | null | undefined) => {
     if (typeof ssn !== 'string') {

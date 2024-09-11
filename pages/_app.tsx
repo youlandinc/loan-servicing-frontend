@@ -66,7 +66,7 @@ export default function MyApp(props: MyAppProps) {
             name="viewport"
           />
           <link href={'/favicon.svg'} rel="icon" />
-          <title>YouLand</title>
+          <title>Servicing Center</title>
         </Head>
         <ThemeProvider theme={lightTheme}>
           <CssBaseline />

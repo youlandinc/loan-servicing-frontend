@@ -7,6 +7,7 @@ import { MRT_ColumnDef } from 'material-react-table';
 
 import { ellipsisStyle } from '@/styles';
 import { utils } from '@/utils';
+import React from 'react';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
   {
@@ -93,7 +94,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip title={renderedCellValue || ''}>
           <Typography
             fontSize={12}
             sx={{
@@ -101,7 +102,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
               width: '100%',
             }}
           >
-            {renderedCellValue}
+            {renderedCellValue || '—'}
           </Typography>
         </Tooltip>
       );
@@ -754,3 +755,29 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },*/
 ];
+
+export const groupCommonColumns: MRT_ColumnDef<any>[] = commonColumns.map(
+  (item: any, index) => {
+    return {
+      ...item,
+      Cell: (props: any) => {
+        const { row } = props;
+        if (row.original.servicingLoans) {
+          return index === 0 ? (
+            <Typography
+              fontSize={14}
+              fontWeight={600}
+              position={'absolute'}
+              sx={{ whiteSpace: 'nowrap' }}
+              textAlign={'left'}
+              width={'100%'}
+            >
+              {row.original.groupById || 'No investor'}
+            </Typography>
+          ) : null;
+        }
+        return item.Cell(props);
+      },
+    };
+  },
+);

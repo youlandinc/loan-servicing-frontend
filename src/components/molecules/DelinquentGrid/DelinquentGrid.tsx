@@ -1,6 +1,4 @@
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import React, { CSSProperties, FC, useMemo } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
@@ -8,15 +6,17 @@ import {
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
+import React, { CSSProperties, FC, useMemo } from 'react';
 import useSWR from 'swr';
 
-import { AllLoansPagination, commonColumns } from '@/components/molecules';
+import { AllLoansPagination, groupCommonColumns } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
-export const DelinquentGrid: FC = observer((props) => {
+export const DelinquentGrid: FC = observer(() => {
   const router = useRouter();
   const {
     portfolio: { delinquentGridQueryModel, displayType },
@@ -42,33 +42,7 @@ export const DelinquentGrid: FC = observer((props) => {
     },
   );
 
-  const columns = useMemo(
-    () =>
-      commonColumns.map((item: any, index) => {
-        return {
-          ...item,
-          Cell: (props: any) => {
-            const { row } = props;
-            if (row.original.servicingLoans) {
-              return index === 0 ? (
-                <Typography
-                  fontSize={14}
-                  fontWeight={600}
-                  position={'absolute'}
-                  sx={{ whiteSpace: 'nowrap' }}
-                  textAlign={'left'}
-                  width={'100%'}
-                >
-                  {row.original.groupById}
-                </Typography>
-              ) : null;
-            }
-            return item.Cell(props);
-          },
-        };
-      }),
-    [],
-  );
+  const columns = useMemo(() => groupCommonColumns, []);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;

@@ -9,7 +9,11 @@ import { useRouter } from 'next/router';
 import React, { CSSProperties, FC, useMemo } from 'react';
 import useSWR from 'swr';
 
-import { AllLoansPagination, commonColumns } from '@/components/molecules';
+import {
+  AllLoansPagination,
+  commonColumns,
+  groupCommonColumns,
+} from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
 
@@ -42,33 +46,7 @@ export const InvestorGrid: FC = observer(() => {
     // { revalidateOnMount: true },
   );
 
-  const columns = useMemo(
-    () =>
-      commonColumns.map((item: any, index) => {
-        return {
-          ...item,
-          Cell: (props: any) => {
-            const { row } = props;
-            if (row.original.servicingLoans) {
-              return index === 0 ? (
-                <Typography
-                  fontSize={14}
-                  fontWeight={600}
-                  position={'absolute'}
-                  sx={{ whiteSpace: 'nowrap' }}
-                  textAlign={'left'}
-                  width={'100%'}
-                >
-                  {row.original.groupById}
-                </Typography>
-              ) : null;
-            }
-            return item.Cell(props);
-          },
-        };
-      }),
-    [],
-  );
+  const columns = useMemo(() => groupCommonColumns, []);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;

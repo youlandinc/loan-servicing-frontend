@@ -406,12 +406,15 @@ export const LoanOverview: FC = observer(() => {
   };
 
   useEffect(() => {
-    console.log(123, messageBox.current);
     if (messageBox.current) {
-      messageBox.current.scrollTo({ top: 1000000, behavior: 'smooth' });
+      setTimeout(() => {
+        messageBox.current?.scrollTo({ top: 1000000, behavior: 'smooth' });
+      }, 0);
     }
     if (messageBoxPc.current) {
-      messageBoxPc.current.scrollTo({ top: 1000000, behavior: 'smooth' });
+      setTimeout(() => {
+        messageBoxPc.current?.scrollTo({ top: 1000000, behavior: 'smooth' });
+      }, 0);
     }
   }, [content]);
 

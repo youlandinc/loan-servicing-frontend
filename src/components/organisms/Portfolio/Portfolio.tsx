@@ -55,7 +55,7 @@ export const Portfolio: FC = observer(() => {
       queryComponent: <AllLoansGridToolBar />,
       component: <AllLoansGrid />,
     },
-    /*    {
+    {
       icon: InvestorIcon,
       label: 'By investor',
       key: PortfolioGridTypeEnum.BY_INVESTOR,
@@ -73,7 +73,7 @@ export const Portfolio: FC = observer(() => {
       label: 'Maturity',
       key: PortfolioGridTypeEnum.MATURITY,
       component: 'Maturity',
-    },*/
+    },
   ];
 
   return (

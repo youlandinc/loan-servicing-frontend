@@ -158,7 +158,11 @@ export const AllLoansGrid: FC = observer(() => {
         },*/
       },
     },
-
+    muiTableContainerProps: {
+      style: {
+        maxHeight: 1098,
+      },
+    },
     /*    muiTablePaperProps: {
       sx: {
         boxShadow: 'none',
@@ -293,7 +297,6 @@ export const AllLoansGrid: FC = observer(() => {
       };
     },*/
   });
-
   return (
     <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
       <MRT_TableContainer
@@ -302,17 +305,15 @@ export const AllLoansGrid: FC = observer(() => {
       />
       <AllLoansPagination
         currentPage={currentPage}
-        // onPageChange={(page: number) => {
-        //   // onPageChange(page);
-        //   updatePipelineSearchParam({ ...allLoansQuerys, page });
-        // }}
-        // onRowsPerPageChange={(e) => {
-        //   updatePipelineSearchParam({
-        //     ...allLoansQuerys,
-        //     page: 0,
-        //     size: e.target.value as unknown as number,
-        //   });
-        // }}
+        onPageChange={(page: number) => {
+          allLoansGridQueryModel.updatePage(page, allLoansGridQueryModel.size);
+        }}
+        onRowsPerPageChange={(e) => {
+          allLoansGridQueryModel.updatePage(
+            0,
+            e.target.value as unknown as number,
+          );
+        }}
         pageCount={totalPages}
         rowCount={rowsTotal}
         rowsPerPage={50}

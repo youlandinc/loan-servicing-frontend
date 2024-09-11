@@ -1,20 +1,23 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
 import { useRouter } from 'next/router';
-import React, { FC, useMemo } from 'react';
+import React, { CSSProperties, FC, useMemo } from 'react';
 import useSWR from 'swr';
 
 import { AllLoansPagination, commonColumns } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+
 export const InvestorGrid: FC = (props) => {
   const router = useRouter();
-
+  console.log('render');
   const {
     portfolio: { allLoansGridQueryModel },
   } = useMst();
@@ -32,16 +35,20 @@ export const InvestorGrid: FC = (props) => {
 
   const columns = useMemo(
     () =>
-      commonColumns.map((item) => {
+      commonColumns.map((item: any, index) => {
         return {
           ...item,
-          /* Cell: (props) => {
+          Cell: (props: any) => {
             const { row } = props;
             if (row.original.servicingLoans) {
-              return row.original.groupById;
+              return index === 0 ? (
+                <Typography fontSize={14} fontWeight={600}>
+                  {row.original.groupById}
+                </Typography>
+              ) : null;
             }
             return item.Cell(props);
-          },*/
+          },
         };
       }),
     [],
@@ -90,10 +97,55 @@ export const InvestorGrid: FC = (props) => {
     getSubRows: (row) => row.servicingLoans,
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    muiExpandButtonProps: {
+      sx: {
+        width: 20,
+        height: 20,
+      },
+    },
+    icons: {
+      KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
+        const { style } = props;
+
+        const transformValue =
+          style.transform === 'rotate(-180deg)'
+            ? 'rotate(0deg)'
+            : 'rotate(-90deg)';
+        return (
+          <KeyboardDoubleArrowDownIcon
+            style={{ ...style, transform: transformValue }}
+            sx={{ fontSize: 20 }}
+          />
+        );
+      },
+      ExpandMoreIcon: (props: { style: CSSProperties }) => {
+        const { style } = props;
+
+        const transformValue =
+          style.transform === 'rotate(-180deg)'
+            ? 'rotate(0deg)'
+            : 'rotate(-90deg)';
+
+        return (
+          <ExpandMoreIcon
+            style={{ ...style, transform: transformValue }}
+            sx={{ fontSize: 20 }}
+          />
+        );
+      },
+    },
+    muiTableBodyRowProps: {
+      sx: {
+        '& .MuiTableCell-root:last-child': {
+          borderBottom: 'none',
+        },
+      },
+    },
     muiTableBodyCellProps: ({ row: { original } }) => ({
       sx: {
         px: 1.5,
         py: 1.5,
+        borderBottom: 'none',
       },
       onClick: async () => {
         const { loanId } = original;
@@ -163,7 +215,11 @@ export const InvestorGrid: FC = (props) => {
                 },*/
       },
     },
-
+    muiTableContainerProps: {
+      style: {
+        maxHeight: 1098,
+      },
+    },
     /*    muiTablePaperProps: {
           sx: {
             boxShadow: 'none',

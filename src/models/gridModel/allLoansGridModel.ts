@@ -31,15 +31,21 @@ export const allLoansGridQueryModel = types
     pipelineMode: types.enumeration(Object.values(PipelineMode)),
   })
   .actions((self) => ({
+    updatePage(page: number, size: number = self.size) {
+      self.page = page;
+      self.size = size;
+    },
     updateQueryCondition<T extends keyof typeof self.searchCondition>(
       key: T,
       value: (typeof self.searchCondition)[T],
     ) {
       self.searchCondition[key] = value;
+      self.page = 0;
     },
     updateQueryDateRange(data: { startDate: string; endDate: string }) {
       self.searchCondition.maturityStartDate = data.startDate;
       self.searchCondition.maturityEndDate = data.endDate;
+      self.page = 0;
     },
   }));
 

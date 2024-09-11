@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -405,6 +405,19 @@ export const LoanOverview: FC = observer(() => {
     popupState.close();
   };
 
+  useEffect(() => {
+    console.log(123, messageBox.current);
+    if (messageBox.current) {
+      messageBox.current.scrollTo({ top: 1000000, behavior: 'smooth' });
+    }
+    if (messageBoxPc.current) {
+      messageBoxPc.current.scrollTo({ top: 1000000, behavior: 'smooth' });
+    }
+  }, [content]);
+
+  const messageBox = useRef<HTMLDivElement>(null);
+  const messageBoxPc = useRef<HTMLDivElement>(null);
+
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
       {loading ? (
@@ -501,7 +514,7 @@ export const LoanOverview: FC = observer(() => {
                   pl={3}
                   width={320}
                 >
-                  <Stack flex={1} overflow={'auto'}>
+                  <Stack flex={1} overflow={'auto'} pr={3} ref={messageBoxPc}>
                     <Stack
                       alignItems={'center'}
                       flexShrink={0}
@@ -541,6 +554,9 @@ export const LoanOverview: FC = observer(() => {
                           </Typography>
                         </Stack>
                       )}
+                      <Box flexShrink={0} height={200}>
+                        &nbsp;
+                      </Box>
                     </Stack>
 
                     <Stack
@@ -679,7 +695,7 @@ export const LoanOverview: FC = observer(() => {
                 />
               </Stack>
 
-              <Stack flex={1} overflow={'auto'} pt={3} px={3}>
+              <Stack flex={1} overflow={'auto'} pt={3} px={3} ref={messageBox}>
                 <Stack
                   alignItems={'center'}
                   flexShrink={0}
@@ -722,7 +738,8 @@ export const LoanOverview: FC = observer(() => {
                   <Box
                     bgcolor={'transparent'}
                     color={'transparent'}
-                    height={24}
+                    flexShrink={0}
+                    height={200}
                     width={'100%'}
                   >
                     &nbsp;

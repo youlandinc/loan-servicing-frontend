@@ -43,6 +43,7 @@ export const LoanOverviewComment: FC<
   const { open, visible, close } = useSwitch(false);
   const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = useState(note);
+  const [isShow, setIsShow] = useState(false);
 
   const avatarName = useMemo(() => {
     const target = firstName?.[0] + lastName?.[0] || '';
@@ -53,6 +54,7 @@ export const LoanOverviewComment: FC<
   const [loading, setLoading] = useState(false);
 
   const onClickToDelete = async () => {
+    setIsShow(false);
     setLoading(true);
     if (isFake) {
       try {
@@ -125,7 +127,17 @@ export const LoanOverviewComment: FC<
   };
 
   return (
-    <Stack bgcolor={'#F0F4FF'} borderRadius={2} gap={1} p={1.5} width={'100%'}>
+    <Stack
+      bgcolor={'#F0F4FF'}
+      borderRadius={2}
+      gap={1}
+      onMouseEnter={() => setIsShow(true)}
+      onMouseLeave={() => {
+        setIsShow(false);
+      }}
+      p={1.5}
+      width={'100%'}
+    >
       <Stack alignItems={'center'} flexDirection={'row'} gap={1}>
         <Avatar
           src={avatar}
@@ -146,11 +158,13 @@ export const LoanOverviewComment: FC<
           {createdAt ? utils.formatDate(createdAt, 'MMM dd, yyyy') : ''}
         </Typography>
 
-        <Icon
-          component={OVERVIEW_COMMENTS_DELETE}
-          onClick={open}
-          sx={{ width: 24, height: 24, ml: 'auto', cursor: 'pointer' }}
-        />
+        {isShow && (
+          <Icon
+            component={OVERVIEW_COMMENTS_DELETE}
+            onClick={open}
+            sx={{ width: 16, height: 16, ml: 'auto', cursor: 'pointer' }}
+          />
+        )}
       </Stack>
       <Stack pl={4}>
         <StyledTextFieldInput
@@ -191,7 +205,10 @@ export const LoanOverviewComment: FC<
           <Stack flexDirection={'row'} gap={3}>
             <StyledButton
               color={'info'}
-              onClick={close}
+              onClick={() => {
+                close();
+                setIsShow(false);
+              }}
               size={'small'}
               sx={{ width: 110 }}
               variant={'outlined'}

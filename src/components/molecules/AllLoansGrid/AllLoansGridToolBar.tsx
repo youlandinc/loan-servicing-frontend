@@ -11,7 +11,7 @@ import { useMst } from '@/models/Root';
 import { Stack } from '@mui/material';
 import { isValid } from 'date-fns';
 import { observer } from 'mobx-react-lite';
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -29,6 +29,13 @@ export const AllLoansGridToolBar: FC = observer(() => {
     allLoansGridQueryModel.updateQueryDateRange,
     500,
   );
+
+  useEffect(() => {
+    if (propertyAddressRef.current) {
+      propertyAddressRef.current.value =
+        allLoansGridQueryModel.searchCondition.propertyAddress;
+    }
+  }, []);
 
   return (
     <Stack alignItems={'center'} direction={'row'} gap={1.5}>

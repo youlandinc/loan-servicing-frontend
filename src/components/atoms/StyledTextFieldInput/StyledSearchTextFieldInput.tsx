@@ -58,6 +58,10 @@ export const StyledSearchTextFieldInput: FC<StyledTextFieldInputProps> = ({
         '& input': { py: 1.25, fontSize: 14 },
         '& .MuiOutlinedInput-root': {
           height: '34px !important',
+          '&.Mui-focused fieldset': {
+            border: '1px solid',
+            borderColor: 'border.focus',
+          },
         },
         '& .MuiInputBase-root:hover': {
           '& .MuiButtonBase-root': {

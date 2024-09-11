@@ -10,22 +10,6 @@ import { utils } from '@/utils';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
   {
-    accessorKey: 'repaymentStatus',
-    header: 'Status',
-    size: 150,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ renderedCellValue }) => {
-      return (
-        <StyledLoanStatus status={renderedCellValue as PipelineStatusEnum} />
-      );
-    },
-  },
-  {
     accessorKey: 'loanNumber',
     header: 'Loan number',
     size: 150,
@@ -53,12 +37,30 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
+    accessorKey: 'repaymentStatus',
+    header: 'Status',
+    size: 150,
+    minSize: 130,
+    muiTableBodyCellProps: {
+      align: 'center',
+    },
+    muiTableHeadCellProps: {
+      align: 'center',
+    },
+    Cell: ({ renderedCellValue }) => {
+      return (
+        <StyledLoanStatus status={renderedCellValue as PipelineStatusEnum} />
+      );
+    },
+  },
+
+  {
     accessorKey: 'borrowerName',
     header: 'Borrower',
     size: 150,
     minSize: 150,
     muiTableBodyCellProps: {
-      align: 'center',
+      align: 'left',
     },
     muiTableHeadCellProps: {
       align: 'center',
@@ -84,7 +86,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     header: 'Investor',
     size: 140,
     muiTableBodyCellProps: {
-      align: 'center',
+      align: 'left',
     },
     muiTableHeadCellProps: {
       align: 'center',
@@ -110,7 +112,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     header: 'Property address',
     size: 300,
     muiTableBodyCellProps: {
-      align: 'center',
+      align: 'left',
     },
     muiTableHeadCellProps: {
       align: 'center',

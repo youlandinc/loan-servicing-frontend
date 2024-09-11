@@ -1,10 +1,11 @@
+import { FC, useMemo } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
-import { FC, useState } from 'react';
 
 import { StyledButton } from '@/components/atoms';
 import { Layout } from '@/components/molecules';
+import { useMst } from '@/models/Root';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
@@ -43,38 +44,77 @@ const InvestorGridToolBar = dynamic(
   { ssr: false },
 );
 
-export const Portfolio: FC = observer(() => {
-  const [portfolioListType, setPortfolioListType] =
-    useState<PortfolioGridTypeEnum>(PortfolioGridTypeEnum.ALL_LOANS);
+const DelinquentGrid = dynamic(
+  () =>
+    import('@/components/molecules/DelinquentGrid').then(
+      (mode) => mode.DelinquentGrid,
+    ),
+  { ssr: false },
+);
+const DelinquentGridToolBar = dynamic(
+  () =>
+    import('@/components/molecules/DelinquentGrid').then(
+      (mode) => mode.DelinquentGridToolBar,
+    ),
+  { ssr: false },
+);
 
-  const menus = [
-    {
-      icon: ListIcon,
-      label: 'All loans',
-      key: PortfolioGridTypeEnum.ALL_LOANS,
-      queryComponent: <AllLoansGridToolBar />,
-      component: <AllLoansGrid />,
+const MaturityGrid = dynamic(
+  () =>
+    import('@/components/molecules/MaturityGrid').then(
+      (mode) => mode.MaturityGrid,
+    ),
+  { ssr: false },
+);
+const MaturityGridToolBar = dynamic(
+  () =>
+    import('@/components/molecules/MaturityGrid').then(
+      (mode) => mode.MaturityGridToolBar,
+    ),
+  { ssr: false },
+);
+
+export const Portfolio: FC = observer(() => {
+  const {
+    portfolio: {
+      displayType: portfolioListType,
+      updateDisplayType: setPortfolioListType,
     },
-    {
-      icon: InvestorIcon,
-      label: 'By investor',
-      key: PortfolioGridTypeEnum.BY_INVESTOR,
-      queryComponent: <InvestorGridToolBar />,
-      component: <InvestorGrid />,
-    },
-    {
-      icon: DeliquentIcon,
-      label: 'Delinquent',
-      key: PortfolioGridTypeEnum.DELINQUENT,
-      component: 'Delinquent',
-    },
-    {
-      icon: MaturityIcon,
-      label: 'Maturity',
-      key: PortfolioGridTypeEnum.MATURITY,
-      component: 'Maturity',
-    },
-  ];
+  } = useMst();
+
+  const menus = useMemo(
+    () => [
+      {
+        icon: ListIcon,
+        label: 'All loans',
+        key: PortfolioGridTypeEnum.ALL_LOANS,
+        queryComponent: <AllLoansGridToolBar />,
+        component: <AllLoansGrid />,
+      },
+      {
+        icon: InvestorIcon,
+        label: 'By investor',
+        key: PortfolioGridTypeEnum.BY_INVESTOR,
+        queryComponent: <InvestorGridToolBar />,
+        component: <InvestorGrid />,
+      },
+      {
+        icon: DeliquentIcon,
+        label: 'Delinquent',
+        key: PortfolioGridTypeEnum.DELINQUENT,
+        queryComponent: <DelinquentGridToolBar />,
+        component: <DelinquentGrid />,
+      },
+      {
+        icon: MaturityIcon,
+        label: 'Maturity',
+        queryComponent: <MaturityGridToolBar />,
+        key: PortfolioGridTypeEnum.MATURITY,
+        component: <MaturityGrid />,
+      },
+    ],
+    [],
+  );
 
   return (
     <Layout isHomepage={false}>
@@ -136,7 +176,7 @@ export const Portfolio: FC = observer(() => {
           {menus.map((item, index) => {
             return (
               <Box flex={1} hidden={item.key !== portfolioListType} key={index}>
-                {item.key === portfolioListType && item.component}
+                {item.component}
               </Box>
             );
           })}

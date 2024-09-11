@@ -202,7 +202,9 @@ export const LoanOverview: FC = observer(() => {
       setCurrenBalance({
         theme: 'dark',
         header: 'Current balance',
-        headerValue: utils.formatDollar(balanceInfo.currentBalance),
+        headerValue: utils.notNull(balanceInfo.currentBalance)
+          ? utils.formatDollar(balanceInfo.currentBalance)
+          : 'Missing loan balance',
         headerIcon: OVERVIEW_CURRENT_BALANCE,
         listData: [
           {
@@ -228,10 +230,9 @@ export const LoanOverview: FC = observer(() => {
       setLoanInfo({
         theme: 'light',
         header: 'Loan information',
-        headerValue: utils.findLabel(
-          LOAN_PRODUCT_CATEGORY,
-          loanInfo.productCategory,
-        ),
+        headerValue: loanInfo.productCategory
+          ? utils.findLabel(LOAN_PRODUCT_CATEGORY, loanInfo.productCategory)
+          : 'Missing loan type',
         headerIcon: OVERVIEW_LOAN_INFORMATION,
         listData: loanListData(loanInfo),
         tailData: [
@@ -245,7 +246,9 @@ export const LoanOverview: FC = observer(() => {
       setBorrowerInfo({
         theme: 'light',
         header: 'Borrower information',
-        headerValue: borrowerInfo.borrowerName,
+        headerValue: borrowerInfo.borrowerName
+          ? borrowerInfo.borrowerName
+          : 'Missing borrower name',
         headerIcon: OVERVIEW_BORROWER_INFORMATION,
         listData: [
           {
@@ -268,7 +271,9 @@ export const LoanOverview: FC = observer(() => {
         setBrokerInfo({
           theme: 'light',
           header: 'Broker information',
-          headerValue: brokerDetail?.name,
+          headerValue: brokerDetail?.name
+            ? brokerDetail?.name
+            : 'Missing broker name',
           headerIcon: OVERVIEW_BROKER_INFORMATION,
           listData: [
             {
@@ -481,8 +486,8 @@ export const LoanOverview: FC = observer(() => {
 
               <Stack flex={1} flexShrink={0} gap={3} minWidth={682}>
                 <Stack flexDirection={'row'} gap={3} width={'100%'}>
-                  <LoanOverviewCard {...nextDueDate} />
-                  <LoanOverviewCard {...maturityDate} />
+                  <LoanOverviewCard borderColor={'#D2D6E1'} {...nextDueDate} />
+                  <LoanOverviewCard borderColor={'#D2D6E1'} {...maturityDate} />
                 </Stack>
 
                 <LoanOverviewTimeline listData={timeline} />
@@ -495,7 +500,6 @@ export const LoanOverview: FC = observer(() => {
                 <Stack
                   border={'1px solid #E4E7EF'}
                   borderRadius={4}
-                  flex={1}
                   flexShrink={0}
                   maxHeight={480}
                 >

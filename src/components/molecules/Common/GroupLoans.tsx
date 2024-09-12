@@ -198,7 +198,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     },
     muiTableContainerProps: {
       style: {
-        maxHeight: 1098,
+        maxHeight: 'calc(100vh - 212px)',
       },
     },
     ...rest,

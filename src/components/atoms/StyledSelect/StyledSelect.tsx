@@ -11,6 +11,9 @@ export const StyledSelect: FC<StyledSelectProps> = ({
   options,
   sx,
   required = false,
+  onOpen,
+  onClose,
+  open,
 }) => {
   return (
     <FormControl
@@ -67,10 +70,17 @@ export const StyledSelect: FC<StyledSelectProps> = ({
           },
         }}
         onChange={onChange}
+        onClose={onClose}
+        onOpen={onOpen}
+        open={open}
         value={value}
       >
         {options.map((item) => (
-          <MenuItem key={item.label} sx={{ p: 1.5 }} value={item.value}>
+          <MenuItem
+            key={item.label}
+            sx={{ p: 1.5, fontSize: 14 }}
+            value={item.value}
+          >
             {item.label}
           </MenuItem>
         ))}

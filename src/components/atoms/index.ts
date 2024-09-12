@@ -26,3 +26,7 @@ export * from './Transitions';
 export * from './StyledHeaderAddressInfo';
 
 export * from './StyledLoading';
+
+export * from './StyledDaysDelinquent';
+
+export * from './StyledDaysMaturity';

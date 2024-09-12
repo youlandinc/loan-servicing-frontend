@@ -5,6 +5,7 @@ import {
   // LoanPurposeEnum,
   LoanStatus,
   MaturityDateTypeEnum,
+  MaturityTimeRangeEnum,
   PipelineStatusEnum,
   ProductCategoryEnum,
   PropertyTypeEnum,
@@ -308,9 +309,9 @@ export const MATURITY_DATE: Option[] = [
     ONE_HUNDRED_TWENTY_ADD("one hundred twenty add", "120+");*/
 export const DelinquentTimeRangeOpt: Option[] = [
   {
-    key: '',
+    key: DelinquentTimeRangeEnum.ALL,
     label: 'All',
-    value: '',
+    value: DelinquentTimeRangeEnum.ALL,
   },
   {
     key: DelinquentTimeRangeEnum.ONE_THIRTY,
@@ -336,5 +337,23 @@ export const DelinquentTimeRangeOpt: Option[] = [
     key: DelinquentTimeRangeEnum.ONE_HUNDRED_TWENTY_ADD,
     label: '120+',
     value: DelinquentTimeRangeEnum.ONE_HUNDRED_TWENTY_ADD,
+  },
+];
+
+export const MaturityTypeOpt: Option[] = [
+  {
+    key: MaturityTimeRangeEnum.ALREADY_END,
+    label: 'In default',
+    value: MaturityTimeRangeEnum.ALREADY_END,
+  },
+  {
+    key: MaturityTimeRangeEnum.MONTH_END,
+    label: 'Month-end',
+    value: MaturityTimeRangeEnum.MONTH_END,
+  },
+  {
+    key: MaturityTimeRangeEnum.NEXT_MONTH_END,
+    label: 'Next month-end',
+    value: MaturityTimeRangeEnum.NEXT_MONTH_END,
   },
 ];

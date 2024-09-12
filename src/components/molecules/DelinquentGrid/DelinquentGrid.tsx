@@ -1,15 +1,16 @@
-import {
-  AllLoansPagination,
-  groupCommonColumns,
-  GroupLoans,
-} from '@/components/molecules';
-import { useMst } from '@/models/Root';
-import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
-import { PortfolioGridTypeEnum } from '@/types/enum';
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useMemo } from 'react';
 import useSWR from 'swr';
+
+import {
+  AllLoansPagination,
+  delinquentColumns,
+  GroupLoans,
+} from '@/components/molecules';
+import { useMst } from '@/models/Root';
+import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
+import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 export const DelinquentGrid: FC = observer(() => {
   const {
@@ -26,6 +27,11 @@ export const DelinquentGrid: FC = observer(() => {
               investors: [
                 ...delinquentGridQueryModel.searchCondition.investors,
               ],
+              delinquentDays:
+                delinquentGridQueryModel.searchCondition.delinquentDays ===
+                DelinquentTimeRangeEnum.ALL
+                  ? undefined
+                  : delinquentGridQueryModel.searchCondition.delinquentDays,
             },
           },
           displayType,
@@ -36,7 +42,7 @@ export const DelinquentGrid: FC = observer(() => {
     },
   );
 
-  const columns = useMemo(() => groupCommonColumns, []);
+  const columns = useMemo(() => delinquentColumns, []);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;

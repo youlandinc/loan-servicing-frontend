@@ -254,7 +254,15 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? !row.getIsPinned()
+                ? utils.formatDate(renderedCellValue as string)
+                : renderedCellValue
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -282,7 +290,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     Cell: ({ renderedCellValue, row }) => {
       return (
         !row.getIsPinned() && (
-          <Tooltip title={renderedCellValue}>
+          <Tooltip
+            title={
+              utils.notNull(renderedCellValue)
+                ? utils.formatDate(renderedCellValue as string)
+                : '-'
+            }
+          >
             <Typography
               sx={{
                 ...ellipsisStyle,
@@ -332,7 +346,7 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     Cell: ({ renderedCellValue, row }) => {
       return (
         !row.getIsPinned() && (
-          <Tooltip title={renderedCellValue}>
+          <Tooltip title={renderedCellValue ? 'ACH' : '-'}>
             <Typography
               sx={{
                 ...ellipsisStyle,
@@ -380,7 +394,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -405,7 +425,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -480,7 +506,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -505,7 +537,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -530,7 +568,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -555,7 +599,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -580,7 +630,13 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue, row }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip
+          title={
+            utils.notNull(renderedCellValue)
+              ? utils.formatDollar(renderedCellValue as number)
+              : '-'
+          }
+        >
           <Typography
             sx={{
               ...ellipsisStyle,
@@ -605,7 +661,7 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
     muiTableHeadCellProps: { align: 'center' },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip title={renderedCellValue ?? '-'}>
           <Typography
             sx={{
               ...ellipsisStyle,

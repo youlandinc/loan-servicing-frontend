@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 const DynamicPortfolio = dynamic(
   () => import('@/components/organisms/Portfolio').then((mod) => mod.Portfolio),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 

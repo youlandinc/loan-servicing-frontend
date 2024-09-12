@@ -169,6 +169,9 @@ export const LoanOverviewComment: FC<
       <Stack pl={4}>
         <StyledTextFieldInput
           autoFocus={true}
+          inputProps={{
+            maxLength: 255,
+          }}
           maxRows={20}
           minRows={3}
           multiline

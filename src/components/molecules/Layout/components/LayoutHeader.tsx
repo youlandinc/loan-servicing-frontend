@@ -42,6 +42,7 @@ import LOGO_HEADER_SETTING from '@/svg/layout/logo_header_setting.svg';
 
 import LOGO_SETTING from '@/svg/layout/logo_auth_setting.svg';
 import LOGO_SIGN_OUT from '@/svg/layout/logo_auth_out.svg';
+import { useMount } from 'react-use';
 
 export interface LayoutHeaderProps {
   isHomepage: boolean;
@@ -168,7 +169,14 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
       }${setting?.userInfo?.lastName}`;
     }, [setting?.userInfo?.firstName, setting?.userInfo?.lastName]);
 
+    const [loaded, setLoaded] = useState(false);
+
+    useMount(() => {
+      setLoaded(true);
+    });
+
     return (
+      //loaded && (
       <>
         <Stack
           alignItems={'center'}
@@ -457,7 +465,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          anchorReference={'anchorEl'}
+          //anchorReference={'anchorEl'}
           id={'LAYOUT_HEADER_USER_POPOVER'}
           onClose={() => setAnchorElUser(null)}
           open={Boolean(anchorElUser)}
@@ -481,6 +489,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             alignItems={'center'}
             flexDirection={'row'}
             gap={1.25}
+            onClick={open}
             px={0.5}
             py={1.75}
             sx={{
@@ -499,7 +508,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               component={LOGO_SIGN_OUT}
               sx={{ height: 24, width: 24, ml: 1.25 }}
             />
-            <Typography color={'inherit'} onClick={open} variant={'body2'}>
+            <Typography color={'inherit'} variant={'body2'}>
               Sign out
             </Typography>
           </Stack>

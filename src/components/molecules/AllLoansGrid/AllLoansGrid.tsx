@@ -169,7 +169,7 @@ export const AllLoansGrid: FC = observer(() => {
     },
     muiTableContainerProps: {
       style: {
-        maxHeight: 1098,
+        maxHeight: 'calc(100vh - 212px)',
       },
     },
     /*    muiTablePaperProps: {

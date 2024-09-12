@@ -31,7 +31,7 @@ export const LoanPaymentsGrid: FC<{
   const [fetchLoading, setFetchLoading] = useState(false);
 
   const { loading } = useAsync(async () => {
-    await fetchData(0, 10);
+    await fetchData(0, 50);
   }, []);
 
   const fetchData = async (page: number, size: number) => {
@@ -96,7 +96,7 @@ export const LoanPaymentsGrid: FC<{
   >([]);
   const [page, setPage] = useState({
     number: 1,
-    size: 10,
+    size: 50,
     totalElements: 5,
     totalPages: 1,
   });

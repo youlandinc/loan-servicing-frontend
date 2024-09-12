@@ -162,7 +162,9 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
       sx={{
         m: '0 auto',
         width: '100%',
-        borderRadius: 4,
+        borderRadius: 2,
+        bgcolor: 'white',
+        borderColor: '#D2D6E1',
         '.MuiDataGrid-columnHeader': {
           bgcolor: 'background.homepage',
         },

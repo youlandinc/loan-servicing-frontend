@@ -27,15 +27,27 @@ const mockData = [
 ];
 
 const columns: GridColDef[] = [
+  //{
+  //  field: 'description',
+  //  headerName: 'Description',
+  //  sortable: false,
+  //  align: 'center',
+  //  headerAlign: 'center',
+  //  minWidth: 300,
+  //  renderCell: ({ value }) => (
+  //    <Typography variant={'body3'}>{value || '-'}</Typography>
+  //  ),
+  //},
   {
-    field: 'description',
-    headerName: 'Description',
+    field: 'dueDate',
+    headerName: 'Date due',
     sortable: false,
+    flex: 1,
     align: 'center',
     headerAlign: 'center',
-    minWidth: 300,
+    minWidth: 150,
     renderCell: ({ value }) => (
-      <Typography variant={'body3'}>{value || '-'}</Typography>
+      <Typography variant={'body3'}>{utils.formatDate(value)}</Typography>
     ),
   },
   {
@@ -93,18 +105,6 @@ const columns: GridColDef[] = [
       >
         Unpaid
       </Typography>
-    ),
-  },
-  {
-    field: 'dueDate',
-    headerName: 'Date due',
-    sortable: false,
-    flex: 1,
-    align: 'center',
-    headerAlign: 'center',
-    minWidth: 150,
-    renderCell: ({ value }) => (
-      <Typography variant={'body3'}>{utils.formatDate(value)}</Typography>
     ),
   },
 ];

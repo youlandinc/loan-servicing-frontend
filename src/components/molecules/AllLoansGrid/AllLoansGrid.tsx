@@ -23,7 +23,7 @@ export const AllLoansGrid: FC = observer(() => {
     portfolio: { allLoansGridQueryModel, displayType },
   } = useMst();
 
-  const { data, isLoading, isValidating } = useSWR(
+  const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.ALL_LOANS
       ? [
           {
@@ -75,7 +75,7 @@ export const AllLoansGrid: FC = observer(() => {
     state: {
       // columnOrder: configColumnsOrderKeysArr,
       // isLoading: isValidating,
-      showSkeletons: isValidating,
+      showSkeletons: isLoading,
       // columnPinning: columnPiningState,
     },
     initialState: {

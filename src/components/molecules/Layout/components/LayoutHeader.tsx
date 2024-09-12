@@ -1,3 +1,4 @@
+import { utils } from '@/utils';
 import { FC, ReactNode, useMemo, useState } from 'react';
 import {
   Avatar,
@@ -124,16 +125,22 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
       const result = licensedProduct.map(
         (item) => productsKeys.includes(item.name) && productsData[item.name],
       );
-      result.push({
-        label: 'Loan Servicing',
-        url: '/portfolio',
-        icon: (
-          <Icon
-            component={LOGO_PRODUCT_SERVING}
-            sx={{ width: 32, height: 32 }}
-          />
-        ),
-      });
+      //only youland and test user can see loan servicing
+      if (
+        utils.isYouland(setting?.tenantId) ||
+        utils.isTestUser(setting?.tenantId)
+      ) {
+        result.push({
+          label: 'Loan Servicing',
+          url: '/portfolio',
+          icon: (
+            <Icon
+              component={LOGO_PRODUCT_SERVING}
+              sx={{ width: 32, height: 32 }}
+            />
+          ),
+        });
+      }
       return result;
     }, [initialized, licensedProduct, session?.accessToken?.jwtToken]);
 

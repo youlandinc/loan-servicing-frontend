@@ -39,7 +39,7 @@ export const LoanPaymentsGridFooter: FC<LoanPaymentsGridFooter> = ({
         }}
         page={page.number - 1}
         rowsPerPage={page.size}
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[50, 100]}
         slotProps={{
           actions: {
             previousButton: {

@@ -68,7 +68,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip title={renderedCellValue || ''}>
           <Typography
             fontSize={12}
             sx={{
@@ -76,7 +76,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
               width: '100%',
             }}
           >
-            {renderedCellValue}
+            {renderedCellValue || '—'}
           </Typography>
         </Tooltip>
       );

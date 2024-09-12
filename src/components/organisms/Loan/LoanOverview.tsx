@@ -492,14 +492,14 @@ export const LoanOverview: FC = observer(() => {
 
                 <LoanOverviewTimeline listData={timeline} />
 
-                <Stack bgcolor={'white'} flexShrink={0} height={270}>
+                <Stack flexShrink={0} height={270}>
                   <LoanOverviewPayablesGrid
                     outstandingPayAbles={loanPayAbles}
                   />
                 </Stack>
                 <Stack
                   bgcolor={'white'}
-                  border={'1px solid #E4E7EF'}
+                  border={'1px solid #D2D6E1'}
                   borderRadius={2}
                   flexShrink={0}
                   maxHeight={480}
@@ -566,7 +566,7 @@ export const LoanOverview: FC = observer(() => {
                       alignItems={'center'}
                       alignSelf={'flex-end'}
                       bgcolor={'#303D6C'}
-                      borderRadius={5}
+                      borderRadius={3}
                       flexDirection={'row'}
                       flexShrink={0}
                       justifyContent={'center'}
@@ -753,7 +753,7 @@ export const LoanOverview: FC = observer(() => {
                   alignItems={'center'}
                   alignSelf={'flex-end'}
                   bgcolor={'#303D6C'}
-                  borderRadius={5}
+                  borderRadius={3}
                   flexDirection={'row'}
                   flexShrink={0}
                   justifyContent={'center'}

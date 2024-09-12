@@ -17,7 +17,7 @@ export const MaturityGrid: FC = observer(() => {
     portfolio: { maturityGridQueryModel, displayType },
   } = useMst();
 
-  const { data, isLoading, isValidating } = useSWR(
+  const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.MATURITY
       ? [
           {
@@ -45,7 +45,7 @@ export const MaturityGrid: FC = observer(() => {
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}
-        loading={isValidating}
+        loading={isLoading}
       />
       <AllLoansPagination
         currentPage={0}

@@ -16,7 +16,7 @@ export const InvestorGrid: FC = observer(() => {
     portfolio: { investorGridQueryModel, displayType },
   } = useMst();
 
-  const { data, isLoading, isValidating } = useSWR(
+  const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.BY_INVESTOR
       ? [
           {
@@ -45,7 +45,7 @@ export const InvestorGrid: FC = observer(() => {
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}
-        loading={isValidating}
+        loading={isLoading}
       />
       <AllLoansPagination
         currentPage={0}

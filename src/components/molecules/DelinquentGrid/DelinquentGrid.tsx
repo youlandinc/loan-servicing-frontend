@@ -16,7 +16,7 @@ export const DelinquentGrid: FC = observer(() => {
     portfolio: { delinquentGridQueryModel, displayType },
   } = useMst();
 
-  const { data, isLoading, isValidating } = useSWR(
+  const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.DELINQUENT
       ? [
           {
@@ -46,7 +46,7 @@ export const DelinquentGrid: FC = observer(() => {
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}
-        loading={isValidating}
+        loading={isLoading}
       />
       <AllLoansPagination
         currentPage={0}

@@ -102,4 +102,10 @@ export const utils = {
   notNull(value: unknown): boolean {
     return Object.prototype.toString.call(value).slice(8, -1) !== 'Null';
   },
+  isYouland: (id: string) => {
+    return id === '1000052022092800000102';
+  },
+  isTestUser: (id: string) => {
+    return id === '1000052023032900000107';
+  },
 };

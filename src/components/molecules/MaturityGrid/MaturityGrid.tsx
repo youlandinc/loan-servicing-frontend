@@ -5,12 +5,13 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
-  groupCommonColumns,
+  delinquentColumns,
   GroupLoans,
+  maturityColumns,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupMaturity } from '@/request/portfolio/maturity';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 export const MaturityGrid: FC = observer(() => {
   const {
@@ -35,7 +36,14 @@ export const MaturityGrid: FC = observer(() => {
     },
   );
 
-  const columns = useMemo(() => groupCommonColumns, []);
+  const columns = useMemo(
+    () =>
+      maturityColumns(
+        maturityGridQueryModel.searchCondition
+          .maturityDays as MaturityTimeRangeEnum,
+      ),
+    [maturityGridQueryModel.searchCondition.maturityDays],
+  );
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;

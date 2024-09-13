@@ -136,6 +136,7 @@ export enum DelinquentTimeRangeEnum {
   SIXTY_ONE_NINETY = 'SIXTY_ONE_NINETY',
   NINETY_ONE_ONE_HUNDRED_TWENTY = 'NINETY_ONE_ONE_HUNDRED_TWENTY',
   ONE_HUNDRED_TWENTY_ADD = 'ONE_HUNDRED_TWENTY_ADD',
+  ALL = 'ALL',
 }
 
 export enum MaturityTimeRangeEnum {

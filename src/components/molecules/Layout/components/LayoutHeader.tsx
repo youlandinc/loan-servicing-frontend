@@ -143,7 +143,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
         });
       }
       return result;
-    }, [initialized, licensedProduct, session?.accessToken?.jwtToken]);
+    }, [initialized, licensedProduct, session?.accessToken?.jwtToken, setting]);
 
     const avatarName = useMemo(() => {
       const target =

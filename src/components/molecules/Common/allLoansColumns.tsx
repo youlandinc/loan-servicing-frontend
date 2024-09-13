@@ -1,6 +1,7 @@
+import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 import { PIPELINE_STATUS } from '@/constant';
-import { PipelineStatusEnum } from '@/types/enum';
+import { MaturityTimeRangeEnum, PipelineStatusEnum } from '@/types/enum';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
@@ -167,7 +168,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip title={utils.formatDollar(renderedCellValue as number, 0)}>
           <Typography
             fontSize={12}
             sx={{
@@ -193,7 +194,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip title={utils.formatDollar(renderedCellValue as number)}>
           <Typography
             fontSize={12}
             sx={{
@@ -266,7 +267,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
+        <Tooltip title={utils.formatDollar(renderedCellValue as number, 0)}>
           <Typography
             fontSize={12}
             sx={{
@@ -756,8 +757,8 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   },*/
 ];
 
-export const groupCommonColumns: MRT_ColumnDef<any>[] = commonColumns.map(
-  (item: any, index) => {
+const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
+  return columns.map((item: any, index) => {
     return {
       ...item,
       Cell: (props: any) => {
@@ -772,12 +773,66 @@ export const groupCommonColumns: MRT_ColumnDef<any>[] = commonColumns.map(
               textAlign={'left'}
               width={'100%'}
             >
-              {row.original.groupById || 'No investor'}
+              {row.original.groupById}
             </Typography>
           ) : null;
         }
         return item.Cell(props);
       },
     };
-  },
+  });
+};
+
+export const groupCommonColumns: MRT_ColumnDef<any>[] =
+  transferFirstColumn(commonColumns);
+
+export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
+  [
+    {
+      accessorKey: 'diffDays',
+      header: 'Days until maturity',
+      size: 150,
+      minSize: 150,
+      muiTableBodyCellProps: {
+        align: 'center',
+      },
+      muiTableHeadCellProps: {
+        align: 'center',
+      },
+      Cell: ({ renderedCellValue }) => {
+        return <StyledDaysDelinquent days={renderedCellValue as number} />;
+      },
+    } as MRT_ColumnDef<any>,
+  ].concat(
+    commonColumns.filter((item) => item.accessorKey !== 'repaymentStatus'),
+  ),
 );
+
+export const maturityColumns = (type: MaturityTimeRangeEnum) => {
+  return transferFirstColumn(
+    [
+      {
+        accessorKey: 'diffDays',
+        header: 'Days until maturity',
+        size: 150,
+        minSize: 150,
+        muiTableBodyCellProps: {
+          align: 'center',
+        },
+        muiTableHeadCellProps: {
+          align: 'center',
+        },
+        Cell: ({ renderedCellValue }) => {
+          return (
+            <StyledDaysMaturity
+              days={renderedCellValue as number}
+              type={type as MaturityTimeRangeEnum}
+            />
+          );
+        },
+      } as MRT_ColumnDef<any>,
+    ].concat(
+      commonColumns.filter((item) => item.accessorKey !== 'repaymentStatus'),
+    ),
+  );
+};

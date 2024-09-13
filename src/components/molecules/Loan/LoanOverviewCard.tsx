@@ -1,4 +1,4 @@
-import { CSSProperties, FC, ReactNode, useMemo } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 import { Icon, Stack, Tooltip, Typography } from '@mui/material';
 
 export interface LoanOverviewCardProps {
@@ -60,23 +60,27 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
       width={'100%'}
     >
       <Stack
-        alignItems={'center'}
+        alignItems={'flex-start'}
         flexDirection={'row'}
         justifyContent={'space-between'}
         width={'100%'}
       >
-        <Stack gap={0.25}>
+        <Stack gap={0.25} mr={1.5}>
           <Typography color={computedColor.common.color} variant={'body3'}>
             {header}
           </Typography>
-          <Typography color={computedColor.common.color} variant={'h6'}>
+          <Typography
+            color={computedColor.common.color}
+            sx={{ wordBreak: 'break-word' }}
+            variant={'h6'}
+          >
             {headerValue}
           </Typography>
         </Stack>
         <Icon
           component={headerIcon}
           sx={() => {
-            const result = { width: 32, height: 32 };
+            const result = { width: 32, height: 32, mt: 1.25 };
             if (theme === 'warning') {
               Object.assign(result, {
                 '& path': {

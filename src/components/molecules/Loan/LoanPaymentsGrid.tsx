@@ -25,7 +25,7 @@ export const LoanPaymentsGrid: FC<{
   maxHeight?: CSSProperties['maxHeight'];
   tableHeight?: CSSProperties['height'];
   tableMaxHeight?: CSSProperties['maxHeight'];
-}> = ({ maxHeight, tableHeight, tableMaxHeight }) => {
+}> = ({ maxHeight }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [fetchLoading, setFetchLoading] = useState(false);

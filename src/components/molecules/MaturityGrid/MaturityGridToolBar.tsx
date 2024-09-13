@@ -37,7 +37,20 @@ export const MaturityGridToolBar: FC = observer((props) => {
         setOpts(
           MaturityTypeOpt.map((item) => ({
             ...item,
-            label: `${item.label}(${res.data[item.value] || 0})`,
+            label: (
+              <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+                <Typography variant={'body2'}>{item.label}</Typography>
+                <Typography
+                  bgcolor={'#95A8D7'}
+                  borderRadius={1}
+                  color={'#fff'}
+                  px={0.5}
+                  variant={'subtitle3'}
+                >
+                  {res.data[item.value] || 0}
+                </Typography>
+              </Stack>
+            ),
           })),
         );
       }
@@ -66,7 +79,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
         }}
         variant={'outlined'}
       />
-      <StyledButton
+      {/*<StyledButton
         size={'small'}
         sx={{
           position: 'relative',
@@ -143,7 +156,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
           value={maturityGridQueryModel.searchCondition.maturityDays}
           variant={'filled'}
         />
-      </StyledButton>
+      </StyledButton>*/}
     </Stack>
   );
 });

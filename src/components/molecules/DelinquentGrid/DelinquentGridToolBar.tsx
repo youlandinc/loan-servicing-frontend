@@ -35,7 +35,20 @@ export const DelinquentGridToolBar: FC = () => {
         setOpts(
           DelinquentTimeRangeOpt.map((item) => ({
             ...item,
-            label: `${item.label}(${res.data[item.value] || 0})`,
+            label: (
+              <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+                <Typography variant={'body2'}>{item.label}</Typography>
+                <Typography
+                  bgcolor={'#95A8D7'}
+                  borderRadius={1}
+                  color={'#fff'}
+                  px={0.5}
+                  variant={'subtitle3'}
+                >
+                  {res.data[item.value] || 0}
+                </Typography>
+              </Stack>
+            ),
           })),
         );
       }
@@ -64,7 +77,7 @@ export const DelinquentGridToolBar: FC = () => {
         }}
         variant={'outlined'}
       />
-      <StyledButton
+      {/*<StyledButton
         size={'small'}
         sx={{
           position: 'relative',
@@ -140,7 +153,7 @@ export const DelinquentGridToolBar: FC = () => {
           }}
           value={delinquentGridQueryModel.searchCondition.delinquentDays}
         />
-      </StyledButton>
+      </StyledButton>*/}
     </Stack>
   );
 };

@@ -1,21 +1,21 @@
+import React from 'react';
+import { Tooltip, Typography } from '@mui/material';
+import { MRT_ColumnDef } from 'material-react-table';
+import { format, isValid } from 'date-fns';
+
 import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
-import { PIPELINE_STATUS } from '@/constant';
-import { MaturityTimeRangeEnum, PipelineStatusEnum } from '@/types/enum';
-import { Box, Tooltip, Typography } from '@mui/material';
-import { format, isValid } from 'date-fns';
-import { MRT_ColumnDef } from 'material-react-table';
 
 import { ellipsisStyle } from '@/styles';
+import { MaturityTimeRangeEnum, PipelineStatusEnum } from '@/types/enum';
 import { utils } from '@/utils';
-import React from 'react';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
   {
     accessorKey: 'loanNumber',
     header: 'Loan number',
     size: 150,
-    minSize: 150,
+    minSize: 100,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -24,17 +24,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {renderedCellValue}
+        </Typography>
       );
     },
   },
@@ -60,7 +58,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'borrowerName',
     header: 'Borrower',
     size: 150,
-    minSize: 150,
+    minSize: 80,
     muiTableBodyCellProps: {
       align: 'left',
     },
@@ -87,6 +85,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'investor',
     header: 'Investor',
     size: 140,
+    minSize: 80,
     muiTableBodyCellProps: {
       align: 'left',
     },
@@ -113,6 +112,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'propertyFullAddress',
     header: 'Property address',
     size: 300,
+    minSize: 110,
     muiTableBodyCellProps: {
       align: 'left',
     },
@@ -139,6 +139,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'fciMaturityDate',
     header: 'Maturity date',
     size: 140,
+    minSize: 110,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -160,6 +161,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'principalBalance',
     header: 'Principal balance',
     size: 140,
+    minSize: 130,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -168,17 +170,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={utils.formatDollar(renderedCellValue as number, 0)}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {utils.formatDollar(renderedCellValue as number, 0)}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {utils.formatDollar(renderedCellValue as number, 0)}
+        </Typography>
       );
     },
   },
@@ -186,6 +186,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'currentBalance',
     header: 'Current balance',
     size: 140,
+    minSize: 120,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -194,17 +195,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={utils.formatDollar(renderedCellValue as number)}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {utils.formatDollar(renderedCellValue as number, 0)}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {utils.formatDollar(renderedCellValue as number, 0)}
+        </Typography>
       );
     },
   },
@@ -212,6 +211,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'nextDueDate',
     header: 'Next due date',
     size: 140,
+    minSize: 110,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -232,7 +232,8 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   {
     accessorKey: 'interestRate',
     header: 'Interest rate',
-    size: 140,
+    size: 100,
+    minSize: 100,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -241,17 +242,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {utils.formatPercent((renderedCellValue as number) / 100)}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {utils.formatPercent((renderedCellValue as number) / 100)}
+        </Typography>
       );
     },
   },
@@ -259,6 +258,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'totalPayment',
     header: 'Total payment',
     size: 140,
+    minSize: 110,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -267,17 +267,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={utils.formatDollar(renderedCellValue as number, 0)}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {utils.formatDollar(renderedCellValue as number, 0)}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {utils.formatDollar(renderedCellValue as number, 0)}
+        </Typography>
       );
     },
   },
@@ -285,6 +283,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'defaultRate',
     header: 'Default rate',
     size: 140,
+    minSize: 110,
     muiTableBodyCellProps: {
       align: 'center',
     },
@@ -293,17 +292,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {utils.formatPercent((renderedCellValue as number) / 100)}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {utils.formatPercent((renderedCellValue as number) / 100)}
+        </Typography>
       );
     },
   },
@@ -311,6 +308,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     accessorKey: 'originationDate',
     header: 'Origination date',
     size: 140,
+    minSize: 110,
     muiTableBodyCellProps: {
       align: 'center',
     },

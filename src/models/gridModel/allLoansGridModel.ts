@@ -63,6 +63,14 @@ export const allLoansGridQueryModel = types
       self.searchCondition.maturityEndDate = data.endDate;
       self.page = 0;
     },
+    resetDefault() {
+      self.searchCondition.investors =
+        [] as unknown as typeof self.searchCondition.investors;
+      self.searchCondition.maturityStartDate = '';
+      self.searchCondition.maturityEndDate = '';
+      self.searchCondition.repaymentStatusList =
+        [] as unknown as typeof self.searchCondition.repaymentStatusList;
+    },
   }));
 
 export type IAllLoansGridModel = SnapshotOut<typeof allLoansGridQueryModel>;

@@ -1,13 +1,9 @@
-import { FC, useRef, useState } from 'react';
-import { Box, Fade, Stack, Typography } from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
+import { Box, Stack, Typography } from '@mui/material';
+import { format, isValid } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
-import { useAsync, useAsyncFn, useAsyncRetry } from 'react-use';
-
-import { useRenderPdf, useSwitch } from '@/hooks';
-
-import { IGetExtensionPdfParam } from '@/types/loan/extension';
+import { FC, useRef, useState } from 'react';
+import { useAsyncFn, useAsyncRetry } from 'react-use';
 
 import {
   StyledButton,
@@ -21,6 +17,8 @@ import {
 import { Layout, SideMenu } from '@/components/molecules';
 import { MATURITY_DATE } from '@/constant';
 
+import { useRenderPdf, useSwitch } from '@/hooks';
+
 import {
   _createExtensionPdf,
   _downloadExtensionPdf,
@@ -28,6 +26,8 @@ import {
   _viewExtensionPdf,
 } from '@/request';
 import { MaturityDateTypeEnum } from '@/types/enum';
+
+import { IGetExtensionPdfParam } from '@/types/loan/extension';
 import { createFile, utils } from '@/utils';
 
 export const LoanExtensionRequest: FC = () => {
@@ -40,7 +40,7 @@ export const LoanExtensionRequest: FC = () => {
 
   const [changeRate, setChangeRate] = useState(12);
   const [extensionFee, setExtensionFee] = useState(1);
-  const [executionDate, setExtensionDate] = useState<Dayjs | null>(dayjs());
+  const [executionDate, setExtensionDate] = useState<Date | null>(new Date());
   const [maturityDate, setMaturityDate] = useState(
     MaturityDateTypeEnum.EXTEND_3,
   );
@@ -72,7 +72,9 @@ export const LoanExtensionRequest: FC = () => {
     )})`,
     'Default rate': utils.formatPercent((value?.data?.defaultRate || 0) / 100),
     'Change the interest rate to:': utils.formatPercent(changeRate / 100),
-    'Execution date': dayjs(executionDate).format('MM/DD/YYYY'),
+    'Execution date': isValid(executionDate)
+      ? format(executionDate as Date, 'MM/dd/yyyy')
+      : '',
   };
 
   const [state, createExtensionPdf] = useAsyncFn(
@@ -222,7 +224,7 @@ export const LoanExtensionRequest: FC = () => {
                     extendMonth: maturityDate,
                     extensionFee,
                     changeInterestRate: changeRate,
-                    executionDate: executionDate.format('YYYY-MM-DD'),
+                    executionDate: format(executionDate, 'YYYY-MM-DD'),
                     maturityDate: value.data.maturityDate,
                     extensionFeeAmount: 0,
                   });

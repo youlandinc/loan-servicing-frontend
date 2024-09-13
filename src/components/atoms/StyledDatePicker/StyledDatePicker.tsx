@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { StyledDatePickerProps, StyledDatePickerStyles } from './index';
 
@@ -18,7 +18,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
 }) => {
   const { textField } = slotProps || {};
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         closeOnSelect
         disabled={disabled}

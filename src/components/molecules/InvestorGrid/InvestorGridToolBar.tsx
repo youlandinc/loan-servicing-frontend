@@ -36,6 +36,9 @@ export const InvestorGridToolBar: FC = observer(() => {
       propertyAddressRef.current.value =
         investorGridQueryModel.searchCondition.propertyAddress;
     }
+    return () => {
+      investorGridQueryModel.resetDefault();
+    };
   }, []);
 
   return (
@@ -72,7 +75,7 @@ export const InvestorGridToolBar: FC = observer(() => {
           updateQueryDebounce('status', e);
         }}
         options={PIPELINE_STATUS}
-        value={investorGridQueryModel.searchCondition.repaymentStatusList}
+        value={[...investorGridQueryModel.searchCondition.repaymentStatusList]}
       />
       <StyledSearchLoanOfficer
         defaultLabel={'Investor'}

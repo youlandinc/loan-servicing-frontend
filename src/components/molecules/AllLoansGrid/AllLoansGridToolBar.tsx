@@ -35,6 +35,9 @@ export const AllLoansGridToolBar: FC = observer(() => {
       propertyAddressRef.current.value =
         allLoansGridQueryModel.searchCondition.propertyAddress;
     }
+    return () => {
+      allLoansGridQueryModel.resetDefault();
+    };
   }, []);
 
   return (

@@ -9,7 +9,7 @@ const DynamicLoanDetails = dynamic(
       (mod) => mod.LoanDetails,
     ),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 

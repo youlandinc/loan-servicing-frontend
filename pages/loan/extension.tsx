@@ -9,7 +9,7 @@ const DynamicLoanExtensionRequest = dynamic(
       (mod) => mod.LoanExtensionRequest,
     ),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 

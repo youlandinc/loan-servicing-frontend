@@ -9,7 +9,7 @@ const DynamicLoanOverview = dynamic(
       (mod) => mod.LoanOverview,
     ),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 

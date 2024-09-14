@@ -132,6 +132,7 @@ export const Portfolio: FC = observer(() => {
           <Stack direction={'row'} gap={1}>
             {menus.map((item, index) => (
               <StyledButton
+                component={'div'}
                 key={index}
                 onClick={() => setPortfolioListType(item.key)}
                 size={'small'}

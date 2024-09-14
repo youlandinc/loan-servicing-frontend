@@ -10,9 +10,3 @@ export interface HttpError {
   header: string;
   variant: HttpVariantType;
 }
-
-export type TOption = {
-  key: string;
-  value: string | number;
-  label: string;
-};

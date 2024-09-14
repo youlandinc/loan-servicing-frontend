@@ -5,7 +5,7 @@ export * from './Handler';
 export * from './TypeOf';
 
 export const utils = {
-  findLabel: (options: TOption[], val: number | string | undefined): string => {
+  findLabel: (options: Option[], val: number | string | undefined): string => {
     return options.find((item) => item.value === val)?.label || '';
   },
   formatDollar: (amount: number | undefined | null, digit = 2): string => {

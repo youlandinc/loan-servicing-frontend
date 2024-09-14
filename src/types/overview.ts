@@ -9,8 +9,8 @@ export enum LoanProductCategoryEnum {
 
 export enum LoanPurposeEnum {
   default = '',
-  purchase = 'Purchase',
-  refinance = 'Refinance',
+  purchase = 'PURCHASE',
+  refinance = 'REFINANCE',
 }
 
 export enum LoanTimelineStatusEnum {

@@ -9,7 +9,7 @@ const DynamicLoanDraws = dynamic(
       (mod) => mod.LoanDraws,
     ),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 

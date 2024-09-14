@@ -9,7 +9,7 @@ const DynamicLoanPayoff = dynamic(
       (mod) => mod.LoanPayoff,
     ),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 

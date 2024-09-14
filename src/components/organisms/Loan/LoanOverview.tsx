@@ -91,26 +91,23 @@ const ACTION_BUTTONS = [
 ];
 
 const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
-  let result: Array<any> = [];
+  let result: Array<any> = [
+    {
+      label: 'Loan purpose',
+      value: utils.findLabel(LOAN_PURPOSE, loanInfo.loanPurpose),
+    },
+  ];
   switch (loanInfo.productCategory) {
     case LoanProductCategoryEnum.stabilized_bridge: {
       result =
         loanInfo.loanPurpose === LoanPurposeEnum.purchase
-          ? [
-              {
-                label: 'Loan purpose',
-                value: utils.findLabel(LOAN_PURPOSE, loanInfo.loanPurpose),
-              },
+          ? result.concat([
               {
                 label: 'Loan to value',
                 value: `${loanInfo.loanToValue}%`,
               },
-            ]
-          : [
-              {
-                label: 'Loan purpose',
-                value: utils.findLabel(LOAN_PURPOSE, loanInfo.loanPurpose),
-              },
+            ])
+          : result.concat([
               {
                 label: 'Cash-out amount',
                 value: utils.formatDollar(loanInfo.cashOutAmount),
@@ -119,17 +116,13 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
                 label: 'Loan to value',
                 value: `${loanInfo.loanValue}%`,
               },
-            ];
+            ]);
       break;
     }
     case LoanProductCategoryEnum.fix_and_flip: {
       result =
         loanInfo.loanPurpose === LoanPurposeEnum.purchase
-          ? [
-              {
-                label: 'Loan purpose',
-                value: utils.findLabel(LOAN_PURPOSE, loanInfo.loanPurpose),
-              },
+          ? result.concat([
               {
                 label: 'Rehab cost',
                 value: utils.formatDollar(loanInfo.rehabAmount),
@@ -142,8 +135,8 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
                 label: 'Loan to cost',
                 value: `${loanInfo.loanCost}%`,
               },
-            ]
-          : [
+            ])
+          : result.concat([
               {
                 label: 'Loan purpose',
                 value: utils.findLabel(LOAN_PURPOSE, loanInfo.loanPurpose),
@@ -164,7 +157,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
                 label: 'Loan to cost',
                 value: `${loanInfo.loanCost}%`,
               },
-            ];
+            ]);
       break;
     }
   }

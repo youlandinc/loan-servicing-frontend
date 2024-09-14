@@ -7,7 +7,7 @@ export interface StyledDateRangeProps
   label?: string;
   onChange: (
     date: [Date | null, Date | null],
-    event: React.SyntheticEvent<any> | undefined,
+    event?: React.SyntheticEvent<any> | undefined,
   ) => void;
   sx?: SxProps;
 }

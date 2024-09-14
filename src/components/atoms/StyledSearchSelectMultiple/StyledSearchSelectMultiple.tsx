@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { Icon, Stack, SxProps, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -32,6 +32,10 @@ export const StyledSearchSelectMultiple: FC<
   StyledSearchSelectMultipleProps
 > = ({ onChange, label, sx, value, options }) => {
   const [selected, setSelected] = useState<any[]>([]);
+
+  useEffect(() => {
+    value && setSelected(value);
+  }, []);
 
   return (
     <StyledButton

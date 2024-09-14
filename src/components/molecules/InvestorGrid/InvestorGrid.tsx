@@ -1,3 +1,8 @@
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useMemo } from 'react';
+import useSWR from 'swr';
+
 import {
   AllLoansPagination,
   groupCommonColumns,
@@ -6,10 +11,6 @@ import {
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
 import { PortfolioGridTypeEnum } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
-import useSWR from 'swr';
 
 export const InvestorGrid: FC = observer(() => {
   const {

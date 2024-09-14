@@ -1,11 +1,14 @@
-import { TOption } from '@/types';
 import { format } from 'date-fns';
+import { ReactNode } from 'react';
 
 export * from './Handler';
 export * from './TypeOf';
 
 export const utils = {
-  findLabel: (options: Option[], val: number | string | undefined): string => {
+  findLabel: (
+    options: Option[],
+    val: number | string | undefined,
+  ): string | ReactNode => {
     return options.find((item) => item.value === val)?.label || '';
   },
   formatDollar: (amount: number | undefined | null, digit = 2): string => {

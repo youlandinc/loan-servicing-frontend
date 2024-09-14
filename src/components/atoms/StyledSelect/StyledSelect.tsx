@@ -77,7 +77,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
       >
         {options.map((item) => (
           <MenuItem
-            key={item.label}
+            key={item.key}
             sx={{ p: 1.5, fontSize: 14 }}
             value={item.value}
           >

@@ -1,3 +1,8 @@
+import { FC, useEffect, useRef } from 'react';
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -8,10 +13,6 @@ import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import { useMst } from '@/models/Root';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useRef } from 'react';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -35,8 +36,9 @@ export const AllLoansGridToolBar: FC = observer(() => {
       propertyAddressRef.current.value =
         allLoansGridQueryModel.searchCondition.propertyAddress;
     }
+
     return () => {
-      allLoansGridQueryModel.resetDefault();
+      // allLoansGridQueryModel.resetDefault();
     };
   }, []);
 
@@ -54,6 +56,18 @@ export const AllLoansGridToolBar: FC = observer(() => {
         variant={'outlined'}
       />
       <StyledSearchDateRange
+        dateRange={[
+          isValid(
+            new Date(allLoansGridQueryModel.searchCondition.maturityStartDate),
+          )
+            ? new Date(allLoansGridQueryModel.searchCondition.maturityStartDate)
+            : null,
+          isValid(
+            new Date(allLoansGridQueryModel.searchCondition.maturityEndDate),
+          )
+            ? new Date(allLoansGridQueryModel.searchCondition.maturityEndDate)
+            : null,
+        ]}
         hanelClear={() => {
           updateQueryDateRangeDebounce({
             startDate: '',

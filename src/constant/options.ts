@@ -11,7 +11,6 @@ import {
   PropertyTypeEnum,
 } from '@/types/enum';
 import { LoanProductCategoryEnum, LoanPurposeEnum } from '@/types/overview';
-import { TOption } from '@/types';
 
 export const LOAN_PRODUCT_CATEGORY: Option[] = [
   {

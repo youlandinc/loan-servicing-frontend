@@ -30,3 +30,7 @@ export * from './StyledLoading';
 export * from './StyledDaysDelinquent';
 
 export * from './StyledDaysMaturity';
+
+export * from './StyledDelinquentSelect';
+
+export * from './StyledMaturitySelect';

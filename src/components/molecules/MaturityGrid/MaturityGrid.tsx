@@ -5,7 +5,6 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
-  delinquentColumns,
   GroupLoans,
   maturityColumns,
 } from '@/components/molecules';

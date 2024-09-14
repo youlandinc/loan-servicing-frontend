@@ -37,7 +37,7 @@ export const InvestorGridToolBar: FC = observer(() => {
         investorGridQueryModel.searchCondition.propertyAddress;
     }
     return () => {
-      investorGridQueryModel.resetDefault();
+      // investorGridQueryModel.resetDefault();
     };
   }, []);
 
@@ -55,6 +55,18 @@ export const InvestorGridToolBar: FC = observer(() => {
         variant={'outlined'}
       />
       <StyledSearchDateRange
+        dateRange={[
+          isValid(
+            new Date(investorGridQueryModel.searchCondition.maturityStartDate),
+          )
+            ? new Date(investorGridQueryModel.searchCondition.maturityStartDate)
+            : null,
+          isValid(
+            new Date(investorGridQueryModel.searchCondition.maturityEndDate),
+          )
+            ? new Date(investorGridQueryModel.searchCondition.maturityEndDate)
+            : null,
+        ]}
         hanelClear={() => {
           updateQueryDateRangeDebounce({
             startDate: '',

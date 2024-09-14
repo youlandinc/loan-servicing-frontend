@@ -1,20 +1,18 @@
-import { useMst } from '@/models/Root';
-import { listModeDefaultStyleProps } from '@/styles/allLoansGridStyles';
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { observer } from 'mobx-react-lite';
-import { FC, useMemo } from 'react';
+import { Stack } from '@mui/material';
 import {
   MRT_ColumnDef,
-  MRT_ExpandButton,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
-import useSWR from 'swr';
-import { CircularProgress, Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
+import { FC, useMemo } from 'react';
+import useSWR from 'swr';
 
 import { AllLoansPagination, commonColumns } from '@/components/molecules';
+import { useMst } from '@/models/Root';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const AllLoansGrid: FC = observer(() => {
   const router = useRouter();
@@ -42,7 +40,9 @@ export const AllLoansGrid: FC = observer(() => {
     async ([p]) => {
       return await _getAllLoansList(p);
     },
-    // { revalidateOnMount: true },
+    {
+      revalidateOnFocus: true,
+    },
   );
 
   const columns = useMemo(() => commonColumns, []);

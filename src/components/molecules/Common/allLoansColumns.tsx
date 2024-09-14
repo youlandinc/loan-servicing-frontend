@@ -177,7 +177,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatDollar(renderedCellValue as number, 0)}
+          {utils.formatDollar(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -202,7 +202,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatDollar(renderedCellValue as number, 0)}
+          {utils.formatDollar(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -274,7 +274,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatDollar(renderedCellValue as number, 0)}
+          {utils.formatDollar(renderedCellValue as number)}
         </Typography>
       );
     },

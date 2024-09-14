@@ -1,9 +1,8 @@
-import { FC, useMemo } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import dynamic from 'next/dynamic';
-
-import { StyledButton } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledDelinquentSelect,
+  StyledMaturitySelect,
+} from '@/components/atoms';
 import { Layout } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 
@@ -13,6 +12,10 @@ import DeliquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 
 import { PortfolioGridTypeEnum } from '@/types/enum';
+import { Box, Icon, Stack, Typography } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import dynamic from 'next/dynamic';
+import React, { FC, useMemo } from 'react';
 
 const AllLoansGrid = dynamic(
   () =>
@@ -79,6 +82,8 @@ export const Portfolio: FC = observer(() => {
     portfolio: {
       displayType: portfolioListType,
       updateDisplayType: setPortfolioListType,
+      delinquentGridQueryModel,
+      maturityGridQueryModel,
     },
   } = useMst();
 
@@ -100,14 +105,14 @@ export const Portfolio: FC = observer(() => {
       },
       {
         icon: DeliquentIcon,
-        label: 'Delinquent',
+        label: 'Delinquent: ',
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,
         component: <DelinquentGrid />,
       },
       {
         icon: MaturityIcon,
-        label: 'Maturity',
+        label: 'Maturity:',
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
@@ -162,6 +167,12 @@ export const Portfolio: FC = observer(() => {
                   >
                     {item.label}
                   </Typography>
+                  {item.key === PortfolioGridTypeEnum.DELINQUENT && (
+                    <StyledDelinquentSelect />
+                  )}
+                  {item.key === PortfolioGridTypeEnum.MATURITY && (
+                    <StyledMaturitySelect />
+                  )}
                 </Stack>
               </StyledButton>
             ))}

@@ -805,13 +805,15 @@ export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
     commonColumns.filter((item) => item.accessorKey !== 'repaymentStatus'),
   ),
 );
-
 export const maturityColumns = (type: MaturityTimeRangeEnum) => {
   return transferFirstColumn(
     [
       {
         accessorKey: 'diffDays',
-        header: 'Days until maturity',
+        header:
+          type === MaturityTimeRangeEnum.ALREADY_END
+            ? 'Days past maturity'
+            : 'Days until maturity',
         size: 150,
         minSize: 150,
         muiTableBodyCellProps: {

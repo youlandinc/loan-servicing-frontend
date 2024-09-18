@@ -124,10 +124,10 @@ export enum MaturityDateTypeEnum {
 }
 
 export enum PortfolioGridTypeEnum {
-  ALL_LOANS = 'ALL_LOANS',
-  BY_INVESTOR = 'BY_INVESTOR',
-  DELINQUENT = 'DELINQUENT',
-  MATURITY = 'MATURITY',
+  ALL_LOANS = 'SERVICING_ALL_LOAN',
+  BY_INVESTOR = 'SERVICING_BY_INVESTOR',
+  DELINQUENT = 'SERVICING_DELINQUENT',
+  MATURITY = 'SERVICING_MATURITY',
 }
 
 export enum DelinquentTimeRangeEnum {

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { Instance, types } from 'mobx-state-tree';
-import { MaturityGrid } from '@/components/molecules/MaturityGrid';
+import { MaturityGrid } from '@/components/molecules/GridMaturity';
 
 import { User } from '@/types/user';
 import {

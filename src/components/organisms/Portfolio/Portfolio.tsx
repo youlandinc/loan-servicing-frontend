@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
-import DeliquentIcon from '@/svg/portfolio/delinquent_list.svg';
+import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 
 import { PortfolioGridTypeEnum } from '@/types/enum';
@@ -19,14 +19,14 @@ import React, { FC, useMemo } from 'react';
 
 const AllLoansGrid = dynamic(
   () =>
-    import('@/components/molecules/AllLoansGrid').then(
+    import('@/components/molecules/GridAllLoans').then(
       (mode) => mode.AllLoansGrid,
     ),
   { ssr: false },
 );
 const AllLoansGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/AllLoansGrid').then(
+    import('@/components/molecules/GridAllLoans').then(
       (mode) => mode.AllLoansGridToolBar,
     ),
   { ssr: false },
@@ -34,14 +34,14 @@ const AllLoansGridToolBar = dynamic(
 
 const InvestorGrid = dynamic(
   () =>
-    import('@/components/molecules/InvestorGrid').then(
+    import('@/components/molecules/GridInvestor').then(
       (mode) => mode.InvestorGrid,
     ),
   { ssr: false },
 );
 const InvestorGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/InvestorGrid').then(
+    import('@/components/molecules/GridInvestor').then(
       (mode) => mode.InvestorGridToolBar,
     ),
   { ssr: false },
@@ -49,14 +49,14 @@ const InvestorGridToolBar = dynamic(
 
 const DelinquentGrid = dynamic(
   () =>
-    import('@/components/molecules/DelinquentGrid').then(
+    import('@/components/molecules/GridDelinquent').then(
       (mode) => mode.DelinquentGrid,
     ),
   { ssr: false },
 );
 const DelinquentGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/DelinquentGrid').then(
+    import('@/components/molecules/GridDelinquent').then(
       (mode) => mode.DelinquentGridToolBar,
     ),
   { ssr: false },
@@ -64,14 +64,14 @@ const DelinquentGridToolBar = dynamic(
 
 const MaturityGrid = dynamic(
   () =>
-    import('@/components/molecules/MaturityGrid').then(
+    import('@/components/molecules/GridMaturity').then(
       (mode) => mode.MaturityGrid,
     ),
   { ssr: false },
 );
 const MaturityGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/MaturityGrid').then(
+    import('@/components/molecules/GridMaturity').then(
       (mode) => mode.MaturityGridToolBar,
     ),
   { ssr: false },
@@ -104,21 +104,35 @@ export const Portfolio: FC = observer(() => {
         component: <InvestorGrid />,
       },
       {
-        icon: DeliquentIcon,
-        label: 'Delinquent: ',
+        icon: DelinquentIcon,
+        label:
+          portfolioListType === PortfolioGridTypeEnum.DELINQUENT ? (
+            <>
+              Delinquent: <StyledDelinquentSelect />
+            </>
+          ) : (
+            'Delinquent'
+          ),
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,
         component: <DelinquentGrid />,
       },
       {
         icon: MaturityIcon,
-        label: 'Maturity:',
+        label:
+          portfolioListType === PortfolioGridTypeEnum.MATURITY ? (
+            <>
+              Maturity: <StyledMaturitySelect />
+            </>
+          ) : (
+            'Maturity'
+          ),
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
       },
     ],
-    [],
+    [portfolioListType],
   );
 
   return (
@@ -165,12 +179,6 @@ export const Portfolio: FC = observer(() => {
                   <Typography color={'action.active'} variant={'body2'}>
                     {item.label}
                   </Typography>
-                  {item.key === PortfolioGridTypeEnum.DELINQUENT && (
-                    <StyledDelinquentSelect />
-                  )}
-                  {item.key === PortfolioGridTypeEnum.MATURITY && (
-                    <StyledMaturitySelect />
-                  )}
                 </Stack>
               </StyledButton>
             ))}

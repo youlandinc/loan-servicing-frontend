@@ -123,13 +123,13 @@ export const Portfolio: FC = observer(() => {
 
   return (
     <Layout isHomepage={false}>
-      <Stack gap={1.5} height={'100%'} pb={3} pt={3} px={6}>
+      <Stack height={'100%'} pb={3} pt={3} px={6}>
         <Stack
           alignItems={'center'}
           direction={'row'}
           justifyContent={'space-between'}
         >
-          <Stack direction={'row'} gap={1}>
+          <Stack direction={'row'}>
             {menus.map((item, index) => (
               <StyledButton
                 component={'div'}
@@ -139,9 +139,15 @@ export const Portfolio: FC = observer(() => {
                 sx={{
                   backgroundColor:
                     item.key === portfolioListType
-                      ? 'rgba(91, 118, 188, 0.15) !important'
+                      ? '#F4F6FA !important'
                       : 'transparent !important',
                   fontWeight: '400 !important',
+                  border: item.key === portfolioListType ? '1px solid' : 'none',
+                  borderColor: 'border.normal',
+                  borderRadius: '16px 16px 0px 0px !important',
+                  borderBottom: 'none !important',
+                  px: '24px !important',
+                  py: '12px !important',
                 }}
                 variant={'text'}
               >
@@ -152,20 +158,11 @@ export const Portfolio: FC = observer(() => {
                       width: 16,
                       height: 16,
                       '& path': {
-                        fill:
-                          item.key === portfolioListType
-                            ? '#5B76BC'
-                            : '#636A7C',
+                        fill: '#636A7C',
                       },
                     }}
                   />
-                  <Typography
-                    sx={{
-                      color:
-                        item.key === portfolioListType ? '#5B76BC' : '#636A7C',
-                    }}
-                    variant={'body2'}
-                  >
+                  <Typography color={'action.active'} variant={'body2'}>
                     {item.label}
                   </Typography>
                   {item.key === PortfolioGridTypeEnum.DELINQUENT && (
@@ -184,10 +181,21 @@ export const Portfolio: FC = observer(() => {
             </Box>
           ))}
         </Stack>
-        <Box flex={1}>
+        <Box flex={1} mt={'-1px'}>
           {menus.map((item, index) => {
             return (
-              <Box flex={1} hidden={item.key !== portfolioListType} key={index}>
+              <Box
+                border={'1px solid'}
+                borderColor={'border.normal'}
+                borderRadius={4}
+                flex={1}
+                hidden={item.key !== portfolioListType}
+                key={index}
+                sx={{
+                  borderTopLeftRadius: index === 0 ? 0 : 16,
+                  overflow: 'hidden',
+                }}
+              >
                 {item.component}
               </Box>
             );

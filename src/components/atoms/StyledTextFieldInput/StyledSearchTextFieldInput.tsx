@@ -57,7 +57,7 @@ export const StyledSearchTextFieldInput: FC<StyledTextFieldInputProps> = ({
         transition: 'width 0.3s ease-in-out',
         '& input': { py: 1.25, fontSize: 14 },
         '& .MuiOutlinedInput-root': {
-          height: '34px !important',
+          height: '32px !important',
           '&.Mui-focused fieldset': {
             border: '1px solid',
             borderColor: 'border.focus',

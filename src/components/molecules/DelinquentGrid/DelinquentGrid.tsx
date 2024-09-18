@@ -48,7 +48,7 @@ export const DelinquentGrid: FC = observer(() => {
   const totalLoanAmount = data?.data?.totalAmount ?? 0;
 
   return (
-    <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
+    <Stack>
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}

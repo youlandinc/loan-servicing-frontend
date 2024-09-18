@@ -307,9 +307,9 @@ export const AllLoansGrid: FC = observer(() => {
     },*/
   });
   return (
-    <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
+    <Stack>
       <MRT_TableContainer
-        sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+        // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
         table={table}
       />
       <AllLoansPagination

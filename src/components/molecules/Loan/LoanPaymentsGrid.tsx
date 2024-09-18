@@ -176,6 +176,8 @@ export const LoanPaymentsGrid: FC<{
         position: 'relative',
         boxShadow: 'none',
         fontWeight: 500,
+        border: 'none',
+        height: 40,
         '&:not(:last-of-type)': {
           '&:after': {
             display: 'block',
@@ -230,11 +232,11 @@ export const LoanPaymentsGrid: FC<{
   });
 
   return (
-    <Stack flexShrink={0} height={'auto'} maxHeight={maxHeight}>
+    <Stack flex={1} height={'auto'} maxHeight={maxHeight} width={'100%'}>
       <Typography pb={1} pl={3} pt={2} variant={'subtitle1'}>
         Payment history
       </Typography>
-      <MRT_TableContainer table={table} />
+      <MRT_TableContainer sx={{ height: '100%' }} table={table} />
       {list.length > 0 && (
         <LoanPaymentsGridFooter
           onPageChange={(page) => onPageChange(page)}

@@ -3,7 +3,7 @@ import { Icon, Stack, Tooltip, Typography } from '@mui/material';
 
 export interface LoanOverviewCardProps {
   header: string;
-  headerValue: string;
+  headerValue: ReactNode;
   headerIcon: any | ReactNode;
   theme?: 'light' | 'dark' | 'warning';
   listData: Array<{ label: ReactNode; value: ReactNode }>;

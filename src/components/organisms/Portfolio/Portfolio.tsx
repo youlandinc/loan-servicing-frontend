@@ -1,9 +1,14 @@
 import {
+  ColumnsOrderDialog,
   StyledButton,
   StyledDelinquentSelect,
   StyledMaturitySelect,
 } from '@/components/atoms';
-import { Layout } from '@/components/molecules';
+import {
+  commonColumns,
+  Layout,
+  transferOrderColumns,
+} from '@/components/molecules';
 import { useMst } from '@/models/Root';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
@@ -188,6 +193,7 @@ export const Portfolio: FC = observer(() => {
               {item.key === portfolioListType && item.queryComponent}
             </Box>
           ))}
+          <ColumnsOrderDialog columns={transferOrderColumns} open={true} />
         </Stack>
         <Box flex={1} mt={'-1px'}>
           {menus.map((item, index) => {

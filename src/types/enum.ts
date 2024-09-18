@@ -144,3 +144,9 @@ export enum MaturityTimeRangeEnum {
   NEXT_MONTH_END = 'NEXT_MONTH_END',
   ALREADY_END = 'ALREADY_END',
 }
+
+export enum ColumnPiningDirectionEnum {
+  left = 'LEFT',
+  right = 'RIGHT',
+  center = 'CENTER',
+}

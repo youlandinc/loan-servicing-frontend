@@ -755,6 +755,17 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   },*/
 ];
 
+export const transferOrderColumns = commonColumns.map((item, index) => ({
+  field: item.accessorKey,
+  headerName: item.header,
+  columnWidth: item.size,
+  sort: index,
+  visibility: true,
+  pinType: 'CENTER',
+  leftOrder: null,
+  rightOrder: null,
+}));
+
 const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
   return columns.map((item: any, index) => {
     return {

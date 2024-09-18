@@ -10,7 +10,10 @@ import {
   ProductCategoryEnum,
   PropertyTypeEnum,
 } from '@/types/enum';
-import { LoanProductCategoryEnum, LoanPurposeEnum } from '@/types/overview';
+import {
+  LoanProductCategoryEnum,
+  LoanPurposeEnum,
+} from '@/types/loan/overview';
 
 export const LOAN_PRODUCT_CATEGORY: Option[] = [
   {

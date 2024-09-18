@@ -49,7 +49,7 @@ import {
   CommentTypeEnum,
   LoanProductCategoryEnum,
   LoanPurposeEnum,
-} from '@/types/overview';
+} from '@/types/loan/overview';
 import { PipelineStatusEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import {

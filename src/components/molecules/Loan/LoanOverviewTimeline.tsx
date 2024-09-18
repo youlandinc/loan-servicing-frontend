@@ -3,7 +3,7 @@ import { Stack, Tooltip, Typography } from '@mui/material';
 import {
   LoanTimelineStatusEnum,
   OverviewRepaymentTimeLine,
-} from '@/types/overview';
+} from '@/types/loan/overview';
 import { utils } from '@/utils';
 
 export interface LoanOverviewTimelineProps {

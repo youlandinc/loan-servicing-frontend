@@ -5,7 +5,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useRouter } from 'next/router';
 
 import { utils } from '@/utils';
-import { OverviewOutstandingPayAble } from '@/types/overview';
+import { OverviewOutstandingPayAble } from '@/types/loan/overview';
 
 import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 

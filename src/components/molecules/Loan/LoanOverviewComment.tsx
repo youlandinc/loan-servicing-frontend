@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { CommentItemData } from '@/types/overview';
+import { CommentItemData } from '@/types/loan/overview';
 import { Avatar, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 

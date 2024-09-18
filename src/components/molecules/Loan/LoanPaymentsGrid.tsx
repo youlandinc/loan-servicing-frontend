@@ -17,7 +17,7 @@ import { LoanPaymentsGridFooter } from '@/components/molecules';
 
 import { HttpError } from '@/types/common';
 import { _fetchPaymentsHistory } from '@/request/loan/payments';
-import { PaymentHistoryItem } from '@/types/payments';
+import { PaymentHistoryItem } from '@/types/loan/payments';
 
 import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 

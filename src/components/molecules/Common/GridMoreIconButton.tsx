@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 
 import { useSwitch } from '@/hooks';
-import { ColumnsOrderDialog } from '@/components/atoms';
+import { ColumnsOrderDialog, StyledActionsMenu } from '@/components/atoms';
 import { transferOrderColumns } from '@/components/molecules';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -32,21 +32,18 @@ export const GridMoreIconButton: FC = () => {
           sx={{ fontSize: 24, cursor: 'pointer', color: '#202939' }}
         />
       </IconButton>
-      <Menu
+      <StyledActionsMenu
         anchorEl={anchorEl}
+        menus={[
+          {
+            label: 'Change Order of Columns',
+            icon: <VerticalSplitIcon />,
+            handleClick: open,
+          },
+        ]}
         onClose={() => setAnchorEl(null)}
         open={Boolean(anchorEl)}
-      >
-        <MenuItem onClick={open}>
-          <Stack alignItems={'center'} direction={'row'} gap={1.25}>
-            <Icon
-              component={VerticalSplitIcon}
-              sx={{ width: 24, height: 24 }}
-            />
-            <Typography variant={'body2'}>Edit columns</Typography>
-          </Stack>
-        </MenuItem>
-      </Menu>
+      />
       <ColumnsOrderDialog
         columns={transferOrderColumns}
         onClose={close}

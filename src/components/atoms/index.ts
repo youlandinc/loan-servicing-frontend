@@ -36,3 +36,5 @@ export * from './StyledDelinquentSelect';
 export * from './StyledMaturitySelect';
 
 export * from './ColumnsOrderDialog';
+
+export * from './StyledActionsMenu';

@@ -7,7 +7,11 @@ import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 
 import { ellipsisStyle } from '@/styles';
-import { MaturityTimeRangeEnum, PipelineStatusEnum } from '@/types/enum';
+import {
+  ColumnPiningDirectionEnum,
+  MaturityTimeRangeEnum,
+  PipelineStatusEnum,
+} from '@/types/enum';
 import { utils } from '@/utils';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
@@ -756,14 +760,13 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
 ];
 
 export const transferOrderColumns = commonColumns.map((item, index) => ({
-  field: item.accessorKey,
+  field: item.accessorKey as string,
   headerName: item.header,
   columnWidth: item.size,
   sort: index,
   visibility: true,
-  pinType: 'CENTER',
+  pinType: 'CENTER' as ColumnPiningDirectionEnum,
   leftOrder: null,
-  rightOrder: null,
 }));
 
 const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {

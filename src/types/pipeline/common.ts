@@ -5,11 +5,10 @@ export type ColumnConfig = {
   sort: number;
   visibility: boolean;
   headerName: string;
-  id: number;
+  id?: number;
   disabled?: boolean;
   columnWidth?: number;
   hidden?: boolean;
   pinType: ColumnPiningDirectionEnum | null;
   leftOrder: number | null;
-  rightOrder: number | null;
 };

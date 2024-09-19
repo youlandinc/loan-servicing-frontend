@@ -1,15 +1,20 @@
 import { Stack } from '@mui/material';
 import {
+  MRT_Column,
   MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import useSWR from 'swr';
 
-import { AllLoansPagination, commonColumns } from '@/components/molecules';
+import {
+  AllLoansPagination,
+  ColumnsHeaderMenus,
+  commonColumns,
+} from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
 import { PortfolioGridTypeEnum } from '@/types/enum';
@@ -20,6 +25,14 @@ export const AllLoansGrid: FC = observer(() => {
   const {
     portfolio: { allLoansGridModel, displayType },
   } = useMst();
+
+  const [anchorElHeader, setAnchorElHeader] = useState<null | HTMLElement>();
+
+  const [headerColumn, setHeaderColumn] = useState<MRT_Column<any>>();
+
+  const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.ALL_LOANS
@@ -131,7 +144,7 @@ export const AllLoansGrid: FC = observer(() => {
         },
       },
     },
-    muiTableHeadCellProps: {
+    muiTableHeadCellProps: (props) => ({
       sx: {
         bgcolor: '#F4F6FA',
         opacity: 1,
@@ -169,7 +182,31 @@ export const AllLoansGrid: FC = observer(() => {
               pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
         },*/
       },
-    },
+      onClick: (e) => {
+        if (
+          (e.target as HTMLElement).className?.includes(
+            'Mui-TableHeadCell-ResizeHandle-Wrapper',
+          ) ||
+          (e.target as HTMLElement).className?.includes(
+            'Mui-TableHeadCell-ResizeHandle-Divider',
+          )
+        ) {
+          return;
+        }
+        const id = props.column.id;
+        if (id === 'mrt-row-select') {
+          return;
+        }
+        console.log(123);
+        /*        ColumnIdToSortIdMap[props.column.id]
+            ? setHeaderSortDisabled(false)
+            : setHeaderSortDisabled(true);*/
+
+        setAnchorEl(e.currentTarget);
+        setTableHeaderIndex(props.column.getIndex());
+        setHeaderColumn(props.column);
+      },
+    }),
     muiTableContainerProps: {
       style: {
         maxHeight: 'calc(100vh - 212px)',
@@ -310,31 +347,38 @@ export const AllLoansGrid: FC = observer(() => {
     },*/
   });
   return (
-    <Stack>
-      <MRT_TableContainer
-        // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-        table={table}
+    <>
+      <Stack>
+        <MRT_TableContainer
+          // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+          table={table}
+        />
+        <AllLoansPagination
+          currentPage={currentPage}
+          onPageChange={(page: number) => {
+            allLoansGridModel.queryModel.updatePage(
+              page,
+              allLoansGridModel.queryModel.size,
+            );
+          }}
+          onRowsPerPageChange={(e) => {
+            allLoansGridModel.queryModel.updatePage(
+              0,
+              e.target.value as unknown as number,
+            );
+          }}
+          pageCount={totalPages}
+          rowCount={rowsTotal}
+          rowsPerPage={50}
+          sx={{ borderTop: '1px solid #EDF1FF' }}
+          totalLoanAmount={totalLoanAmount}
+        />
+      </Stack>
+      <ColumnsHeaderMenus
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
       />
-      <AllLoansPagination
-        currentPage={currentPage}
-        onPageChange={(page: number) => {
-          allLoansGridModel.queryModel.updatePage(
-            page,
-            allLoansGridModel.queryModel.size,
-          );
-        }}
-        onRowsPerPageChange={(e) => {
-          allLoansGridModel.queryModel.updatePage(
-            0,
-            e.target.value as unknown as number,
-          );
-        }}
-        pageCount={totalPages}
-        rowCount={rowsTotal}
-        rowsPerPage={50}
-        sx={{ borderTop: '1px solid #EDF1FF' }}
-        totalLoanAmount={totalLoanAmount}
-      />
-    </Stack>
+    </>
   );
 });

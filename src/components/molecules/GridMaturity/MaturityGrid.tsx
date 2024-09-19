@@ -14,17 +14,19 @@ import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 export const MaturityGrid: FC = observer(() => {
   const {
-    portfolio: { maturityGridQueryModel, displayType },
+    portfolio: { maturityGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.MATURITY
       ? [
           {
-            ...maturityGridQueryModel,
+            ...maturityGridModel.queryModel,
             searchCondition: {
-              ...maturityGridQueryModel.searchCondition,
-              investors: [...maturityGridQueryModel.searchCondition.investors],
+              ...maturityGridModel.queryModel.searchCondition,
+              investors: [
+                ...maturityGridModel.queryModel.searchCondition.investors,
+              ],
             },
           },
           displayType,
@@ -38,10 +40,10 @@ export const MaturityGrid: FC = observer(() => {
   const columns = useMemo(
     () =>
       maturityColumns(
-        maturityGridQueryModel.searchCondition
+        maturityGridModel.queryModel.searchCondition
           .maturityDays as MaturityTimeRangeEnum,
       ),
-    [maturityGridQueryModel.searchCondition.maturityDays],
+    [maturityGridModel.queryModel.searchCondition.maturityDays],
   );
 
   const rowsTotal = data?.data?.totalItems ?? 0;

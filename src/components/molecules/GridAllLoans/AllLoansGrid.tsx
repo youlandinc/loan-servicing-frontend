@@ -18,19 +18,22 @@ export const AllLoansGrid: FC = observer(() => {
   const router = useRouter();
 
   const {
-    portfolio: { allLoansGridQueryModel, displayType },
+    portfolio: { allLoansGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.ALL_LOANS
       ? [
           {
-            ...allLoansGridQueryModel,
+            ...allLoansGridModel.queryModel,
             searchCondition: {
-              ...allLoansGridQueryModel.searchCondition,
-              investors: [...allLoansGridQueryModel.searchCondition.investors],
+              ...allLoansGridModel.queryModel.searchCondition,
+              investors: [
+                ...allLoansGridModel.queryModel.searchCondition.investors,
+              ],
               repaymentStatusList: [
-                ...allLoansGridQueryModel.searchCondition.repaymentStatusList,
+                ...allLoansGridModel.queryModel.searchCondition
+                  .repaymentStatusList,
               ],
             },
           },
@@ -315,10 +318,13 @@ export const AllLoansGrid: FC = observer(() => {
       <AllLoansPagination
         currentPage={currentPage}
         onPageChange={(page: number) => {
-          allLoansGridQueryModel.updatePage(page, allLoansGridQueryModel.size);
+          allLoansGridModel.queryModel.updatePage(
+            page,
+            allLoansGridModel.queryModel.size,
+          );
         }}
         onRowsPerPageChange={(e) => {
-          allLoansGridQueryModel.updatePage(
+          allLoansGridModel.queryModel.updatePage(
             0,
             e.target.value as unknown as number,
           );

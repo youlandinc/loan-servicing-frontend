@@ -14,17 +14,19 @@ import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const InvestorGrid: FC = observer(() => {
   const {
-    portfolio: { investorGridQueryModel, displayType },
+    portfolio: { investorGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.BY_INVESTOR
       ? [
           {
-            ...investorGridQueryModel,
+            ...investorGridModel.queryModel,
             searchCondition: {
-              ...investorGridQueryModel.searchCondition,
-              investors: [...investorGridQueryModel.searchCondition.investors],
+              ...investorGridModel.queryModel.searchCondition,
+              investors: [
+                ...investorGridModel.queryModel.searchCondition.investors,
+              ],
             },
           },
           displayType,

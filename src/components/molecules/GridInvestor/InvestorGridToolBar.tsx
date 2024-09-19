@@ -16,28 +16,28 @@ import { useMst } from '@/models/Root';
 
 export const InvestorGridToolBar: FC = observer(() => {
   const {
-    portfolio: { investorGridQueryModel },
+    portfolio: { investorGridModel },
   } = useMst();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    investorGridQueryModel.updateQueryCondition,
+    investorGridModel.queryModel.updateQueryCondition,
     500,
   );
 
   const [, , updateQueryDateRangeDebounce] = useDebounceFn(
-    investorGridQueryModel.updateQueryDateRange,
+    investorGridModel.queryModel.updateQueryDateRange,
     500,
   );
 
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        investorGridQueryModel.searchCondition.propertyAddress;
+        investorGridModel.queryModel.searchCondition.propertyAddress;
     }
     return () => {
-      // investorGridQueryModel.resetDefault();
+      // investorGridModel.queryModel.resetDefault();
     };
   }, []);
 
@@ -57,14 +57,22 @@ export const InvestorGridToolBar: FC = observer(() => {
       <StyledSearchDateRange
         dateRange={[
           isValid(
-            new Date(investorGridQueryModel.searchCondition.maturityStartDate),
+            new Date(
+              investorGridModel.queryModel.searchCondition.maturityStartDate,
+            ),
           )
-            ? new Date(investorGridQueryModel.searchCondition.maturityStartDate)
+            ? new Date(
+                investorGridModel.queryModel.searchCondition.maturityStartDate,
+              )
             : null,
           isValid(
-            new Date(investorGridQueryModel.searchCondition.maturityEndDate),
+            new Date(
+              investorGridModel.queryModel.searchCondition.maturityEndDate,
+            ),
           )
-            ? new Date(investorGridQueryModel.searchCondition.maturityEndDate)
+            ? new Date(
+                investorGridModel.queryModel.searchCondition.maturityEndDate,
+              )
             : null,
         ]}
         hanelClear={() => {
@@ -87,7 +95,9 @@ export const InvestorGridToolBar: FC = observer(() => {
           updateQueryDebounce('status', e);
         }}
         options={PIPELINE_STATUS}
-        value={[...investorGridQueryModel.searchCondition.repaymentStatusList]}
+        value={[
+          ...investorGridModel.queryModel.searchCondition.repaymentStatusList,
+        ]}
       />
       <StyledSearchLoanOfficer
         defaultLabel={'Investor'}

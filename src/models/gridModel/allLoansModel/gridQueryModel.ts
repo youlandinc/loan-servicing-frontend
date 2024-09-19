@@ -4,7 +4,6 @@ import {
   DelinquentTimeRangeEnum,
   MaturityTimeRangeEnum,
   PipelineMode,
-  RepaymentStatusEnum,
   SortDirection,
 } from '@/types/enum';
 
@@ -73,4 +72,4 @@ export const allLoansGridQueryModel = types
     },
   }));
 
-export type IAllLoansGridModel = SnapshotOut<typeof allLoansGridQueryModel>;
+export type IAllLoansQueryParam = SnapshotOut<typeof allLoansGridQueryModel>;

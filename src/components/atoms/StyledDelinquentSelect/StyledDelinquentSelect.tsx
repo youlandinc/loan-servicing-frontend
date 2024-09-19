@@ -24,7 +24,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
   onChange,
 }) => {
   const {
-    portfolio: { displayType: portfolioListType, delinquentGridQueryModel },
+    portfolio: { displayType: portfolioListType, delinquentGridModel },
   } = useMst();
   const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
 
@@ -98,7 +98,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
             DelinquentTimeRangeOpt.find(
               (item) =>
                 item.value ===
-                (delinquentGridQueryModel.searchCondition
+                (delinquentGridModel.queryModel.searchCondition
                   .delinquentDays as DelinquentTimeRangeEnum),
             )?.label
           }
@@ -111,7 +111,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
           variant={'subtitle3'}
         >
           {state.value?.data?.[
-            delinquentGridQueryModel.searchCondition
+            delinquentGridModel.queryModel.searchCondition
               .delinquentDays as DelinquentTimeRangeEnum
           ] || 0}
         </Typography>
@@ -128,7 +128,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
       </Stack>
       <StyledSelect
         onChange={(e) => {
-          delinquentGridQueryModel.updateQueryCondition(
+          delinquentGridModel.queryModel.updateQueryCondition(
             'delinquentDays',
             e.target.value as DelinquentTimeRangeEnum,
           );
@@ -160,7 +160,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
             height: '100%',
           },
         }}
-        value={delinquentGridQueryModel.searchCondition.delinquentDays}
+        value={delinquentGridModel.queryModel.searchCondition.delinquentDays}
       />
     </StyledButton>
   );

@@ -15,7 +15,7 @@ import { useAsyncFn } from 'react-use';
 
 export const DelinquentGridToolBar: FC = () => {
   const {
-    portfolio: { delinquentGridQueryModel },
+    portfolio: { delinquentGridModel },
   } = useMst();
 
   const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
@@ -25,7 +25,7 @@ export const DelinquentGridToolBar: FC = () => {
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    delinquentGridQueryModel.updateQueryCondition,
+    delinquentGridModel.queryModel.updateQueryCondition,
     500,
   );
 
@@ -59,7 +59,7 @@ export const DelinquentGridToolBar: FC = () => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        delinquentGridQueryModel.searchCondition.propertyAddress;
+        delinquentGridModel.queryModel.searchCondition.propertyAddress;
     }
     getDelinquentRangeOpt();
   }, []);
@@ -93,7 +93,7 @@ export const DelinquentGridToolBar: FC = () => {
               DelinquentTimeRangeOpt.find(
                 (item) =>
                   item.value ===
-                  delinquentGridQueryModel.searchCondition.delinquentDays,
+                  delinquentGridModel.queryModel.searchCondition.delinquentDays,
               )?.label
             }
           </Typography>
@@ -105,7 +105,7 @@ export const DelinquentGridToolBar: FC = () => {
             variant={'subtitle3'}
           >
             {state.value?.data?.[
-              delinquentGridQueryModel.searchCondition
+              delinquentGridModel.queryModel.searchCondition
                 .delinquentDays as DelinquentTimeRangeEnum
             ] || 0}
           </Typography>
@@ -122,7 +122,7 @@ export const DelinquentGridToolBar: FC = () => {
         </Stack>
         <StyledSelect
           onChange={(e) => {
-            delinquentGridQueryModel.updateQueryCondition(
+            delinquentGridModel.queryModel.updateQueryCondition(
               'delinquentDays',
               e.target.value as DelinquentTimeRangeEnum,
             );
@@ -151,7 +151,7 @@ export const DelinquentGridToolBar: FC = () => {
               height: '100%',
             },
           }}
-          value={delinquentGridQueryModel.searchCondition.delinquentDays}
+          value={delinquentGridModel.queryModel.searchCondition.delinquentDays}
         />
       </StyledButton>*/}
     </Stack>

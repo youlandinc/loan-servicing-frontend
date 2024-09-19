@@ -9,6 +9,8 @@ import {
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
+import { GridMoreIconButton } from '@/components/molecules';
+
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
@@ -16,29 +18,29 @@ import { useMst } from '@/models/Root';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
-    portfolio: { allLoansGridQueryModel },
+    portfolio: { allLoansGridModel },
   } = useMst();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    allLoansGridQueryModel.updateQueryCondition,
+    allLoansGridModel.queryModel.updateQueryCondition,
     500,
   );
 
   const [, , updateQueryDateRangeDebounce] = useDebounceFn(
-    allLoansGridQueryModel.updateQueryDateRange,
+    allLoansGridModel.queryModel.updateQueryDateRange,
     500,
   );
 
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        allLoansGridQueryModel.searchCondition.propertyAddress;
+        allLoansGridModel.queryModel.searchCondition.propertyAddress;
     }
 
     return () => {
-      // allLoansGridQueryModel.resetDefault();
+      // allLoansGridModel.queryModel.resetDefault();
     };
   }, []);
 
@@ -58,14 +60,22 @@ export const AllLoansGridToolBar: FC = observer(() => {
       <StyledSearchDateRange
         dateRange={[
           isValid(
-            new Date(allLoansGridQueryModel.searchCondition.maturityStartDate),
+            new Date(
+              allLoansGridModel.queryModel.searchCondition.maturityStartDate,
+            ),
           )
-            ? new Date(allLoansGridQueryModel.searchCondition.maturityStartDate)
+            ? new Date(
+                allLoansGridModel.queryModel.searchCondition.maturityStartDate,
+              )
             : null,
           isValid(
-            new Date(allLoansGridQueryModel.searchCondition.maturityEndDate),
+            new Date(
+              allLoansGridModel.queryModel.searchCondition.maturityEndDate,
+            ),
           )
-            ? new Date(allLoansGridQueryModel.searchCondition.maturityEndDate)
+            ? new Date(
+                allLoansGridModel.queryModel.searchCondition.maturityEndDate,
+              )
             : null,
         ]}
         hanelClear={() => {
@@ -88,7 +98,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
           updateQueryDebounce('repaymentStatusList', e);
         }}
         options={PIPELINE_STATUS}
-        value={allLoansGridQueryModel.searchCondition.repaymentStatusList}
+        value={allLoansGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       <StyledSearchLoanOfficer
         defaultLabel={'Investor'}
@@ -99,6 +109,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
           updateQueryDebounce('investors', []);
         }}
       />
+      <GridMoreIconButton />
     </Stack>
   );
 });

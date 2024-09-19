@@ -193,7 +193,6 @@ export const Portfolio: FC = observer(() => {
               {item.key === portfolioListType && item.queryComponent}
             </Box>
           ))}
-          <ColumnsOrderDialog columns={transferOrderColumns} open={true} />
         </Stack>
         <Box flex={1} mt={'-1px'}>
           {menus.map((item, index) => {

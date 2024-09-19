@@ -14,24 +14,25 @@ import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 export const DelinquentGrid: FC = observer(() => {
   const {
-    portfolio: { delinquentGridQueryModel, displayType },
+    portfolio: { delinquentGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.DELINQUENT
       ? [
           {
-            ...delinquentGridQueryModel,
+            ...delinquentGridModel.queryModel,
             searchCondition: {
-              ...delinquentGridQueryModel.searchCondition,
+              ...delinquentGridModel.queryModel.searchCondition,
               investors: [
-                ...delinquentGridQueryModel.searchCondition.investors,
+                ...delinquentGridModel.queryModel.searchCondition.investors,
               ],
               delinquentDays:
-                delinquentGridQueryModel.searchCondition.delinquentDays ===
-                DelinquentTimeRangeEnum.ALL
+                delinquentGridModel.queryModel.searchCondition
+                  .delinquentDays === DelinquentTimeRangeEnum.ALL
                   ? undefined
-                  : delinquentGridQueryModel.searchCondition.delinquentDays,
+                  : delinquentGridModel.queryModel.searchCondition
+                      .delinquentDays,
             },
           },
           displayType,

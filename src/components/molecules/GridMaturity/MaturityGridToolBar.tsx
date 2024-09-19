@@ -17,7 +17,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export const MaturityGridToolBar: FC = observer((props) => {
   const {
-    portfolio: { maturityGridQueryModel },
+    portfolio: { maturityGridModel },
   } = useMst();
 
   const [opts, setOpts] = useState<Option[]>(MaturityTypeOpt);
@@ -27,7 +27,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    maturityGridQueryModel.updateQueryCondition,
+    maturityGridModel.queryModel.updateQueryCondition,
     500,
   );
 
@@ -61,7 +61,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        maturityGridQueryModel.searchCondition.propertyAddress;
+        maturityGridModel.queryModel.searchCondition.propertyAddress;
     }
     getMaturityRangeOpt();
   }, []);
@@ -95,7 +95,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
               MaturityTypeOpt.find(
                 (item) =>
                   item.value ===
-                  maturityGridQueryModel.searchCondition.maturityDays,
+                  maturityGridModel.queryModel.searchCondition.maturityDays,
               )?.label
             }
           </Typography>
@@ -107,7 +107,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
             variant={'subtitle3'}
           >
             {state.value?.data?.[
-              maturityGridQueryModel.searchCondition
+              maturityGridModel.queryModel.searchCondition
                 .maturityDays as MaturityTimeRangeEnum
             ] || 0}
           </Typography>
@@ -124,7 +124,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
         </Stack>
         <StyledSelect
           onChange={(e) => {
-            maturityGridQueryModel.updateQueryCondition(
+            maturityGridModel.queryModel.updateQueryCondition(
               'maturityDays',
               e.target.value as MaturityTimeRangeEnum,
             );
@@ -153,7 +153,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
               height: '100%',
             },
           }}
-          value={maturityGridQueryModel.searchCondition.maturityDays}
+          value={maturityGridModel.queryModel.searchCondition.maturityDays}
           variant={'filled'}
         />
       </StyledButton>*/}

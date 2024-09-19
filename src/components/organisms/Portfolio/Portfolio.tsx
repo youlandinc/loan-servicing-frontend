@@ -87,8 +87,8 @@ export const Portfolio: FC = observer(() => {
     portfolio: {
       displayType: portfolioListType,
       updateDisplayType: setPortfolioListType,
-      delinquentGridQueryModel,
-      maturityGridQueryModel,
+      delinquentGridModel,
+      maturityGridModel,
     },
   } = useMst();
 
@@ -144,7 +144,7 @@ export const Portfolio: FC = observer(() => {
     <Layout isHomepage={false}>
       <Stack height={'100%'} pb={3} pt={3} px={6}>
         <Stack
-          alignItems={'center'}
+          alignItems={'flex-start'}
           direction={'row'}
           justifyContent={'space-between'}
         >

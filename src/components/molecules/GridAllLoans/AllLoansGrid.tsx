@@ -13,11 +13,13 @@ import useSWR from 'swr';
 import {
   AllLoansPagination,
   ColumnsHeaderMenus,
+  columnsResult,
   commonColumns,
+  defaultColumnPining,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const AllLoansGrid: FC = observer(() => {
   const router = useRouter();
@@ -26,13 +28,15 @@ export const AllLoansGrid: FC = observer(() => {
     portfolio: { allLoansGridModel, displayType },
   } = useMst();
 
-  const [anchorElHeader, setAnchorElHeader] = useState<null | HTMLElement>();
-
-  const [headerColumn, setHeaderColumn] = useState<MRT_Column<any>>();
+  const [headerColumnId, setHeaderColumnId] = useState('');
 
   const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
+  const [columnPiningState, setColumnPiningState] = useState(
+    defaultColumnPining(allLoansGridModel.orderColumns),
+  );
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.ALL_LOANS
@@ -49,6 +53,7 @@ export const AllLoansGrid: FC = observer(() => {
                   .repaymentStatusList,
               ],
             },
+            sort: [...allLoansGridModel.queryModel.sort],
           },
           displayType,
         ]
@@ -63,13 +68,18 @@ export const AllLoansGrid: FC = observer(() => {
 
   const columns = useMemo(() => commonColumns, []);
 
+  const configColumns = useMemo(() => {
+    return columnsResult(columns, allLoansGridModel.orderColumns);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allLoansGridModel.orderColumns]);
+
   const rowsTotal = data?.data?.page?.totalElements ?? 0;
   const totalPages = data?.data?.page?.totalPages ?? 0;
   const totalLoanAmount = data?.data?.totalLoanAmount ?? 0;
   const currentPage = data?.data?.page?.number ?? 0;
 
   const table = useMaterialReactTable({
-    columns: columns as MRT_ColumnDef<any>[],
+    columns: configColumns as MRT_ColumnDef<any>[],
     data: data?.data?.content || [],
     rowCount: rowsTotal,
     enableExpandAll: false, //hide expand all double arrow in column header
@@ -92,7 +102,7 @@ export const AllLoansGrid: FC = observer(() => {
       // columnOrder: configColumnsOrderKeysArr,
       // isLoading: isValidating,
       showSkeletons: isLoading,
-      // columnPinning: columnPiningState,
+      columnPinning: columnPiningState,
     },
     initialState: {
       // showSkeletons: false,
@@ -175,12 +185,10 @@ export const AllLoansGrid: FC = observer(() => {
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
-        /* cursor:
-            pipelineMode === PipelineDisplayMode.LIST_MODE ? 'pointer' : 'unset',
+        cursor: 'pointer',
         '&:hover': {
-          bgcolor:
-              pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
-        },*/
+          bgcolor: '#ececec',
+        },
       },
       onClick: (e) => {
         if (
@@ -197,14 +205,15 @@ export const AllLoansGrid: FC = observer(() => {
         if (id === 'mrt-row-select') {
           return;
         }
-        console.log(123);
+
         /*        ColumnIdToSortIdMap[props.column.id]
             ? setHeaderSortDisabled(false)
             : setHeaderSortDisabled(true);*/
 
         setAnchorEl(e.currentTarget);
         setTableHeaderIndex(props.column.getIndex());
-        setHeaderColumn(props.column);
+        // setHeaderColumn(props.column);
+        setHeaderColumnId(props.column.id);
       },
     }),
     muiTableContainerProps: {
@@ -212,139 +221,6 @@ export const AllLoansGrid: FC = observer(() => {
         maxHeight: 'calc(100vh - 212px)',
       },
     },
-    /*    muiTablePaperProps: {
-      sx: {
-        boxShadow: 'none',
-        '& .MuiAlert-message span': {
-          visibility: 'hidden',
-        },
-        borderRadius: 0,
-      },
-    },
-    muiBottomToolbarProps: {
-      sx: {
-        '& .MuiTypography-body2': {
-          fontSize: 14,
-        },
-        '& .MuiInputLabel-root,& .MuiInput-root': {
-          fontSize: 14,
-        },
-      },
-    },
-    muiTableBodyProps: {
-      sx: {
-        '& tr .groupingTitle': {
-          color: 'text.primary',
-        },
-        '& .MuiTableRow-root:last-child .MuiTableCell-root': {
-          borderBottom: 'none',
-        },
-      },
-    },
-    muiPaginationProps: {
-      SelectProps: {
-        sx: {
-          '& .MuiInputBase-input:focus': {
-            bgcolor: 'transparent',
-          },
-        },
-      },
-    },
-    muiSelectCheckboxProps: {
-      sx: {
-        width: 20,
-        height: 20,
-        m: '0 auto',
-      },
-    },
-    muiSelectAllCheckboxProps: {
-      sx: {
-        display: 'block',
-        m: '0 auto',
-      },
-    },*/
-    /* displayColumnDefOptions: {
-      'mrt-row-expand': {
-        size: 40, //make the expand column wider
-        Cell: ({ row, table }) => {
-          return (
-            <>
-              {row.subRows?.length ? (
-                <MRT_ExpandButton row={row} table={table} />
-              ) : null}
-            </>
-          );
-        },
-      },
-    },
-    columnResizeMode: 'onChange',
-    muiExpandAllButtonProps: (props) => {
-      return {
-        onClick: () => {
-          set(
-            props.table.toggleAllRowsExpanded,
-            !props.table.getIsAllRowsExpanded(),
-          );
-        },
-        sx: {
-          p: 0,
-          width: 'auto',
-          height: 'auto',
-        },
-      };
-    },
-    muiExpandButtonProps: {
-      sx: {
-        p: 0,
-        width: 'auto',
-        height: 'auto',
-      },
-    },
-    paginationDisplayMode: 'custom',
-    muiCircularProgressProps: {
-      Component: (
-        <Stack
-          alignItems={'center'}
-          direction={'row'}
-          justifyContent={'center'}
-          mt={8}
-        >
-          <CircularProgress sx={{ fontSize: 18 }} />
-        </Stack>
-      ),
-    },
-    memoMode: 'cells',
-    onColumnPinningChange: setColumnPiningState,
-    ...TableDefaultProps(pipelineType),
-    muiTableHeadCellProps: (props) => {
-      return {
-        sx: { ...defaultProps(pipelineType).muiTableHeadCellProps.sx },
-        onClick: (e) => {
-          if (
-            pipelineType === PipelineDisplayMode.GROUP_MODE ||
-            (e.target as HTMLElement).className?.includes(
-              'Mui-TableHeadCell-ResizeHandle-Wrapper',
-            ) ||
-            (e.target as HTMLElement).className?.includes(
-              'Mui-TableHeadCell-ResizeHandle-Divider',
-            )
-          ) {
-            return;
-          }
-          const id = props.column.id;
-          if (id === 'mrt-row-select') {
-            return;
-          }
-          ColumnIdToSortIdMap[props.column.id]
-            ? setHeaderSortDisabled(false)
-            : setHeaderSortDisabled(true);
-
-          setAnchorElHeader(e.currentTarget);
-          setTableHeaderIndex(props.column.getIndex());
-          setHeaderColumn(props.column);
-        },
-      };
-    },*/
   });
   return (
     <>
@@ -376,6 +252,23 @@ export const AllLoansGrid: FC = observer(() => {
       </Stack>
       <ColumnsHeaderMenus
         anchorEl={anchorEl}
+        handleFreeze={() => {
+          setColumnPiningState({
+            left: configColumns
+              .slice(0, tableHeaderIndex)
+              .map((item) => item.accessorKey) as string[],
+          });
+        }}
+        handleSort={() => {
+          allLoansGridModel.queryModel.updateSort({
+            property: headerColumnId,
+            direction: SortDirection.DESC,
+            ignoreCase: true,
+          });
+        }}
+        handleUnfreeze={() => {
+          setColumnPiningState({ left: [] });
+        }}
         onClose={() => setAnchorEl(null)}
         open={Boolean(anchorEl)}
       />

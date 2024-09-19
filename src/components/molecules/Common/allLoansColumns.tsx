@@ -1,4 +1,5 @@
-import React from 'react';
+import { IOrderColumnsItem } from '@/models/gridModel';
+import React, { useMemo } from 'react';
 import { Tooltip, Typography } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { format, isValid } from 'date-fns';
@@ -768,6 +769,50 @@ export const transferOrderColumns = commonColumns.map((item, index) => ({
   pinType: 'CENTER' as ColumnPiningDirectionEnum,
   leftOrder: null,
 }));
+
+export const columnsResult = (
+  defaultColumns: MRT_ColumnDef<any>[],
+  configColumns: IOrderColumnsItem[],
+) => {
+  const result = configColumns?.length
+    ? defaultColumns
+        .map((item, index) => {
+          const target = configColumns?.find(
+            (j) => j.field === item.accessorKey,
+          );
+          return {
+            ...item,
+            sort: target?.sort || 100 + index,
+            visibility: target?.visibility || true,
+            size: target?.columnWidth || item.size,
+          };
+        })
+        .sort((a, b) => {
+          return a.sort - b.sort;
+        })
+        .filter((item) => (item as any)?.visibility !== false)
+    : defaultColumns;
+
+  return result;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+};
+
+export const defaultColumnPining = (configColumns: IOrderColumnsItem[]) => {
+  return configColumns?.length
+    ? {
+        left: configColumns
+          .filter(
+            (item) =>
+              item.pinType === ColumnPiningDirectionEnum.left &&
+              item.visibility,
+          )
+          .sort((a, b) => (a.leftOrder as number) - (b.leftOrder as number))
+          .map((item) => item.field),
+      }
+    : {
+        left: [],
+      };
+};
 
 const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
   return columns.map((item: any, index) => {

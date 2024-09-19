@@ -3,3 +3,4 @@ export * from './AllLoansPagination';
 export * from './GroupLoans';
 export * from './GridMoreIconButton';
 export * from './ColumnsHeaderMenus';
+export * from './SortButton';

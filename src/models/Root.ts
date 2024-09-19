@@ -148,7 +148,7 @@ const initialState = {
         },
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      orderColumnsModel: [],
+      orderColumns: [],
     },
     delinquentGridModel: {
       queryModel: {
@@ -165,7 +165,7 @@ const initialState = {
         },
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      orderColumnsModel: [],
+      orderColumns: [],
     },
     maturityGridModel: {
       queryModel: {
@@ -182,7 +182,7 @@ const initialState = {
         },
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      orderColumnsModel: [],
+      orderColumns: [],
     },
   },
 };

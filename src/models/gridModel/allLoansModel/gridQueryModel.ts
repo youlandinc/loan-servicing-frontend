@@ -70,6 +70,10 @@ export const allLoansGridQueryModel = types
       self.searchCondition.repaymentStatusList =
         [] as unknown as typeof self.searchCondition.repaymentStatusList;
     },
+    updateSort(sort: ISortItemModel) {
+      self.sort.push(sort);
+    },
+    clearSort() {},
   }));
 
 export type IAllLoansQueryParam = SnapshotOut<typeof allLoansGridQueryModel>;

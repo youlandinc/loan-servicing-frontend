@@ -59,11 +59,10 @@ export const StyledActionsMenu: FC<StyledActionsMenuProps> = ({
           sx={{ p: '14px 12px' }}
         >
           <Stack alignItems={'center'} direction={'row'} gap={1.25}>
-            <Icon
-              component={VerticalSplitIcon}
-              sx={{ width: 24, height: 24 }}
-            />
-            <Typography variant={'body2'}>Edit columns</Typography>
+            {item?.icon}
+            <Typography component={'div'} variant={'body2'}>
+              {item.label}
+            </Typography>
           </Stack>
         </MenuItem>
       ))}

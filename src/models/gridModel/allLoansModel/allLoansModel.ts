@@ -1,5 +1,5 @@
 import { ColumnPiningDirectionEnum } from '@/types/enum';
-import { types } from 'mobx-state-tree';
+import { SnapshotOut, types } from 'mobx-state-tree';
 
 import { allLoansGridQueryModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 
@@ -19,7 +19,11 @@ export const orderColumnsItem = types.model({
   rightOrder: types.maybeNull(types.number),
 });
 
-export const allLoansModel = types.model({
-  queryModel: allLoansGridQueryModel,
-  orderColumnsModel: types.array(orderColumnsItem),
-});
+export type IOrderColumnsItem = SnapshotOut<typeof orderColumnsItem>;
+
+export const allLoansModel = types
+  .model({
+    queryModel: allLoansGridQueryModel,
+    orderColumns: types.array(orderColumnsItem),
+  })
+  .actions((self) => ({}));

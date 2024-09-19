@@ -9,7 +9,7 @@ import {
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
-import { GridMoreIconButton } from '@/components/molecules';
+import { GridMoreIconButton, SortButton } from '@/components/molecules';
 
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
@@ -109,6 +109,31 @@ export const AllLoansGridToolBar: FC = observer(() => {
           updateQueryDebounce('investors', []);
         }}
       />
+      {/*      <SortButton
+        handleClear={(e) => {
+          e.stopPropagation();
+          updatePipelineSearchParam({
+            ...pipelineSearchParam,
+            sort: [...(PipelineSortOpts[0].value as any)] as any,
+          });
+        }}
+        handleClick={() => {
+          updatePipelineSearchParam({
+            ...pipelineSearchParam,
+            sort: [
+              {
+                ...pipelineSortItem[0],
+                direction:
+                  pipelineSortItem[0].direction === SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+              ...(PipelineSortOpts[0].value as any),
+            ] as any,
+          });
+        }}
+        sortItems={pipelineSortItem}
+      />*/}
       <GridMoreIconButton />
     </Stack>
   );

@@ -84,7 +84,7 @@ export enum ProductCategoryEnum {
   ground = 'Ground-up Construction', //'GROUND_UP_CONSTRUCTION',
 }
 
-export enum LoanPurposeEnum {
+export enum LoanDetailsPurposeEnum {
   purchase = 'Purchase', //'PURCHASE',
   refinance = 'Refinance', //'REFINANCE',
 }

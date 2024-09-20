@@ -1,12 +1,12 @@
-import { IOrderColumnsItem } from '@/models/gridModel';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Tooltip, Typography } from '@mui/material';
-import { MRT_ColumnDef } from 'material-react-table';
 import { format, isValid } from 'date-fns';
+import { MRT_ColumnDef } from 'material-react-table';
 
 import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { ellipsisStyle } from '@/styles';
 import {
   ColumnPiningDirectionEnum,

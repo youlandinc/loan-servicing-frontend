@@ -15,6 +15,7 @@ import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import { useMst } from '@/models/Root';
+import { SortDirection } from '@/types/enum';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -109,31 +110,28 @@ export const AllLoansGridToolBar: FC = observer(() => {
           updateQueryDebounce('investors', []);
         }}
       />
-      {/*      <SortButton
-        handleClear={(e) => {
-          e.stopPropagation();
-          updatePipelineSearchParam({
-            ...pipelineSearchParam,
-            sort: [...(PipelineSortOpts[0].value as any)] as any,
-          });
-        }}
-        handleClick={() => {
-          updatePipelineSearchParam({
-            ...pipelineSearchParam,
-            sort: [
+      {allLoansGridModel.queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            allLoansGridModel.queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            allLoansGridModel.queryModel.updateSort([
               {
-                ...pipelineSortItem[0],
+                ...allLoansGridModel.queryModel.sort[0],
                 direction:
-                  pipelineSortItem[0].direction === SortDirection.DESC
+                  allLoansGridModel.queryModel.sort[0].direction ===
+                  SortDirection.DESC
                     ? SortDirection.ASC
                     : SortDirection.DESC,
               },
-              ...(PipelineSortOpts[0].value as any),
-            ] as any,
-          });
-        }}
-        sortItems={pipelineSortItem}
-      />*/}
+            ]);
+          }}
+          sortItems={allLoansGridModel.queryModel.sort[0]}
+        />
+      )}
+
       <GridMoreIconButton />
     </Stack>
   );

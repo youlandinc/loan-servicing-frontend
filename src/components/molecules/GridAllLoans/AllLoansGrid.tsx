@@ -1,3 +1,4 @@
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { Stack } from '@mui/material';
 import {
   MRT_Column,
@@ -29,8 +30,10 @@ export const AllLoansGrid: FC = observer(() => {
   } = useMst();
 
   const [headerColumnId, setHeaderColumnId] = useState('');
-
+  const [headerTitle, setHeaderTitle] = useState('');
   const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
+
+  // const [headerColumn, setHeaderColumn] = useState({} as MRT_Column<any>);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
@@ -206,14 +209,11 @@ export const AllLoansGrid: FC = observer(() => {
           return;
         }
 
-        /*        ColumnIdToSortIdMap[props.column.id]
-            ? setHeaderSortDisabled(false)
-            : setHeaderSortDisabled(true);*/
-
         setAnchorEl(e.currentTarget);
         setTableHeaderIndex(props.column.getIndex());
         // setHeaderColumn(props.column);
         setHeaderColumnId(props.column.id);
+        setHeaderTitle(props.column.columnDef.header);
       },
     }),
     muiTableContainerProps: {
@@ -260,11 +260,14 @@ export const AllLoansGrid: FC = observer(() => {
           });
         }}
         handleSort={() => {
-          allLoansGridModel.queryModel.updateSort({
-            property: headerColumnId,
-            direction: SortDirection.DESC,
-            ignoreCase: true,
-          });
+          allLoansGridModel.queryModel.updateSort([
+            {
+              property: headerColumnId, //.id as string,
+              direction: SortDirection.DESC,
+              ignoreCase: true,
+              label: headerTitle as string,
+            },
+          ] as ISortItemModel[]);
         }}
         handleUnfreeze={() => {
           setColumnPiningState({ left: [] });

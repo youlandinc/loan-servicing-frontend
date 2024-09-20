@@ -84,7 +84,7 @@ export enum ProductCategoryEnum {
   ground = 'Ground-up Construction', //'GROUND_UP_CONSTRUCTION',
 }
 
-export enum LoanDetailsPurposeEnum {
+export enum LoanPurposeEnum {
   purchase = 'Purchase', //'PURCHASE',
   refinance = 'Refinance', //'REFINANCE',
 }
@@ -124,6 +124,9 @@ export enum MaturityDateTypeEnum {
 }
 
 export enum PortfolioGridTypeEnum {
+  YOULAND = 'SERVICING_YOULAND',
+  ALAMEDA = 'SERVICING_ALAMEDA',
+  CASH_FLOW = 'SERVICING_CASH_FLOW',
   ALL_LOANS = 'SERVICING_ALL_LOAN',
   BY_INVESTOR = 'SERVICING_BY_INVESTOR',
   DELINQUENT = 'SERVICING_DELINQUENT',

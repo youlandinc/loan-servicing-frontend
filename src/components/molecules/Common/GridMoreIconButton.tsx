@@ -1,21 +1,24 @@
+import { allLoansModel, IOrderColumnsItem } from '@/models/gridModel';
+import { IconButton } from '@mui/material';
 import React, { FC, useState } from 'react';
-import {
-  Icon,
-  IconButton,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from '@mui/material';
 
-import { useSwitch } from '@/hooks';
 import { ColumnsOrderDialog, StyledActionsMenu } from '@/components/atoms';
 import { transferOrderColumns } from '@/components/molecules';
+
+import { useSwitch } from '@/hooks';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 
-export const GridMoreIconButton: FC = () => {
+interface GridMoreIconButtonProps {
+  columns: IOrderColumnsItem[];
+  handleSave?: (param: IOrderColumnsItem[]) => void;
+}
+
+export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
+  columns,
+  handleSave,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
   const { visible, open, close } = useSwitch();
@@ -36,7 +39,7 @@ export const GridMoreIconButton: FC = () => {
         anchorEl={anchorEl}
         menus={[
           {
-            label: 'Change Order of Columns',
+            label: 'Edit columns',
             icon: <VerticalSplitIcon />,
             handleClick: open,
           },
@@ -45,7 +48,11 @@ export const GridMoreIconButton: FC = () => {
         open={Boolean(anchorEl)}
       />
       <ColumnsOrderDialog
-        columns={transferOrderColumns}
+        columns={columns}
+        handleSave={(columns) => {
+          handleSave?.(columns);
+          close();
+        }}
         onClose={close}
         open={visible}
       />

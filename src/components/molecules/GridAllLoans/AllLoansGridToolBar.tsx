@@ -9,8 +9,13 @@ import {
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
-import { GridMoreIconButton, SortButton } from '@/components/molecules';
+import {
+  GridMoreIconButton,
+  SortButton,
+  transferOrderColumns,
+} from '@/components/molecules';
 
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
@@ -132,7 +137,12 @@ export const AllLoansGridToolBar: FC = observer(() => {
         />
       )}
 
-      <GridMoreIconButton />
+      <GridMoreIconButton
+        columns={transferOrderColumns as IOrderColumnsItem[]}
+        handleSave={(columns) => {
+          allLoansGridModel.updateOrderColumns(columns);
+        }}
+      />
     </Stack>
   );
 });

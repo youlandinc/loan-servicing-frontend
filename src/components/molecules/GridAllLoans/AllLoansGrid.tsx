@@ -41,6 +41,14 @@ export const AllLoansGrid: FC = observer(() => {
     defaultColumnPining(allLoansGridModel.orderColumns),
   );
 
+  const configColumnsOrderKeysArr = allLoansGridModel.orderColumns?.length
+    ? [
+        ...allLoansGridModel.orderColumns
+          .filter((item) => item.visibility)
+          .map((item) => item.field),
+      ]
+    : [];
+
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.ALL_LOANS
       ? [
@@ -102,7 +110,7 @@ export const AllLoansGrid: FC = observer(() => {
     manualPagination: true,
     // getCoreRowModel: getCoreRowModel(),
     state: {
-      // columnOrder: configColumnsOrderKeysArr,
+      columnOrder: configColumnsOrderKeysArr,
       // isLoading: isValidating,
       showSkeletons: isLoading,
       columnPinning: columnPiningState,

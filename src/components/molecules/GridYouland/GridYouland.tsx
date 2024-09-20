@@ -6,6 +6,10 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+
+import { AUTO_HIDE_DURATION } from '@/constant';
 
 import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
 import { PipelineStatusEnum } from '@/types/enum';
@@ -14,11 +18,8 @@ import {
   GridTradeStatusEnum,
   GridYoulandItem,
 } from '@/types/pipeline/youland';
-import { useAsync, useAsyncFn } from 'react-use';
-import { _fetchYoulandTableData } from '@/request';
+import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
 import { HttpError } from '@/types/common';
-import { AUTO_HIDE_DURATION } from '@/constant';
-import { useSnackbar } from 'notistack';
 
 const mock: Array<Partial<GridYoulandItem>> = [
   {
@@ -101,7 +102,27 @@ const mock: Array<Partial<GridYoulandItem>> = [
 export const GridYouland: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { loading } = useAsync(async () => await fetchData(), []);
+  const { loading } = useAsync(async () => {
+    await fetchData();
+    const { data } = await _fetchInvestorData();
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.id,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, []);
+
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
 
   const fetchData = async () => {
     try {
@@ -126,7 +147,7 @@ export const GridYouland: FC = observer(() => {
   const [tableData, setTableData] = useState(mock);
 
   const table = useMaterialReactTable({
-    columns: YOULAND_COLUMNS(fetchData) as MRT_ColumnDef<any>[],
+    columns: YOULAND_COLUMNS(fetchData, investorData) as MRT_ColumnDef<any>[],
     data: tableData,
     //rowCount: rowsTotal,
     enableExpandAll: false, //hide expand all double arrow in column header
@@ -157,7 +178,7 @@ export const GridYouland: FC = observer(() => {
     initialState: {
       showProgressBars: false,
     },
-    getRowId: (row) => row.id, //default
+    getRowId: (row) => row.loanId, //default
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
 

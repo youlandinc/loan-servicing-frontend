@@ -17,7 +17,10 @@ import {
   allLoansStatusBgcolor,
   allLoansStatusColor,
 } from '@/styles/allLoansGridStyles';
-import { GridTradeConfirmEnum } from '@/types/pipeline/youland';
+import {
+  GridTradeConfirmEnum,
+  GridTradeStatusEnum,
+} from '@/types/pipeline/youland';
 import { useSwitch } from '@/hooks';
 import {
   StyledButton,
@@ -26,9 +29,10 @@ import {
 } from '@/components/atoms';
 import { GridDropDownButton } from '@/components/molecules/Common/GridDropDownButton';
 
-export const YOULAND_COLUMNS = (cb) => {
-  console.log(cb);
-
+export const YOULAND_COLUMNS = (
+  cb?: () => Promise<void>,
+  investorOptions?: Array<Option & { bgColor: string }>,
+) => {
   return [
     {
       header: 'Status',
@@ -43,8 +47,11 @@ export const YOULAND_COLUMNS = (cb) => {
             bgPalette={allLoansStatusBgcolor}
             cb={cb}
             colorPalette={allLoansStatusColor}
+            loanId={row.original.loanId}
             options={REPAYMENT_STATUS_OPTIONS}
+            paramsKey={'repaymentStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
+            tableData={row.original}
           />
         );
       },
@@ -136,7 +143,15 @@ export const YOULAND_COLUMNS = (cb) => {
       muiTableBodyCellProps: { align: 'center' },
       size: 146,
       Cell: ({ renderedCellValue, row }) => {
-        return <GridDropDownButton />;
+        return (
+          <GridDropDownButton
+            cb={cb}
+            loanId={row.original.loanId}
+            options={investorOptions}
+            paramsKey={'prospectiveBuyer'}
+            status={renderedCellValue as string | null}
+          />
+        );
       },
     },
     {
@@ -150,7 +165,10 @@ export const YOULAND_COLUMNS = (cb) => {
         return (
           <GridDropDown
             bgPalette={TRADE_STATUS_BGCOLOR_PALETTE}
+            cb={cb}
+            loanId={row.original.loanId}
             options={TRADE_STATUS_OPTIONS}
+            paramsKey={'tradeStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />
         );
@@ -250,7 +268,10 @@ export const YOULAND_COLUMNS = (cb) => {
           <>
             <Button
               color={'primary'}
-              disabled={renderedCellValue !== GridTradeConfirmEnum.confirmed}
+              disabled={
+                renderedCellValue !== GridTradeConfirmEnum.confirmed ||
+                row.original.tradeStatus !== GridTradeStatusEnum.confirmed
+              }
               onClick={open}
               sx={{
                 fontSize: 12,

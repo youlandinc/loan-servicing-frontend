@@ -31,3 +31,8 @@ interface GridItemProps {
 
 export type GridYoulandItem = GridItemProps;
 export type GridAlamedaItem = GridItemProps;
+
+export interface GridInvestorItem {
+  id: number;
+  investorName: string;
+}

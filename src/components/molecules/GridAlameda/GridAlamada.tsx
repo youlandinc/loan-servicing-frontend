@@ -203,15 +203,7 @@ export const GridAlameda: FC = observer(() => {
   };
 
   return (
-    <Stack
-      border={'1px solid'}
-      borderColor={'border.normal'}
-      pb={3}
-      sx={{
-        borderBottomLeftRadius: 16,
-        borderBottomRightRadius: 16,
-      }}
-    >
+    <Stack>
       <MRT_TableContainer sx={{ height: '100%' }} table={table} />
       <GridAlamedaFooter
         onPageChange={onPageChange}

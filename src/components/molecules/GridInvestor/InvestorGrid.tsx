@@ -5,50 +5,46 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
-  delinquentColumns,
+  groupCommonColumns,
   GroupLoans,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
-import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
-import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
+import { _getGroupByInvestor } from '@/request/portfolio/investor';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
-export const DelinquentGrid: FC = observer(() => {
+export const InvestorGrid: FC = observer(() => {
   const {
-    portfolio: { delinquentGridQueryModel, displayType },
+    portfolio: { investorGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
-    displayType === PortfolioGridTypeEnum.DELINQUENT
+    displayType === PortfolioGridTypeEnum.BY_INVESTOR
       ? [
           {
-            ...delinquentGridQueryModel,
+            ...investorGridModel.queryModel,
             searchCondition: {
-              ...delinquentGridQueryModel.searchCondition,
+              ...investorGridModel.queryModel.searchCondition,
               investors: [
-                ...delinquentGridQueryModel.searchCondition.investors,
+                ...investorGridModel.queryModel.searchCondition.investors,
               ],
-              delinquentDays:
-                delinquentGridQueryModel.searchCondition.delinquentDays ===
-                DelinquentTimeRangeEnum.ALL
-                  ? undefined
-                  : delinquentGridQueryModel.searchCondition.delinquentDays,
             },
           },
           displayType,
         ]
       : null,
     async ([p]) => {
-      return await _getGroupDelinquent(p);
+      return await _getGroupByInvestor(p);
     },
+    // { revalidateOnMount: true },
   );
 
-  const columns = useMemo(() => delinquentColumns, []);
+  const columns = useMemo(() => groupCommonColumns, []);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;
 
   return (
-    <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
+    <Stack>
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}

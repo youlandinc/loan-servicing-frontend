@@ -21,7 +21,7 @@ interface StyledMaturitySelectProps {
 export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
   ({ sx, value, onChange }) => {
     const {
-      portfolio: { displayType: portfolioListType, maturityGridQueryModel },
+      portfolio: { displayType: portfolioListType, maturityGridModel },
     } = useMst();
 
     const [opts, setOpts] = useState<Option[]>(MaturityTypeOpt);
@@ -100,7 +100,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
               MaturityTypeOpt.find(
                 (item) =>
                   item.value ===
-                  maturityGridQueryModel.searchCondition.maturityDays,
+                  maturityGridModel.queryModel.searchCondition.maturityDays,
               )?.label
             }
           </Typography>
@@ -112,7 +112,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
             variant={'subtitle3'}
           >
             {state.value?.data?.[
-              maturityGridQueryModel.searchCondition
+              maturityGridModel.queryModel.searchCondition
                 .maturityDays as MaturityTimeRangeEnum
             ] || 0}
           </Typography>
@@ -129,7 +129,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
         </Stack>
         <StyledSelect
           onChange={(e) => {
-            maturityGridQueryModel.updateQueryCondition(
+            maturityGridModel.queryModel.updateQueryCondition(
               'maturityDays',
               e.target.value as MaturityTimeRangeEnum,
             );
@@ -161,7 +161,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
               height: '100%',
             },
           }}
-          value={maturityGridQueryModel.searchCondition.maturityDays}
+          value={maturityGridModel.queryModel.searchCondition.maturityDays}
         />
       </StyledButton>
     );

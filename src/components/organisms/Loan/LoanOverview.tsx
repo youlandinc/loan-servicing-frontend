@@ -49,7 +49,7 @@ import {
   CommentTypeEnum,
   LoanProductCategoryEnum,
   LoanPurposeEnum,
-} from '@/types/overview';
+} from '@/types/loan/overview';
 import { PipelineStatusEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import {
@@ -202,7 +202,7 @@ export const LoanOverview: FC = observer(() => {
         listData: [
           {
             label: 'Original balance',
-            value: utils.formatDollar(balanceInfo.principalBalance),
+            value: utils.formatDollar(balanceInfo.totalLoanAmount),
           },
           {
             label: 'Note rate',
@@ -302,12 +302,12 @@ export const LoanOverview: FC = observer(() => {
             ? 'warning'
             : 'light',
         header: 'Maturity date',
-        headerValue: utils.formatDate(balanceInfo.fciMaturityDate),
+        headerValue: utils.formatDate(balanceInfo.maturityDate),
         headerIcon: OVERVIEW_MATURITY_DATE,
         listData: [
           {
             label: `Origination date: ${utils.formatDate(
-              balanceInfo.originationDate,
+              balanceInfo.estClosingDate,
             )}`,
             value: '',
           },

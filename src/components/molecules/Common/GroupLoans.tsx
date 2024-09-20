@@ -339,7 +339,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
 
   return (
     <MRT_TableContainer
-      sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+      // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
       table={table}
     />
   );

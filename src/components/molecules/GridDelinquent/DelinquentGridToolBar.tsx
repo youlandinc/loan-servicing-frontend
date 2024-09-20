@@ -1,41 +1,39 @@
-import { CircularProgress, Stack, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAsyncFn } from 'react-use';
-
 import {
   StyledButton,
   StyledSearchTextFieldInput,
   StyledSelect,
 } from '@/components/atoms';
-import { MaturityTypeOpt } from '@/constant';
+import { DelinquentTimeRangeOpt } from '@/constant';
 import { useDebounceFn, useSwitch } from '@/hooks';
 import { useMst } from '@/models/Root';
-import { _getMaturityRangeOpt } from '@/request/portfolio/maturity';
-import { MaturityTimeRangeEnum } from '@/types/enum';
+import { _getDelinquentRangeOpt } from '@/request/portfolio/delinquen';
+import { DelinquentTimeRangeEnum } from '@/types/enum';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { CircularProgress, Stack, Typography } from '@mui/material';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useAsyncFn } from 'react-use';
 
-export const MaturityGridToolBar: FC = observer((props) => {
+export const DelinquentGridToolBar: FC = () => {
   const {
-    portfolio: { maturityGridQueryModel },
+    portfolio: { delinquentGridModel },
   } = useMst();
 
-  const [opts, setOpts] = useState<Option[]>(MaturityTypeOpt);
+  const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
 
   const { visible, open, close } = useSwitch();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    maturityGridQueryModel.updateQueryCondition,
+    delinquentGridModel.queryModel.updateQueryCondition,
     500,
   );
 
-  const [state, getMaturityRangeOpt] = useAsyncFn(async () => {
-    return await _getMaturityRangeOpt().then((res) => {
+  const [state, getDelinquentRangeOpt] = useAsyncFn(async () => {
+    return await _getDelinquentRangeOpt().then((res) => {
       if (res.data) {
         setOpts(
-          MaturityTypeOpt.map((item) => ({
+          DelinquentTimeRangeOpt.map((item) => ({
             ...item,
             label: (
               <Stack alignItems={'center'} direction={'row'} gap={0.5}>
@@ -61,9 +59,9 @@ export const MaturityGridToolBar: FC = observer((props) => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        maturityGridQueryModel.searchCondition.propertyAddress;
+        delinquentGridModel.queryModel.searchCondition.keyword;
     }
-    getMaturityRangeOpt();
+    getDelinquentRangeOpt();
   }, []);
 
   return (
@@ -71,11 +69,11 @@ export const MaturityGridToolBar: FC = observer((props) => {
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
-          updateQueryDebounce('propertyAddress', '');
+          updateQueryDebounce('keyword', '');
         }}
         inputProps={{ ref: propertyAddressRef }}
         onChange={(e) => {
-          updateQueryDebounce('propertyAddress', e.target.value);
+          updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
       />
@@ -89,13 +87,13 @@ export const MaturityGridToolBar: FC = observer((props) => {
         variant={'text'}
       >
         <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-          Maturity:
+          Delinquent:
           <Typography variant={'body2'}>
             {
-              MaturityTypeOpt.find(
+              DelinquentTimeRangeOpt.find(
                 (item) =>
                   item.value ===
-                  maturityGridQueryModel.searchCondition.maturityDays,
+                  delinquentGridModel.queryModel.searchCondition.delinquentDays,
               )?.label
             }
           </Typography>
@@ -107,8 +105,8 @@ export const MaturityGridToolBar: FC = observer((props) => {
             variant={'subtitle3'}
           >
             {state.value?.data?.[
-              maturityGridQueryModel.searchCondition
-                .maturityDays as MaturityTimeRangeEnum
+              delinquentGridModel.queryModel.searchCondition
+                .delinquentDays as DelinquentTimeRangeEnum
             ] || 0}
           </Typography>
           {state.loading ? (
@@ -124,16 +122,16 @@ export const MaturityGridToolBar: FC = observer((props) => {
         </Stack>
         <StyledSelect
           onChange={(e) => {
-            maturityGridQueryModel.updateQueryCondition(
-              'maturityDays',
-              e.target.value as MaturityTimeRangeEnum,
+            delinquentGridModel.queryModel.updateQueryCondition(
+              'delinquentDays',
+              e.target.value as DelinquentTimeRangeEnum,
             );
           }}
           onClose={() => {
             close();
           }}
           onOpen={async () => {
-            await getMaturityRangeOpt();
+            await getDelinquentRangeOpt();
             open();
           }}
           open={visible}
@@ -153,10 +151,9 @@ export const MaturityGridToolBar: FC = observer((props) => {
               height: '100%',
             },
           }}
-          value={maturityGridQueryModel.searchCondition.maturityDays}
-          variant={'filled'}
+          value={delinquentGridModel.queryModel.searchCondition.delinquentDays}
         />
       </StyledButton>*/}
     </Stack>
   );
-});
+};

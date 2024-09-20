@@ -1,14 +1,19 @@
 import {
+  ColumnsOrderDialog,
   StyledButton,
   StyledDelinquentSelect,
   StyledMaturitySelect,
 } from '@/components/atoms';
-import { Layout } from '@/components/molecules';
+import {
+  commonColumns,
+  Layout,
+  transferOrderColumns,
+} from '@/components/molecules';
 import { useMst } from '@/models/Root';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
-import DeliquentIcon from '@/svg/portfolio/delinquent_list.svg';
+import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 
 import { PortfolioGridTypeEnum } from '@/types/enum';
@@ -19,14 +24,14 @@ import React, { FC, useMemo } from 'react';
 
 const AllLoansGrid = dynamic(
   () =>
-    import('@/components/molecules/AllLoansGrid').then(
+    import('@/components/molecules/GridAllLoans').then(
       (mode) => mode.AllLoansGrid,
     ),
   { ssr: false },
 );
 const AllLoansGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/AllLoansGrid').then(
+    import('@/components/molecules/GridAllLoans').then(
       (mode) => mode.AllLoansGridToolBar,
     ),
   { ssr: false },
@@ -34,14 +39,14 @@ const AllLoansGridToolBar = dynamic(
 
 const InvestorGrid = dynamic(
   () =>
-    import('@/components/molecules/InvestorGrid').then(
+    import('@/components/molecules/GridInvestor').then(
       (mode) => mode.InvestorGrid,
     ),
   { ssr: false },
 );
 const InvestorGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/InvestorGrid').then(
+    import('@/components/molecules/GridInvestor').then(
       (mode) => mode.InvestorGridToolBar,
     ),
   { ssr: false },
@@ -49,14 +54,14 @@ const InvestorGridToolBar = dynamic(
 
 const DelinquentGrid = dynamic(
   () =>
-    import('@/components/molecules/DelinquentGrid').then(
+    import('@/components/molecules/GridDelinquent').then(
       (mode) => mode.DelinquentGrid,
     ),
   { ssr: false },
 );
 const DelinquentGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/DelinquentGrid').then(
+    import('@/components/molecules/GridDelinquent').then(
       (mode) => mode.DelinquentGridToolBar,
     ),
   { ssr: false },
@@ -64,14 +69,14 @@ const DelinquentGridToolBar = dynamic(
 
 const MaturityGrid = dynamic(
   () =>
-    import('@/components/molecules/MaturityGrid').then(
+    import('@/components/molecules/GridMaturity').then(
       (mode) => mode.MaturityGrid,
     ),
   { ssr: false },
 );
 const MaturityGridToolBar = dynamic(
   () =>
-    import('@/components/molecules/MaturityGrid').then(
+    import('@/components/molecules/GridMaturity').then(
       (mode) => mode.MaturityGridToolBar,
     ),
   { ssr: false },
@@ -82,8 +87,8 @@ export const Portfolio: FC = observer(() => {
     portfolio: {
       displayType: portfolioListType,
       updateDisplayType: setPortfolioListType,
-      delinquentGridQueryModel,
-      maturityGridQueryModel,
+      delinquentGridModel,
+      maturityGridModel,
     },
   } = useMst();
 
@@ -104,32 +109,46 @@ export const Portfolio: FC = observer(() => {
         component: <InvestorGrid />,
       },
       {
-        icon: DeliquentIcon,
-        label: 'Delinquent: ',
+        icon: DelinquentIcon,
+        label:
+          portfolioListType === PortfolioGridTypeEnum.DELINQUENT ? (
+            <>
+              Delinquent: <StyledDelinquentSelect />
+            </>
+          ) : (
+            'Delinquent'
+          ),
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,
         component: <DelinquentGrid />,
       },
       {
         icon: MaturityIcon,
-        label: 'Maturity:',
+        label:
+          portfolioListType === PortfolioGridTypeEnum.MATURITY ? (
+            <>
+              Maturity: <StyledMaturitySelect />
+            </>
+          ) : (
+            'Maturity'
+          ),
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
       },
     ],
-    [],
+    [portfolioListType],
   );
 
   return (
     <Layout isHomepage={false}>
-      <Stack gap={1.5} height={'100%'} pb={3} pt={3} px={6}>
+      <Stack height={'100%'} pb={3} pt={3} px={6}>
         <Stack
-          alignItems={'center'}
+          alignItems={'flex-start'}
           direction={'row'}
           justifyContent={'space-between'}
         >
-          <Stack direction={'row'} gap={1}>
+          <Stack direction={'row'}>
             {menus.map((item, index) => (
               <StyledButton
                 component={'div'}
@@ -139,9 +158,15 @@ export const Portfolio: FC = observer(() => {
                 sx={{
                   backgroundColor:
                     item.key === portfolioListType
-                      ? 'rgba(91, 118, 188, 0.15) !important'
+                      ? '#F4F6FA !important'
                       : 'transparent !important',
                   fontWeight: '400 !important',
+                  border: item.key === portfolioListType ? '1px solid' : 'none',
+                  borderColor: 'border.normal',
+                  borderRadius: '16px 16px 0px 0px !important',
+                  borderBottom: 'none !important',
+                  px: '24px !important',
+                  py: '12px !important',
                 }}
                 variant={'text'}
               >
@@ -152,28 +177,13 @@ export const Portfolio: FC = observer(() => {
                       width: 16,
                       height: 16,
                       '& path': {
-                        fill:
-                          item.key === portfolioListType
-                            ? '#5B76BC'
-                            : '#636A7C',
+                        fill: '#636A7C',
                       },
                     }}
                   />
-                  <Typography
-                    sx={{
-                      color:
-                        item.key === portfolioListType ? '#5B76BC' : '#636A7C',
-                    }}
-                    variant={'body2'}
-                  >
+                  <Typography color={'action.active'} variant={'body2'}>
                     {item.label}
                   </Typography>
-                  {item.key === PortfolioGridTypeEnum.DELINQUENT && (
-                    <StyledDelinquentSelect />
-                  )}
-                  {item.key === PortfolioGridTypeEnum.MATURITY && (
-                    <StyledMaturitySelect />
-                  )}
                 </Stack>
               </StyledButton>
             ))}
@@ -184,10 +194,21 @@ export const Portfolio: FC = observer(() => {
             </Box>
           ))}
         </Stack>
-        <Box flex={1}>
+        <Box flex={1} mt={'-1px'}>
           {menus.map((item, index) => {
             return (
-              <Box flex={1} hidden={item.key !== portfolioListType} key={index}>
+              <Box
+                border={'1px solid'}
+                borderColor={'border.normal'}
+                borderRadius={4}
+                flex={1}
+                hidden={item.key !== portfolioListType}
+                key={index}
+                sx={{
+                  borderTopLeftRadius: index === 0 ? 0 : 16,
+                  overflow: 'hidden',
+                }}
+              >
                 {item.component}
               </Box>
             );

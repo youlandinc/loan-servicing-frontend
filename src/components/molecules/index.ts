@@ -5,8 +5,8 @@ export * from './Auth';
 
 export * from './Loan';
 
-export * from './AllLoansGrid';
-export * from './InvestorGrid';
-export * from './DelinquentGrid';
+export * from './GridAllLoans';
+export * from './GridInvestor';
+export * from './GridDelinquent';
 
 export * from './Common';

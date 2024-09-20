@@ -5,50 +5,51 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
+  delinquentColumns,
   GroupLoans,
-  maturityColumns,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
-import { _getGroupMaturity } from '@/request/portfolio/maturity';
-import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
+import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
+import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
-export const MaturityGrid: FC = observer(() => {
+export const DelinquentGrid: FC = observer(() => {
   const {
-    portfolio: { maturityGridQueryModel, displayType },
+    portfolio: { delinquentGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
-    displayType === PortfolioGridTypeEnum.MATURITY
+    displayType === PortfolioGridTypeEnum.DELINQUENT
       ? [
           {
-            ...maturityGridQueryModel,
+            ...delinquentGridModel.queryModel,
             searchCondition: {
-              ...maturityGridQueryModel.searchCondition,
-              investors: [...maturityGridQueryModel.searchCondition.investors],
+              ...delinquentGridModel.queryModel.searchCondition,
+              investors: [
+                ...delinquentGridModel.queryModel.searchCondition.investors,
+              ],
+              delinquentDays:
+                delinquentGridModel.queryModel.searchCondition
+                  .delinquentDays === DelinquentTimeRangeEnum.ALL
+                  ? undefined
+                  : delinquentGridModel.queryModel.searchCondition
+                      .delinquentDays,
             },
           },
           displayType,
         ]
       : null,
     async ([p]) => {
-      return await _getGroupMaturity(p);
+      return await _getGroupDelinquent(p);
     },
   );
 
-  const columns = useMemo(
-    () =>
-      maturityColumns(
-        maturityGridQueryModel.searchCondition
-          .maturityDays as MaturityTimeRangeEnum,
-      ),
-    [maturityGridQueryModel.searchCondition.maturityDays],
-  );
+  const columns = useMemo(() => delinquentColumns, []);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;
 
   return (
-    <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
+    <Stack>
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}

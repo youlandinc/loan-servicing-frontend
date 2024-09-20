@@ -1,10 +1,9 @@
-import { SnapshotOut, types } from 'mobx-state-tree';
+import { cast, SnapshotOut, types } from 'mobx-state-tree';
 
 import {
   DelinquentTimeRangeEnum,
   MaturityTimeRangeEnum,
   PipelineMode,
-  RepaymentStatusEnum,
   SortDirection,
 } from '@/types/enum';
 
@@ -12,12 +11,14 @@ const SortItemModel = types.model({
   direction: types.enumeration(Object.values(SortDirection)),
   property: types.string,
   ignoreCase: types.boolean,
+  label: types.maybe(types.string),
 });
+
 export type ISortItemModel = SnapshotOut<typeof SortItemModel>;
 
 const searchConditionModel = types.model({
   investors: types.array(types.string),
-  propertyAddress: types.string,
+  keyword: types.string,
   maturityStartDate: types.string,
   maturityEndDate: types.string,
   repaymentStatusList: types.array(
@@ -71,6 +72,18 @@ export const allLoansGridQueryModel = types
       self.searchCondition.repaymentStatusList =
         [] as unknown as typeof self.searchCondition.repaymentStatusList;
     },
+    updateSort(sort: ISortItemModel[]) {
+      if (sort.length > 0) {
+        self.sort = cast(
+          sort.map((item) => ({
+            property: item.property,
+            direction: item.direction,
+            ignoreCase: item.ignoreCase,
+          })),
+        );
+      }
+      self.sort = cast(sort);
+    },
   }));
 
-export type IAllLoansGridModel = SnapshotOut<typeof allLoansGridQueryModel>;
+export type IAllLoansQueryParam = SnapshotOut<typeof allLoansGridQueryModel>;

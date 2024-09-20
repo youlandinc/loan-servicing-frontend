@@ -1,13 +1,18 @@
 import React from 'react';
 import { Tooltip, Typography } from '@mui/material';
-import { MRT_ColumnDef } from 'material-react-table';
 import { format, isValid } from 'date-fns';
+import { MRT_ColumnDef } from 'material-react-table';
 
 import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { ellipsisStyle } from '@/styles';
-import { MaturityTimeRangeEnum, PipelineStatusEnum } from '@/types/enum';
+import {
+  ColumnPiningDirectionEnum,
+  MaturityTimeRangeEnum,
+  PipelineStatusEnum,
+} from '@/types/enum';
 import { utils } from '@/utils';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
@@ -136,7 +141,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'fciMaturityDate',
+    accessorKey: 'maturityDate',
     header: 'Maturity date',
     size: 140,
     minSize: 110,
@@ -158,7 +163,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'principalBalance',
+    accessorKey: 'totalLoanAmount',
     header: 'Principal balance',
     size: 140,
     minSize: 130,
@@ -305,7 +310,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'originationDate',
+    accessorKey: 'estClosingDate',
     header: 'Origination date',
     size: 140,
     minSize: 110,
@@ -754,6 +759,60 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },*/
 ];
+
+export const transferOrderColumns = commonColumns.map((item, index) => ({
+  field: item.accessorKey as string,
+  headerName: item.header,
+  columnWidth: item.size,
+  sort: index,
+  visibility: true,
+  pinType: 'CENTER' as ColumnPiningDirectionEnum,
+  leftOrder: null,
+}));
+
+export const columnsResult = (
+  defaultColumns: MRT_ColumnDef<any>[],
+  configColumns: IOrderColumnsItem[],
+) => {
+  const result = configColumns?.length
+    ? defaultColumns
+        .map((item, index) => {
+          const target = configColumns?.find(
+            (j) => j.field === item.accessorKey,
+          );
+          return {
+            ...item,
+            sort: target?.sort || 100 + index,
+            visibility: target?.visibility || true,
+            size: target?.columnWidth || item.size,
+          };
+        })
+        .sort((a, b) => {
+          return a.sort - b.sort;
+        })
+        .filter((item) => (item as any)?.visibility !== false)
+    : defaultColumns;
+
+  return result;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+};
+
+export const defaultColumnPining = (configColumns: IOrderColumnsItem[]) => {
+  return configColumns?.length
+    ? {
+        left: configColumns
+          .filter(
+            (item) =>
+              item.pinType === ColumnPiningDirectionEnum.left &&
+              item.visibility,
+          )
+          .sort((a, b) => (a.leftOrder as number) - (b.leftOrder as number))
+          .map((item) => item.field),
+      }
+    : {
+        left: [],
+      };
+};
 
 const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
   return columns.map((item: any, index) => {

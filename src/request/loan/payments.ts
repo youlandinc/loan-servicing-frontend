@@ -2,7 +2,7 @@ import { get, post } from '@/request/axios';
 import {
   ResponsePaymentsDetails,
   ResponsePaymentsHistory,
-} from '@/types/payments';
+} from '@/types/loan/payments';
 
 export const _fetchPaymentsDetails = (loanId: string | number) => {
   return get<ResponsePaymentsDetails>('/servicing/payment/detail', {

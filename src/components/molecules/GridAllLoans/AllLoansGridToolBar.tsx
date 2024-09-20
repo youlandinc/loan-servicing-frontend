@@ -9,36 +9,44 @@ import {
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
+import {
+  GridMoreIconButton,
+  SortButton,
+  transferOrderColumns,
+} from '@/components/molecules';
+
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import { useMst } from '@/models/Root';
+import { SortDirection } from '@/types/enum';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
-    portfolio: { allLoansGridQueryModel },
+    portfolio: { allLoansGridModel },
   } = useMst();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    allLoansGridQueryModel.updateQueryCondition,
+    allLoansGridModel.queryModel.updateQueryCondition,
     500,
   );
 
   const [, , updateQueryDateRangeDebounce] = useDebounceFn(
-    allLoansGridQueryModel.updateQueryDateRange,
+    allLoansGridModel.queryModel.updateQueryDateRange,
     500,
   );
 
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        allLoansGridQueryModel.searchCondition.propertyAddress;
+        allLoansGridModel.queryModel.searchCondition.keyword;
     }
 
     return () => {
-      // allLoansGridQueryModel.resetDefault();
+      // allLoansGridModel.queryModel.resetDefault();
     };
   }, []);
 
@@ -47,25 +55,33 @@ export const AllLoansGridToolBar: FC = observer(() => {
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
-          updateQueryDebounce('propertyAddress', '');
+          updateQueryDebounce('keyword', '');
         }}
         inputProps={{ ref: propertyAddressRef }}
         onChange={(e) => {
-          updateQueryDebounce('propertyAddress', e.target.value);
+          updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
       />
       <StyledSearchDateRange
         dateRange={[
           isValid(
-            new Date(allLoansGridQueryModel.searchCondition.maturityStartDate),
+            new Date(
+              allLoansGridModel.queryModel.searchCondition.maturityStartDate,
+            ),
           )
-            ? new Date(allLoansGridQueryModel.searchCondition.maturityStartDate)
+            ? new Date(
+                allLoansGridModel.queryModel.searchCondition.maturityStartDate,
+              )
             : null,
           isValid(
-            new Date(allLoansGridQueryModel.searchCondition.maturityEndDate),
+            new Date(
+              allLoansGridModel.queryModel.searchCondition.maturityEndDate,
+            ),
           )
-            ? new Date(allLoansGridQueryModel.searchCondition.maturityEndDate)
+            ? new Date(
+                allLoansGridModel.queryModel.searchCondition.maturityEndDate,
+              )
             : null,
         ]}
         hanelClear={() => {
@@ -88,7 +104,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
           updateQueryDebounce('repaymentStatusList', e);
         }}
         options={PIPELINE_STATUS}
-        value={allLoansGridQueryModel.searchCondition.repaymentStatusList}
+        value={allLoansGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       <StyledSearchLoanOfficer
         defaultLabel={'Investor'}
@@ -97,6 +113,34 @@ export const AllLoansGridToolBar: FC = observer(() => {
         }}
         handleClear={() => {
           updateQueryDebounce('investors', []);
+        }}
+      />
+      {allLoansGridModel.queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            allLoansGridModel.queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            allLoansGridModel.queryModel.updateSort([
+              {
+                ...allLoansGridModel.queryModel.sort[0],
+                direction:
+                  allLoansGridModel.queryModel.sort[0].direction ===
+                  SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+            ]);
+          }}
+          sortItems={allLoansGridModel.queryModel.sort[0]}
+        />
+      )}
+
+      <GridMoreIconButton
+        columns={transferOrderColumns as IOrderColumnsItem[]}
+        handleSave={(columns) => {
+          allLoansGridModel.updateOrderColumns(columns);
         }}
       />
     </Stack>

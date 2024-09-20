@@ -11,7 +11,7 @@ import {
 import { _getLoanDetails } from '@/request';
 import {
   BorrowerTypeEnum,
-  LoanPurposeEnum,
+  LoanDetailsPurposeEnum as LoanPurposeEnum,
   ProductCategoryEnum,
 } from '@/types/enum';
 import { IBorrowerInfo } from '@/types/loan/details';
@@ -75,10 +75,7 @@ export const LoanDetails: FC = () => {
       utils.formatPercent,
     ),
     Term: (loanDetail?.loanTerm ?? 0) + ' Months',
-    'Monthly payment': wrapper(
-      loanDetail?.cycleMonthlyPayment,
-      utils.formatDollar,
-    ),
+    'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
     'As-is property value': wrapper(
       loanDetail?.propertyValue,
       utils.formatDollar,
@@ -124,10 +121,7 @@ export const LoanDetails: FC = () => {
       (loanDetail?.interestRate ?? 0) / 100,
       utils.formatPercent,
     ),
-    'Monthly payment': wrapper(
-      loanDetail?.cycleMonthlyPayment,
-      utils.formatDollar,
-    ),
+    'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
     Term: (loanDetail?.loanTerm ?? 0) + ' Months',
     'Loan number': loanDetail?.loanNumber,
     'Extension option': loanDetail?.extensionOption,
@@ -173,10 +167,7 @@ export const LoanDetails: FC = () => {
     ),
     Term: (loanDetail?.loanTerm ?? 0) + ' Months',
     'ARV (after repair value)': wrapper(loanDetail?.arv, utils.formatDollar),
-    'Monthly payment': wrapper(
-      loanDetail?.cycleMonthlyPayment,
-      utils.formatDollar,
-    ),
+    'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
     'ARLTV (after repair loan to value)': wrapper(
       loanDetail?.arltv / 100,
       utils.formatPercent,
@@ -230,10 +221,7 @@ export const LoanDetails: FC = () => {
       (loanDetail?.interestRate ?? 0) / 100,
       utils.formatPercent,
     ),
-    'Monthly payment': wrapper(
-      loanDetail?.cycleMonthlyPayment,
-      utils.formatDollar,
-    ),
+    'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
     Term: (loanDetail?.loanTerm ?? 0) + ' Months',
     'ARV (after repair value)': wrapper(loanDetail?.arv, utils.formatDollar),
     'Loan number': loanDetail?.loanNumber,

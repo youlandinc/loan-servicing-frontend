@@ -5,44 +5,52 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
-  groupCommonColumns,
   GroupLoans,
+  maturityColumns,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
-import { _getGroupByInvestor } from '@/request/portfolio/investor';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { _getGroupMaturity } from '@/request/portfolio/maturity';
+import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
-export const InvestorGrid: FC = observer(() => {
+export const MaturityGrid: FC = observer(() => {
   const {
-    portfolio: { investorGridQueryModel, displayType },
+    portfolio: { maturityGridModel, displayType },
   } = useMst();
 
   const { data, isLoading } = useSWR(
-    displayType === PortfolioGridTypeEnum.BY_INVESTOR
+    displayType === PortfolioGridTypeEnum.MATURITY
       ? [
           {
-            ...investorGridQueryModel,
+            ...maturityGridModel.queryModel,
             searchCondition: {
-              ...investorGridQueryModel.searchCondition,
-              investors: [...investorGridQueryModel.searchCondition.investors],
+              ...maturityGridModel.queryModel.searchCondition,
+              investors: [
+                ...maturityGridModel.queryModel.searchCondition.investors,
+              ],
             },
           },
           displayType,
         ]
       : null,
     async ([p]) => {
-      return await _getGroupByInvestor(p);
+      return await _getGroupMaturity(p);
     },
-    // { revalidateOnMount: true },
   );
 
-  const columns = useMemo(() => groupCommonColumns, []);
+  const columns = useMemo(
+    () =>
+      maturityColumns(
+        maturityGridModel.queryModel.searchCondition
+          .maturityDays as MaturityTimeRangeEnum,
+      ),
+    [maturityGridModel.queryModel.searchCondition.maturityDays],
+  );
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;
 
   return (
-    <Stack border={'1px solid'} borderColor={'border.normal'} borderRadius={4}>
+    <Stack>
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}

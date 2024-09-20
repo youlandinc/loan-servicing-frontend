@@ -1,9 +1,9 @@
 ///servicing/delinquent
 
-import { IAllLoansGridModel } from '@/models/gridModel/allLoansGridModel';
+import { IAllLoansQueryParam } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { get, post } from '@/request';
 
-export const _getGroupMaturity = (param: IAllLoansGridModel) => {
+export const _getGroupMaturity = (param: IAllLoansQueryParam) => {
   return post('/servicing/maturity', param);
 };
 

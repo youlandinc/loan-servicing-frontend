@@ -91,6 +91,13 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
               },
             },
           }}
+          sx={{
+            color: 'text.secondary',
+            '& .MuiTablePagination-input': {
+              fontSize: 12,
+              ml: 0,
+            },
+          }}
         />
 
         <Pagination
@@ -99,6 +106,20 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
             onPageChange(page);
           }}
           page={page.number}
+          shape={'circular'}
+          sx={{
+            fontSize: 14,
+            '& .MuiPaginationItem-previousNext': {
+              color: 'text.primary',
+            },
+            '& .Mui-disabled svg path': {
+              fill: '#cdcdcd',
+              '& svg path': {
+                fill: 'background.disabled',
+              },
+            },
+          }}
+          variant={'text'}
         />
       </Stack>
     </Stack>

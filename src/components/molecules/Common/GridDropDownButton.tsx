@@ -1,18 +1,33 @@
-import { FC, useState } from 'react';
-import { Menu, MenuItem, Stack } from '@mui/material';
+import React, { FC, useState } from 'react';
+import { CircularProgress, Menu, MenuItem, Stack } from '@mui/material';
+import { GridYoulandItem } from '@/types/pipeline/youland';
+import { _updateTableData } from '@/request';
+import { HttpError } from '@/types/common';
+import { AUTO_HIDE_DURATION } from '@/constant';
+import { useSnackbar } from 'notistack';
 
 interface GridDropDownButtonProps {
-  options?: Option[];
-  status?: string;
+  options?: Array<Option & { bgColor: string }>;
+  status?: string | null | number;
+  cb?: () => Promise<void>;
+  paramsKey: string;
+  tableData?: Partial<GridYoulandItem>;
+  loanId: number | string;
 }
 
 export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
   status = '',
-  options = [
-    { label: 'Option 1', key: 'option1', value: 1 },
-    { label: 'Option 2', key: 'option2', value: 2 },
-  ],
+  options = [],
+  cb,
+  paramsKey,
+  tableData,
+  loanId,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+  const [loading, setLoading] = useState(false);
+
   const [target, setTarget] = useState<HTMLElement | null>(null);
   const open = Boolean(target);
 
@@ -23,16 +38,30 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
   return (
     <>
       <Stack
-        color={'#2B52B6'}
+        alignItems={'center'}
+        borderRadius={1}
         fontSize={12}
+        height={20}
+        justifyContent={'center'}
         onClick={(e) => setTarget(e.currentTarget)}
         sx={{
-          textDecoration: 'underline',
+          bgcolor: status
+            ? options.find((item) => item.label === status)?.bgColor ||
+              'hsla(223, 45%, 72%, .2)'
+            : 'transparent',
+          color: status
+            ? options.find((item) => item.label === status)?.bgColor ||
+              'hsla(223, 45%, 72%, 1)'
+            : '#2B52B6',
+          textDecoration: status ? 'none' : 'underline',
           textDecorationColor: '#2B52B6',
           cursor: 'pointer',
         }}
+        width={100}
       >
-        Add
+        {status
+          ? options.find((item) => item.label === status)?.label || status
+          : 'Add'}
       </Stack>
 
       <Menu
@@ -72,7 +101,39 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
         {options.map((item, index) => (
           <MenuItem
             key={`${item.key}-${index}`}
-            selected={item.key === status}
+            onClick={async () => {
+              if (status === item.key) {
+                return;
+              }
+              const postData = {
+                loanId,
+              };
+              if (paramsKey === 'prospectiveBuyer') {
+                Object.assign(postData, {
+                  prospectiveBuyer: item.label,
+                  prospectiveBuyerId: item.key,
+                });
+              }
+              setActiveIndex(index);
+              setLoading(true);
+              try {
+                await _updateTableData(postData);
+                await cb?.();
+              } catch (err) {
+                const { header, message, variant } = err as HttpError;
+                enqueueSnackbar(message, {
+                  variant: variant || 'error',
+                  autoHideDuration: AUTO_HIDE_DURATION,
+                  isSimple: !header,
+                  header,
+                });
+              } finally {
+                onClickToClose();
+                setLoading(false);
+                setActiveIndex(-1);
+              }
+            }}
+            selected={loading ? activeIndex === index : item.key === status}
             sx={{
               px: 3,
               py: 1.5,
@@ -88,18 +149,25 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
               },
             }}
           >
-            <Stack
-              alignItems={'center'}
-              //bgcolor={bgPalette[item.key]}
-              borderRadius={1}
-              //color={colorPalette ? colorPalette[status] : '#ffffff'}
-              fontSize={12}
-              height={20}
-              justifyContent={'center'}
-              width={100}
-            >
-              {item.label}
-            </Stack>
+            {loading && activeIndex === index ? (
+              <CircularProgress
+                size={20}
+                sx={{ m: '0 auto', color: '#E3E3EE' }}
+              />
+            ) : (
+              <Stack
+                alignItems={'center'}
+                bgcolor={item.bgColor || 'hsla(223, 45%, 72%, .2)'}
+                borderRadius={1}
+                color={'hsla(223, 45%, 72%, 1)' || '#ffffff'}
+                fontSize={12}
+                height={20}
+                justifyContent={'center'}
+                width={100}
+              >
+                {item.label}
+              </Stack>
+            )}
           </MenuItem>
         ))}
       </Menu>

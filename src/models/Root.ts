@@ -125,7 +125,7 @@ const initialState = {
         sort: [],
         searchCondition: {
           investors: [],
-          propertyAddress: '',
+          keyword: '',
           maturityStartDate: '',
           maturityEndDate: '',
           repaymentStatusList: [],
@@ -141,7 +141,7 @@ const initialState = {
         sort: [],
         searchCondition: {
           investors: [],
-          propertyAddress: '',
+          keyword: '',
           maturityStartDate: '',
           maturityEndDate: '',
           repaymentStatusList: [],
@@ -157,7 +157,7 @@ const initialState = {
         sort: [],
         searchCondition: {
           investors: [],
-          propertyAddress: '',
+          keyword: '',
           maturityStartDate: '',
           maturityEndDate: '',
           repaymentStatusList: [],
@@ -174,7 +174,7 @@ const initialState = {
         sort: [],
         searchCondition: {
           investors: [],
-          propertyAddress: '',
+          keyword: '',
           maturityStartDate: '',
           maturityEndDate: '',
           repaymentStatusList: [],

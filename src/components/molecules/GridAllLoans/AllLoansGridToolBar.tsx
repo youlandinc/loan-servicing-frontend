@@ -42,7 +42,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        allLoansGridModel.queryModel.searchCondition.propertyAddress;
+        allLoansGridModel.queryModel.searchCondition.keyword;
     }
 
     return () => {
@@ -55,11 +55,11 @@ export const AllLoansGridToolBar: FC = observer(() => {
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
-          updateQueryDebounce('propertyAddress', '');
+          updateQueryDebounce('keyword', '');
         }}
         inputProps={{ ref: propertyAddressRef }}
         onChange={(e) => {
-          updateQueryDebounce('propertyAddress', e.target.value);
+          updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
       />

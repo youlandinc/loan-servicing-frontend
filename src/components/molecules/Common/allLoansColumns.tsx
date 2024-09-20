@@ -141,7 +141,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'fciMaturityDate',
+    accessorKey: 'maturityDate',
     header: 'Maturity date',
     size: 140,
     minSize: 110,
@@ -163,7 +163,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'principalBalance',
+    accessorKey: 'totalLoanAmount',
     header: 'Principal balance',
     size: 140,
     minSize: 130,
@@ -310,7 +310,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'originationDate',
+    accessorKey: 'estClosingDate',
     header: 'Origination date',
     size: 140,
     minSize: 110,

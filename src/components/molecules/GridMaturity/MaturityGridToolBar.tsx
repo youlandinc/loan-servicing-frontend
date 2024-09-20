@@ -61,7 +61,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        maturityGridModel.queryModel.searchCondition.propertyAddress;
+        maturityGridModel.queryModel.searchCondition.keyword;
     }
     getMaturityRangeOpt();
   }, []);
@@ -71,11 +71,11 @@ export const MaturityGridToolBar: FC = observer((props) => {
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
-          updateQueryDebounce('propertyAddress', '');
+          updateQueryDebounce('keyword', '');
         }}
         inputProps={{ ref: propertyAddressRef }}
         onChange={(e) => {
-          updateQueryDebounce('propertyAddress', e.target.value);
+          updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
       />

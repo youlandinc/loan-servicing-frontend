@@ -34,7 +34,7 @@ export const InvestorGridToolBar: FC = observer(() => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        investorGridModel.queryModel.searchCondition.propertyAddress;
+        investorGridModel.queryModel.searchCondition.keyword;
     }
     return () => {
       // investorGridModel.queryModel.resetDefault();
@@ -46,11 +46,11 @@ export const InvestorGridToolBar: FC = observer(() => {
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
-          updateQueryDebounce('propertyAddress', '');
+          updateQueryDebounce('keyword', '');
         }}
         inputProps={{ ref: propertyAddressRef }}
         onChange={(e) => {
-          updateQueryDebounce('propertyAddress', e.target.value);
+          updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
       />

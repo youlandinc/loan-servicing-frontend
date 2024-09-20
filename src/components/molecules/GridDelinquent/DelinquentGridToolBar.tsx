@@ -59,7 +59,7 @@ export const DelinquentGridToolBar: FC = () => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        delinquentGridModel.queryModel.searchCondition.propertyAddress;
+        delinquentGridModel.queryModel.searchCondition.keyword;
     }
     getDelinquentRangeOpt();
   }, []);
@@ -69,11 +69,11 @@ export const DelinquentGridToolBar: FC = () => {
       <StyledSearchTextFieldInput
         handleClear={() => {
           propertyAddressRef.current!.value = '';
-          updateQueryDebounce('propertyAddress', '');
+          updateQueryDebounce('keyword', '');
         }}
         inputProps={{ ref: propertyAddressRef }}
         onChange={(e) => {
-          updateQueryDebounce('propertyAddress', e.target.value);
+          updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
       />

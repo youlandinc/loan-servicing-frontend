@@ -18,7 +18,7 @@ export type ISortItemModel = SnapshotOut<typeof SortItemModel>;
 
 const searchConditionModel = types.model({
   investors: types.array(types.string),
-  propertyAddress: types.string,
+  keyword: types.string,
   maturityStartDate: types.string,
   maturityEndDate: types.string,
   repaymentStatusList: types.array(

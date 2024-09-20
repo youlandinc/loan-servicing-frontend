@@ -1,12 +1,14 @@
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import useSWR from 'swr';
 
 import {
   AllLoansPagination,
+  defaultColumnPining,
   groupCommonColumns,
   GroupLoans,
+  transferOrderColumnsKeys,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
@@ -16,6 +18,22 @@ export const InvestorGrid: FC = observer(() => {
   const {
     portfolio: { investorGridModel, displayType },
   } = useMst();
+
+  const [headerColumnId, setHeaderColumnId] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
+  const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
+
+  // const [headerColumn, setHeaderColumn] = useState({} as MRT_Column<any>);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
+  const [columnPiningState, setColumnPiningState] = useState(
+    defaultColumnPining(investorGridModel.orderColumns),
+  );
+
+  const configColumnsOrderKeysArr = investorGridModel.orderColumns?.length
+    ? transferOrderColumnsKeys(investorGridModel.orderColumns)
+    : [];
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.BY_INVESTOR
@@ -46,6 +64,7 @@ export const InvestorGrid: FC = observer(() => {
   return (
     <Stack>
       <GroupLoans
+        columnOrder={[]}
         columns={columns}
         data={data?.data?.contents || []}
         loading={isLoading}

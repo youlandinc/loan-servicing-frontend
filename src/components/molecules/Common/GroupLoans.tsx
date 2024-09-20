@@ -1,21 +1,31 @@
 import {
+  MRT_Column,
   MRT_TableContainer,
   MRT_TableOptions,
   useMaterialReactTable,
 } from 'material-react-table';
 import router from 'next/router';
-import React, { CSSProperties, FC } from 'react';
+import React, { CSSProperties, FC, ReactEventHandler } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
-type GroupLoansProps = MRT_TableOptions<any> & { loading?: boolean };
+type GroupLoansProps = MRT_TableOptions<any> & {
+  loading?: boolean;
+  handleHeaderClick?: (
+    e: React.MouseEvent<HTMLTableCellElement>,
+    column: MRT_Column<any>,
+  ) => void;
+  columnOrder?: string[];
+};
 
 export const GroupLoans: FC<GroupLoansProps> = ({
   columns,
   data,
   rowCount,
   loading,
+  columnOrder,
+  handleHeaderClick,
   ...rest
 }) => {
   const table = useMaterialReactTable({
@@ -39,7 +49,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     manualPagination: true,
     // getCoreRowModel: getCoreRowModel(),
     state: {
-      // columnOrder: configColumnsOrderKeysArr,
+      columnOrder: columnOrder || [],
       // isLoading: isValidating,
       showSkeletons: loading,
       // columnPinning: columnPiningState,
@@ -157,7 +167,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         },
       },
     },
-    muiTableHeadCellProps: {
+    muiTableHeadCellProps: (props) => ({
       sx: {
         bgcolor: '#F4F6FA',
         opacity: 1,
@@ -195,7 +205,11 @@ export const GroupLoans: FC<GroupLoansProps> = ({
                               pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
                         },*/
       },
-    },
+      onClick: (e) => {
+        e.stopPropagation();
+        // handleHeaderClick?.(e, props.column);
+      },
+    }),
     muiTableContainerProps: {
       style: {
         maxHeight: 'calc(100vh - 212px)',

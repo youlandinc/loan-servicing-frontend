@@ -1,3 +1,4 @@
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { Stack } from '@mui/material';
 import {
@@ -17,6 +18,7 @@ import {
   columnsResult,
   commonColumns,
   defaultColumnPining,
+  transferOrderColumnsKeys,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
@@ -42,11 +44,7 @@ export const AllLoansGrid: FC = observer(() => {
   );
 
   const configColumnsOrderKeysArr = allLoansGridModel.orderColumns?.length
-    ? [
-        ...allLoansGridModel.orderColumns
-          .filter((item) => item.visibility)
-          .map((item) => item.field),
-      ]
+    ? transferOrderColumnsKeys(allLoansGridModel.orderColumns)
     : [];
 
   const { data, isLoading } = useSWR(
@@ -213,10 +211,6 @@ export const AllLoansGrid: FC = observer(() => {
           return;
         }
         const id = props.column.id;
-        if (id === 'mrt-row-select') {
-          return;
-        }
-
         setAnchorEl(e.currentTarget);
         setTableHeaderIndex(props.column.getIndex());
         // setHeaderColumn(props.column);

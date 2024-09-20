@@ -1,28 +1,30 @@
-import { IOrderColumnsItem } from '@/models/gridModel';
+import {
+  AllLoansPagination,
+  ColumnsHeaderMenus,
+  comBineColumns,
+  commonColumns,
+  defaultColumnPining,
+  resortColumns,
+  transferFirstColumn,
+  transferOrderColumnsKeys,
+} from '@/components/molecules';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { useMst } from '@/models/Root';
+import { _getAllLoansList } from '@/request/portfolio/allLoans';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { Stack } from '@mui/material';
 import {
-  MRT_Column,
   MRT_ColumnDef,
   MRT_TableContainer,
+  MRT_TableHeadCellResizeHandle,
+  MRT_TableHeadCellResizeHandleProps,
   useMaterialReactTable,
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
 import { FC, useMemo, useState } from 'react';
+import { useDebounce } from 'react-use';
 import useSWR from 'swr';
-
-import {
-  AllLoansPagination,
-  ColumnsHeaderMenus,
-  columnsResult,
-  commonColumns,
-  defaultColumnPining,
-  transferOrderColumnsKeys,
-} from '@/components/molecules';
-import { useMst } from '@/models/Root';
-import { _getAllLoansList } from '@/request/portfolio/allLoans';
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const AllLoansGrid: FC = observer(() => {
   const router = useRouter();
@@ -75,12 +77,12 @@ export const AllLoansGrid: FC = observer(() => {
     },
   );
 
-  const columns = useMemo(() => commonColumns, []);
-
   const configColumns = useMemo(() => {
-    return columnsResult(columns, allLoansGridModel.orderColumns);
+    return allLoansGridModel.orderColumns.length
+      ? resortColumns(allLoansGridModel.orderColumns, commonColumns)
+      : commonColumns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allLoansGridModel.orderColumns]);
+  }, [configColumnsOrderKeysArr.join('')]);
 
   const rowsTotal = data?.data?.page?.totalElements ?? 0;
   const totalPages = data?.data?.page?.totalPages ?? 0;
@@ -210,7 +212,6 @@ export const AllLoansGrid: FC = observer(() => {
         ) {
           return;
         }
-        const id = props.column.id;
         setAnchorEl(e.currentTarget);
         setTableHeaderIndex(props.column.getIndex());
         // setHeaderColumn(props.column);
@@ -224,6 +225,41 @@ export const AllLoansGrid: FC = observer(() => {
       },
     },
   });
+
+  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const columnPining = table.getState().columnPinning;
+  const [, cancelUpdateColumnWidth] = useDebounce(
+    () => {
+      if (Object.keys(columnSizing).length) {
+        //handle column sizing
+        console.log('columnSizing', columnSizing);
+      }
+      // setColumnWidth(
+      //     Object.keys(columnSizing).map((field) => ({
+      //       field,
+      //       columnWidth: columnSizing[field],
+      //     })),
+      // );
+    },
+    500,
+    [columnSizing],
+  );
+
+  // const [, setColumnWidth] = useAsyncFn(
+  //     async (result: { field: string; columnWidth: number }[]) => {
+  //       await _updateColumnWidth(result).catch(
+  //           ({ message, variant, header }) => {
+  //             enqueueSnackbar(message, {
+  //               variant,
+  //               isSimple: !header,
+  //               header,
+  //             });
+  //           },
+  //       );
+  //       // await userSetting.fetchUserSetting();
+  //     },
+  //     [columnSizing],
+  // );
   return (
     <>
       <Stack>
@@ -231,6 +267,7 @@ export const AllLoansGrid: FC = observer(() => {
           // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
           table={table}
         />
+
         <AllLoansPagination
           currentPage={currentPage}
           onPageChange={(page: number) => {

@@ -213,7 +213,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'nextDueDate',
+    accessorKey: 'nextPaymentDate',
     header: 'Next due date',
     size: 140,
     minSize: 110,
@@ -333,15 +333,34 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   },
 ];
 
-export const transferOrderColumns = commonColumns.map((item, index) => ({
-  field: item.accessorKey as string,
-  headerName: item.header,
-  columnWidth: item.size,
-  sort: index,
-  visibility: true,
-  pinType: 'CENTER' as ColumnPiningDirectionEnum,
-  leftOrder: null,
-}));
+export const transferOrderColumns = (columns: MRT_ColumnDef<any>[]) => {
+  return columns.map((item, index) => ({
+    field: item.accessorKey as string,
+    headerName: item.header,
+    columnWidth: item.size,
+    sort: index,
+    visibility: true,
+    pinType: 'CENTER' as ColumnPiningDirectionEnum,
+    leftOrder: null,
+  }));
+};
+
+export const resortColumns = (
+  orderColumns: IOrderColumnsItem[],
+  columns: MRT_ColumnDef<any>[],
+) => {
+  return orderColumns
+    .map((item) => {
+      const target = columns.find(
+        (column) => column.accessorKey === item.field,
+      );
+      if (target) {
+        return target;
+      }
+      return undefined;
+    })
+    .filter((item) => !!item) as MRT_ColumnDef<any>[];
+};
 
 export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
   return columns
@@ -349,7 +368,7 @@ export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
     .map((item: IOrderColumnsItem) => item.field);
 };
 
-export const columnsResult = (
+export const comBineColumns = (
   defaultColumns: MRT_ColumnDef<any>[],
   configColumns: IOrderColumnsItem[],
 ) => {
@@ -393,7 +412,7 @@ export const defaultColumnPining = (configColumns: IOrderColumnsItem[]) => {
       };
 };
 
-const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
+export const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
   return columns.map((item: any, index) => {
     return {
       ...item,
@@ -404,8 +423,8 @@ const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
             <Typography
               fontSize={14}
               fontWeight={600}
-              position={'absolute'}
-              sx={{ whiteSpace: 'nowrap' }}
+              // position={'absolute'}
+              sx={{ whiteSpace: 'nowrap', textIndent: 8 }}
               textAlign={'left'}
               width={'100%'}
             >

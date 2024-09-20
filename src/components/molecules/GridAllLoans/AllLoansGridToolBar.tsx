@@ -10,6 +10,8 @@ import {
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
 import {
+  comBineColumns,
+  commonColumns,
   GridMoreIconButton,
   SortButton,
   transferOrderColumns,
@@ -138,7 +140,11 @@ export const AllLoansGridToolBar: FC = observer(() => {
       )}
 
       <GridMoreIconButton
-        columns={transferOrderColumns as IOrderColumnsItem[]}
+        columns={
+          transferOrderColumns(
+            comBineColumns(commonColumns, allLoansGridModel.orderColumns),
+          ) as IOrderColumnsItem[]
+        }
         handleSave={(columns) => {
           allLoansGridModel.updateOrderColumns(columns);
         }}

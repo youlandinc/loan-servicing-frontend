@@ -1,3 +1,4 @@
+import { useDebounceFn } from '@/hooks';
 import {
   MRT_Column,
   MRT_TableContainer,
@@ -9,6 +10,7 @@ import React, { CSSProperties, FC, ReactEventHandler } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import { useDebounce } from 'react-use';
 
 type GroupLoansProps = MRT_TableOptions<any> & {
   loading?: boolean;
@@ -28,6 +30,10 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   handleHeaderClick,
   ...rest
 }) => {
+  const [, , updateColumnWidth] = useDebounceFn((param: unknown) => {
+    console.log(param);
+  }, 500);
+
   const table = useMaterialReactTable({
     columns,
     data,
@@ -52,7 +58,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       columnOrder: columnOrder || [],
       // isLoading: isValidating,
       showSkeletons: loading,
-      // columnPinning: columnPiningState,
     },
     initialState: {
       // showSkeletons: false,
@@ -74,6 +79,10 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         height: 20,
       },
       title: '',
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        //handleExpandClick();
+      },
     },
     icons: {
       KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
@@ -198,22 +207,32 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
-        /* cursor:
-                            pipelineMode === PipelineDisplayMode.LIST_MODE ? 'pointer' : 'unset',
-                        '&:hover': {
-                          bgcolor:
-                              pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
-                        },*/
+        cursor: 'pointer',
+        '&:hover': {
+          bgcolor: '#ececec',
+        },
       },
       onClick: (e) => {
         e.stopPropagation();
-        // handleHeaderClick?.(e, props.column);
+        if (props.column.id === 'mrt-row-expand') {
+          return;
+        }
+        handleHeaderClick?.(e, props.column);
       },
     }),
     muiTableContainerProps: {
       style: {
         maxHeight: 'calc(100vh - 212px)',
       },
+    },
+    muiExpandAllButtonProps: (props) => {
+      return {
+        title: '',
+        onClick: () => {
+          //haneleExpandAllClick();
+          // set(props.table.toggleAllRowsExpanded, !props.table.getIsAllRowsExpanded());
+        },
+      };
     },
     ...rest,
     /*    muiTablePaperProps: {
@@ -350,6 +369,26 @@ export const GroupLoans: FC<GroupLoansProps> = ({
               };
             },*/
   });
+
+  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const columnPining = table.getState().columnPinning;
+
+  const [, cancelUpdateColumnWidth] = useDebounce(
+    () => {
+      if (Object.keys(columnSizing).length) {
+        //handle column sizing
+        console.log('columnSizing', columnSizing);
+      }
+      // setColumnWidth(
+      //     Object.keys(columnSizing).map((field) => ({
+      //       field,
+      //       columnWidth: columnSizing[field],
+      //     })),
+      // );
+    },
+    500,
+    [columnSizing],
+  );
 
   return (
     <MRT_TableContainer

@@ -38,15 +38,15 @@ export interface CommentItemData {
 }
 
 export interface OverviewBalanceInformation {
-  fciMaturityDate: string;
+  maturityDate: string;
   currentBalance: number;
   paidToDate: string;
   nextDueDate: string;
   interestRate: number;
-  originationDate: string;
+  estClosingDate: string;
   monthlyPayment: number;
   loanTerm: number;
-  principalBalance: number;
+  totalLoanAmount: number;
 }
 
 export interface OverviewLoanInfo {

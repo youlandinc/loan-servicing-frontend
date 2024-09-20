@@ -2,7 +2,7 @@ import {
   BorrowerTypeEnum,
   DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
-  // LoanPurposeEnum,
+  LoanDetailsPurposeEnum,
   LoanStatus,
   MaturityDateTypeEnum,
   MaturityTimeRangeEnum,
@@ -185,14 +185,14 @@ export const PIPELINE_STATUS: Option[] = [
 
 export const LoanPurposeOpt: Option[] = [
   {
-    key: LoanPurposeEnum.purchase,
+    key: LoanDetailsPurposeEnum.purchase,
     label: 'Purchase',
-    value: LoanPurposeEnum.purchase,
+    value: LoanDetailsPurposeEnum.purchase,
   },
   {
-    key: LoanPurposeEnum.refinance,
+    key: LoanDetailsPurposeEnum.refinance,
     label: 'Refinance',
-    value: LoanPurposeEnum.refinance,
+    value: LoanDetailsPurposeEnum.refinance,
   },
 ];
 export const ProductCategoryOpt: Option[] = [

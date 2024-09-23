@@ -62,7 +62,7 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
           onRowsPerPageChange={(e) => {
             onPageSizeChange(parseInt(e?.target?.value));
           }}
-          page={page.number + 1}
+          page={page.number}
           rowsPerPage={page.size}
           rowsPerPageOptions={[50, 100]}
           slotProps={{

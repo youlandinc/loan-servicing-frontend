@@ -45,6 +45,10 @@ export const InvestorGrid: FC = observer(() => {
               investors: [
                 ...investorGridModel.queryModel.searchCondition.investors,
               ],
+              repaymentStatusList: [
+                ...investorGridModel.queryModel.searchCondition
+                  .repaymentStatusList,
+              ],
             },
             sort: [...investorGridModel.queryModel.sort],
           },

@@ -7,7 +7,7 @@ import {
 export interface IExtensionInfo {
   downloadId: number | null;
   loanId: number;
-  loanNumber: string;
+  systemLoanNumber: string;
   defaultRate: number;
   maturityDate: string;
   totalLoanAmount: number;

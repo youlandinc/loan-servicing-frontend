@@ -111,18 +111,14 @@ export const LoanExtensionRequest: FC = () => {
           enqueueSnackbar('Update Successful !', {
             variant: 'success',
           });
-          await router.push('/loan/details', {
-            query: {
-              loanId: loanId,
-            },
-          });
+          await router.push(`/loan/overview?loanId=${loanId}`);
           return res;
         })
         .catch(({ message, variant, header }) => {
           enqueueSnackbar(message, { variant, isSimple: !header, header });
         });
     },
-    [formRef.current],
+    [formRef.current, loanId],
   );
 
   const [viewState, viewExtensionPdf] = useAsyncFn(async () => {
@@ -167,7 +163,7 @@ export const LoanExtensionRequest: FC = () => {
             <Stack maxWidth={900} spacing={3} width={'100%'}>
               <StyledHeaderAddressInfo
                 address={value.data.propertyFullAddress}
-                loanNumber={value.data.loanNumber}
+                loanNumber={value.data.systemLoanNumber}
                 status={value.data.repaymentStatusEnum}
               />
               <Typography color={'text.hover'} fontWeight={600}>

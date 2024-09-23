@@ -68,20 +68,24 @@ export const InvestorGridToolBar: FC = observer(() => {
         dateRange={[
           isValid(
             new Date(
-              investorGridModel.queryModel.searchCondition.maturityStartDate,
+              investorGridModel.queryModel.searchCondition.maturityStartDate ||
+                '',
             ),
           )
             ? new Date(
-                investorGridModel.queryModel.searchCondition.maturityStartDate,
+                investorGridModel.queryModel.searchCondition
+                  .maturityStartDate || '',
               )
             : null,
           isValid(
             new Date(
-              investorGridModel.queryModel.searchCondition.maturityEndDate,
+              investorGridModel.queryModel.searchCondition.maturityEndDate ||
+                '',
             ),
           )
             ? new Date(
-                investorGridModel.queryModel.searchCondition.maturityEndDate,
+                investorGridModel.queryModel.searchCondition.maturityEndDate ||
+                  '',
               )
             : null,
         ]}
@@ -102,7 +106,7 @@ export const InvestorGridToolBar: FC = observer(() => {
       <StyledSearchSelectMultiple
         label={'Status'}
         onChange={(e) => {
-          updateQueryDebounce('status', e);
+          updateQueryDebounce('repaymentStatusList', e);
         }}
         options={PIPELINE_STATUS}
         value={[

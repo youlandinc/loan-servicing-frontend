@@ -43,7 +43,7 @@ export const LoanDetails: FC = () => {
   const brokerDetail = value?.data?.brokerDetail;
   const investorName = value?.data?.investor;
   const address = value?.data?.propertyFullAddress;
-  const loanNumber = value?.data?.loanNumber;
+  const loanNumber = value?.data?.systemLoanNumber;
   const status = value?.data?.repaymentStatusEnum;
 
   const loanCommonField = {

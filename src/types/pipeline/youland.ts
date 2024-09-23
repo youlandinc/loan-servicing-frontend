@@ -32,6 +32,7 @@ interface GridItemProps {
 
 export type GridYoulandItem = GridItemProps;
 export type GridAlamedaItem = GridItemProps;
+export type GridCashFlowItem = GridItemProps;
 
 export interface GridInvestorItem {
   id: number;
@@ -47,6 +48,7 @@ interface GridSummaryProps {
 
 export type GridYoulandSummaryProps = GridSummaryProps;
 export type GridAlamedaSummaryProps = GridSummaryProps;
+export type GridCashFlowSummaryProps = GridSummaryProps;
 
 interface _ResponseGridYoulandTable {
   content: GridYoulandItem[];
@@ -58,8 +60,16 @@ interface _ResponseGridAlamedaTable {
   page: PageProps;
 }
 
+interface _ResponseGridCashFlowTable {
+  content: GridCashFlowItem[];
+  page: PageProps;
+}
+
 export type ResponseGridYoulandTable = _ResponseGridYoulandTable &
   GridYoulandSummaryProps;
 
 export type ResponseGridAlamedaTable = _ResponseGridAlamedaTable &
   GridAlamedaSummaryProps;
+
+export type ResponseGridCashFlowTable = _ResponseGridCashFlowTable &
+  GridCashFlowSummaryProps;

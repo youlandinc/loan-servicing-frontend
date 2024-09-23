@@ -106,7 +106,7 @@ export interface OverviewPaymentHistory {
 
 export interface ResponseOverviewDetails {
   loanId: number | string;
-  loanNumber: string;
+  systemLoanNumber: string;
   propertyFullAddress: string;
   repaymentStatus: PipelineStatusEnum;
   balanceInformation: OverviewBalanceInformation;

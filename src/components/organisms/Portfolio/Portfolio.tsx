@@ -43,6 +43,21 @@ const GridYoulandToolbar = dynamic(
   { ssr: false },
 );
 
+const GridCashFlow = dynamic(
+  () =>
+    import('@/components/molecules/GridCashFlow').then(
+      (mode) => mode.GridCashFlow,
+    ),
+  { ssr: false },
+);
+const GridCashFlowToolbar = dynamic(
+  () =>
+    import('@/components/molecules/GridCashFlow').then(
+      (mode) => mode.GridCashFlowToolbar,
+    ),
+  { ssr: false },
+);
+
 const GridAlameda = dynamic(
   () =>
     import('@/components/molecules/GridAlameda').then(
@@ -139,6 +154,13 @@ export const Portfolio: FC = observer(() => {
         component: <GridYouland />,
       },
       {
+        icon: LOGO_CASH_FLOW,
+        label: 'Cash flow',
+        key: PortfolioGridTypeEnum.CASH_FLOW,
+        queryComponent: <GridCashFlowToolbar />,
+        component: <GridCashFlow />,
+      },
+      {
         icon: LOGO_ALAMEDA,
         label: 'Alameda',
         key: PortfolioGridTypeEnum.ALAMEDA,
@@ -186,13 +208,6 @@ export const Portfolio: FC = observer(() => {
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
-      },
-      {
-        icon: LOGO_CASH_FLOW,
-        label: 'Cash flow',
-        key: PortfolioGridTypeEnum.CASH_FLOW,
-        queryComponent: <></>,
-        component: <></>,
       },
     ],
     [portfolioListType],

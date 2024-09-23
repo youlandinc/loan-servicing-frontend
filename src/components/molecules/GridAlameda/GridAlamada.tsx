@@ -112,10 +112,10 @@ export const GridAlameda: FC = observer(() => {
     Array<Option & { bgColor: string }>
   >([]);
   const [page, setPage] = useState<ResponseGridAlamedaTable['page']>({
-    number: 1,
+    number: 0,
     size: 50,
-    totalElements: 1000,
-    totalPages: 100,
+    totalElements: 1,
+    totalPages: 1,
   });
   const [footerData, setFooterData] = useState<GridAlamedaSummaryProps>({
     totalItems: 5,

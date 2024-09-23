@@ -116,9 +116,9 @@ export const GridYouland: FC = observer(() => {
   >([]);
   const [page, setPage] = useState<ResponseGridYoulandTable['page']>({
     number: 0,
-    size: 10,
-    totalElements: 5,
-    totalPages: 5,
+    size: 50,
+    totalElements: 1,
+    totalPages: 1,
   });
   const [footerData, setFooterData] = useState<GridYoulandSummaryProps>({
     totalItems: 5,

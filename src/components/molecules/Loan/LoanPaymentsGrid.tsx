@@ -1,5 +1,10 @@
 import { CSSProperties, FC, useState } from 'react';
-import { Icon, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  //Icon,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
@@ -19,7 +24,7 @@ import { HttpError } from '@/types/common';
 import { _fetchPaymentsHistory } from '@/request/loan/payments';
 import { PaymentHistoryItem } from '@/types/loan/payments';
 
-import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
+//import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 export const LoanPaymentsGrid: FC<{
   maxHeight?: CSSProperties['maxHeight'];
@@ -145,7 +150,8 @@ export const LoanPaymentsGrid: FC<{
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
 
-    renderEmptyRowsFallback: ({ table }) => {
+    // If you want to customize the table, parameters are provided here
+    renderEmptyRowsFallback: () => {
       return (
         <Stack
           //alignItems={'center'}

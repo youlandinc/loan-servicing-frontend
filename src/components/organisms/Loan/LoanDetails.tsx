@@ -16,7 +16,7 @@ import {
 } from '@/types/enum';
 import { IBorrowerInfo } from '@/types/loan/details';
 import { utils } from '@/utils';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useAsync } from 'react-use';
@@ -443,16 +443,18 @@ export const LoanDetails: FC = () => {
   ];
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      <Stack direction={'row'} justifyContent={'center'} p={6}>
-        <Stack maxWidth={1276} spacing={3} width={'100%'}>
-          <StyledHeaderAddressInfo
-            address={address}
-            loanNumber={loanNumber}
-            status={status}
-          />
-          <StyledTabs tabsData={tabs} />
+      <Box overflow={'auto'}>
+        <Stack direction={'row'} justifyContent={'center'} p={6}>
+          <Stack maxWidth={1276} spacing={3} width={'100%'}>
+            <StyledHeaderAddressInfo
+              address={address}
+              loanNumber={loanNumber}
+              status={status}
+            />
+            <StyledTabs tabsData={tabs} />
+          </Stack>
         </Stack>
-      </Stack>
+      </Box>
     </Layout>
   );
 };

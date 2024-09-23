@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Pagination, Stack, TablePagination } from '@mui/material';
 
-interface LoanPaymentsGridFooter {
+interface LoanPaymentsGridFooterProps {
   page: {
     number: number;
     size: number;
@@ -12,7 +12,7 @@ interface LoanPaymentsGridFooter {
   onPageChange: (page: number) => void;
 }
 
-export const LoanPaymentsGridFooter: FC<LoanPaymentsGridFooter> = ({
+export const LoanPaymentsGridFooter: FC<LoanPaymentsGridFooterProps> = ({
   page,
   onPageSizeChange,
   onPageChange,

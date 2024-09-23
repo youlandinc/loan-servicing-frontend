@@ -129,184 +129,186 @@ export const LoanExtensionRequest: FC = () => {
 
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      <Stack direction={'row'} justifyContent={'center'} p={6}>
-        {value?.data && (
-          <Stack maxWidth={900} spacing={3} width={'100%'}>
-            <StyledHeaderAddressInfo
-              address={value.data.propertyFullAddress}
-              loanNumber={value.data.loanNumber}
-              status={value.data.repaymentStatusEnum}
-            />
-            <Typography color={'text.hover'} fontWeight={600}>
-              Extension agreement
-            </Typography>
-            <Stack direction={'row'} gap={3}>
-              <Stack
-                bgcolor={'#F0F4FF'}
-                borderRadius={2}
-                component={'ul'}
-                gap={1.5}
-                p={3}
-                width={'50%'}
-              >
-                {Object.keys(cardInfo).map((item, index) => (
-                  <Stack
-                    direction={'row'}
-                    justifyContent={'space-between'}
-                    key={index}
-                  >
-                    <Typography color={'text.hover'} variant={'body2'}>
-                      {item}
-                    </Typography>
-                    <Typography variant={'subtitle2'}>
-                      {cardInfo[item]}
-                    </Typography>
-                  </Stack>
-                ))}
-              </Stack>
-              <Stack
-                autoComplete={'off'}
-                component={'form'}
-                gap={1.25}
-                ref={formRef}
-                width={'50%'}
-              >
-                <StyledSelect
-                  label={'Maturity date'}
-                  onChange={(e) => {
-                    setMaturityDate(e.target.value as MaturityDateTypeEnum);
-                  }}
-                  options={MATURITY_DATE}
-                  value={maturityDate}
-                />
-                <StyledTextFieldNumber
-                  label={'Extension fee'}
-                  onValueChange={(values) => {
-                    setExtensionFee(values.floatValue ?? 0);
-                  }}
-                  required
-                  suffix={'%'}
-                  value={extensionFee}
-                />
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  label={'Change the interest rate to:'}
-                  onValueChange={(values) => {
-                    setChangeRate(values.floatValue ?? 0);
-                  }}
-                  required
-                  suffix={'%'}
-                  value={changeRate}
-                />
-                <StyledDatePicker
-                  label={'Execution date'}
-                  onChange={(value) => {
-                    setExtensionDate(value);
-                  }}
-                  slotProps={{
-                    textField: {
-                      required: true,
-                    },
-                  }}
-                  value={executionDate}
-                />
-              </Stack>
-            </Stack>
-            <StyledButton
-              loading={state.loading}
-              onClick={async () => {
-                if (
-                  executionDate !== null &&
-                  typeof value?.data?.maturityDate === 'string'
-                ) {
-                  await createExtensionPdf({
-                    loanId: parseInt(loanId as string),
-                    extendMonth: maturityDate,
-                    extensionFee,
-                    changeInterestRate: changeRate,
-                    executionDate: format(executionDate, 'yyyy-MM-dd'),
-                    maturityDate: value.data.maturityDate,
-                    extensionFeeAmount: 0,
-                  });
-                  retry();
-                }
-              }}
-              size={'small'}
-              sx={{ alignSelf: 'flex-start', width: 181 }}
-              variant={'outlined'}
-            >
-              Generate agreement
-            </StyledButton>
-            {typeof value?.data?.createdTime === 'string' &&
-              typeof downloadId === 'number' && (
-                <Box
-                  color={'primary.main'}
-                  component={'a'}
-                  fontSize={18}
-                  onClick={async () => {
-                    open();
-                    await viewExtensionPdf();
-                  }}
-                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+      <Box overflow={'auto'}>
+        <Stack direction={'row'} justifyContent={'center'} p={6}>
+          {value?.data && (
+            <Stack maxWidth={900} spacing={3} width={'100%'}>
+              <StyledHeaderAddressInfo
+                address={value.data.propertyFullAddress}
+                loanNumber={value.data.loanNumber}
+                status={value.data.repaymentStatusEnum}
+              />
+              <Typography color={'text.hover'} fontWeight={600}>
+                Extension agreement
+              </Typography>
+              <Stack direction={'row'} gap={3}>
+                <Stack
+                  bgcolor={'#F0F4FF'}
+                  borderRadius={2}
+                  component={'ul'}
+                  gap={1.5}
+                  p={3}
+                  width={'50%'}
                 >
-                  Extension agreement -{' '}
-                  {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
-                </Box>
-              )}
-            <Typography color={'info.main'}>
-              The generated extension agreement has been added to the Documents
-              folder for this loan.
-            </Typography>
-          </Stack>
-        )}
-      </Stack>
-      <StyledDialog
-        content={
-          <Box minHeight={300}>
-            {viewState.loading && (
-              <Stack
-                alignItems={'center'}
-                height={300}
-                justifyContent={'center'}
-                textAlign={'center'}
-              >
-                <StyledLoading sx={{ color: '#D2D6E1' }} />
+                  {Object.keys(cardInfo).map((item, index) => (
+                    <Stack
+                      direction={'row'}
+                      justifyContent={'space-between'}
+                      key={index}
+                    >
+                      <Typography color={'text.hover'} variant={'body2'}>
+                        {item}
+                      </Typography>
+                      <Typography variant={'subtitle2'}>
+                        {cardInfo[item]}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+                <Stack
+                  autoComplete={'off'}
+                  component={'form'}
+                  gap={1.25}
+                  ref={formRef}
+                  width={'50%'}
+                >
+                  <StyledSelect
+                    label={'Maturity date'}
+                    onChange={(e) => {
+                      setMaturityDate(e.target.value as MaturityDateTypeEnum);
+                    }}
+                    options={MATURITY_DATE}
+                    value={maturityDate}
+                  />
+                  <StyledTextFieldNumber
+                    label={'Extension fee'}
+                    onValueChange={(values) => {
+                      setExtensionFee(values.floatValue ?? 0);
+                    }}
+                    required
+                    suffix={'%'}
+                    value={extensionFee}
+                  />
+                  <StyledTextFieldNumber
+                    decimalScale={3}
+                    label={'Change the interest rate to:'}
+                    onValueChange={(values) => {
+                      setChangeRate(values.floatValue ?? 0);
+                    }}
+                    required
+                    suffix={'%'}
+                    value={changeRate}
+                  />
+                  <StyledDatePicker
+                    label={'Execution date'}
+                    onChange={(value) => {
+                      setExtensionDate(value);
+                    }}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
+                    value={executionDate}
+                  />
+                </Stack>
               </Stack>
-            )}
+              <StyledButton
+                loading={state.loading}
+                onClick={async () => {
+                  if (
+                    executionDate !== null &&
+                    typeof value?.data?.maturityDate === 'string'
+                  ) {
+                    await createExtensionPdf({
+                      loanId: parseInt(loanId as string),
+                      extendMonth: maturityDate,
+                      extensionFee,
+                      changeInterestRate: changeRate,
+                      executionDate: format(executionDate, 'yyyy-MM-dd'),
+                      maturityDate: value.data.maturityDate,
+                      extensionFeeAmount: 0,
+                    });
+                    retry();
+                  }
+                }}
+                size={'small'}
+                sx={{ alignSelf: 'flex-start', width: 181 }}
+                variant={'outlined'}
+              >
+                Generate agreement
+              </StyledButton>
+              {typeof value?.data?.createdTime === 'string' &&
+                typeof downloadId === 'number' && (
+                  <Box
+                    color={'primary.main'}
+                    component={'a'}
+                    fontSize={18}
+                    onClick={async () => {
+                      open();
+                      await viewExtensionPdf();
+                    }}
+                    sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    Extension agreement -{' '}
+                    {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
+                  </Box>
+                )}
+              <Typography color={'info.main'}>
+                The generated extension agreement has been added to the
+                Documents folder for this loan.
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
+        <StyledDialog
+          content={
+            <Box minHeight={300}>
+              {viewState.loading && (
+                <Stack
+                  alignItems={'center'}
+                  height={300}
+                  justifyContent={'center'}
+                  textAlign={'center'}
+                >
+                  <StyledLoading sx={{ color: '#D2D6E1' }} />
+                </Stack>
+              )}
 
-            <Box ref={pdfFile} />
-          </Box>
-        }
-        footer={
-          <Stack flexDirection={'row'} gap={3}>
-            <StyledButton
-              color={'info'}
-              onClick={close}
-              size={'small'}
-              variant={'outlined'}
-            >
-              Close
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              loading={downloadState.loading}
-              onClick={downloadExtensionPdf}
-              size={'small'}
-              sx={{ width: 110 }}
-            >
-              Download
-            </StyledButton>
-          </Stack>
-        }
-        header={''}
-        onClose={close}
-        open={visible}
-        sx={{
-          '.MuiDialogContent-root': {
-            px: '0 !important',
-          },
-        }}
-      />
+              <Box ref={pdfFile} />
+            </Box>
+          }
+          footer={
+            <Stack flexDirection={'row'} gap={3}>
+              <StyledButton
+                color={'info'}
+                onClick={close}
+                size={'small'}
+                variant={'outlined'}
+              >
+                Close
+              </StyledButton>
+              <StyledButton
+                color={'primary'}
+                loading={downloadState.loading}
+                onClick={downloadExtensionPdf}
+                size={'small'}
+                sx={{ width: 110 }}
+              >
+                Download
+              </StyledButton>
+            </Stack>
+          }
+          header={''}
+          onClose={close}
+          open={visible}
+          sx={{
+            '.MuiDialogContent-root': {
+              px: '0 !important',
+            },
+          }}
+        />
+      </Box>
     </Layout>
   );
 };

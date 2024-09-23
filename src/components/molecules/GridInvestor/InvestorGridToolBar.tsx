@@ -1,3 +1,13 @@
+import {
+  comBineColumns,
+  commonColumns,
+  GridMoreIconButton,
+  groupCommonColumns,
+  SortButton,
+  transferOrderColumns,
+} from '@/components/molecules';
+import { IOrderColumnsItem } from '@/models/gridModel';
+import { SortDirection } from '@/types/enum';
 import { Stack } from '@mui/material';
 import { isValid } from 'date-fns';
 import { observer } from 'mobx-react-lite';
@@ -106,6 +116,37 @@ export const InvestorGridToolBar: FC = observer(() => {
         }}
         handleClear={() => {
           updateQueryDebounce('investors', []);
+        }}
+      />
+      {investorGridModel.queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            investorGridModel.queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            investorGridModel.queryModel.updateSort([
+              {
+                ...investorGridModel.queryModel.sort[0],
+                direction:
+                  investorGridModel.queryModel.sort[0].direction ===
+                  SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+            ]);
+          }}
+          sortItems={investorGridModel.queryModel.sort[0]}
+        />
+      )}
+      <GridMoreIconButton
+        columns={
+          transferOrderColumns(
+            comBineColumns(commonColumns, investorGridModel.orderColumns),
+          ) as IOrderColumnsItem[]
+        }
+        handleSave={(columns) => {
+          investorGridModel.updateOrderColumns(columns);
         }}
       />
     </Stack>

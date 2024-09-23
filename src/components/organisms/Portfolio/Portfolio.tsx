@@ -1,3 +1,10 @@
+import React, { FC, useMemo } from 'react';
+import dynamic from 'next/dynamic';
+import { Box, Icon, Stack, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import {
   ColumnsOrderDialog,
   StyledButton,
@@ -9,18 +16,48 @@ import {
   Layout,
   transferOrderColumns,
 } from '@/components/molecules';
-import { useMst } from '@/models/Root';
 
+import { PortfolioGridTypeEnum } from '@/types/enum';
+
+import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
+import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
 import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
+import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { Box, Icon, Stack, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import dynamic from 'next/dynamic';
-import React, { FC, useMemo } from 'react';
+const GridYouland = dynamic(
+  () =>
+    import('@/components/molecules/GridYouland').then(
+      (mode) => mode.GridYouland,
+    ),
+  { ssr: false },
+);
+
+const GridYoulandToolbar = dynamic(
+  () =>
+    import('@/components/molecules/GridYouland').then(
+      (mode) => mode.GridYoulandToolbar,
+    ),
+  { ssr: false },
+);
+
+const GridAlameda = dynamic(
+  () =>
+    import('@/components/molecules/GridAlameda').then(
+      (mode) => mode.GridAlameda,
+    ),
+  { ssr: false },
+);
+
+const GridAlamedaToolbar = dynamic(
+  () =>
+    import('@/components/molecules/GridAlameda').then(
+      (mode) => mode.GridAlamedaToolbar,
+    ),
+  { ssr: false },
+);
 
 const AllLoansGrid = dynamic(
   () =>
@@ -95,6 +132,20 @@ export const Portfolio: FC = observer(() => {
   const menus = useMemo(
     () => [
       {
+        icon: LOGO_YOULAND,
+        label: 'Youland',
+        key: PortfolioGridTypeEnum.YOULAND,
+        queryComponent: <GridYoulandToolbar />,
+        component: <GridYouland />,
+      },
+      {
+        icon: LOGO_ALAMEDA,
+        label: 'Alameda',
+        key: PortfolioGridTypeEnum.ALAMEDA,
+        queryComponent: <GridAlamedaToolbar />,
+        component: <GridAlameda />,
+      },
+      {
         icon: ListIcon,
         label: 'All loans',
         key: PortfolioGridTypeEnum.ALL_LOANS,
@@ -135,6 +186,13 @@ export const Portfolio: FC = observer(() => {
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
+      },
+      {
+        icon: LOGO_CASH_FLOW,
+        label: 'Cash flow',
+        key: PortfolioGridTypeEnum.CASH_FLOW,
+        queryComponent: <></>,
+        component: <></>,
       },
     ],
     [portfolioListType],

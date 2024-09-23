@@ -1,4 +1,8 @@
-import { MaturityDateTypeEnum, PipelineStatusEnum } from '@/types/enum';
+import {
+  ExtensionPaidTypeEnum,
+  MaturityDateTypeEnum,
+  PipelineStatusEnum,
+} from '@/types/enum';
 
 export interface IExtensionInfo {
   downloadId: number | null;
@@ -21,4 +25,5 @@ export interface IGetExtensionPdfParam {
   executionDate: string;
   maturityDate: string;
   extendMonth: MaturityDateTypeEnum;
+  paidMode: ExtensionPaidTypeEnum;
 }

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Fade, Stack, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -15,17 +15,18 @@ import {
   StyledTextFieldNumber,
 } from '@/components/atoms';
 import { Layout, SideMenu } from '@/components/molecules';
-import { MATURITY_DATE } from '@/constant';
+import { ExtensionPaidTypeOpt, MATURITY_DATE } from '@/constant';
 
 import { useRenderPdf, useSwitch } from '@/hooks';
 
 import {
   _createExtensionPdf,
   _downloadExtensionPdf,
+  _extensionConfirm,
   _getExtensionInfo,
   _viewExtensionPdf,
 } from '@/request';
-import { MaturityDateTypeEnum } from '@/types/enum';
+import { ExtensionPaidTypeEnum, MaturityDateTypeEnum } from '@/types/enum';
 
 import { IGetExtensionPdfParam } from '@/types/loan/extension';
 import { createFile, utils } from '@/utils';
@@ -33,7 +34,6 @@ import { createFile, utils } from '@/utils';
 export const LoanExtensionRequest: FC = () => {
   const router = useRouter();
   const { loanId } = router.query;
-
   const formRef = useRef<HTMLFormElement | null>(null);
   const pdfFile = useRef(null);
   const { renderFile } = useRenderPdf(pdfFile);
@@ -44,8 +44,16 @@ export const LoanExtensionRequest: FC = () => {
   const [maturityDate, setMaturityDate] = useState(
     MaturityDateTypeEnum.EXTEND_3,
   );
+  const [paidType, setPaidType] = useState(ExtensionPaidTypeEnum.Upfront);
   const [downloadId, setDownloadId] = useState<number | null>(null);
+
   const { visible, open, close } = useSwitch();
+
+  const {
+    visible: confirmShow,
+    open: confirmOpen,
+    close: confirmClose,
+  } = useSwitch();
 
   const { value, retry } = useAsyncRetry(async () => {
     return typeof loanId === 'string'
@@ -85,6 +93,30 @@ export const LoanExtensionRequest: FC = () => {
       await _createExtensionPdf(param)
         .then((res) => {
           setDownloadId(res.data);
+        })
+        .catch(({ message, variant, header }) => {
+          enqueueSnackbar(message, { variant, isSimple: !header, header });
+        });
+    },
+    [formRef.current],
+  );
+
+  const [confirmState, extensionConfirm] = useAsyncFn(
+    async (param: IGetExtensionPdfParam) => {
+      if (!formRef.current?.reportValidity()) {
+        return;
+      }
+      await _extensionConfirm(param)
+        .then(async (res) => {
+          enqueueSnackbar('Update Successful !', {
+            variant: 'success',
+          });
+          await router.push('/loan/details', {
+            query: {
+              loanId: loanId,
+            },
+          });
+          return res;
         })
         .catch(({ message, variant, header }) => {
           enqueueSnackbar(message, { variant, isSimple: !header, header });
@@ -189,6 +221,14 @@ export const LoanExtensionRequest: FC = () => {
                     suffix={'%'}
                     value={extensionFee}
                   />
+                  <StyledSelect
+                    label={'When does it get paid?'}
+                    onChange={(e) => {
+                      setPaidType(e.target.value as ExtensionPaidTypeEnum);
+                    }}
+                    options={ExtensionPaidTypeOpt}
+                    value={paidType}
+                  />
                   <StyledTextFieldNumber
                     decimalScale={3}
                     label={'Change the interest rate to:'}
@@ -228,6 +268,7 @@ export const LoanExtensionRequest: FC = () => {
                       executionDate: format(executionDate, 'yyyy-MM-dd'),
                       maturityDate: value.data.maturityDate,
                       extensionFeeAmount: 0,
+                      paidMode: paidType,
                     });
                     retry();
                   }
@@ -238,26 +279,58 @@ export const LoanExtensionRequest: FC = () => {
               >
                 Generate agreement
               </StyledButton>
-              {typeof value?.data?.createdTime === 'string' &&
-                typeof downloadId === 'number' && (
-                  <Box
-                    color={'primary.main'}
-                    component={'a'}
-                    fontSize={18}
+              <Fade
+                in={
+                  typeof value?.data?.createdTime === 'string' &&
+                  typeof downloadId === 'number'
+                }
+              >
+                <Box
+                  color={'primary.main'}
+                  component={'a'}
+                  fontSize={18}
+                  onClick={async () => {
+                    open();
+                    await viewExtensionPdf();
+                  }}
+                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                >
+                  Extension agreement -{' '}
+                  {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
+                </Box>
+              </Fade>
+              <Fade
+                in={
+                  typeof value?.data?.createdTime === 'string' &&
+                  typeof downloadId === 'number'
+                }
+              >
+                <Box>
+                  <StyledButton
+                    color={'error'}
+                    loading={confirmState.loading}
                     onClick={async () => {
-                      open();
-                      await viewExtensionPdf();
+                      if (executionDate !== null) {
+                        await extensionConfirm({
+                          loanId: parseInt(loanId as string),
+                          extendMonth: maturityDate,
+                          extensionFee,
+                          changeInterestRate: changeRate,
+                          executionDate: format(executionDate, 'yyyy-MM-dd'),
+                          maturityDate: value.data.maturityDate,
+                          extensionFeeAmount: 0,
+                          paidMode: paidType,
+                        });
+                      }
                     }}
-                    sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                    size={'small'}
+                    sx={{ alignSelf: 'flex-start', width: 193 }}
+                    variant={'contained'}
                   >
-                    Extension agreement -{' '}
-                    {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
-                  </Box>
-                )}
-              <Typography color={'info.main'}>
-                The generated extension agreement has been added to the
-                Documents folder for this loan.
-              </Typography>
+                    Confirm loan extension
+                  </StyledButton>
+                </Box>
+              </Fade>
             </Stack>
           )}
         </Stack>
@@ -302,6 +375,45 @@ export const LoanExtensionRequest: FC = () => {
           header={''}
           onClose={close}
           open={visible}
+          sx={{
+            '.MuiDialogContent-root': {
+              px: '0 !important',
+            },
+          }}
+        />
+        <StyledDialog
+          content={
+            <Typography color={'#636A7C'} px={3} py={2} variant={'body2'}>
+              Please verify that the extension fee has been received and the
+              extension agreement has been signed. Ensure that all the extension
+              details above are accurate. By clicking &lsquo;Confirm,&rsquo; you
+              agree to update the interest rate and maturity date.
+            </Typography>
+          }
+          footer={
+            <Stack flexDirection={'row'} gap={3}>
+              <StyledButton
+                color={'info'}
+                onClick={close}
+                size={'small'}
+                variant={'outlined'}
+              >
+                Cancel
+              </StyledButton>
+              <StyledButton
+                color={'error'}
+                loading={downloadState.loading}
+                onClick={downloadExtensionPdf}
+                size={'small'}
+                sx={{ width: 110 }}
+              >
+                Confirm
+              </StyledButton>
+            </Stack>
+          }
+          header={'Are you sure you want to extend the loan?'}
+          onClose={confirmClose}
+          open={confirmShow}
           sx={{
             '.MuiDialogContent-root': {
               px: '0 !important',

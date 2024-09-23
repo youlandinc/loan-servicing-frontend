@@ -2,6 +2,7 @@ import {
   BorrowerTypeEnum,
   DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
+  ExtensionPaidTypeEnum,
   LoanDetailsPurposeEnum,
   LoanStatus,
   MaturityDateTypeEnum,
@@ -358,5 +359,18 @@ export const MaturityTypeOpt: Option[] = [
     key: MaturityTimeRangeEnum.NEXT_MONTH_END,
     label: 'Next month-end',
     value: MaturityTimeRangeEnum.NEXT_MONTH_END,
+  },
+];
+
+export const ExtensionPaidTypeOpt: Option[] = [
+  {
+    label: 'Upfront',
+    key: ExtensionPaidTypeEnum.Upfront,
+    value: ExtensionPaidTypeEnum.Upfront,
+  },
+  {
+    label: 'Deferred',
+    key: ExtensionPaidTypeEnum.Deferred,
+    value: ExtensionPaidTypeEnum.Deferred,
   },
 ];

@@ -2,13 +2,13 @@ import {
   BorrowerTypeEnum,
   DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
+  LoanDetailsPurposeEnum,
   LoanStatus,
   MaturityDateTypeEnum,
   MaturityTimeRangeEnum,
   PipelineStatusEnum,
   ProductCategoryEnum,
   PropertyTypeEnum,
-  LoanDetailsPurposeEnum,
 } from '@/types/enum';
 import {
   LoanProductCategoryEnum,

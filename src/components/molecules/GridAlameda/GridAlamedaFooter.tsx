@@ -1,7 +1,14 @@
 import { FC } from 'react';
 import { Pagination, Stack, TablePagination, Typography } from '@mui/material';
+import { utils } from '@/utils';
 
 interface GridAlamedaFooterProps {
+  footerData: {
+    totalItem: number;
+    totalLoanAmount: number;
+    weightedAverageMargin: number;
+    weightedAverageSheet: number;
+  };
   page: {
     number: number;
     size: number;
@@ -13,6 +20,7 @@ interface GridAlamedaFooterProps {
 }
 
 export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
+  footerData,
   page,
   onPageSizeChange,
   onPageChange,
@@ -27,14 +35,18 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
     >
       <Stack flexDirection={'row'} gap={3}>
         <Typography variant={'subtitle2'}>
-          Total amount: $234,232,000
-        </Typography>
-        <Typography variant={'subtitle2'}>Number of loans: 89</Typography>
-        <Typography variant={'subtitle2'}>
-          Weighted average note sheet: 11.3%
+          Total amount: {utils.formatDollar(footerData.totalLoanAmount)}
         </Typography>
         <Typography variant={'subtitle2'}>
-          Weighted average margin: 11.3%
+          Number of loans: {footerData.totalItem}
+        </Typography>
+        <Typography variant={'subtitle2'}>
+          Weighted average note sheet:{' '}
+          {utils.formatPercent(footerData.weightedAverageSheet, 2)}
+        </Typography>
+        <Typography variant={'subtitle2'}>
+          Weighted average margin:{' '}
+          {utils.formatPercent(footerData.weightedAverageMargin, 2)}
         </Typography>
       </Stack>
       <Stack
@@ -55,7 +67,7 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
           onRowsPerPageChange={(e) => {
             onPageSizeChange(parseInt(e?.target?.value));
           }}
-          page={page.number - 1}
+          page={page.number + 1}
           rowsPerPage={page.size}
           rowsPerPageOptions={[50, 100]}
           slotProps={{
@@ -105,7 +117,7 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
           onChange={(e, page) => {
             onPageChange(page);
           }}
-          page={page.number}
+          page={page.number + 1}
           shape={'circular'}
           sx={{
             fontSize: 14,

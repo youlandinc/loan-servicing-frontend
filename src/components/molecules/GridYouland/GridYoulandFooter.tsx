@@ -1,18 +1,21 @@
 import { FC } from 'react';
 import { Pagination, Stack, TablePagination, Typography } from '@mui/material';
 
+import { utils } from '@/utils';
+import {
+  GridYoulandSummaryProps,
+  ResponseGridYoulandTable,
+} from '@/types/pipeline/youland';
+
 interface GridYoulandFooterProps {
-  page: {
-    number: number;
-    size: number;
-    totalElements: number;
-    totalPages: number;
-  };
+  footerData: GridYoulandSummaryProps;
+  page: ResponseGridYoulandTable['page'];
   onPageSizeChange: (pageSize: number) => void;
   onPageChange: (page: number) => void;
 }
 
 export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
+  footerData,
   page,
   onPageSizeChange,
   onPageChange,
@@ -27,14 +30,18 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
     >
       <Stack flexDirection={'row'} gap={3}>
         <Typography variant={'subtitle2'}>
-          Total amount: $234,232,000
-        </Typography>
-        <Typography variant={'subtitle2'}>Number of loans: 89</Typography>
-        <Typography variant={'subtitle2'}>
-          Weighted average note sheet: 11.3%
+          Total amount: {utils.formatDollar(footerData.totalLoanAmount)}
         </Typography>
         <Typography variant={'subtitle2'}>
-          Weighted average margin: 11.3%
+          Number of loans: {footerData.totalItems}
+        </Typography>
+        <Typography variant={'subtitle2'}>
+          Weighted average note sheet:{' '}
+          {utils.formatPercent(footerData.weightedAverageSheet, 2)}
+        </Typography>
+        <Typography variant={'subtitle2'}>
+          Weighted average margin:{' '}
+          {utils.formatPercent(footerData.weightedAverageMargin, 2)}
         </Typography>
       </Stack>
       <Stack
@@ -55,9 +62,9 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
           onRowsPerPageChange={(e) => {
             onPageSizeChange(parseInt(e?.target?.value));
           }}
-          page={page.number - 1}
+          page={page.number}
           rowsPerPage={page.size}
-          rowsPerPageOptions={[50, 100]}
+          rowsPerPageOptions={[1, 50, 100]}
           slotProps={{
             actions: {
               previousButton: {
@@ -103,9 +110,9 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
         <Pagination
           count={page.totalPages}
           onChange={(e, page) => {
-            onPageChange(page);
+            onPageChange(page - 1);
           }}
-          page={page.number}
+          page={page.number + 1}
           shape={'circular'}
           sx={{
             fontSize: 14,

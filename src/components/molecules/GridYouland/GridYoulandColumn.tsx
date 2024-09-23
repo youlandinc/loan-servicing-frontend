@@ -1,17 +1,19 @@
 import { useState } from 'react';
-
-import { MRT_ColumnDef } from 'material-react-table';
 import { Button, Stack, Typography } from '@mui/material';
-import { ellipsisStyle } from '@/styles';
-import { utils } from '@/utils';
+import { format } from 'date-fns';
+import { useSnackbar } from 'notistack';
+import { MRT_ColumnDef } from 'material-react-table';
 
 import {
+  AUTO_HIDE_DURATION,
   REPAYMENT_STATUS_OPTIONS,
   TRADE_STATUS_BGCOLOR_PALETTE,
   TRADE_STATUS_OPTIONS,
 } from '@/constant';
 
-import { GridDropDown } from '@/components/molecules';
+import { ellipsisStyle } from '@/styles';
+import { utils } from '@/utils';
+import { useSwitch } from '@/hooks';
 
 import {
   allLoansStatusBgcolor,
@@ -21,13 +23,15 @@ import {
   GridTradeConfirmEnum,
   GridTradeStatusEnum,
 } from '@/types/pipeline/youland';
-import { useSwitch } from '@/hooks';
+
 import {
   StyledButton,
   StyledDatePicker,
   StyledDialog,
 } from '@/components/atoms';
-import { GridDropDownButton } from '@/components/molecules/Common/GridDropDownButton';
+import { GridDropDown, GridDropDownButton } from '@/components/molecules';
+import { _updateTableData } from '@/request';
+import { HttpError } from '@/types/common';
 
 export const YOULAND_COLUMNS = (
   cb?: () => Promise<void>,
@@ -262,14 +266,18 @@ export const YOULAND_COLUMNS = (
       size: 200,
       grow: true,
       Cell: ({ renderedCellValue, row }) => {
+        const { enqueueSnackbar } = useSnackbar();
         const { visible, close, open } = useSwitch(false);
         const [date, setDate] = useState<Date | null>(null);
+        const [updating, setUpdating] = useState(false);
+
         return (
           <>
             <Button
               color={'primary'}
               disabled={
-                renderedCellValue !== GridTradeConfirmEnum.confirmed ||
+                !row.original.prospectiveBuyer ||
+                renderedCellValue === GridTradeConfirmEnum.completed ||
                 row.original.tradeStatus !== GridTradeStatusEnum.confirmed
               }
               onClick={open}
@@ -286,6 +294,7 @@ export const YOULAND_COLUMNS = (
               Complete trade
             </Button>
             <StyledDialog
+              aria-hidden="true"
               content={
                 <Stack gap={3} py={3}>
                   <Typography color={'text.secondary'} variant={'body2'}>
@@ -293,7 +302,9 @@ export const YOULAND_COLUMNS = (
                     mark the trade as completed.
                   </Typography>
                   <StyledDatePicker
+                    disableFuture
                     label={'Sale date'}
+                    maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
                     }}
@@ -302,23 +313,53 @@ export const YOULAND_COLUMNS = (
                 </Stack>
               }
               footer={
-                <Stack flexDirection={'row'} gap={3}>
+                <Stack flexDirection={'row'} gap={1.5}>
                   <StyledButton
                     color={'info'}
                     onClick={() => {
                       close();
                     }}
                     size={'small'}
+                    sx={{
+                      width: 82,
+                    }}
                     variant={'outlined'}
                   >
                     Cancel
                   </StyledButton>
                   <StyledButton
-                    onClick={() => {
-                      console.log(date);
-                      close();
+                    disabled={!date || updating}
+                    loading={updating}
+                    onClick={async () => {
+                      if (!date) {
+                        return;
+                      }
+                      const postData = {
+                        loanId: row.original.loanId,
+                        saleDate: format(date, 'yyyy-MM-dd'),
+                        tradeConfirm: GridTradeConfirmEnum.completed,
+                      };
+                      setUpdating(true);
+                      try {
+                        await _updateTableData(postData);
+                        await cb?.();
+                      } catch (err) {
+                        const { header, message, variant } = err as HttpError;
+                        enqueueSnackbar(message, {
+                          variant: variant || 'error',
+                          autoHideDuration: AUTO_HIDE_DURATION,
+                          isSimple: !header,
+                          header,
+                        });
+                      } finally {
+                        setUpdating(false);
+                        close();
+                      }
                     }}
                     size={'small'}
+                    sx={{
+                      width: 82,
+                    }}
                   >
                     Confirm
                   </StyledButton>

@@ -1,4 +1,5 @@
 import { PipelineStatusEnum } from '@/types/enum';
+import { PageProps } from '@/types/loan/payments';
 
 export enum GridTradeStatusEnum {
   in_progress = 'IN_PROCESS',
@@ -7,7 +8,7 @@ export enum GridTradeStatusEnum {
 }
 
 export enum GridTradeConfirmEnum {
-  confirmed = 'CONFIRMED',
+  completed = 'COMPLETED',
   not_confirmed = 'NOT_CONFIRMED',
 }
 
@@ -36,3 +37,29 @@ export interface GridInvestorItem {
   id: number;
   investorName: string;
 }
+
+interface GridSummaryProps {
+  totalItems: number;
+  totalLoanAmount: number;
+  weightedAverageSheet: number;
+  weightedAverageMargin: number;
+}
+
+export type GridYoulandSummaryProps = GridSummaryProps;
+export type GridAlamedaSummaryProps = GridSummaryProps;
+
+interface _ResponseGridYoulandTable {
+  content: GridYoulandItem[];
+  page: PageProps;
+}
+
+interface _ResponseGridAlamedaTable {
+  content: GridAlamedaItem[];
+  page: PageProps;
+}
+
+export type ResponseGridYoulandTable = _ResponseGridYoulandTable &
+  GridYoulandSummaryProps;
+
+export type ResponseGridAlamedaTable = _ResponseGridAlamedaTable &
+  GridAlamedaSummaryProps;

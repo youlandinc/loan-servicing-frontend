@@ -66,7 +66,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 120,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -86,7 +86,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
       size: 300,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -106,7 +106,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 140,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -126,7 +126,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
       size: 146,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -184,7 +184,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 120,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -204,7 +204,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
       size: 116,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -224,7 +224,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 160,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{
@@ -244,7 +244,7 @@ export const ALAMEDA_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 200,
-      Cell: ({ renderedCellValue, row }) => {
+      Cell: ({ renderedCellValue }) => {
         return (
           <Typography
             sx={{

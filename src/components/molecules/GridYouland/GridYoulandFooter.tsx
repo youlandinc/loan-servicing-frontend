@@ -64,7 +64,7 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
           }}
           page={page.number}
           rowsPerPage={page.size}
-          rowsPerPageOptions={[1, 50, 100]}
+          rowsPerPageOptions={[50, 100]}
           slotProps={{
             actions: {
               previousButton: {

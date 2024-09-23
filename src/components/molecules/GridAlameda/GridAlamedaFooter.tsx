@@ -1,20 +1,15 @@
 import { FC } from 'react';
 import { Pagination, Stack, TablePagination, Typography } from '@mui/material';
+
 import { utils } from '@/utils';
+import {
+  GridAlamedaSummaryProps,
+  ResponseGridAlamedaTable,
+} from '@/types/pipeline/youland';
 
 interface GridAlamedaFooterProps {
-  footerData: {
-    totalItem: number;
-    totalLoanAmount: number;
-    weightedAverageMargin: number;
-    weightedAverageSheet: number;
-  };
-  page: {
-    number: number;
-    size: number;
-    totalElements: number;
-    totalPages: number;
-  };
+  footerData: GridAlamedaSummaryProps;
+  page: ResponseGridAlamedaTable['page'];
   onPageSizeChange: (pageSize: number) => void;
   onPageChange: (page: number) => void;
 }
@@ -38,7 +33,7 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
           Total amount: {utils.formatDollar(footerData.totalLoanAmount)}
         </Typography>
         <Typography variant={'subtitle2'}>
-          Number of loans: {footerData.totalItem}
+          Number of loans: {footerData.totalItems}
         </Typography>
         <Typography variant={'subtitle2'}>
           Weighted average note sheet:{' '}

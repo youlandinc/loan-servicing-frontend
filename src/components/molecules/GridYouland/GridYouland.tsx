@@ -72,6 +72,7 @@ export const GridYouland: FC = observer(() => {
   }, [displayType]);
 
   const fetchData = async (page = 0, size = 50) => {
+    setFetchLoading(true);
     try {
       const {
         data: {
@@ -83,11 +84,11 @@ export const GridYouland: FC = observer(() => {
           weightedAverageSheet,
         },
       } = await _fetchYoulandTableData({
-        number: page,
+        page,
         size,
       });
       setTableData(content);
-      //setPage(innerPage);
+      setPage(innerPage);
       setFooterData({
         totalItems,
         totalLoanAmount,
@@ -102,9 +103,12 @@ export const GridYouland: FC = observer(() => {
         isSimple: !header,
         header,
       });
+    } finally {
+      setFetchLoading(false);
     }
   };
 
+  const [fetchLoading, setFetchLoading] = useState(false);
   const [tableData, setTableData] =
     useState<Array<Partial<GridYoulandItem>>>(mock);
   const [investorData, setInvestorData] = useState<
@@ -160,7 +164,7 @@ export const GridYouland: FC = observer(() => {
     manualPagination: true,
     state: {
       //isLoading: loading,
-      showSkeletons: loading,
+      showSkeletons: loading || fetchLoading,
     },
     initialState: {
       showProgressBars: false,

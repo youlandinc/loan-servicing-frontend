@@ -13,7 +13,11 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
 
-import { GridAlamedaItem } from '@/types/pipeline/youland';
+import {
+  GridAlamedaItem,
+  GridAlamedaSummaryProps,
+  ResponseGridAlamedaTable,
+} from '@/types/pipeline/youland';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
@@ -66,14 +70,29 @@ export const GridAlameda: FC = observer(() => {
   }, [displayType]);
 
   const fetchData = async (page = 0, size = 50) => {
+    setFetchLoading(true);
     try {
       const {
-        data: { content },
+        data: {
+          content,
+          page: innerPage,
+          totalItems,
+          totalLoanAmount,
+          weightedAverageMargin,
+          weightedAverageSheet,
+        },
       } = await _fetchAlamedaTableData({
-        number: 0,
-        size: 50,
+        page,
+        size,
       });
       setTableData(content);
+      setPage(innerPage);
+      setFooterData({
+        totalItems,
+        totalLoanAmount,
+        weightedAverageMargin,
+        weightedAverageSheet,
+      });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -82,21 +101,24 @@ export const GridAlameda: FC = observer(() => {
         isSimple: !header,
         header,
       });
+    } finally {
+      setFetchLoading(false);
     }
   };
 
+  const [fetchLoading, setFetchLoading] = useState(false);
   const [tableData, setTableData] = useState(mock);
   const [investorData, setInvestorData] = useState<
     Array<Option & { bgColor: string }>
   >([]);
-  const [page, setPage] = useState({
+  const [page, setPage] = useState<ResponseGridAlamedaTable['page']>({
     number: 1,
     size: 50,
     totalElements: 1000,
     totalPages: 100,
   });
-  const [footerData, setFooterData] = useState({
-    totalItem: 5,
+  const [footerData, setFooterData] = useState<GridAlamedaSummaryProps>({
+    totalItems: 5,
     totalLoanAmount: 50000,
     weightedAverageMargin: 0,
     weightedAverageSheet: 10,
@@ -140,7 +162,7 @@ export const GridAlameda: FC = observer(() => {
     manualPagination: true,
     state: {
       //isLoading: loading,
-      showSkeletons: loading,
+      showSkeletons: loading || fetchLoading,
     },
     initialState: {
       showProgressBars: false,

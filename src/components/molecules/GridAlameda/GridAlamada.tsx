@@ -1,19 +1,24 @@
 import { FC, useState } from 'react';
-import { observer } from 'mobx-react-lite';
+import { Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
-import { Stack, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { AUTO_HIDE_DURATION } from '@/constant';
+
+import { GridAlamedaItem } from '@/types/pipeline/youland';
+import { PortfolioGridTypeEnum } from '@/types/enum';
+import { HttpError } from '@/types/common';
+import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 
 import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
-import {
-  GridAlamedaItem,
-  GridTradeConfirmEnum,
-  GridTradeStatusEnum,
-} from '@/types/pipeline/youland';
-import { PipelineStatusEnum } from '@/types/enum';
 
 const mock: Array<Partial<GridAlamedaItem>> = [
   {
@@ -31,72 +36,85 @@ const mock: Array<Partial<GridAlamedaItem>> = [
     originatorSpread: null,
     tradeConfirm: null,
   },
-  {
-    loanId: 2,
-    repaymentStatus: PipelineStatusEnum.PERFORMING,
-    submitDate: '2022-02-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-02-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.in_progress,
-    interestRate: 0,
-    totalLoanAmount: 0,
-    buyRate: 0,
-    originatorSpread: 0,
-    tradeConfirm: GridTradeConfirmEnum.not_confirmed,
-  },
-  {
-    loanId: 3,
-    repaymentStatus: PipelineStatusEnum.FORECLOSURE,
-    submitDate: '2022-03-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-03-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.confirmed,
-    interestRate: 1.2,
-    totalLoanAmount: 8888.8,
-    buyRate: 1.2,
-    originatorSpread: 1.2,
-    tradeConfirm: GridTradeConfirmEnum.confirmed,
-  },
-  {
-    loanId: 4,
-    repaymentStatus: PipelineStatusEnum.PERFORMING,
-    submitDate: '2022-04-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-04-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.not_in_trade,
-    interestRate: 1.02,
-    totalLoanAmount: 8888.08,
-    buyRate: 1.02,
-    originatorSpread: 1.02,
-    tradeConfirm: GridTradeConfirmEnum.confirmed,
-  },
-  {
-    loanId: 5,
-    repaymentStatus: PipelineStatusEnum.PAID_OFF,
-    submitDate: '2022-05-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-05-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.confirmed,
-    interestRate: 1.23,
-    totalLoanAmount: 8888.88,
-    buyRate: 1.23,
-    originatorSpread: 1.23,
-    tradeConfirm: GridTradeConfirmEnum.confirmed,
-  },
 ];
 
 export const GridAlameda: FC = observer(() => {
+  const {
+    portfolio: { displayType },
+  } = useMst();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { loading } = useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.ALAMEDA) {
+      return;
+    }
+    await fetchData();
+    const { data } = await _fetchInvestorData();
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.id,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, [displayType]);
+
+  const fetchData = async (page = 0, size = 50) => {
+    try {
+      const {
+        data: { content },
+      } = await _fetchAlamedaTableData({
+        number: 0,
+        size: 50,
+      });
+      setTableData(content);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  };
+
+  const [tableData, setTableData] = useState(mock);
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+  const [page, setPage] = useState({
+    number: 1,
+    size: 50,
+    totalElements: 1000,
+    totalPages: 100,
+  });
+  const [footerData, setFooterData] = useState({
+    totalItem: 5,
+    totalLoanAmount: 50000,
+    weightedAverageMargin: 0,
+    weightedAverageSheet: 10,
+  });
+
+  const onPageSizeChange = async (pageSize: number) => {
+    setPage((prev) => ({ ...prev, size: pageSize }));
+    await fetchData(page.number, pageSize);
+  };
+
+  const onPageChange = async (currentPage: number) => {
+    setPage((prev) => ({ ...prev, number: currentPage }));
+    await fetchData(currentPage, page.size);
+  };
+
   const table = useMaterialReactTable({
-    columns: ALAMEDA_COLUMNS as MRT_ColumnDef<any>[],
-    data: mock || [],
+    columns: ALAMEDA_COLUMNS(fetchData, investorData) as MRT_ColumnDef<any>[],
+    data: tableData,
     //rowCount: rowsTotal,
     enableExpandAll: false, //hide expand all double arrow in column header
     enableExpanding: false,
@@ -121,12 +139,13 @@ export const GridAlameda: FC = observer(() => {
 
     manualPagination: true,
     state: {
-      //isLoading: loading || fetchLoading,
+      //isLoading: loading,
+      showSkeletons: loading,
     },
     initialState: {
       showProgressBars: false,
     },
-    getRowId: (row) => row.id, //default
+    getRowId: (row) => row.loanId, //default
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
 
@@ -138,6 +157,11 @@ export const GridAlameda: FC = observer(() => {
           </Typography>
         </Stack>
       );
+    },
+    muiTableContainerProps: {
+      style: {
+        maxHeight: 'calc(100vh - 236px)',
+      },
     },
     muiTableHeadProps: {
       sx: {
@@ -185,38 +209,15 @@ export const GridAlameda: FC = observer(() => {
     },
   });
 
-  const [page, setPage] = useState({
-    number: 1,
-    size: 50,
-    totalElements: 1000,
-    totalPages: 100,
-  });
-
-  const onPageSizeChange = async (pageSize: number) => {
-    setPage((prev) => ({ ...prev, size: pageSize }));
-    //await fetchData(page.number - 1, pageSize);
-  };
-
-  const onPageChange = async (currentPage: number) => {
-    setPage((prev) => ({ ...prev, number: currentPage }));
-    //await fetchData(currentPage - 1, page.size);
-  };
-
   return (
     <Stack>
       <MRT_TableContainer sx={{ height: '100%' }} table={table} />
       <GridAlamedaFooter
+        footerData={footerData}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
         page={page}
       />
-      {/*{list.length > 0 && (*/}
-      {/*  <LoanPaymentsGridFooter*/}
-      {/*    onPageChange={(page) => onPageChange(page)}*/}
-      {/*    onPageSizeChange={(pageSize) => onPageSizeChange(pageSize)}*/}
-      {/*    page={page}*/}
-      {/*  />*/}
-      {/*)}*/}
     </Stack>
   );
 });

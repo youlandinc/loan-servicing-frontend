@@ -6,3 +6,4 @@ export * from './ColumnsHeaderMenus';
 export * from './SortButton';
 
 export * from './GridDropDown';
+export * from './GridDropDownButton';

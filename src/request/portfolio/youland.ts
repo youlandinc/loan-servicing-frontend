@@ -1,12 +1,16 @@
 import { get, post } from '@/request';
-import { GridInvestorItem } from '@/types/pipeline/youland';
+import {
+  GridInvestorItem,
+  ResponseGridAlamedaTable,
+  ResponseGridYoulandTable,
+} from '@/types/pipeline/youland';
 
 export const _fetchYoulandTableData = (params: any) => {
-  return post('/servicing/list/youland', params);
+  return post<ResponseGridYoulandTable>('/servicing/list/youland', params);
 };
 
 export const _fetchAlamedaTableData = (params: any) => {
-  return post('/servicing/list/alameda', params);
+  return post<ResponseGridAlamedaTable>('/servicing/list/alameda', params);
 };
 
 export const _fetchCashFlowTableData = (params: any) => {

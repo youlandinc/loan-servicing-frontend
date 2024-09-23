@@ -1,25 +1,29 @@
 import { FC, useState } from 'react';
-import { observer } from 'mobx-react-lite';
+import { Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
-import { Stack, Typography } from '@mui/material';
-import { useAsync } from 'react-use';
-import { useSnackbar } from 'notistack';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
 
-import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
-import { PipelineStatusEnum } from '@/types/enum';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import {
-  GridTradeConfirmEnum,
-  GridTradeStatusEnum,
   GridYoulandItem,
+  GridYoulandSummaryProps,
+  ResponseGridYoulandTable,
 } from '@/types/pipeline/youland';
-import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
 import { HttpError } from '@/types/common';
+
+import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
+
+import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
 
 const mock: Array<Partial<GridYoulandItem>> = [
   {
@@ -37,72 +41,19 @@ const mock: Array<Partial<GridYoulandItem>> = [
     originatorSpread: null,
     tradeConfirm: null,
   },
-  {
-    loanId: 2,
-    repaymentStatus: PipelineStatusEnum.PERFORMING,
-    submitDate: '2022-02-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-02-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.in_progress,
-    interestRate: 0,
-    totalLoanAmount: 0,
-    buyRate: 0,
-    originatorSpread: 0,
-    tradeConfirm: GridTradeConfirmEnum.not_confirmed,
-  },
-  {
-    loanId: 3,
-    repaymentStatus: PipelineStatusEnum.FORECLOSURE,
-    submitDate: '2022-03-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-03-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.confirmed,
-    interestRate: 1.2,
-    totalLoanAmount: 8888.8,
-    buyRate: 1.2,
-    originatorSpread: 1.2,
-    tradeConfirm: GridTradeConfirmEnum.confirmed,
-  },
-  {
-    loanId: 4,
-    repaymentStatus: PipelineStatusEnum.PERFORMING,
-    submitDate: '2022-04-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-04-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.not_in_trade,
-    interestRate: 1.02,
-    totalLoanAmount: 8888.08,
-    buyRate: 1.02,
-    originatorSpread: 1.02,
-    tradeConfirm: GridTradeConfirmEnum.confirmed,
-  },
-  {
-    loanId: 5,
-    repaymentStatus: PipelineStatusEnum.PAID_OFF,
-    submitDate: '2022-05-01',
-    propertyAddress: '123 Main St',
-    estSaleDate: '2022-05-01',
-    investor: 'Youland',
-    prospectiveBuyer: 'Alameda',
-    tradeStatus: GridTradeStatusEnum.confirmed,
-    interestRate: 1.23,
-    totalLoanAmount: 8888.88,
-    buyRate: 1.23,
-    originatorSpread: 1.23,
-    tradeConfirm: GridTradeConfirmEnum.confirmed,
-  },
 ];
 
 export const GridYouland: FC = observer(() => {
+  const {
+    portfolio: { displayType },
+  } = useMst();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { loading } = useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.YOULAND) {
+      return;
+    }
     await fetchData();
     const { data } = await _fetchInvestorData();
     const temp = data.reduce(
@@ -118,21 +69,31 @@ export const GridYouland: FC = observer(() => {
       [] as Array<Option & { bgColor: string }>,
     );
     setInvestorData(temp);
-  }, []);
+  }, [displayType]);
 
-  const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
-  >([]);
-
-  const fetchData = async () => {
+  const fetchData = async (page = 0, size = 50) => {
     try {
       const {
-        data: { content },
+        data: {
+          content,
+          page: innerPage,
+          totalItems,
+          totalLoanAmount,
+          weightedAverageMargin,
+          weightedAverageSheet,
+        },
       } = await _fetchYoulandTableData({
-        number: 0,
-        size: 50,
+        number: page,
+        size,
       });
       setTableData(content);
+      //setPage(innerPage);
+      setFooterData({
+        totalItems,
+        totalLoanAmount,
+        weightedAverageMargin,
+        weightedAverageSheet,
+      });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -144,23 +105,48 @@ export const GridYouland: FC = observer(() => {
     }
   };
 
-  const [tableData, setTableData] = useState(mock);
+  const [tableData, setTableData] =
+    useState<Array<Partial<GridYoulandItem>>>(mock);
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+  const [page, setPage] = useState<ResponseGridYoulandTable['page']>({
+    number: 0,
+    size: 10,
+    totalElements: 5,
+    totalPages: 5,
+  });
+  const [footerData, setFooterData] = useState<GridYoulandSummaryProps>({
+    totalItems: 5,
+    totalLoanAmount: 50000,
+    weightedAverageMargin: 0,
+    weightedAverageSheet: 10,
+  });
+
+  const onPageSizeChange = async (pageSize: number) => {
+    setPage((prev) => ({ ...prev, size: pageSize }));
+    await fetchData(page.number, pageSize);
+  };
+
+  const onPageChange = async (currentPage: number) => {
+    setPage((prev) => ({ ...prev, number: currentPage }));
+    await fetchData(currentPage, page.size);
+  };
 
   const table = useMaterialReactTable({
     columns: YOULAND_COLUMNS(fetchData, investorData) as MRT_ColumnDef<any>[],
     data: tableData,
-    //rowCount: rowsTotal,
-    enableExpandAll: false, //hide expand all double arrow in column header
+    enableExpandAll: false,
     enableExpanding: false,
     enableSorting: false,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false,
+    paginateExpandedRows: false,
     enableTopToolbar: false,
     enableGrouping: false,
 
     enableRowVirtualization: true,
     enableRowActions: false,
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false,
     enableColumnOrdering: false,
     enableColumnDragging: false,
     enableColumnResizing: true,
@@ -173,14 +159,15 @@ export const GridYouland: FC = observer(() => {
 
     manualPagination: true,
     state: {
-      isLoading: loading,
+      //isLoading: loading,
+      showSkeletons: loading,
     },
     initialState: {
       showProgressBars: false,
     },
-    getRowId: (row) => row.loanId, //default
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    getRowId: (row) => row.loanId,
+    rowVirtualizerOptions: { overscan: 5 },
+    columnVirtualizerOptions: { overscan: 5 },
 
     renderEmptyRowsFallback: ({ table }) => {
       return (
@@ -242,27 +229,11 @@ export const GridYouland: FC = observer(() => {
     },
   });
 
-  const [page, setPage] = useState({
-    number: 1,
-    size: 50,
-    totalElements: 1000,
-    totalPages: 100,
-  });
-
-  const onPageSizeChange = async (pageSize: number) => {
-    setPage((prev) => ({ ...prev, size: pageSize }));
-    //await fetchData(page.number - 1, pageSize);
-  };
-
-  const onPageChange = async (currentPage: number) => {
-    setPage((prev) => ({ ...prev, number: currentPage }));
-    //await fetchData(currentPage - 1, page.size);
-  };
-
   return (
     <Stack>
       <MRT_TableContainer sx={{ height: '100%' }} table={table} />
       <GridYoulandFooter
+        footerData={footerData}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
         page={page}

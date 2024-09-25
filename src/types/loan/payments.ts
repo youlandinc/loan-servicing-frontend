@@ -1,7 +1,7 @@
 import { PipelineStatusEnum } from '@/types/enum';
 
 export interface ResponsePaymentsDetails {
-  nextDueDate: string;
+  nextPaymentDate: string;
   systemLoanNumber: string;
   propertyFullAddress: string;
   repaymentStatus: PipelineStatusEnum;

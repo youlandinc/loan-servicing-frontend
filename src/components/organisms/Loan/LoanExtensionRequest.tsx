@@ -156,7 +156,7 @@ export const LoanExtensionRequest: FC = () => {
   }, [downloadId]);
 
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+    <Fade in={!!value?.data}>
       <Box overflow={'auto'}>
         <Stack direction={'row'} justifyContent={'center'} p={6}>
           {value?.data && (
@@ -417,6 +417,6 @@ export const LoanExtensionRequest: FC = () => {
           }}
         />
       </Box>
-    </Layout>
+    </Fade >
   );
 };

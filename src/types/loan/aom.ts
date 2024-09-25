@@ -31,6 +31,6 @@ export interface CreateAomPdfParam {
   loanId: number;
   recordedDate: string;
   instrumentNumber: string;
-  investorId: string;
+  investorId: number;
   investorName: string;
 }

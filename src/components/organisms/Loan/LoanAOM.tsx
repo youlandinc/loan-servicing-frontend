@@ -29,6 +29,7 @@ export const LoanAOM: FC = (props) => {
   const [executionDate, setExtensionDate] = useState<Date | null>(new Date());
   const [buyer, setBuyer] = useState('');
   const [buyersOpts, setBuyersOpts] = useState<Option[]>([]);
+  const [init, setInit] = useState(false);
 
   useAsync(async () => {
     return await _getAomInvestorList().then((res) => {
@@ -64,6 +65,9 @@ export const LoanAOM: FC = (props) => {
           .catch(({ message, variant, header }) => {
             enqueueSnackbar(message, { variant, isSimple: !header, header });
           })
+          .finally(() => {
+            setInit(true);
+          })
       : null;
   }, [loanId]);
 
@@ -80,38 +84,36 @@ export const LoanAOM: FC = (props) => {
     'Note Interest Rate': utils.formatPercent(value?.data?.interestRate || 0),
   };
 
-  const [state, createPdf] = useAsyncFn(
-    async (param: CreateAomPdfParam) => {
-      if (!formRef.current?.reportValidity()) {
-        return;
-      }
-      try {
-        await _creatAomPdf(param);
-        await getAOMInfo();
-      } catch (e) {
-        const { message, variant, header } = e as unknown as HttpError;
-        enqueueSnackbar(message, {
-          variant,
-          isSimple: !header,
-          header,
-        });
-      }
-    },
-    [formRef.current],
-  );
+  const [state, createPdf] = useAsyncFn(async (param: CreateAomPdfParam) => {
+    if (!formRef.current?.reportValidity()) {
+      return;
+    }
+    try {
+      await _creatAomPdf(param);
+      await getAOMInfo();
+    } catch (e) {
+      const { message, variant, header } = e as unknown as HttpError;
+      enqueueSnackbar(message, {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    }
+  }, []);
+
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      <Box height={'100%'} overflow={'auto'}>
-        {aomState.loading ? (
-          <Stack
-            alignItems={'center'}
-            height={'100%'}
-            justifyContent={'center'}
-            width={'100%'}
-          >
-            <CircularProgress sx={{ color: '#E3E3EE' }} />
-          </Stack>
-        ) : (
+    <Box height={'100%'} overflow={'auto'}>
+      {!init ? (
+        <Stack
+          alignItems={'center'}
+          height={'100%'}
+          justifyContent={'center'}
+          width={'100%'}
+        >
+          <CircularProgress sx={{ color: '#E3E3EE' }} />
+        </Stack>
+      ) : (
+        <Fade in={init}>
           <Stack direction={'row'} justifyContent={'center'} p={6}>
             {value?.data && (
               <Stack maxWidth={900} spacing={3} width={'100%'}>
@@ -192,7 +194,7 @@ export const LoanAOM: FC = (props) => {
                       loanId: parseInt(loanId as string),
                       recordedDate: format(executionDate as Date, 'yyyy-MM-dd'),
                       instrumentNumber: instrumentNumber + '',
-                      investorId: buyer,
+                      investorId: parseInt(buyer),
                       investorName: buyersOpts.find(
                         (item) => item.value === buyer,
                       )?.label as string,
@@ -224,8 +226,8 @@ export const LoanAOM: FC = (props) => {
               </Stack>
             )}
           </Stack>
-        )}
-      </Box>
-    </Layout>
+        </Fade>
+      )}
+    </Box>
   );
 };

@@ -442,19 +442,17 @@ export const LoanDetails: FC = () => {
     },
   ];
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
-      <Box overflow={'auto'}>
-        <Stack direction={'row'} justifyContent={'center'} p={6}>
-          <Stack maxWidth={1276} spacing={3} width={'100%'}>
-            <StyledHeaderAddressInfo
-              address={address}
-              loanNumber={loanNumber}
-              status={status}
-            />
-            <StyledTabs tabsData={tabs} />
-          </Stack>
+    <Box overflow={'auto'}>
+      <Stack direction={'row'} justifyContent={'center'} p={6}>
+        <Stack maxWidth={1276} spacing={3} width={'100%'}>
+          <StyledHeaderAddressInfo
+            address={address}
+            loanNumber={loanNumber}
+            status={status}
+          />
+          <StyledTabs tabsData={tabs} />
         </Stack>
-      </Box>
-    </Layout>
+      </Stack>
+    </Box>
   );
 };

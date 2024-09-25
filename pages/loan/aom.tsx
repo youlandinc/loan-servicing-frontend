@@ -2,6 +2,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
+import { Layout, SideMenu } from '@/components/molecules';
 
 const DynamicLoanAOM = dynamic(
   () =>
@@ -18,7 +19,9 @@ const LoanPaymentsPage = observer(() => {
         <meta content="YouLand Software Team" name="description" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <DynamicLoanAOM />
+      <Layout isHomepage={false} sideMenu={<SideMenu />}>
+        <DynamicLoanAOM />
+      </Layout>
     </>
   );
 });

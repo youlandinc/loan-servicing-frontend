@@ -371,7 +371,7 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
   },
   {
     accessorKey: 'paymentType',
-    header: 'Payment Type',
+    header: 'Payment type',
     size: 180,
     muiTableBodyCellProps: { align: 'center' },
     muiTableHeadCellProps: { align: 'center' },

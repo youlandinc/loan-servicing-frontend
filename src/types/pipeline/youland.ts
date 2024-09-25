@@ -16,7 +16,7 @@ interface GridItemProps {
   loanId: number | string | null;
   repaymentStatus: PipelineStatusEnum | null;
   submitDate: string | Date | null;
-  propertyAddress: string | null;
+  propertyFullAddress: string | null;
   estSaleDate: string | Date | null;
   investorId: number | string | null;
   investor: string | null;

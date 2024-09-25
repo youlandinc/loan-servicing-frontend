@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { CircularProgress, Fade, Icon, Stack } from '@mui/material';
 import { useAsync } from 'react-use';
 
@@ -24,7 +24,7 @@ import LOAN_CARD_03 from '@/svg/loan/payments/payment_card_03.svg';
 import LOAN_CARD_04 from '@/svg/loan/payments/payment_card_04.svg';
 
 export const LoanPayments: FC = observer(() => {
-  const router = useRouter();
+  //const router = useRouter();
 
   const { loading } = useAsync(async () => {
     const { loanId } = utils.getParamsFromUrl(location.href);

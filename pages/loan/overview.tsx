@@ -1,3 +1,4 @@
+import { LoginWithToken } from '@/components/atoms/LoginWithToken';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
@@ -21,7 +22,9 @@ const LoanOverviewPage = observer(() => {
         <meta content="YouLand Point Of Sales System" name="keywords" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <DynamicLoanOverview />
+      <LoginWithToken>
+        <DynamicLoanOverview />
+      </LoginWithToken>
     </>
   );
 });

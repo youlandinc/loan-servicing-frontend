@@ -318,7 +318,9 @@ export const GridCashFlow: FC = observer(() => {
     muiExpandAllButtonProps: (props) => {
       return {
         title: '',
-        onClick: () => {},
+        onClick: () => {
+          props.table.toggleAllRowsExpanded();
+        },
       };
     },
     muiExpandButtonProps: {

@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { uniqueId } from 'lodash';
 import {
   //bindHover,
@@ -81,17 +81,17 @@ const INITIAL: LoanOverviewCardProps = {
   listData: [],
 };
 
-const ACTION_BUTTONS = [
-  {
-    icon: OVERVIEW_COMMENTS_VIEW,
-    label: 'Add comments',
-    type: CommentTypeEnum.text,
-  },
-  //{
-  //  icon: OVERVIEW_COMMENTS_TOUCH_POINT,
-  //  label: 'Touch point',
-  //},
-];
+//const ACTION_BUTTONS = [
+//  {
+//    icon: OVERVIEW_COMMENTS_VIEW,
+//    label: 'Add comments',
+//    type: CommentTypeEnum.text,
+//  },
+//  {
+//    icon: OVERVIEW_COMMENTS_TOUCH_POINT,
+//    label: 'Touch point',
+//  },
+//];
 
 const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
   let result: Array<any> = [

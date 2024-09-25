@@ -1,6 +1,6 @@
 import React from 'react';
 import { MRT_ColumnDef } from 'material-react-table';
-import { Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import { utils } from '@/utils';
 import { REPAYMENT_STATUS_OPTIONS } from '@/constant';

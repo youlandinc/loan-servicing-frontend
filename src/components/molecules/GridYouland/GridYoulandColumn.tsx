@@ -110,7 +110,7 @@ export const YOULAND_COLUMNS = (
         const { enqueueSnackbar } = useSnackbar();
         const { visible, close, open } = useSwitch(false);
         const [date, setDate] = useState<Date | null>(
-          renderedCellValue ? new Date(renderedCellValue as Date) : null,
+          renderedCellValue ? new Date(renderedCellValue as string) : null,
         );
         const [updating, setUpdating] = useState(false);
 

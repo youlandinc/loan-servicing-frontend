@@ -13,7 +13,7 @@ export interface IAomInfo {
   maturityDate: string;
   recordedDate: string;
   instrumentNumber: string;
-  investorId: string;
+  investorId: number;
   investorName: string;
   fileInfo: {
     originalFileName: string;
@@ -31,6 +31,6 @@ export interface CreateAomPdfParam {
   loanId: number;
   recordedDate: string;
   instrumentNumber: string;
-  investorId: string;
+  investorId: number;
   investorName: string;
 }

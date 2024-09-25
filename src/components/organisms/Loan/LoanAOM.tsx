@@ -27,7 +27,7 @@ export const LoanAOM: FC = (props) => {
 
   const [instrumentNumber, setInstrumentNumber] = useState('');
   const [executionDate, setExtensionDate] = useState<Date | null>(new Date());
-  const [buyer, setBuyer] = useState('');
+  const [buyer, setBuyer] = useState<null | number>();
   const [buyersOpts, setBuyersOpts] = useState<Option[]>([]);
 
   useAsync(async () => {
@@ -102,129 +102,118 @@ export const LoanAOM: FC = (props) => {
   return (
     <Layout isHomepage={false} sideMenu={<SideMenu />}>
       <Box height={'100%'} overflow={'auto'}>
-        {aomState.loading ? (
-          <Stack
-            alignItems={'center'}
-            height={'100%'}
-            justifyContent={'center'}
-            width={'100%'}
-          >
-            <CircularProgress sx={{ color: '#E3E3EE' }} />
-          </Stack>
-        ) : (
-          <Stack direction={'row'} justifyContent={'center'} p={6}>
-            {value?.data && (
-              <Stack maxWidth={900} spacing={3} width={'100%'}>
-                <StyledHeaderAddressInfo
-                  address={value.data.propertyFullAddress}
-                  loanNumber={value.data.systemLoanNumber}
-                  status={value.data.repaymentStatusEnum}
-                />
-                <Typography color={'text.hover'} fontWeight={600}>
-                  Generate Assignment of Mortgage
-                </Typography>
-                <Stack direction={'row'} gap={3}>
-                  <Stack
-                    bgcolor={'#F0F4FF'}
-                    borderRadius={2}
-                    component={'ul'}
-                    gap={1.5}
-                    p={3}
-                    width={'50%'}
-                  >
-                    {Object.keys(cardInfo).map((item, index) => (
-                      <Stack
-                        direction={'row'}
-                        justifyContent={'space-between'}
-                        key={index}
-                      >
-                        <Typography color={'text.hover'} variant={'body2'}>
-                          {item}
-                        </Typography>
-                        <Typography variant={'subtitle2'}>
-                          {cardInfo[item]}
-                        </Typography>
-                      </Stack>
-                    ))}
-                  </Stack>
-                  <Stack
-                    autoComplete={'off'}
-                    component={'form'}
-                    gap={3}
-                    ref={formRef}
-                    width={'50%'}
-                  >
-                    <StyledDatePicker
-                      label={'Recorded on'}
-                      onChange={(value) => {
-                        setExtensionDate(value);
-                      }}
-                      slotProps={{
-                        textField: {
-                          required: true,
-                        },
-                      }}
-                      value={executionDate}
-                    />
-                    <StyledTextFieldInput
-                      label={'Instrument number'}
-                      onChange={(e) => {
-                        setInstrumentNumber(e.target.value as string);
-                      }}
-                      required
-                      value={instrumentNumber}
-                      variant={'outlined'}
-                    />
-                    <StyledSelect
-                      label={'Prospective buyer'}
-                      onChange={(e) => {
-                        setBuyer(e.target.value as string);
-                      }}
-                      options={buyersOpts}
-                      value={buyer}
-                    />
-                  </Stack>
-                </Stack>
-                <StyledButton
-                  loading={state.loading}
-                  onClick={async () => {
-                    await createPdf({
-                      loanId: parseInt(loanId as string),
-                      recordedDate: format(executionDate as Date, 'yyyy-MM-dd'),
-                      instrumentNumber: instrumentNumber + '',
-                      investorId: buyer,
-                      investorName: buyersOpts.find(
-                        (item) => item.value === buyer,
-                      )?.label as string,
-                    });
-                  }}
-                  size={'small'}
-                  sx={{ alignSelf: 'flex-start', width: 181 }}
-                  variant={'outlined'}
+        <Stack direction={'row'} justifyContent={'center'} p={6}>
+          {value?.data && (
+            <Stack maxWidth={900} spacing={3} width={'100%'}>
+              <StyledHeaderAddressInfo
+                address={value.data.propertyFullAddress}
+                loanNumber={value.data.systemLoanNumber}
+                status={value.data.repaymentStatusEnum}
+              />
+              <Typography color={'text.hover'} fontWeight={600}>
+                Generate Assignment of Mortgage
+              </Typography>
+              <Stack direction={'row'} gap={3}>
+                <Stack
+                  bgcolor={'#F0F4FF'}
+                  borderRadius={2}
+                  component={'ul'}
+                  gap={1.5}
+                  p={3}
+                  width={'50%'}
                 >
-                  Generate AOM
-                </StyledButton>
-                <Fade in={!!value?.data?.fileInfo}>
-                  <Box
-                    color={'primary.main'}
-                    component={'a'}
-                    fontSize={18}
-                    onClick={async () => {
-                      window.open(value?.data?.fileInfo?.url);
+                  {Object.keys(cardInfo).map((item, index) => (
+                    <Stack
+                      direction={'row'}
+                      justifyContent={'space-between'}
+                      key={index}
+                    >
+                      <Typography color={'text.hover'} variant={'body2'}>
+                        {item}
+                      </Typography>
+                      <Typography variant={'subtitle2'}>
+                        {cardInfo[item]}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+                <Stack
+                  autoComplete={'off'}
+                  component={'form'}
+                  gap={3}
+                  ref={formRef}
+                  width={'50%'}
+                >
+                  <StyledDatePicker
+                    label={'Recorded on'}
+                    onChange={(value) => {
+                      setExtensionDate(value);
                     }}
-                    sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  >
-                    AOM -{' '}
-                    {utils.formatDate(
-                      value?.data?.fileInfo?.uploadTime,
-                      'MM/d/yyyy',
-                    )}
-                  </Box>
-                </Fade>
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
+                    value={executionDate}
+                  />
+                  <StyledTextFieldInput
+                    label={'Instrument number'}
+                    onChange={(e) => {
+                      setInstrumentNumber(e.target.value as string);
+                    }}
+                    required
+                    value={instrumentNumber}
+                    variant={'outlined'}
+                  />
+                  <StyledSelect
+                    label={'Prospective buyer'}
+                    onChange={(e) => {
+                      setBuyer(e.target.value as number);
+                    }}
+                    options={buyersOpts}
+                    value={buyer}
+                  />
+                </Stack>
               </Stack>
-            )}
-          </Stack>
-        )}
+              <StyledButton
+                loading={state.loading}
+                onClick={async () => {
+                  await createPdf({
+                    loanId: parseInt(loanId as string),
+                    recordedDate: format(executionDate as Date, 'yyyy-MM-dd'),
+                    instrumentNumber: instrumentNumber + '',
+                    investorId: buyer as number,
+                    investorName: buyersOpts.find(
+                      (item) => item.value === buyer,
+                    )?.label as string,
+                  });
+                }}
+                size={'small'}
+                sx={{ alignSelf: 'flex-start', width: 181 }}
+                variant={'outlined'}
+              >
+                Generate AOM
+              </StyledButton>
+              <Fade in={!!value?.data?.fileInfo}>
+                <Box
+                  color={'primary.main'}
+                  component={'a'}
+                  fontSize={18}
+                  onClick={async () => {
+                    window.open(value?.data?.fileInfo?.url);
+                  }}
+                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                >
+                  AOM -{' '}
+                  {utils.formatDate(
+                    value?.data?.fileInfo?.uploadTime,
+                    'MM/d/yyyy',
+                  )}
+                </Box>
+              </Fade>
+            </Stack>
+          )}
+        </Stack>
       </Box>
     </Layout>
   );

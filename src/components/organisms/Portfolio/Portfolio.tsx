@@ -243,6 +243,8 @@ export const Portfolio: FC = observer(() => {
     [portfolioListType],
   );
 
+  console.log(portfolioListType);
+
   useEffect(() => {
     // getAllGridConfig();
   }, []);
@@ -262,8 +264,10 @@ export const Portfolio: FC = observer(() => {
                   component={'div'}
                   key={index}
                   onClick={() => {
-                    setPortfolioListType(item.key);
-                    set(item.key);
+                    if (item.key !== portfolioListType) {
+                      setPortfolioListType(item.key);
+                      set(item.key);
+                    }
                   }}
                   size={'small'}
                   sx={{

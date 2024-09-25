@@ -33,7 +33,7 @@ export const utils = {
   },
   formatPercent: (
     percentageValue: number | undefined | string | null,
-    radix = 3,
+    radix = getRadix(percentageValue),
   ): string => {
     if (
       !utils.notUndefined(percentageValue) ||
@@ -57,6 +57,7 @@ export const utils = {
       (Math.floor((target as number) * 1000000) / 1000000).toFixed(radix) + '%'
     );
   },
+
   formatDate: (
     date: string | Date | null,
     timeFormat = 'MM/dd/yyyy',
@@ -125,4 +126,12 @@ export const utils = {
   isTestUser: (id: string) => {
     return id === '1000052023032900000107';
   },
+};
+
+const getRadix = (value: number | undefined | string | null): number => {
+  if (!utils.notUndefined(value) || !utils.notNull(value)) {
+    return 2;
+  }
+  const target = value + '';
+  return target.substring(target.indexOf('.') + 1).length >= 3 ? 3 : 2;
 };

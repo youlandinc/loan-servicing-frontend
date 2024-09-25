@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { CircularProgress, Fade, Icon, Stack } from '@mui/material';
 import { useAsync } from 'react-use';
 
@@ -24,7 +24,7 @@ import LOAN_CARD_03 from '@/svg/loan/payments/payment_card_03.svg';
 import LOAN_CARD_04 from '@/svg/loan/payments/payment_card_04.svg';
 
 export const LoanPayments: FC = observer(() => {
-  const router = useRouter();
+  //const router = useRouter();
 
   const { loading } = useAsync(async () => {
     const { loanId } = utils.getParamsFromUrl(location.href);
@@ -35,7 +35,7 @@ export const LoanPayments: FC = observer(() => {
     const { data } = await _fetchPaymentsDetails(loanId);
     setHeaderAddressInfo({
       address: data.propertyFullAddress,
-      loanNumber: data.loanNumber,
+      loanNumber: data.systemLoanNumber,
       status: data.repaymentStatus as string as PipelineStatusEnum,
     });
 
@@ -58,7 +58,7 @@ export const LoanPayments: FC = observer(() => {
       {
         label: 'Next due date',
         icon: LOAN_CARD_04,
-        content: utils.formatDate(data.nextDueDate, 'dd/MM/yyyy'),
+        content: utils.formatDate(data.nextPaymentDate, 'dd/MM/yyyy'),
       },
     ]);
   }, []);

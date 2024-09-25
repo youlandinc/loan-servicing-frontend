@@ -70,16 +70,16 @@ export const LoanExtensionRequest: FC = () => {
 
   const cardInfo: Record<string, any> = {
     'Current interest rate': utils.formatPercent(
-      (value?.data?.currentInterestRate || 0) / 100,
+      value?.data?.currentInterestRate || 0,
     ),
     'Extension fee': ` ${utils.formatPercent(
-      extensionFee / 100,
+      extensionFee,
       2,
     )}  (${utils.formatDollar(
       (value?.data?.totalLoanAmount || 0) * extensionFee * 0.01,
     )})`,
-    'Default rate': utils.formatPercent((value?.data?.defaultRate || 0) / 100),
-    'Change the interest rate to:': utils.formatPercent(changeRate / 100),
+    'Default rate': utils.formatPercent(value?.data?.defaultRate || 0),
+    'Change the interest rate to:': utils.formatPercent(changeRate),
     'Execution date': isValid(executionDate)
       ? format(executionDate as Date, 'MM/dd/yyyy')
       : '',

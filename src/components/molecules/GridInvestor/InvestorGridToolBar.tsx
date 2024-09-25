@@ -1,3 +1,8 @@
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+import { FC, useEffect, useRef } from 'react';
+
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -16,11 +21,7 @@ import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
-import { SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useRef } from 'react';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const InvestorGridToolBar: FC = observer(() => {
   const {
@@ -147,6 +148,7 @@ export const InvestorGridToolBar: FC = observer(() => {
             comBineColumns(commonColumns, investorGridModel.orderColumns),
           ) as IOrderColumnsItem[]
         }
+        gridType={PortfolioGridTypeEnum.BY_INVESTOR}
         handleSave={(columns) => {
           investorGridModel.updateOrderColumns(columns);
         }}

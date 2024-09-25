@@ -22,7 +22,7 @@ import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import { useMst } from '@/models/Root';
-import { SortDirection } from '@/types/enum';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -150,6 +150,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
             comBineColumns(commonColumns, allLoansGridModel.orderColumns),
           ) as IOrderColumnsItem[]
         }
+        gridType={PortfolioGridTypeEnum.ALL_LOANS}
         handleSave={(columns) => {
           allLoansGridModel.updateOrderColumns(columns);
         }}

@@ -5,8 +5,12 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
+  delinquentColumns,
   GroupLoans,
   maturityColumns,
+  resortColumns,
+  transferFirstColumn,
+  transferOrderColumnsKeys,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupMaturity } from '@/request/portfolio/maturity';
@@ -16,6 +20,10 @@ export const MaturityGrid: FC = observer(() => {
   const {
     portfolio: { maturityGridModel, displayType },
   } = useMst();
+
+  const configColumnsOrderKeysArr = maturityGridModel.orderColumns?.length
+    ? transferOrderColumnsKeys(maturityGridModel.orderColumns)
+    : [];
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.MATURITY
@@ -37,14 +45,29 @@ export const MaturityGrid: FC = observer(() => {
     },
   );
 
-  const columns = useMemo(
-    () =>
-      maturityColumns(
-        maturityGridModel.queryModel.searchCondition
-          .maturityDays as MaturityTimeRangeEnum,
-      ),
-    [maturityGridModel.queryModel.searchCondition.maturityDays],
-  );
+  // const columns = useMemo(
+  //   () =>
+  //     maturityColumns(
+  //       maturityGridModel.queryModel.searchCondition
+  //         .maturityDays as MaturityTimeRangeEnum,
+  //     ),
+  //   [maturityGridModel.queryModel.searchCondition.maturityDays],
+  // );
+
+  const columns = useMemo(() => {
+    const columns = maturityColumns(
+      maturityGridModel.queryModel.searchCondition
+        .maturityDays as MaturityTimeRangeEnum,
+    );
+    return maturityGridModel.orderColumns.length
+      ? transferFirstColumn(
+          resortColumns(maturityGridModel.orderColumns, columns),
+        )
+      : transferFirstColumn(columns);
+  }, [
+    configColumnsOrderKeysArr.join(''),
+    maturityGridModel.queryModel.searchCondition?.maturityDays,
+  ]);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;

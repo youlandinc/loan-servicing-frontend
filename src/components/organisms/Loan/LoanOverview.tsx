@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { uniqueId } from 'lodash';
 import {
   //bindHover,
@@ -32,6 +32,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import {
+  StyledButton,
   //StyledButton,
   StyledHeaderAddressInfo,
 } from '@/components/atoms';
@@ -56,6 +57,7 @@ import {
 import { PipelineStatusEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import {
+  _addOverviewComment,
   _fetchOverviewComments,
   _fetchOverviewDetails,
 } from '@/request/loan/overview';
@@ -81,17 +83,17 @@ const INITIAL: LoanOverviewCardProps = {
   listData: [],
 };
 
-const ACTION_BUTTONS = [
-  {
-    icon: OVERVIEW_COMMENTS_VIEW,
-    label: 'Add comments',
-    type: CommentTypeEnum.text,
-  },
-  //{
-  //  icon: OVERVIEW_COMMENTS_TOUCH_POINT,
-  //  label: 'Touch point',
-  //},
-];
+//const ACTION_BUTTONS = [
+//  {
+//    icon: OVERVIEW_COMMENTS_VIEW,
+//    label: 'Add comments',
+//    type: CommentTypeEnum.text,
+//  },
+//  {
+//    icon: OVERVIEW_COMMENTS_TOUCH_POINT,
+//    label: 'Touch point',
+//  },
+//];
 
 const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
   let result: Array<any> = [
@@ -107,7 +109,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
           ? result.concat([
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanToValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
             ])
           : result.concat([
@@ -117,7 +119,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
             ]);
       break;
@@ -132,11 +134,11 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
               {
                 label: 'Loan to cost',
-                value: `${loanInfo.loanCost}%`,
+                value: utils.formatPercent(loanInfo.loanCost, 2),
               },
             ])
           : result.concat([
@@ -154,11 +156,11 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
               {
                 label: 'Loan to cost',
-                value: `${loanInfo.loanCost}%`,
+                value: utils.formatPercent(loanInfo.loanCost, 2),
               },
             ]);
       break;
@@ -209,7 +211,7 @@ export const LoanOverview: FC = observer(() => {
           },
           {
             label: 'Note rate',
-            value: `${balanceInfo.interestRate ?? ''}%`,
+            value: utils.formatPercent(balanceInfo.interestRate, 2),
           },
           {
             label: 'Term',
@@ -290,7 +292,7 @@ export const LoanOverview: FC = observer(() => {
       setNextDueDate({
         theme: 'light',
         header: 'Next due date',
-        headerValue: utils.formatDate(balanceInfo.nextDueDate),
+        headerValue: utils.formatDate(balanceInfo.nextPaymentDate),
         headerIcon: OVERVIEW_NEXT_DUE_DATE,
         listData: [
           {
@@ -381,24 +383,36 @@ export const LoanOverview: FC = observer(() => {
     LoanOverviewTimelineProps['listData'] | undefined
   >();
 
+  const [addCommentLoading, setAddCommentLoading] = useState(false);
   const [content, setContent] = useState<any[]>([]);
 
-  const onClickAddNote = (type: CommentTypeEnum) => {
-    const data = {
-      id: uniqueId(),
+  const onClickAddNote = async (type: CommentTypeEnum) => {
+    if (addCommentLoading) {
+      return;
+    }
+    const postData = {
       loanId: utils.getParamsFromUrl(location.href).loanId,
       messageType: type,
       note: '',
-      firstName: setting?.userInfo?.firstName,
-      lastName: setting?.userInfo?.lastName,
-      avatar: setting?.userInfo?.avatar,
-      backgroundColor: setting?.userInfo?.backgroundColor,
-      createdAt: new Date(),
-      isFake: true,
     };
 
-    setContent((prev) => [...prev, data]);
-    popupState.close();
+    setAddCommentLoading(true);
+
+    try {
+      await _addOverviewComment(postData);
+      await fetchComments();
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setAddCommentLoading(false);
+      popupState.close();
+    }
   };
 
   useEffect(() => {
@@ -537,6 +551,7 @@ export const LoanOverview: FC = observer(() => {
                           <Box width={'100%'}>
                             <LoanOverviewComment
                               {...item}
+                              disabled={addCommentLoading}
                               refresh={fetchComments}
                             />
                           </Box>
@@ -568,34 +583,34 @@ export const LoanOverview: FC = observer(() => {
                     </Box>
                   </Stack>
 
-                  <Stack
-                    alignItems={'center'}
-                    alignSelf={'flex-end'}
-                    bgcolor={'#303D6C'}
-                    borderRadius={3}
-                    flexDirection={'row'}
-                    flexShrink={0}
-                    justifyContent={'center'}
-                    mt={'auto'}
-                    onClick={() => onClickAddNote(CommentTypeEnum.text)}
+                  <StyledButton
+                    disabled={addCommentLoading}
+                    loading={addCommentLoading}
+                    onClick={async () =>
+                      await onClickAddNote(CommentTypeEnum.text)
+                    }
+                    size={'small'}
                     sx={{
+                      flexShrink: 0,
+                      bgcolor: '#303D6C !important',
                       position: 'fixed',
                       bottom: 24,
                       right: 24,
-                      cursor: 'pointer',
                       py: 1.5,
-                      px: 2,
-                      gap: 1,
+                      width: 156,
+                      '&:hover': {
+                        bgcolor: '#33415B !important',
+                      },
                     }}
                   >
                     <Icon
                       component={OVERVIEW_COMMENTS_ADD}
-                      sx={{ height: 16, width: 16 }}
+                      sx={{ height: 16, width: 16, mr: 1 }}
                     />
                     <Typography color={'white'} fontSize={14} fontWeight={600}>
                       Add comment
                     </Typography>
-                  </Stack>
+                  </StyledButton>
 
                   {/*<Stack*/}
                   {/*  alignItems={'center'}*/}
@@ -750,34 +765,34 @@ export const LoanOverview: FC = observer(() => {
                   </Box>
                 </Stack>
 
-                <Stack
-                  alignItems={'center'}
-                  alignSelf={'flex-end'}
-                  bgcolor={'#303D6C'}
-                  borderRadius={3}
-                  flexDirection={'row'}
-                  flexShrink={0}
-                  justifyContent={'center'}
-                  mt={'auto'}
-                  onClick={() => onClickAddNote(CommentTypeEnum.text)}
+                <StyledButton
+                  disabled={addCommentLoading}
+                  loading={addCommentLoading}
+                  onClick={async () =>
+                    await onClickAddNote(CommentTypeEnum.text)
+                  }
+                  size={'small'}
                   sx={{
+                    flexShrink: 0,
+                    bgcolor: '#303D6C !important',
                     position: 'fixed',
                     bottom: 24,
                     right: 24,
-                    cursor: 'pointer',
                     py: 1.5,
-                    px: 2,
-                    gap: 1,
+                    width: 156,
+                    '&:hover': {
+                      bgcolor: '#33415B !important',
+                    },
                   }}
                 >
                   <Icon
                     component={OVERVIEW_COMMENTS_ADD}
-                    sx={{ height: 16, width: 16 }}
+                    sx={{ height: 16, width: 16, mr: 1 }}
                   />
                   <Typography color={'white'} fontSize={14} fontWeight={600}>
                     Add comment
                   </Typography>
-                </Stack>
+                </StyledButton>
 
                 {/*<Stack*/}
                 {/*  alignItems={'center'}*/}

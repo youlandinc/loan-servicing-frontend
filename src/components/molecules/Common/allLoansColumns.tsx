@@ -254,7 +254,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatPercent((renderedCellValue as number) / 100)}
+          {utils.formatPercent(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -304,7 +304,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatPercent((renderedCellValue as number) / 100)}
+          {utils.formatPercent(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -380,7 +380,7 @@ export const comBineColumns = (
           );
           return {
             ...item,
-            sort: target?.sort || 100 + index,
+            sort: target?.sort ?? 100 + index,
             visibility: target?.visibility || true,
             size: target?.columnWidth || item.size,
           };
@@ -388,9 +388,8 @@ export const comBineColumns = (
         .sort((a, b) => {
           return a.sort - b.sort;
         })
-        .filter((item) => (item as any)?.visibility !== false)
-    : defaultColumns;
-
+    : // .filter((item) => (item as any)?.visibility !== false)
+      defaultColumns;
   return result;
   // eslint-disable-next-line react-hooks/exhaustive-deps
 };

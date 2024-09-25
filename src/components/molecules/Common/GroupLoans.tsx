@@ -30,6 +30,22 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   handleHeaderClick,
   ...rest
 }) => {
+  // const handleExpandData = (data: ExpandedState) => {
+  //   if (data === true) {
+  //     return pipelineGroupingList.map((item) => ({
+  //       loanOfficerId: item.loanOfficerId,
+  //       collapsed: true,
+  //     }));
+  //   }
+  //   if (!Object.keys(expanded).length) {
+  //     return [];
+  //   }
+  //   return Object.keys(data).map((loanOfficerId) => ({
+  //     loanOfficerId,
+  //     collapsed: data[loanOfficerId],
+  //   }));
+  // };
+
   const [, , updateColumnWidth] = useDebounceFn((param: unknown) => {
     console.log(param);
   }, 500);
@@ -115,42 +131,65 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         );
       },
     },
-    muiTableBodyRowProps: {
-      sx: {
-        '& .MuiTableCell-root:last-child': {
+    muiTableBodyRowProps: ({ row }) => {
+      const temp = {
+        sx: {
+          '& .MuiTableCell-root:last-child': {
+            borderBottom: 'none',
+            // borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+            // borderBottom: '1px solid',
+            // borderColor: '#D2D6E1 !important',
+          },
+          '& .MuiTableCell-root:first-of-type': {
+            width: 40,
+            minWidth: 40,
+            border: 'none',
+          },
+          '& .MuiTableCell-root': {
+            // borderBottom: 'none',
+          },
+          boxShadow: 'none',
+        },
+      };
+
+      return row.getIsExpanded()
+        ? {
+            ...temp,
+            '& .MuiTableCell-root': {
+              borderBottom: '1px solid ',
+            },
+          }
+        : temp;
+    },
+    muiTableBodyCellProps: ({ row }) => {
+      return {
+        sx: {
+          px: 1.5,
+          py: 1.5,
+          bgcolor: 'transparent',
+          // borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+          // borderColor: '#D2D6E1 !important',
+          overflow: 'visible',
+          '&:first-of-type button': {
+            visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+          },
           borderBottom: 'none',
         },
-        '& .MuiTableCell-root:first-of-type': {
-          width: 40,
-          minWidth: 40,
+        onClick: async () => {
+          const { original } = row;
+          const { loanId } = original;
+          if (original.servicingLoans) {
+            row.toggleExpanded();
+          }
+          if (!original.servicingLoans) {
+            await router.push({
+              pathname: '/loan/overview',
+              query: { loanId },
+            });
+          }
         },
-      },
+      };
     },
-    muiTableBodyCellProps: ({ row }) => ({
-      sx: {
-        px: 1.5,
-        py: 1.5,
-        borderBottom: 'none',
-        bgcolor: 'transparent',
-        overflow: 'visible',
-        '&:first-of-type button': {
-          visibility: row.original.servicingLoans ? 'visible' : 'hidden',
-        },
-      },
-      onClick: async () => {
-        const { original } = row;
-        const { loanId } = original;
-        if (original.servicingLoans) {
-          row.toggleExpanded();
-        }
-        if (!original.servicingLoans) {
-          await router.push({
-            pathname: '/loan/overview',
-            query: { loanId },
-          });
-        }
-      },
-    }),
     muiTableHeadProps: {
       sx: {
         opacity: 1,
@@ -229,6 +268,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       return {
         title: '',
         onClick: () => {
+          props.table.toggleAllRowsExpanded();
           //haneleExpandAllClick();
           // set(props.table.toggleAllRowsExpanded, !props.table.getIsAllRowsExpanded());
         },
@@ -372,6 +412,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
 
   const columnSizing: Record<string, number> = table.getState().columnSizing;
   const columnPining = table.getState().columnPinning;
+  const expanded = table.getState().expanded;
 
   const [, cancelUpdateColumnWidth] = useDebounce(
     () => {
@@ -389,6 +430,22 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     500,
     [columnSizing],
   );
+
+  // const [, cancelUpdateGroupExpanded] = useDebounce(
+  //   () => {
+  //     const result = handleExpandData(expanded);
+  //     updateGroupExpanded(result);
+  //     setUserSetting({
+  //       ...setting,
+  //       userConfig: {
+  //         ...setting.userConfig,
+  //         pipelineExpandedResponseList: result,
+  //       },
+  //     });
+  //   },
+  //   500,
+  //   [expanded],
+  // );
 
   return (
     <MRT_TableContainer

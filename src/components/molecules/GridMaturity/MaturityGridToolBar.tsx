@@ -1,28 +1,27 @@
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAsyncFn } from 'react-use';
+import React, { FC, useEffect, useRef } from 'react';
 
+import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
-  StyledButton,
-  StyledSearchTextFieldInput,
-  StyledSelect,
-} from '@/components/atoms';
-import { MaturityTypeOpt } from '@/constant';
-import { useDebounceFn, useSwitch } from '@/hooks';
+  comBineColumns,
+  GridMoreIconButton,
+  maturityColumns,
+  transferOrderColumns,
+} from '@/components/molecules';
+import { useDebounceFn } from '@/hooks';
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
-import { _getMaturityRangeOpt } from '@/request/portfolio/maturity';
-import { MaturityTimeRangeEnum } from '@/types/enum';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
-export const MaturityGridToolBar: FC = observer((props) => {
+export const MaturityGridToolBar: FC = observer(() => {
   const {
     portfolio: { maturityGridModel },
   } = useMst();
 
-  const [opts, setOpts] = useState<Option[]>(MaturityTypeOpt);
+  // const [opts, setOpts] = useState<Option[]>(MaturityTypeOpt);
 
-  const { visible, open, close } = useSwitch();
+  // const { visible, open, close } = useSwitch();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
@@ -31,7 +30,7 @@ export const MaturityGridToolBar: FC = observer((props) => {
     500,
   );
 
-  const [state, getMaturityRangeOpt] = useAsyncFn(async () => {
+  /* const [state, getMaturityRangeOpt] = useAsyncFn(async () => {
     return await _getMaturityRangeOpt().then((res) => {
       if (res.data) {
         setOpts(
@@ -56,14 +55,14 @@ export const MaturityGridToolBar: FC = observer((props) => {
       }
       return res;
     });
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
         maturityGridModel.queryModel.searchCondition.keyword;
     }
-    getMaturityRangeOpt();
+    // getMaturityRangeOpt();
   }, []);
 
   return (
@@ -78,6 +77,23 @@ export const MaturityGridToolBar: FC = observer((props) => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+      <GridMoreIconButton
+        columns={
+          transferOrderColumns(
+            comBineColumns(
+              maturityColumns(
+                maturityGridModel.queryModel.searchCondition
+                  .maturityDays as MaturityTimeRangeEnum,
+              ),
+              maturityGridModel.orderColumns,
+            ),
+          ) as IOrderColumnsItem[]
+        }
+        gridType={PortfolioGridTypeEnum.MATURITY}
+        handleSave={(columns) => {
+          maturityGridModel.updateOrderColumns(columns);
+        }}
       />
       {/*<StyledButton
         size={'small'}

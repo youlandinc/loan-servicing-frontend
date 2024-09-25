@@ -1,4 +1,5 @@
 import { allLoansModel, IOrderColumnsItem } from '@/models/gridModel';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import { IconButton } from '@mui/material';
 import React, { FC, useState } from 'react';
 
@@ -13,11 +14,13 @@ import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 interface GridMoreIconButtonProps {
   columns: IOrderColumnsItem[];
   handleSave?: (param: IOrderColumnsItem[]) => void;
+  gridType: PortfolioGridTypeEnum;
 }
 
 export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
   columns,
   handleSave,
+  gridType,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
@@ -49,6 +52,7 @@ export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
       />
       <ColumnsOrderDialog
         columns={columns}
+        gridType={gridType}
         handleSave={(columns) => {
           handleSave?.(columns);
           close();

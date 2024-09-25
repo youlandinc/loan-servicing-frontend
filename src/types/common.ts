@@ -54,3 +54,14 @@ export interface SetColumnWidthParam {
     columnWidth: number;
   }[];
 }
+
+export interface SetColumnOrderedParam {
+  pageColumn: PortfolioGridTypeEnum;
+  columnSorts: {
+    field: string;
+    headerName: string;
+    sort: number;
+    visibility: boolean;
+    id: number;
+  }[];
+}

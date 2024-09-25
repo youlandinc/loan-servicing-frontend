@@ -109,7 +109,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
           ? result.concat([
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanToValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
             ])
           : result.concat([
@@ -119,7 +119,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
             ]);
       break;
@@ -134,11 +134,11 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
               {
                 label: 'Loan to cost',
-                value: `${loanInfo.loanCost}%`,
+                value: utils.formatPercent(loanInfo.loanCost, 2),
               },
             ])
           : result.concat([
@@ -156,11 +156,11 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
               {
                 label: 'Loan to cost',
-                value: `${loanInfo.loanCost}%`,
+                value: utils.formatPercent(loanInfo.loanCost, 2),
               },
             ]);
       break;
@@ -211,7 +211,7 @@ export const LoanOverview: FC = observer(() => {
           },
           {
             label: 'Note rate',
-            value: `${balanceInfo.interestRate ?? ''}%`,
+            value: utils.formatPercent(balanceInfo.interestRate, 2),
           },
           {
             label: 'Term',

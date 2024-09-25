@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -21,9 +22,7 @@ import {
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
-
 import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
-import { useRouter } from 'next/router';
 
 const mock: Array<Partial<GridAlamedaItem>> = [
   {

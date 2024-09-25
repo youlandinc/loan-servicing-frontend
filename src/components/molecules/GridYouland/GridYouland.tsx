@@ -21,7 +21,6 @@ import {
   ResponseGridYoulandTable,
 } from '@/types/pipeline/youland';
 import { HttpError } from '@/types/common';
-
 import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
 
 import { GridYoulandFooter, YOULAND_COLUMNS } from './index';

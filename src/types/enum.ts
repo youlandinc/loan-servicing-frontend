@@ -153,3 +153,8 @@ export enum ColumnPiningDirectionEnum {
   right = 'RIGHT',
   center = 'CENTER',
 }
+
+export enum ExtensionPaidTypeEnum {
+  Upfront = 'UPFRONT',
+  Deferred = 'DEFERRED',
+}

@@ -1,28 +1,26 @@
 import {
-  comBineColumns,
-  commonColumns,
-  GridMoreIconButton,
-  groupCommonColumns,
-  SortButton,
-  transferOrderColumns,
-} from '@/components/molecules';
-import { IOrderColumnsItem } from '@/models/gridModel';
-import { SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useRef } from 'react';
-
-import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
+import {
+  comBineColumns,
+  commonColumns,
+  GridMoreIconButton,
+  SortButton,
+  transferOrderColumns,
+} from '@/components/molecules';
 
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
+import { SortDirection } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+import { FC, useEffect, useRef } from 'react';
 
 export const InvestorGridToolBar: FC = observer(() => {
   const {
@@ -68,20 +66,24 @@ export const InvestorGridToolBar: FC = observer(() => {
         dateRange={[
           isValid(
             new Date(
-              investorGridModel.queryModel.searchCondition.maturityStartDate,
+              investorGridModel.queryModel.searchCondition.maturityStartDate ||
+                '',
             ),
           )
             ? new Date(
-                investorGridModel.queryModel.searchCondition.maturityStartDate,
+                investorGridModel.queryModel.searchCondition
+                  .maturityStartDate || '',
               )
             : null,
           isValid(
             new Date(
-              investorGridModel.queryModel.searchCondition.maturityEndDate,
+              investorGridModel.queryModel.searchCondition.maturityEndDate ||
+                '',
             ),
           )
             ? new Date(
-                investorGridModel.queryModel.searchCondition.maturityEndDate,
+                investorGridModel.queryModel.searchCondition.maturityEndDate ||
+                  '',
               )
             : null,
         ]}
@@ -102,7 +104,7 @@ export const InvestorGridToolBar: FC = observer(() => {
       <StyledSearchSelectMultiple
         label={'Status'}
         onChange={(e) => {
-          updateQueryDebounce('status', e);
+          updateQueryDebounce('repaymentStatusList', e);
         }}
         options={PIPELINE_STATUS}
         value={[

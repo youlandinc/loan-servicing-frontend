@@ -69,20 +69,24 @@ export const AllLoansGridToolBar: FC = observer(() => {
         dateRange={[
           isValid(
             new Date(
-              allLoansGridModel.queryModel.searchCondition.maturityStartDate,
+              allLoansGridModel.queryModel.searchCondition.maturityStartDate ||
+                '',
             ),
           )
             ? new Date(
-                allLoansGridModel.queryModel.searchCondition.maturityStartDate,
+                allLoansGridModel.queryModel.searchCondition
+                  .maturityStartDate || '',
               )
             : null,
           isValid(
             new Date(
-              allLoansGridModel.queryModel.searchCondition.maturityEndDate,
+              allLoansGridModel.queryModel.searchCondition.maturityEndDate ||
+                '',
             ),
           )
             ? new Date(
-                allLoansGridModel.queryModel.searchCondition.maturityEndDate,
+                allLoansGridModel.queryModel.searchCondition.maturityEndDate ||
+                  '',
               )
             : null,
         ]}
@@ -116,6 +120,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
         handleClear={() => {
           updateQueryDebounce('investors', []);
         }}
+        value={allLoansGridModel.queryModel.searchCondition.investors[0]}
       />
       {allLoansGridModel.queryModel.sort.length > 0 && (
         <SortButton

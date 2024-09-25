@@ -30,7 +30,7 @@ const mock: Array<Partial<GridYoulandItem>> = [
     loanId: 1,
     repaymentStatus: null,
     submitDate: null,
-    propertyAddress: null,
+    propertyFullAddress: null,
     estSaleDate: null,
     investor: null,
     prospectiveBuyer: null,

@@ -69,6 +69,8 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
     getDelinquentRangeOpt();
   }, []);
 
+  console.log(delinquentGridModel.queryModel.searchCondition.delinquentDays);
+
   return (
     <StyledButton
       size={'small'}
@@ -98,8 +100,9 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
             DelinquentTimeRangeOpt.find(
               (item) =>
                 item.value ===
-                (delinquentGridModel.queryModel.searchCondition
-                  .delinquentDays as DelinquentTimeRangeEnum),
+                ((delinquentGridModel.queryModel.searchCondition
+                  .delinquentDays as DelinquentTimeRangeEnum) ||
+                  DelinquentTimeRangeEnum.ALL),
             )?.label
           }
         </Typography>
@@ -111,8 +114,9 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
           variant={'subtitle3'}
         >
           {state.value?.data?.[
-            delinquentGridModel.queryModel.searchCondition
-              .delinquentDays as DelinquentTimeRangeEnum
+            (delinquentGridModel.queryModel.searchCondition
+              .delinquentDays as DelinquentTimeRangeEnum) ||
+              DelinquentTimeRangeEnum.ALL
           ] || 0}
         </Typography>
         {state.loading ? (

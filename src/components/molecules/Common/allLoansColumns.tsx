@@ -17,7 +17,7 @@ import { utils } from '@/utils';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
   {
-    accessorKey: 'loanNumber',
+    accessorKey: 'systemLoanNumber',
     header: 'Loan number',
     size: 150,
     minSize: 100,

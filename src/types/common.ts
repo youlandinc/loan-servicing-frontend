@@ -1,3 +1,5 @@
+import { PortfolioGridTypeEnum } from '@/types/enum';
+
 export interface TaskFiles {
   originalFileName: string;
   fileName: string;
@@ -43,4 +45,12 @@ export interface ListPaginationReturn<T = any> {
 export enum RequestBizType {
   for_servicing = 'for_servicing',
   for_loan = 'for_loan',
+}
+
+export interface SetColumnWidthParam {
+  pageColumn: PortfolioGridTypeEnum;
+  columnWidths: {
+    field: string;
+    columnWidth: number;
+  }[];
 }

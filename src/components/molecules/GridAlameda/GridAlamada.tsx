@@ -23,6 +23,7 @@ import { HttpError } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 
 import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
+import { useRouter } from 'next/router';
 
 const mock: Array<Partial<GridAlamedaItem>> = [
   {
@@ -47,6 +48,7 @@ export const GridAlameda: FC = observer(() => {
     portfolio: { displayType },
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const { loading } = useAsync(async () => {
     if (displayType !== PortfolioGridTypeEnum.ALAMEDA) {
@@ -210,6 +212,16 @@ export const GridAlameda: FC = observer(() => {
           height: 16,
         },
       },
+    },
+    muiTableBodyCellProps: ({ row }) => {
+      return {
+        async onClick() {
+          await router.push({
+            pathname: '/loan/overview',
+            query: { loanId: row.original.loanId },
+          });
+        },
+      };
     },
     muiTableBodyRowProps: {
       sx: {

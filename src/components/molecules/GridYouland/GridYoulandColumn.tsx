@@ -179,7 +179,7 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
-      header: 'Interest Rate',
+      header: 'Interest rate',
       accessorKey: 'interestRate',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },

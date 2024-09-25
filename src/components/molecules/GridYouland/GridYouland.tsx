@@ -231,6 +231,7 @@ export const GridYouland: FC = observer(() => {
           height: 40,
           borderRight: '1px solid',
           borderColor: '#D2D6E1',
+          py: 0,
           '&:last-of-type': {
             borderRight: 'none',
           },
@@ -239,6 +240,9 @@ export const GridYouland: FC = observer(() => {
           '& td:after': {
             background: '#F6F6F6',
           },
+        },
+        '&:first-of-type': {
+          borderTop: '1px solid #D2D6E1',
         },
       },
     },

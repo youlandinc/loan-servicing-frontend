@@ -21,3 +21,7 @@ export const _downloadExtensionPdf = (downloadId: number) => {
     responseType: 'blob',
   });
 };
+
+export const _extensionConfirm = (param: IGetExtensionPdfParam) => {
+  return post('http://192.168.1.102:8080/servicing/extension/confirm', param);
+};

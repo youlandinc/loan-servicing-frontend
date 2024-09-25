@@ -35,7 +35,7 @@ export const StyledSearchSelectMultiple: FC<
 
   useEffect(() => {
     value && setSelected(value);
-  }, []);
+  }, [value]);
 
   return (
     <StyledButton

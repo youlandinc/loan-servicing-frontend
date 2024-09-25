@@ -19,8 +19,8 @@ export type ISortItemModel = SnapshotOut<typeof SortItemModel>;
 const searchConditionModel = types.model({
   investors: types.array(types.string),
   keyword: types.string,
-  maturityStartDate: types.string,
-  maturityEndDate: types.string,
+  maturityStartDate: types.maybe(types.string),
+  maturityEndDate: types.maybe(types.string),
   repaymentStatusList: types.array(
     types.string, //types.enumeration(Object.values(RepaymentStatusEnum)),
   ),
@@ -45,7 +45,6 @@ export const allLoansGridQueryModel = types
     page: types.number,
     sort: types.array(SortItemModel),
     searchCondition: searchConditionModel,
-    pipelineMode: types.enumeration(Object.values(PipelineMode)),
   })
   .actions((self) => ({
     updatePage(page: number, size: number = self.size) {

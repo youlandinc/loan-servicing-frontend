@@ -10,7 +10,9 @@ import {
 } from '@/components/molecules';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
+import { _setColumnWidth } from '@/request/common';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
+import { SetColumnWidthParam } from '@/types/common';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { Stack } from '@mui/material';
 import {
@@ -22,8 +24,9 @@ import {
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
+import { enqueueSnackbar } from 'notistack';
 import { FC, useMemo, useState } from 'react';
-import { useDebounce } from 'react-use';
+import { useAsyncFn, useDebounce } from 'react-use';
 import useSWR from 'swr';
 
 export const AllLoansGrid: FC = observer(() => {
@@ -228,45 +231,42 @@ export const AllLoansGrid: FC = observer(() => {
 
   const columnSizing: Record<string, number> = table.getState().columnSizing;
   const columnPining = table.getState().columnPinning;
+
+  const [, setColumnWidth] = useAsyncFn(
+    async (result: SetColumnWidthParam) => {
+      await _setColumnWidth(result).catch(({ message, variant, header }) => {
+        enqueueSnackbar(message, {
+          variant,
+          isSimple: !header,
+          header,
+        });
+      });
+      // await userSetting.fetchUserSetting();
+    },
+    [columnSizing],
+  );
+
   const [, cancelUpdateColumnWidth] = useDebounce(
     () => {
       if (Object.keys(columnSizing).length) {
         //handle column sizing
-        console.log('columnSizing', columnSizing);
+        setColumnWidth({
+          pageColumn: PortfolioGridTypeEnum.ALL_LOANS,
+          columnWidths: Object.keys(columnSizing).map((field) => ({
+            field,
+            columnWidth: columnSizing[field],
+          })),
+        });
       }
-      // setColumnWidth(
-      //     Object.keys(columnSizing).map((field) => ({
-      //       field,
-      //       columnWidth: columnSizing[field],
-      //     })),
-      // );
     },
     500,
     [columnSizing],
   );
 
-  // const [, setColumnWidth] = useAsyncFn(
-  //     async (result: { field: string; columnWidth: number }[]) => {
-  //       await _updateColumnWidth(result).catch(
-  //           ({ message, variant, header }) => {
-  //             enqueueSnackbar(message, {
-  //               variant,
-  //               isSimple: !header,
-  //               header,
-  //             });
-  //           },
-  //       );
-  //       // await userSetting.fetchUserSetting();
-  //     },
-  //     [columnSizing],
-  // );
   return (
     <>
       <Stack>
-        <MRT_TableContainer
-          // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-          table={table}
-        />
+        <MRT_TableContainer table={table} />
 
         <AllLoansPagination
           currentPage={currentPage}

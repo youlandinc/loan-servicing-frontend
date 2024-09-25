@@ -1,12 +1,14 @@
-import React, { FC, useMemo } from 'react';
+import { useDebounceFn } from '@/hooks';
+import { allLoansModel } from '@/models/gridModel';
+import { _getAllGridConfig, setDisplayType } from '@/request';
+import React, { FC, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import {
-  ColumnsOrderDialog,
   StyledButton,
   StyledDelinquentSelect,
   StyledMaturitySelect,
@@ -26,6 +28,7 @@ import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
 import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
+import { useAsync, useAsyncFn } from 'react-use';
 
 const GridYouland = dynamic(
   () =>
@@ -39,6 +42,21 @@ const GridYoulandToolbar = dynamic(
   () =>
     import('@/components/molecules/GridYouland').then(
       (mode) => mode.GridYoulandToolbar,
+    ),
+  { ssr: false },
+);
+
+const GridCashFlow = dynamic(
+  () =>
+    import('@/components/molecules/GridCashFlow').then(
+      (mode) => mode.GridCashFlow,
+    ),
+  { ssr: false },
+);
+const GridCashFlowToolbar = dynamic(
+  () =>
+    import('@/components/molecules/GridCashFlow').then(
+      (mode) => mode.GridCashFlowToolbar,
     ),
   { ssr: false },
 );
@@ -124,10 +142,37 @@ export const Portfolio: FC = observer(() => {
     portfolio: {
       displayType: portfolioListType,
       updateDisplayType: setPortfolioListType,
-      delinquentGridModel,
-      maturityGridModel,
+      allLoansGridModel,
+      injectConfig,
     },
   } = useMst();
+
+  const [, , updateDisplayDebounce] = useDebounceFn(
+    allLoansGridModel.queryModel.updateQueryCondition,
+    500,
+  );
+
+  const [, updateMode] = useAsyncFn(
+    async (displayMode: PortfolioGridTypeEnum) => {
+      await setDisplayType(displayMode);
+    },
+  );
+
+  const [, , set] = useDebounceFn(
+    async (displayMode: PortfolioGridTypeEnum) => {
+      await updateMode(displayMode);
+    },
+    500,
+  );
+
+  const { value, loading } = useAsync(async () => {
+    return await _getAllGridConfig().then((res) => {
+      if (res.data) {
+        injectConfig(res.data);
+      }
+      return res;
+    });
+  }, []);
 
   const menus = useMemo(
     () => [
@@ -137,6 +182,13 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.YOULAND,
         queryComponent: <GridYoulandToolbar />,
         component: <GridYouland />,
+      },
+      {
+        icon: LOGO_CASH_FLOW,
+        label: 'Cash flow',
+        key: PortfolioGridTypeEnum.CASH_FLOW,
+        queryComponent: <GridCashFlowToolbar />,
+        component: <GridCashFlow />,
       },
       {
         icon: LOGO_ALAMEDA,
@@ -187,92 +239,95 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
       },
-      {
-        icon: LOGO_CASH_FLOW,
-        label: 'Cash flow',
-        key: PortfolioGridTypeEnum.CASH_FLOW,
-        queryComponent: <></>,
-        component: <></>,
-      },
     ],
     [portfolioListType],
   );
 
+  useEffect(() => {
+    // getAllGridConfig();
+  }, []);
+
   return (
     <Layout isHomepage={false}>
-      <Stack height={'100%'} pb={3} pt={3} px={6}>
-        <Stack
-          alignItems={'flex-start'}
-          direction={'row'}
-          justifyContent={'space-between'}
-        >
-          <Stack direction={'row'}>
+      <Fade in={!loading}>
+        <Stack height={'100%'} pb={3} pt={3} px={6}>
+          <Stack
+            alignItems={'flex-start'}
+            direction={'row'}
+            justifyContent={'space-between'}
+          >
+            <Stack direction={'row'}>
+              {menus.map((item, index) => (
+                <StyledButton
+                  component={'div'}
+                  key={index}
+                  onClick={() => {
+                    setPortfolioListType(item.key);
+                    set(item.key);
+                  }}
+                  size={'small'}
+                  sx={{
+                    backgroundColor:
+                      item.key === portfolioListType
+                        ? '#F4F6FA !important'
+                        : 'transparent !important',
+                    fontWeight: '400 !important',
+                    border:
+                      item.key === portfolioListType ? '1px solid' : 'none',
+                    borderColor: 'border.normal',
+                    borderRadius: '16px 16px 0px 0px !important',
+                    borderBottom: 'none !important',
+                    px: '24px !important',
+                    py: '12px !important',
+                  }}
+                  variant={'text'}
+                >
+                  <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+                    <Icon
+                      component={item.icon}
+                      sx={{
+                        width: 16,
+                        height: 16,
+                        '& path': {
+                          fill: '#636A7C',
+                        },
+                      }}
+                    />
+                    <Typography color={'action.active'} variant={'body2'}>
+                      {item.label}
+                    </Typography>
+                  </Stack>
+                </StyledButton>
+              ))}
+            </Stack>
             {menus.map((item, index) => (
-              <StyledButton
-                component={'div'}
-                key={index}
-                onClick={() => setPortfolioListType(item.key)}
-                size={'small'}
-                sx={{
-                  backgroundColor:
-                    item.key === portfolioListType
-                      ? '#F4F6FA !important'
-                      : 'transparent !important',
-                  fontWeight: '400 !important',
-                  border: item.key === portfolioListType ? '1px solid' : 'none',
-                  borderColor: 'border.normal',
-                  borderRadius: '16px 16px 0px 0px !important',
-                  borderBottom: 'none !important',
-                  px: '24px !important',
-                  py: '12px !important',
-                }}
-                variant={'text'}
-              >
-                <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-                  <Icon
-                    component={item.icon}
-                    sx={{
-                      width: 16,
-                      height: 16,
-                      '& path': {
-                        fill: '#636A7C',
-                      },
-                    }}
-                  />
-                  <Typography color={'action.active'} variant={'body2'}>
-                    {item.label}
-                  </Typography>
-                </Stack>
-              </StyledButton>
+              <Box hidden={item.key !== portfolioListType} key={index}>
+                {item.key === portfolioListType && item.queryComponent}
+              </Box>
             ))}
           </Stack>
-          {menus.map((item, index) => (
-            <Box hidden={item.key !== portfolioListType} key={index}>
-              {item.key === portfolioListType && item.queryComponent}
-            </Box>
-          ))}
+          <Box flex={1} mt={'-1px'}>
+            {menus.map((item, index) => {
+              return (
+                <Box
+                  border={'1px solid'}
+                  borderColor={'border.normal'}
+                  borderRadius={4}
+                  flex={1}
+                  hidden={item.key !== portfolioListType}
+                  key={index}
+                  sx={{
+                    borderTopLeftRadius: index === 0 ? 0 : 16,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {item.component}
+                </Box>
+              );
+            })}
+          </Box>
         </Stack>
-        <Box flex={1} mt={'-1px'}>
-          {menus.map((item, index) => {
-            return (
-              <Box
-                border={'1px solid'}
-                borderColor={'border.normal'}
-                borderRadius={4}
-                flex={1}
-                hidden={item.key !== portfolioListType}
-                key={index}
-                sx={{
-                  borderTopLeftRadius: index === 0 ? 0 : 16,
-                  overflow: 'hidden',
-                }}
-              >
-                {item.component}
-              </Box>
-            );
-          })}
-        </Box>
-      </Stack>
+      </Fade>
     </Layout>
   );
 });

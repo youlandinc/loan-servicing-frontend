@@ -5,8 +5,8 @@ import {
   Drawer,
   Fade,
   Icon,
-  Paper,
-  Popper,
+  //Paper,
+  //Popper,
   Stack,
   Typography,
 } from '@mui/material';
@@ -15,8 +15,8 @@ import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 import { uniqueId } from 'lodash';
 import {
-  bindHover,
-  bindPopper,
+  //bindHover,
+  //bindPopper,
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 
@@ -31,7 +31,10 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
+import {
+  //StyledButton,
+  StyledHeaderAddressInfo,
+} from '@/components/atoms';
 import {
   Layout,
   LoanOverviewCard,
@@ -65,7 +68,7 @@ import OVERVIEW_NEXT_DUE_DATE from '@/svg/loan/overview/overview-next-due-date.s
 import OVERVIEW_MATURITY_DATE from '@/svg/loan/overview/overview-maturity-date.svg';
 
 import OVERVIEW_COMMENTS_VIEW from '@/svg/loan/overview/overview-comments-view.svg';
-import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
+//import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
 import OVERVIEW_COMMENTS_NO_RESULT from '@/svg/loan/overview/overview-comments-no-result.svg';
 import OVERVIEW_COMMENTS_ADD from '@/svg/loan/overview/overview-comments-add.svg';
 import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
@@ -170,7 +173,7 @@ export const LoanOverview: FC = observer(() => {
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  const router = useRouter();
+  //const router = useRouter();
   const breakpoints = useBreakpoints();
 
   const popupState = usePopupState({
@@ -187,7 +190,7 @@ export const LoanOverview: FC = observer(() => {
       const { data } = await _fetchOverviewDetails(loanId);
       setHeaderAddressInfo({
         address: data.propertyFullAddress,
-        loanNumber: data.loanNumber,
+        loanNumber: data.systemLoanNumber,
         status: data.repaymentStatus as string as PipelineStatusEnum,
       });
 

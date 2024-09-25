@@ -41,14 +41,13 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
 
     onValueChange(result);
   };
-
   useEffect(
     () => {
       const result = POSTypeOf(value) === 'String' ? value.split(',') : value;
       setSelectValue(result);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [value],
   );
 
   return (

@@ -179,7 +179,7 @@ export const ALAMEDA_COLUMNS = (
       },
     },
     {
-      header: 'Interest Rate',
+      header: 'Interest rate',
       accessorKey: 'interestRate',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },

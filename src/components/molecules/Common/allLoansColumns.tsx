@@ -444,7 +444,7 @@ export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
   [
     {
       accessorKey: 'diffDays',
-      header: 'Days until maturity',
+      header: 'Days delinquent',
       size: 150,
       minSize: 150,
       muiTableBodyCellProps: {

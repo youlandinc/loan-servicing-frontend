@@ -43,7 +43,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
             MaturityTypeOpt.map((item) => ({
               ...item,
               label: (
-                <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+                <Stack alignItems={'center'} direction={'row'} gap={1}>
                   <Typography variant={'body2'}>{item.label}</Typography>
                   <Typography
                     bgcolor={'#95A8D7'}
@@ -87,7 +87,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
         }}
         variant={'text'}
       >
-        <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+        <Stack alignItems={'center'} direction={'row'} gap={1}>
           <Typography
             color={
               portfolioListType === PortfolioGridTypeEnum.MATURITY

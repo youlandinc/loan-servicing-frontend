@@ -243,6 +243,10 @@ export const Portfolio: FC = observer(() => {
     [portfolioListType],
   );
 
+  useEffect(() => {
+    // getAllGridConfig();
+  }, []);
+
   return (
     <Layout isHomepage={false}>
       <Fade in={!loading}>

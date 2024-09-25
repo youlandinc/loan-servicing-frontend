@@ -35,7 +35,7 @@ export const LoanPayments: FC = observer(() => {
     const { data } = await _fetchPaymentsDetails(loanId);
     setHeaderAddressInfo({
       address: data.propertyFullAddress,
-      loanNumber: data.loanNumber,
+      loanNumber: data.systemLoanNumber,
       status: data.repaymentStatus as string as PipelineStatusEnum,
     });
 

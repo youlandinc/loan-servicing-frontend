@@ -1,5 +1,6 @@
+import React from 'react';
 import { MRT_ColumnDef } from 'material-react-table';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { utils } from '@/utils';
 import { REPAYMENT_STATUS_OPTIONS } from '@/constant';
@@ -10,10 +11,10 @@ import {
   allLoansStatusColor,
 } from '@/styles/allLoansGridStyles';
 
-import { GridDropDown, transferFirstColumn } from '@/components/molecules';
+import { GridDropDown } from '@/components/molecules';
 
 export const GridCashFlowColumn = () => {
-  return transferFirstColumn([
+  const columns: MRT_ColumnDef<any>[] = [
     {
       header: 'Status',
       accessorKey: 'repaymentStatus',
@@ -197,5 +198,51 @@ export const GridCashFlowColumn = () => {
         );
       },
     },
-  ]) as MRT_ColumnDef<any>[];
+  ];
+
+  return columns.reduce((acc, cur: any, index) => {
+    if (!cur) {
+      return acc;
+    }
+    const target = {
+      ...cur,
+      Cell: (props: any) => {
+        const { row } = props;
+        if (row.original.servicingLoans) {
+          return (
+            index === 0 && (
+              <Typography
+                sx={{ whiteSpace: 'nowrap', textIndent: 8 }}
+                variant={'subtitle2'}
+                width={'100%'}
+              >
+                {row.original.groupById}
+                <Typography
+                  color={'#E39F15'}
+                  component={'span'}
+                  ml={3}
+                  variant={'subtitle2'}
+                >
+                  Total loan amount:{' '}
+                  <b>{utils.formatDollar(row.original.currentTotalAmount)}</b>
+                </Typography>
+                <Typography
+                  color={'#E39F15'}
+                  component={'span'}
+                  ml={3}
+                  variant={'subtitle2'}
+                >
+                  Number of loans:{' '}
+                  <b>{row.original.currentTotalItems ?? '-'}</b>
+                </Typography>
+              </Typography>
+            )
+          );
+        }
+        return cur.Cell(props);
+      },
+    };
+    acc.push(target as MRT_ColumnDef<any>);
+    return acc;
+  }, [] as MRT_ColumnDef<any>[]);
 };

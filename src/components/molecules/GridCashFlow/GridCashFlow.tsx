@@ -6,6 +6,7 @@ import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import {
   MRT_ColumnDef,
+  MRT_ExpandButton,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
@@ -18,14 +19,12 @@ import { AUTO_HIDE_DURATION } from '@/constant';
 import {
   GridCashFlowItem,
   GridCashFlowSummaryProps,
-  ResponseGridCashFlowTable,
 } from '@/types/pipeline/youland';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import { _fetchCashFlowTableData } from '@/request';
 
 import { GridCashFlowColumn, GridCashFlowFooter } from './index';
-import { getCoreRowModel } from '@tanstack/table-core';
 
 const mock = [
   {
@@ -117,7 +116,6 @@ export const GridCashFlow: FC = observer(() => {
     enableColumnVirtualization: true,
     enableColumnPinning: true,
     manualPagination: true,
-    getCoreRowModel: getCoreRowModel(),
     state: {
       //columnOrder: columnOrder || [],
       // isLoading: isValidating,
@@ -258,16 +256,39 @@ export const GridCashFlow: FC = observer(() => {
         //handleHeaderClick?.(e, props.column);
       },
     }),
-    muiTableBodyRowProps: {
-      sx: {
-        '& .MuiTableCell-root:last-child': {
-          borderBottom: 'none',
-        },
-        '& .MuiTableCell-root:first-of-type': {
-          width: 40,
-          minWidth: 40,
+    displayColumnDefOptions: {
+      'mrt-row-expand': {
+        size: 40,
+        Cell: ({ row, table }) => {
+          return (
+            <>
+              {row.subRows?.length ? (
+                <MRT_ExpandButton row={row} table={table} />
+              ) : null}
+            </>
+          );
         },
       },
+    },
+    muiTableBodyRowProps: ({ row }) => {
+      return {
+        sx: {
+          '& .MuiTableCell-root': {
+            borderBottom: row.getIsExpanded() ? '1px solid #EDF1FF' : 'none',
+          },
+          '&:hover': {
+            '& td:nth-of-type(2)': {
+              zIndex: '1 !important',
+            },
+            '& td:after': {
+              backgroundColor: '#F6F6F6',
+            },
+          },
+          '& .MuiTableCell-root:last-child': {
+            borderBottom: 'none',
+          },
+        },
+      };
     },
     muiTableBodyCellProps: ({ row }) => ({
       sx: {

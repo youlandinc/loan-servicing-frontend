@@ -52,7 +52,11 @@ export const GridDropDown: FC<GridDropDownProps> = ({
         fontSize={12}
         height={20}
         justifyContent={'center'}
-        onClick={(e) => setTarget(e.currentTarget)}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          setTarget(e.currentTarget);
+        }}
         sx={{
           cursor: 'pointer',
         }}
@@ -82,7 +86,11 @@ export const GridDropDown: FC<GridDropDownProps> = ({
             borderRadius: 2,
           },
         }}
-        onClose={onClickToClose}
+        onClose={(e: MouseEvent) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onClickToClose();
+        }}
         open={open}
         slotProps={{
           paper: {
@@ -105,7 +113,9 @@ export const GridDropDown: FC<GridDropDownProps> = ({
         {options.map((item, index) => (
           <MenuItem
             key={`${item.key}-${index}`}
-            onClick={async () => {
+            onClick={async (e) => {
+              e.stopPropagation();
+              e.preventDefault();
               if (status === item.key) {
                 return;
               }

@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -48,6 +49,7 @@ export const GridYouland: FC = observer(() => {
     portfolio: { displayType },
   } = useMst();
 
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const { loading } = useAsync(async () => {
@@ -212,6 +214,16 @@ export const GridYouland: FC = observer(() => {
           height: 16,
         },
       },
+    },
+    muiTableBodyCellProps: ({ row }) => {
+      return {
+        async onClick() {
+          await router.push({
+            pathname: '/loan/overview',
+            query: { loanId: row.original.loanId },
+          });
+        },
+      };
     },
     muiTableBodyRowProps: {
       sx: {

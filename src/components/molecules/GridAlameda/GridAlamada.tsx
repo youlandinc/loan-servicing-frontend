@@ -24,23 +24,7 @@ import { HttpError } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 
-const mock: Array<Partial<GridAlamedaItem>> = [
-  {
-    loanId: 1,
-    repaymentStatus: null,
-    submitDate: null,
-    propertyAddress: null,
-    estSaleDate: null,
-    investor: null,
-    prospectiveBuyer: null,
-    tradeStatus: null,
-    interestRate: null,
-    totalLoanAmount: null,
-    buyRate: null,
-    originatorSpread: null,
-    tradeConfirm: null,
-  },
-];
+const mock: Array<Partial<GridAlamedaItem>> = [];
 
 export const GridAlameda: FC = observer(() => {
   const {

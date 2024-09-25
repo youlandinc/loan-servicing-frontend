@@ -290,7 +290,7 @@ export const LoanOverview: FC = observer(() => {
       setNextDueDate({
         theme: 'light',
         header: 'Next due date',
-        headerValue: utils.formatDate(balanceInfo.nextDueDate),
+        headerValue: utils.formatDate(balanceInfo.nextPaymentDate),
         headerIcon: OVERVIEW_NEXT_DUE_DATE,
         listData: [
           {

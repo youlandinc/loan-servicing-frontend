@@ -41,7 +41,7 @@ export interface OverviewBalanceInformation {
   maturityDate: string;
   currentBalance: number;
   paidToDate: string;
-  nextDueDate: string;
+  nextPaymentDate: string;
   interestRate: number;
   estClosingDate: string;
   monthlyPayment: number;

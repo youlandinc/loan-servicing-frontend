@@ -1,5 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import { Stack, Switch, Typography } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
+import React, { FC, useEffect, useState } from 'react';
 import {
   DragDropContext,
   Draggable,
@@ -7,28 +9,24 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
 
 import {
   StyledButton,
   StyledDialog,
   StyledDialogProps,
 } from '@/components/atoms';
+import { IOrderColumnsItem } from '@/models/gridModel';
+
+import { _setOrderedColumns } from '@/request/common';
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { IOrderColumnsItem } from '@/models/gridModel';
-import { ColumnConfig } from '@/types/pipeline';
-
-// import { _setLosPipelineColumns } from '@/request';
-import { useMst } from '@/models/Root';
 
 type ColumnItem = /*GridColDef &*/ IOrderColumnsItem;
 
 type ChangeOrderOfColumnsDialogProps = StyledDialogProps & {
   columns: ColumnItem[];
   callback?: (param: ColumnItem[]) => void;
-  url?: string;
+  gridType: PortfolioGridTypeEnum;
   handleSave?: (param: ColumnItem[]) => void;
 };
 
@@ -45,7 +43,7 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
   onClose,
   columns,
   callback,
-  url,
+  gridType,
   handleSave,
   ...rest
 }) => {
@@ -78,29 +76,30 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
     setItems(result);
   };
 
-  /*    const [state, setLosPipelineColumns] = useAsyncFn(async () => {
-      const result = items.map((item, index) => {
-        return {
-          field: item.field,
-          headerName: item.headerName,
-          id: item.id,
-          visibility: item.visibility,
-          sort: index,
-        };
-      });
+  const [state, setLosPipelineColumns] = useAsyncFn(async () => {
+    const result = items.map((item, index) => {
+      return {
+        field: item.field,
+        headerName: item.headerName,
+        id: item.id as number,
+        visibility: item.visibility,
+        sort: index,
+      };
+    });
 
-      const res = await _setLosPipelineColumns(result, url).catch(
-        ({ message, variant, header }) => {
-          enqueueSnackbar(message, {
-            variant,
-            isSimple: !header,
-            header,
-          });
-        },
-      );
-      await userSetting.fetchUserSetting();
-      callback?.(res?.data ?? []);
-    }, [items, url]);*/
+    const res = await _setOrderedColumns({
+      pageColumn: gridType,
+      columnSorts: result,
+    }).catch(({ message, variant, header }) => {
+      enqueueSnackbar(message, {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+    // await userSetting.fetchUserSetting();
+    callback?.(res?.data ?? []);
+  }, [items, gridType]);
 
   useEffect(() => {
     setItems(columns);
@@ -204,8 +203,9 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
           </StyledButton>
           <StyledButton
             color="primary"
-            onClick={() => {
-              const result = items.map((item, index) => {
+            loading={state.loading}
+            onClick={async () => {
+              /*const result = items.map((item, index) => {
                 return {
                   field: item.field,
                   headerName: item.headerName,
@@ -213,8 +213,9 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
                   visibility: item.visibility,
                   sort: index,
                 };
-              });
+              });*/
               // save request
+              await setLosPipelineColumns();
               handleSave?.(items);
             }}
             size={'small'}

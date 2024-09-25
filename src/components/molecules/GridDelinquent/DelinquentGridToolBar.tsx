@@ -1,26 +1,26 @@
+import { Stack } from '@mui/material';
+import React, { FC, useEffect, useRef } from 'react';
+
+import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
-  StyledButton,
-  StyledSearchTextFieldInput,
-  StyledSelect,
-} from '@/components/atoms';
-import { DelinquentTimeRangeOpt } from '@/constant';
-import { useDebounceFn, useSwitch } from '@/hooks';
+  comBineColumns,
+  delinquentColumns,
+  GridMoreIconButton,
+  transferOrderColumns,
+} from '@/components/molecules';
+import { useDebounceFn } from '@/hooks';
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
-import { _getDelinquentRangeOpt } from '@/request/portfolio/delinquen';
-import { DelinquentTimeRangeEnum } from '@/types/enum';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { CircularProgress, Stack, Typography } from '@mui/material';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAsyncFn } from 'react-use';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const DelinquentGridToolBar: FC = () => {
   const {
     portfolio: { delinquentGridModel },
   } = useMst();
 
-  const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
+  // const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
 
-  const { visible, open, close } = useSwitch();
+  // const { visible, open, close } = useSwitch();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
@@ -29,39 +29,39 @@ export const DelinquentGridToolBar: FC = () => {
     500,
   );
 
-  const [state, getDelinquentRangeOpt] = useAsyncFn(async () => {
-    return await _getDelinquentRangeOpt().then((res) => {
-      if (res.data) {
-        setOpts(
-          DelinquentTimeRangeOpt.map((item) => ({
-            ...item,
-            label: (
-              <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-                <Typography variant={'body2'}>{item.label}</Typography>
-                <Typography
-                  bgcolor={'#95A8D7'}
-                  borderRadius={1}
-                  color={'#fff'}
-                  px={0.5}
-                  variant={'subtitle3'}
-                >
-                  {res.data[item.value] || 0}
-                </Typography>
-              </Stack>
-            ),
-          })),
-        );
-      }
-      return res;
-    });
-  }, []);
+  // const [state, getDelinquentRangeOpt] = useAsyncFn(async () => {
+  //   return await _getDelinquentRangeOpt().then((res) => {
+  //     if (res.data) {
+  //       setOpts(
+  //         DelinquentTimeRangeOpt.map((item) => ({
+  //           ...item,
+  //           label: (
+  //             <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+  //               <Typography variant={'body2'}>{item.label}</Typography>
+  //               <Typography
+  //                 bgcolor={'#95A8D7'}
+  //                 borderRadius={1}
+  //                 color={'#fff'}
+  //                 px={0.5}
+  //                 variant={'subtitle3'}
+  //               >
+  //                 {res.data[item.value] || 0}
+  //               </Typography>
+  //             </Stack>
+  //           ),
+  //         })),
+  //       );
+  //     }
+  //     return res;
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
         delinquentGridModel.queryModel.searchCondition.keyword;
     }
-    getDelinquentRangeOpt();
+    // getDelinquentRangeOpt();
   }, []);
 
   return (
@@ -76,6 +76,17 @@ export const DelinquentGridToolBar: FC = () => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+      <GridMoreIconButton
+        columns={
+          transferOrderColumns(
+            comBineColumns(delinquentColumns, delinquentGridModel.orderColumns),
+          ) as IOrderColumnsItem[]
+        }
+        gridType={PortfolioGridTypeEnum.DELINQUENT}
+        handleSave={(columns) => {
+          delinquentGridModel.updateOrderColumns(columns);
+        }}
       />
       {/*<StyledButton
         size={'small'}

@@ -17,18 +17,50 @@ export const portfolioModel = types
     },
     injectConfig(config: IAllGridConfig) {
       try {
-        self.allLoansGridModel.queryModel = cast(
-          config.operaParams.SERVICING_ALL_LOAN.SEARCH,
-        );
-        self.investorGridModel.queryModel = cast(
-          config.operaParams.SERVICING_BY_INVESTOR.SEARCH,
-        );
-        self.delinquentGridModel.queryModel = cast(
-          config.operaParams.SERVICING_DELINQUENT.SEARCH,
-        );
-        self.maturityGridModel.queryModel = cast(
-          config.operaParams.SERVICING_MATURITY.SEARCH,
-        );
+        //all loans
+        if (config.operaParams?.SERVICING_ALL_LOAN?.SEARCH) {
+          self.allLoansGridModel.queryModel = cast(
+            config.operaParams.SERVICING_ALL_LOAN.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_ALL_LOAN?.ALL) {
+          self.allLoansGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_ALL_LOAN.ALL,
+          );
+        }
+        //investor
+        if (config.operaParams?.SERVICING_BY_INVESTOR?.SEARCH) {
+          self.investorGridModel.queryModel = cast(
+            config.operaParams.SERVICING_BY_INVESTOR.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_BY_INVESTOR?.ALL) {
+          self.investorGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_BY_INVESTOR.ALL,
+          );
+        }
+        //delinquent
+        if (config.operaParams?.SERVICING_DELINQUENT?.SEARCH) {
+          self.delinquentGridModel.queryModel = cast(
+            config.operaParams.SERVICING_DELINQUENT.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_DELINQUENT?.ALL) {
+          self.delinquentGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_DELINQUENT.ALL,
+          );
+        }
+        //maturity
+        if (config.operaParams?.SERVICING_MATURITY?.SEARCH) {
+          self.maturityGridModel.queryModel = cast(
+            config.operaParams.SERVICING_MATURITY.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_MATURITY?.ALL) {
+          self.maturityGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_MATURITY.ALL,
+          );
+        }
       } catch (e) {
         console.log(e);
       }

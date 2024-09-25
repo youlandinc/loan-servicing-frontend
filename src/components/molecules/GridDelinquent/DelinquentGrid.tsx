@@ -5,8 +5,12 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
+  commonColumns,
   delinquentColumns,
   GroupLoans,
+  resortColumns,
+  transferFirstColumn,
+  transferOrderColumnsKeys,
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
@@ -16,6 +20,10 @@ export const DelinquentGrid: FC = observer(() => {
   const {
     portfolio: { delinquentGridModel, displayType },
   } = useMst();
+
+  const configColumnsOrderKeysArr = delinquentGridModel.orderColumns?.length
+    ? transferOrderColumnsKeys(delinquentGridModel.orderColumns)
+    : [];
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.DELINQUENT
@@ -43,7 +51,17 @@ export const DelinquentGrid: FC = observer(() => {
     },
   );
 
-  const columns = useMemo(() => delinquentColumns, []);
+  // const columns = useMemo(() => delinquentColumns, []);
+
+  const columns = useMemo(
+    () =>
+      delinquentGridModel.orderColumns.length
+        ? transferFirstColumn(
+            resortColumns(delinquentGridModel.orderColumns, delinquentColumns),
+          )
+        : transferFirstColumn(delinquentColumns),
+    [configColumnsOrderKeysArr.join('')],
+  );
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;

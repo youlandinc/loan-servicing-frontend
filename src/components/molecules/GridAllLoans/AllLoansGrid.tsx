@@ -129,7 +129,22 @@ export const AllLoansGrid: FC = observer(() => {
     muiTableBodyRowProps: {
       sx: {
         '& .MuiTableCell-root:last-child': {
-          borderBottom: 'none',
+          // borderBottom: 'none',
+        },
+        boxShadow: 'none',
+        '& td': {
+          height: 40,
+          borderRight: '1px solid',
+          borderBottom: '1px solid',
+          borderColor: '#D2D6E1',
+          '&:last-of-type': {
+            borderRight: 'none',
+          },
+        },
+        '&:hover': {
+          '& td:after': {
+            background: '#F6F6F6',
+          },
         },
       },
     },
@@ -246,11 +261,11 @@ export const AllLoansGrid: FC = observer(() => {
     [columnSizing],
   );
 
-  const [, cancelUpdateColumnWidth] = useDebounce(
-    () => {
+  useDebounce(
+    async () => {
       if (Object.keys(columnSizing).length) {
         //handle column sizing
-        setColumnWidth({
+        await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.ALL_LOANS,
           columnWidths: Object.keys(columnSizing).map((field) => ({
             field,

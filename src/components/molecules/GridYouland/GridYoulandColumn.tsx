@@ -82,7 +82,7 @@ export const YOULAND_COLUMNS = (
     },
     {
       header: 'Property address',
-      accessorKey: 'propertyAddress',
+      accessorKey: 'propertyFullAddress',
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
       size: 300,

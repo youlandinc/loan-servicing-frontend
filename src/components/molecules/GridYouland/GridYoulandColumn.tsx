@@ -106,17 +106,128 @@ export const YOULAND_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 140,
-      Cell: ({ renderedCellValue }) => {
+      Cell: ({ renderedCellValue, row }) => {
+        const { enqueueSnackbar } = useSnackbar();
+        const { visible, close, open } = useSwitch(false);
+        const [date, setDate] = useState<Date | null>(
+          renderedCellValue ? new Date(renderedCellValue as Date) : null,
+        );
+        const [updating, setUpdating] = useState(false);
+
         return (
-          <Typography
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
+          <Stack
+            className={'edit-cell'}
+            height={'100%'}
+            justifyContent={'center'}
+            mx={-2}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              open();
+              return;
             }}
-            variant={'body3'}
+            sx={{
+              '&:hover': {
+                border: '1px solid rgba(144, 149, 163, 0.3)',
+              },
+              cursor: 'text',
+            }}
+            width={'calc(100% + 48px)'}
           >
-            {utils.formatDate(renderedCellValue as string)}
-          </Typography>
+            <Typography
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+              }}
+              variant={'body3'}
+            >
+              {utils.formatDate(renderedCellValue as string)}
+            </Typography>
+            <StyledDialog
+              aria-hidden="true"
+              content={
+                <Stack gap={3} py={3}>
+                  <Typography color={'text.secondary'} variant={'body2'}>
+                    Please confirm the sale date below is correct before you
+                    mark the trade as completed.
+                  </Typography>
+                  <StyledDatePicker
+                    disableFuture
+                    label={'Sale date'}
+                    maxDate={new Date()}
+                    onChange={(value) => {
+                      setDate(value);
+                    }}
+                    value={date}
+                  />
+                </Stack>
+              }
+              footer={
+                <Stack flexDirection={'row'} gap={1.5}>
+                  <StyledButton
+                    color={'info'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      close();
+                    }}
+                    size={'small'}
+                    sx={{
+                      width: 82,
+                    }}
+                    variant={'outlined'}
+                  >
+                    Cancel
+                  </StyledButton>
+                  <StyledButton
+                    disabled={!date || updating}
+                    loading={updating}
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      if (!date) {
+                        return;
+                      }
+                      const postData = {
+                        loanId: row.original.loanId,
+                        estSaleDate: format(date, 'yyyy-MM-dd'),
+                      };
+                      setUpdating(true);
+                      try {
+                        await _updateTableData(postData);
+                        await cb?.();
+                      } catch (err) {
+                        const { header, message, variant } = err as HttpError;
+                        enqueueSnackbar(message, {
+                          variant: variant || 'error',
+                          autoHideDuration: AUTO_HIDE_DURATION,
+                          isSimple: !header,
+                          header,
+                        });
+                      } finally {
+                        setUpdating(false);
+                        close();
+                      }
+                    }}
+                    size={'small'}
+                    sx={{
+                      width: 82,
+                    }}
+                  >
+                    Confirm
+                  </StyledButton>
+                </Stack>
+              }
+              header={'Confirm sale date'}
+              onClose={(e: MouseEvent) => {
+                e.preventDefault();
+                e.stopPropagation();
+                close();
+              }}
+              open={visible}
+              scroll={'body'}
+            />
+          </Stack>
         );
       },
     },
@@ -272,7 +383,14 @@ export const YOULAND_COLUMNS = (
         const [updating, setUpdating] = useState(false);
 
         return (
-          <>
+          <Stack
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              return;
+            }}
+            width={'100%'}
+          >
             <Button
               color={'primary'}
               disabled={
@@ -280,7 +398,11 @@ export const YOULAND_COLUMNS = (
                 renderedCellValue === GridTradeConfirmEnum.completed ||
                 row.original.tradeStatus !== GridTradeStatusEnum.confirmed
               }
-              onClick={open}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                open();
+              }}
               sx={{
                 fontSize: 12,
                 width: 120,
@@ -336,7 +458,7 @@ export const YOULAND_COLUMNS = (
                       }
                       const postData = {
                         loanId: row.original.loanId,
-                        saleDate: format(date, 'yyyy-MM-dd'),
+                        estSaleDate: format(date, 'yyyy-MM-dd'),
                         tradeConfirm: GridTradeConfirmEnum.completed,
                       };
                       setUpdating(true);
@@ -366,9 +488,14 @@ export const YOULAND_COLUMNS = (
                 </Stack>
               }
               header={'Confirm sale date'}
+              onClose={(e: MouseEvent) => {
+                e.preventDefault();
+                e.stopPropagation();
+                close();
+              }}
               open={visible}
             />
-          </>
+          </Stack>
         );
       },
     },

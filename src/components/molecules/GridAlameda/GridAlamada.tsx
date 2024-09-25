@@ -24,7 +24,23 @@ import { HttpError } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 
-const mock: Array<Partial<GridAlamedaItem>> = [];
+const mock: Array<Partial<GridAlamedaItem>> = [
+  {
+    loanId: 1,
+    repaymentStatus: null,
+    submitDate: null,
+    propertyAddress: null,
+    estSaleDate: null,
+    investor: null,
+    prospectiveBuyer: null,
+    tradeStatus: null,
+    interestRate: null,
+    totalLoanAmount: null,
+    buyRate: null,
+    originatorSpread: null,
+    tradeConfirm: null,
+  },
+];
 
 export const GridAlameda: FC = observer(() => {
   const {
@@ -209,10 +225,12 @@ export const GridAlameda: FC = observer(() => {
     muiTableBodyRowProps: {
       sx: {
         boxShadow: 'none',
+
         '& td': {
           height: 40,
           borderRight: '1px solid',
           borderColor: '#D2D6E1',
+          py: 0,
           '&:last-of-type': {
             borderRight: 'none',
           },
@@ -221,6 +239,9 @@ export const GridAlameda: FC = observer(() => {
           '& td:after': {
             background: '#F6F6F6',
           },
+        },
+        '&:first-of-type': {
+          borderTop: '1px solid #D2D6E1',
         },
       },
     },

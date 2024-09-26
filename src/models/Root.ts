@@ -6,7 +6,6 @@ import {
   DelinquentTimeRangeEnum,
   MaturityTimeRangeEnum,
   PipelineMode,
-  PortfolioGridTypeEnum,
 } from '@/types/enum';
 
 import { URL_LOGOUT_REDIRECTION } from '@/constant';

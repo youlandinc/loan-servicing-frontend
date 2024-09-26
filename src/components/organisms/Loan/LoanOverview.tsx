@@ -29,7 +29,7 @@ import {
 } from '@/constant';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 
 import {
   StyledButton,
@@ -170,9 +170,9 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
 };
 
 export const LoanOverview: FC = observer(() => {
-  const {
-    userSetting: { setting },
-  } = useMst();
+  //const {
+  //  userSetting: { setting },
+  //} = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
   //const router = useRouter();

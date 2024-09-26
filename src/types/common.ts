@@ -65,3 +65,20 @@ export interface SetColumnOrderedParam {
     id: number;
   }[];
 }
+
+export type UpdateColumnPiningParamType = {
+  leftColumn: string[];
+  rightColumn: string[];
+};
+
+export type SetColumnPiningParam = {
+  pageColumn: PortfolioGridTypeEnum;
+} & UpdateColumnPiningParamType;
+
+export type SetExpandedParam = {
+  pageColumn: PortfolioGridTypeEnum;
+  dropDowns: {
+    dropDownId: string;
+    collapsed: boolean;
+  }[];
+};

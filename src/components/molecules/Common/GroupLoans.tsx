@@ -1,4 +1,3 @@
-import { useDebounceFn } from '@/hooks';
 import {
   MRT_Column,
   MRT_TableContainer,
@@ -6,11 +5,16 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import router from 'next/router';
-import React, { CSSProperties, FC, ReactEventHandler } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import React, { CSSProperties, FC, useEffect } from 'react';
+import { useAsyncFn, useDebounce } from 'react-use';
+
+import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
+import { SetColumnWidthParam } from '@/types/common';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import { useDebounce } from 'react-use';
 
 type GroupLoansProps = MRT_TableOptions<any> & {
   loading?: boolean;
@@ -19,6 +23,7 @@ type GroupLoansProps = MRT_TableOptions<any> & {
     column: MRT_Column<any>,
   ) => void;
   columnOrder?: string[];
+  gridType: PortfolioGridTypeEnum;
 };
 
 export const GroupLoans: FC<GroupLoansProps> = ({
@@ -28,27 +33,35 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   loading,
   columnOrder,
   handleHeaderClick,
+  gridType,
   ...rest
 }) => {
-  // const handleExpandData = (data: ExpandedState) => {
-  //   if (data === true) {
-  //     return pipelineGroupingList.map((item) => ({
-  //       loanOfficerId: item.loanOfficerId,
-  //       collapsed: true,
-  //     }));
-  //   }
-  //   if (!Object.keys(expanded).length) {
-  //     return [];
-  //   }
-  //   return Object.keys(data).map((loanOfficerId) => ({
-  //     loanOfficerId,
-  //     collapsed: data[loanOfficerId],
-  //   }));
-  // };
+  const [, updateGroupExpanded] = useAsyncFn(
+    async (
+      param: { dropDownId: string; collapsed: boolean }[],
+      gridType: PortfolioGridTypeEnum,
+    ) => {
+      await _setGroupExpanded({
+        pageColumn: gridType,
+        dropDowns: param,
+      });
+    },
+    [gridType],
+  );
 
-  const [, , updateColumnWidth] = useDebounceFn((param: unknown) => {
-    console.log(param);
-  }, 500);
+  const [, setColumnWidth] = useAsyncFn(
+    async (result: SetColumnWidthParam) => {
+      await _setColumnWidth(result).catch(({ message, variant, header }) => {
+        enqueueSnackbar(message, {
+          variant,
+          isSimple: !header,
+          header,
+        });
+      });
+      // await userSetting.fetchUserSetting();
+    },
+    [gridType],
+  );
 
   const table = useMaterialReactTable({
     columns,
@@ -412,41 +425,51 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   });
 
   const columnSizing: Record<string, number> = table.getState().columnSizing;
-  const columnPining = table.getState().columnPinning;
   const expanded = table.getState().expanded;
 
-  const [, cancelUpdateColumnWidth] = useDebounce(
-    () => {
+  console.log(columnSizing);
+
+  console.log(expanded);
+
+  useDebounce(
+    async () => {
       if (Object.keys(columnSizing).length) {
         //handle column sizing
-        console.log('columnSizing', columnSizing);
+        await setColumnWidth({
+          pageColumn: gridType,
+          columnWidths: Object.keys(columnSizing).map((field) => ({
+            field,
+            columnWidth: columnSizing[field],
+          })),
+        });
       }
-      // setColumnWidth(
-      //     Object.keys(columnSizing).map((field) => ({
-      //       field,
-      //       columnWidth: columnSizing[field],
-      //     })),
-      // );
     },
     500,
-    [columnSizing],
+    [
+      Object.keys(columnSizing)
+        .map((item) => item)
+        .join(''),
+      gridType,
+    ],
   );
 
-  // const [, cancelUpdateGroupExpanded] = useDebounce(
-  //   () => {
-  //     const result = handleExpandData(expanded);
-  //     updateGroupExpanded(result);
-  //     setUserSetting({
-  //       ...setting,
-  //       userConfig: {
-  //         ...setting.userConfig,
-  //         pipelineExpandedResponseList: result,
-  //       },
-  //     });
-  //   },
-  //   500,
-  //   [expanded],
-  // );
+  const [, cancelUpdateGroupExpanded] = useDebounce(
+    async () => {
+      await updateGroupExpanded(
+        Object.keys(expanded).map((id) => ({
+          dropDownId: id,
+          collapsed: true,
+        })),
+        gridType,
+      );
+    },
+    500,
+    [expanded, gridType],
+  );
+
+  useEffect(() => {
+    cancelUpdateGroupExpanded();
+  }, []);
 
   return (
     <MRT_TableContainer

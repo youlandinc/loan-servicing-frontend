@@ -349,17 +349,33 @@ export const resortColumns = (
   orderColumns: IOrderColumnsItem[],
   columns: MRT_ColumnDef<any>[],
 ) => {
-  return orderColumns
-    .map((item) => {
-      const target = columns.find(
-        (column) => column.accessorKey === item.field,
-      );
-      if (target) {
-        return target;
-      }
-      return undefined;
-    })
-    .filter((item) => !!item) as MRT_ColumnDef<any>[];
+  const notInOrderColumns: (MRT_ColumnDef<any> & {
+    visibility: boolean | null;
+    sort: number;
+  })[] = [];
+  const inOrderColumns: (MRT_ColumnDef<any> & {
+    visibility: boolean | null;
+    sort: number;
+  })[] = [];
+  columns.forEach((item, index) => {
+    const target = orderColumns.find(
+      (column) => column.field === item.accessorKey,
+    );
+    if (target) {
+      inOrderColumns.push({
+        ...item,
+        visibility: target.visibility,
+        size: target.columnWidth || item.size,
+        sort: target.sort,
+      });
+    } else {
+      notInOrderColumns.push({ ...item, visibility: true, sort: 100 + index });
+    }
+  });
+
+  return [...notInOrderColumns, ...inOrderColumns]
+    .filter((item) => item.visibility !== false)
+    .sort((a, b) => a.sort - b.sort);
 };
 
 export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {

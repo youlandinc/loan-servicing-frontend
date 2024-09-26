@@ -66,6 +66,7 @@ export const YOULAND_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 120,
+      minSize: 120,
       Cell: ({ renderedCellValue }) => {
         return (
           <Typography

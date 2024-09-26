@@ -12,22 +12,21 @@ import {
   StyledSelect,
   StyledTextFieldInput,
 } from '@/components/atoms';
-import { Layout, SideMenu } from '@/components/molecules';
 import { _creatAomPdf, _getAOMInfo, _getAomInvestorList } from '@/request';
+import { HttpError } from '@/types';
 import { CreateAomPdfParam } from '@/types/loan/aom';
 import { utils } from '@/utils';
-import { HttpError } from '@/types';
 
-export const LoanAOM: FC = (props) => {
+export const LoanAOM: FC = () => {
   const router = useRouter();
   const { loanId } = router.query;
   const formRef = useRef<HTMLFormElement | null>(null);
-  const pdfFile = useRef(null);
+  // const pdfFile = useRef(null);
   // const { renderFile } = useRenderPdf(pdfFile);
 
   const [instrumentNumber, setInstrumentNumber] = useState('');
   const [executionDate, setExtensionDate] = useState<Date | null>(new Date());
-  const [buyer, setBuyer] = useState<null | number>();
+  const [buyer, setBuyer] = useState('');
   const [buyersOpts, setBuyersOpts] = useState<Option[]>([]);
   const [init, setInit] = useState(false);
 
@@ -52,7 +51,7 @@ export const LoanAOM: FC = (props) => {
       ? await _getAOMInfo(parseInt(loanId as string))
           .then((res) => {
             if (res.data.investorId) {
-              setBuyer(res.data.investorId);
+              setBuyer(res.data.investorId + '');
             }
             if (typeof res.data.instrumentNumber === 'string') {
               setInstrumentNumber(res.data.instrumentNumber);
@@ -204,58 +203,25 @@ export const LoanAOM: FC = (props) => {
                   sx={{ alignSelf: 'flex-start', width: 181 }}
                   variant={'outlined'}
                 >
-                  {Object.keys(cardInfo).map((item, index) => (
-                    <Stack
-                      direction={'row'}
-                      justifyContent={'space-between'}
-                      key={index}
-                    >
-                      <Typography color={'text.hover'} variant={'body2'}>
-                        {item}
-                      </Typography>
-                      <Typography variant={'subtitle2'}>
-                        {cardInfo[item]}
-                      </Typography>
-                    </Stack>
-                  ))}
-                </Stack>
-                <Stack
-                  autoComplete={'off'}
-                  component={'form'}
-                  gap={3}
-                  ref={formRef}
-                  width={'50%'}
-                >
-                  <StyledDatePicker
-                    label={'Recorded on'}
-                    onChange={(value) => {
-                      setExtensionDate(value);
+                  Generate AOM
+                </StyledButton>
+                <Fade in={!!value?.data?.fileInfo}>
+                  <Box
+                    color={'primary.main'}
+                    component={'a'}
+                    fontSize={18}
+                    onClick={async () => {
+                      window.open(value?.data?.fileInfo?.url);
                     }}
-                    slotProps={{
-                      textField: {
-                        required: true,
-                      },
-                    }}
-                    value={executionDate}
-                  />
-                  <StyledTextFieldInput
-                    label={'Instrument number'}
-                    onChange={(e) => {
-                      setInstrumentNumber(e.target.value as string);
-                    }}
-                    required
-                    value={instrumentNumber}
-                    variant={'outlined'}
-                  />
-                  <StyledSelect
-                    label={'Prospective buyer'}
-                    onChange={(e) => {
-                      setBuyer(e.target.value as number);
-                    }}
-                    options={buyersOpts}
-                    value={buyer}
-                  />
-                </Stack>
+                    sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    AOM -{' '}
+                    {utils.formatDate(
+                      value?.data?.fileInfo?.uploadTime,
+                      'MM/d/yyyy',
+                    )}
+                  </Box>
+                </Fade>
               </Stack>
             )}
           </Stack>

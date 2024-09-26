@@ -34,7 +34,7 @@ import { _updateTableData } from '@/request';
 import { HttpError } from '@/types/common';
 
 export const ALAMEDA_COLUMNS = (
-  cb?: () => Promise<void>,
+  cb?: () => Promise<any>,
   investorOptions?: Array<Option & { bgColor: string }>,
 ) => {
   return [
@@ -55,7 +55,6 @@ export const ALAMEDA_COLUMNS = (
             options={REPAYMENT_STATUS_OPTIONS}
             paramsKey={'repaymentStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
-            tableData={row.original}
           />
         );
       },

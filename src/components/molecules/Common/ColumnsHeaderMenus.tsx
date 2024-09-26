@@ -1,7 +1,7 @@
 import { useMst } from '@/models/Root';
 import { MRT_ColumnDef } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Icon } from '@mui/material';
 
 import BorderLeftIcon from '@/svg/portfolio/freeze_pane.svg';
@@ -36,19 +36,23 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = observer(
     const {
       portfolio: { allLoansGridModel },
     } = useMst();
+    const [freeze, setFreeze] = useState(false);
     const DefaultTableHeaderMenu = [
       {
         icon: <Icon component={BorderLeftIcon} sx={{ fontSize: 24 }} />,
         label: 'Freeze pane',
         handleClick: () => {
+          setFreeze(true);
           handleFreeze?.();
           onClose?.({}, 'backdropClick');
         },
+        disabled: freeze,
       },
       {
         icon: <Icon component={BorderClearIcon} sx={{ fontSize: 24 }} />,
         label: 'Unfreeze pane',
         handleClick: () => {
+          setFreeze(false);
           handleUnfreeze?.();
           onClose?.({}, 'backdropClick');
         },

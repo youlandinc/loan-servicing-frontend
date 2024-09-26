@@ -54,6 +54,7 @@ export const StyledActionsMenu: FC<StyledActionsMenuProps> = ({
     >
       {menus?.map((item, index) => (
         <MenuItem
+          disabled={item?.disabled}
           key={index}
           onClick={item?.handleClick}
           sx={{ p: '14px 12px' }}

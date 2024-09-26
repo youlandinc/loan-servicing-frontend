@@ -61,15 +61,13 @@ export const InvestorGrid: FC = observer(() => {
     // { revalidateOnMount: true },
   );
 
-  const columns = useMemo(
-    () =>
-      investorGridModel.orderColumns.length
-        ? transferFirstColumn(
-            resortColumns(investorGridModel.orderColumns, commonColumns),
-          )
-        : transferFirstColumn(commonColumns),
-    [configColumnsOrderKeysArr.join('')],
-  );
+  const columns = useMemo(() => {
+    return investorGridModel.orderColumns.length
+      ? transferFirstColumn(
+          resortColumns(investorGridModel.orderColumns, commonColumns),
+        )
+      : transferFirstColumn(commonColumns);
+  }, [configColumnsOrderKeysArr.join('')]);
 
   const rowsTotal = data?.data?.totalItems ?? 0;
   const totalLoanAmount = data?.data?.totalAmount ?? 0;
@@ -81,6 +79,7 @@ export const InvestorGrid: FC = observer(() => {
           // columnOrder={['mrt-row-expand', ...configColumnsOrderKeysArr]}
           columns={columns}
           data={data?.data?.contents || []}
+          gridType={PortfolioGridTypeEnum.BY_INVESTOR}
           handleHeaderClick={(e, column) => {
             setAnchorEl(e.currentTarget);
             // setTableHeaderIndex(column.getIndex());

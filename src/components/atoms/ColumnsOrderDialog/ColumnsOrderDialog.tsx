@@ -86,7 +86,7 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
         sort: index,
       };
     });
-
+    handleSave?.(items.map((item, index) => ({ ...item, sort: index })));
     const res = await _setOrderedColumns({
       pageColumn: gridType,
       columnSorts: result,
@@ -216,7 +216,6 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
               });*/
               // save request
               await setLosPipelineColumns();
-              handleSave?.(items);
             }}
             size={'small'}
             variant={'contained'}

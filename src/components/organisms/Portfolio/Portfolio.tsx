@@ -243,8 +243,6 @@ export const Portfolio: FC = observer(() => {
     [portfolioListType],
   );
 
-  console.log(portfolioListType);
-
   useEffect(() => {
     // getAllGridConfig();
   }, []);

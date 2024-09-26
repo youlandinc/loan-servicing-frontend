@@ -35,6 +35,15 @@ export const InvestorGrid: FC = observer(() => {
     ? transferOrderColumnsKeys(investorGridModel.orderColumns)
     : [];
 
+  const expandedData =
+    investorGridModel.expandedColumns?.reduce(
+      (pre, cur) => {
+        pre[cur.dropDownId] = true;
+        return pre;
+      },
+      {} as Record<string, boolean>,
+    ) || {};
+
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.BY_INVESTOR
       ? [
@@ -76,15 +85,19 @@ export const InvestorGrid: FC = observer(() => {
     <>
       <Stack>
         <GroupLoans
-          // columnOrder={['mrt-row-expand', ...configColumnsOrderKeysArr]}
           columns={columns}
           data={data?.data?.contents || []}
+          expandedData={expandedData}
           gridType={PortfolioGridTypeEnum.BY_INVESTOR}
-          handleHeaderClick={(e, column) => {
-            setAnchorEl(e.currentTarget);
-            // setTableHeaderIndex(column.getIndex());
-            setHeaderColumnId(column.id);
-            setHeaderTitle(column.columnDef.header);
+          handleSort={(param) => {
+            investorGridModel.queryModel.updateSort([
+              {
+                property: param.property, //.id as string,
+                direction: SortDirection.DESC,
+                ignoreCase: true,
+                label: param.label,
+              },
+            ] as ISortItemModel[]);
           }}
           loading={isLoading}
         />
@@ -97,22 +110,22 @@ export const InvestorGrid: FC = observer(() => {
           totalLoanAmount={totalLoanAmount}
         />
       </Stack>
-      <ColumnsHeaderMenus
-        anchorEl={anchorEl}
-        handleSort={() => {
-          investorGridModel.queryModel.updateSort([
-            {
-              property: headerColumnId, //.id as string,
-              direction: SortDirection.DESC,
-              ignoreCase: true,
-              label: headerTitle as string,
-            },
-          ] as ISortItemModel[]);
-        }}
-        onClose={() => setAnchorEl(null)}
-        open={Boolean(anchorEl)}
-        type={'group'}
-      />
+      {/*<ColumnsHeaderMenus*/}
+      {/*  anchorEl={anchorEl}*/}
+      {/*  handleSort={() => {*/}
+      {/*    investorGridModel.queryModel.updateSort([*/}
+      {/*      {*/}
+      {/*        property: headerColumnId, //.id as string,*/}
+      {/*        label: headerTitle as string,*/}
+      {/*        direction: SortDirection.DESC,*/}
+      {/*        ignoreCase: true,*/}
+      {/*      },*/}
+      {/*    ] as ISortItemModel[]);*/}
+      {/*  }}*/}
+      {/*  onClose={() => setAnchorEl(null)}*/}
+      {/*  open={Boolean(anchorEl)}*/}
+      {/*  type={'group'}*/}
+      {/*/>*/}
     </>
   );
 });

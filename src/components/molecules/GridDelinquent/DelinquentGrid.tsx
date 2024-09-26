@@ -5,16 +5,20 @@ import useSWR from 'swr';
 
 import {
   AllLoansPagination,
-  commonColumns,
   delinquentColumns,
   GroupLoans,
   resortColumns,
   transferFirstColumn,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
-import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
+import {
+  DelinquentTimeRangeEnum,
+  PortfolioGridTypeEnum,
+  SortDirection,
+} from '@/types/enum';
 
 export const DelinquentGrid: FC = observer(() => {
   const {
@@ -24,6 +28,15 @@ export const DelinquentGrid: FC = observer(() => {
   const configColumnsOrderKeysArr = delinquentGridModel.orderColumns?.length
     ? transferOrderColumnsKeys(delinquentGridModel.orderColumns)
     : [];
+
+  const expandedData =
+    delinquentGridModel.expandedColumns?.reduce(
+      (pre, cur) => {
+        pre[cur.dropDownId] = true;
+        return pre;
+      },
+      {} as Record<string, boolean>,
+    ) || {};
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.DELINQUENT
@@ -71,6 +84,18 @@ export const DelinquentGrid: FC = observer(() => {
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}
+        expandedData={expandedData}
+        gridType={PortfolioGridTypeEnum.DELINQUENT}
+        handleSort={(param) => {
+          delinquentGridModel.queryModel.updateSort([
+            {
+              property: param.property, //.id as string,
+              direction: SortDirection.DESC,
+              ignoreCase: true,
+              label: param.label,
+            },
+          ] as ISortItemModel[]);
+        }}
         loading={isLoading}
       />
       <AllLoansPagination

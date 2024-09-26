@@ -7,12 +7,17 @@ import {
   comBineColumns,
   GridMoreIconButton,
   maturityColumns,
+  SortButton,
   transferOrderColumns,
 } from '@/components/molecules';
 import { useDebounceFn } from '@/hooks';
 import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
-import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
+import {
+  MaturityTimeRangeEnum,
+  PortfolioGridTypeEnum,
+  SortDirection,
+} from '@/types/enum';
 
 export const MaturityGridToolBar: FC = observer(() => {
   const {
@@ -78,6 +83,27 @@ export const MaturityGridToolBar: FC = observer(() => {
         }}
         variant={'outlined'}
       />
+      {maturityGridModel.queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            maturityGridModel.queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            maturityGridModel.queryModel.updateSort([
+              {
+                ...maturityGridModel.queryModel.sort[0],
+                direction:
+                  maturityGridModel.queryModel.sort[0].direction ===
+                  SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+            ]);
+          }}
+          sortItems={maturityGridModel.queryModel.sort[0]}
+        />
+      )}
       <GridMoreIconButton
         columns={
           transferOrderColumns(

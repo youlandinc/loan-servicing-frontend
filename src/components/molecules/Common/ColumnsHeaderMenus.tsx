@@ -66,19 +66,6 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = observer(
         handleClick: () => {
           handleSort?.();
           onClose?.({}, 'backdropClick');
-          /*   setAnchorElHeader(null);
-                updatePipelineSearchParam({
-                    ...pipelineSearchParam,
-                    sort: [
-                        {
-                            property: headerColumn?.id || '',
-                            direction: SortDirection.DESC,
-                            ignoreCase: null,
-                            label: headerColumn?.columnDef.header,
-                        },
-                        ...(PipelineSortOpts[0].value as any),
-                    ] as any,
-                });*/
         },
         // disabled: headerSortDisabled,
       },

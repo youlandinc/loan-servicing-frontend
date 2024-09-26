@@ -30,22 +30,6 @@ export const LoanAOM: FC = () => {
   const [buyersOpts, setBuyersOpts] = useState<Option[]>([]);
   const [init, setInit] = useState(false);
 
-  useAsync(async () => {
-    return await _getAomInvestorList().then((res) => {
-      if (res.data) {
-        setBuyersOpts(
-          res.data.map((item) => ({
-            label: item.investorName,
-            key: item.id,
-            value: item.id,
-          })),
-        );
-      }
-      getAOMInfo();
-      return res;
-    });
-  }, []);
-
   const [aomState, getAOMInfo] = useAsyncFn(async () => {
     return typeof loanId === 'string'
       ? await _getAOMInfo(parseInt(loanId as string))
@@ -68,6 +52,22 @@ export const LoanAOM: FC = () => {
             setInit(true);
           })
       : null;
+  }, [loanId]);
+
+  useAsync(async () => {
+    return await _getAomInvestorList().then(async (res) => {
+      if (res.data) {
+        setBuyersOpts(
+          res.data.map((item) => ({
+            label: item.investorName,
+            key: item.id,
+            value: item.id,
+          })),
+        );
+      }
+      await getAOMInfo();
+      return res;
+    });
   }, [loanId]);
 
   const value = aomState.value;

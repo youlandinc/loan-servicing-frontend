@@ -1,4 +1,5 @@
-import { utils } from '@/utils';
+import { ColumnsHeaderMenus } from '@/components/molecules';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import {
   MRT_Column,
   MRT_TableContainer,
@@ -7,12 +8,12 @@ import {
 } from 'material-react-table';
 import router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
-import React, { CSSProperties, FC, useEffect } from 'react';
+import React, { CSSProperties, FC, useEffect, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
 
 import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
 import { SetColumnWidthParam } from '@/types/common';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
@@ -26,6 +27,10 @@ type GroupLoansProps = MRT_TableOptions<any> & {
   columnOrder?: string[];
   gridType: PortfolioGridTypeEnum;
   expandedData?: Record<string, boolean>;
+  handleSort?: (param: {
+    property: string; //.id as string,
+    label: string;
+  }) => void;
 };
 
 export const GroupLoans: FC<GroupLoansProps> = ({
@@ -37,8 +42,13 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   handleHeaderClick,
   gridType,
   expandedData = {},
+  handleSort,
   ...rest
 }) => {
+  const [headerColumnId, setHeaderColumnId] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
   const [, updateGroupExpanded] = useAsyncFn(
     async (
       param: { dropDownId: string; collapsed: boolean }[],
@@ -90,7 +100,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       columnOrder: columnOrder || [],
       // isLoading: isValidating,
       showSkeletons: loading,
-      // expanded: expandedData,
+      // expanded: expandeds || {},
     },
     initialState: {
       // showSkeletons: false,
@@ -104,10 +114,9 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       return row.loanId;
     }, //default
     getSubRows: (row) => row.servicingLoans,
-
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
-    muiExpandButtonProps: {
+    muiExpandButtonProps: (props) => ({
       sx: {
         width: 20,
         height: 20,
@@ -116,8 +125,9 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         //handleExpandClick();
+        // console.log(props.row.id);
       },
-    },
+    }),
     icons: {
       KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
         const { style } = props;
@@ -275,7 +285,10 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         if (props.column.id === 'mrt-row-expand') {
           return;
         }
-        handleHeaderClick?.(e, props.column);
+        // handleHeaderClick?.(e, props.column);
+        setAnchorEl(e.currentTarget);
+        setHeaderColumnId(props.column.id);
+        setHeaderTitle(props.column.columnDef.header);
       },
     }),
     muiTableContainerProps: {
@@ -298,11 +311,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
 
   const columnSizing: Record<string, number> = table.getState().columnSizing;
   const expanded = table.getState().expanded;
-  // console.log(table.getExpandedDepth(), table.getExpandedRowModel());
-
-  // console.log(columnSizing);
-
-  // console.log(expanded);
 
   useDebounce(
     async () => {
@@ -328,14 +336,25 @@ export const GroupLoans: FC<GroupLoansProps> = ({
 
   const [, cancelUpdateGroupExpanded] = useDebounce(
     async () => {
-      // utils.isNotEmptyOfObject(expanded) &&
-      //   (await updateGroupExpanded(
-      //     Object.keys(expanded).map((id) => ({
-      //       dropDownId: id,
-      //       collapsed: true,
-      //     })),
-      //     gridType,
-      //   ));
+      if (typeof expanded === 'boolean') {
+        await updateGroupExpanded(
+          data.map((item) => {
+            return {
+              dropDownId: item.groupById,
+              collapsed: true,
+            };
+          }),
+          gridType,
+        );
+      } else {
+        await updateGroupExpanded(
+          Object.keys(expanded).map((id) => ({
+            dropDownId: id,
+            collapsed: true,
+          })),
+          gridType,
+        );
+      }
     },
     500,
     [expanded, gridType],
@@ -346,9 +365,20 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   }, []);
 
   return (
-    <MRT_TableContainer
-      // sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-      table={table}
-    />
+    <>
+      <MRT_TableContainer table={table} />
+      <ColumnsHeaderMenus
+        anchorEl={anchorEl}
+        handleSort={() => {
+          handleSort?.({
+            property: headerColumnId, //.id as string,
+            label: headerTitle as string,
+          });
+        }}
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
+        type={'group'}
+      />
+    </>
   );
 };

@@ -1,3 +1,4 @@
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useMemo } from 'react';
@@ -14,7 +15,11 @@ import {
 } from '@/components/molecules';
 import { useMst } from '@/models/Root';
 import { _getGroupMaturity } from '@/request/portfolio/maturity';
-import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
+import {
+  MaturityTimeRangeEnum,
+  PortfolioGridTypeEnum,
+  SortDirection,
+} from '@/types/enum';
 
 export const MaturityGrid: FC = observer(() => {
   const {
@@ -24,6 +29,15 @@ export const MaturityGrid: FC = observer(() => {
   const configColumnsOrderKeysArr = maturityGridModel.orderColumns?.length
     ? transferOrderColumnsKeys(maturityGridModel.orderColumns)
     : [];
+
+  const expandedData =
+    maturityGridModel.expandedColumns?.reduce(
+      (pre, cur) => {
+        pre[cur.dropDownId] = true;
+        return pre;
+      },
+      {} as Record<string, boolean>,
+    ) || {};
 
   const { data, isLoading } = useSWR(
     displayType === PortfolioGridTypeEnum.MATURITY
@@ -77,6 +91,18 @@ export const MaturityGrid: FC = observer(() => {
       <GroupLoans
         columns={columns}
         data={data?.data?.contents || []}
+        expandedData={expandedData}
+        gridType={PortfolioGridTypeEnum.MATURITY}
+        handleSort={(param) => {
+          maturityGridModel.queryModel.updateSort([
+            {
+              property: param.property, //.id as string,
+              direction: SortDirection.DESC,
+              ignoreCase: true,
+              label: param.label,
+            },
+          ] as ISortItemModel[]);
+        }}
         loading={isLoading}
       />
       <AllLoansPagination

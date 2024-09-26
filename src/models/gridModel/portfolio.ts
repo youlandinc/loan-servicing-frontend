@@ -104,6 +104,9 @@ export const portfolioModel = types
         self.investorGridModel.pinLeftColumns = cast(
           config.operaParams.SERVICING_BY_INVESTOR.LEFT,
         );
+        self.investorGridModel.expandedColumns = cast(
+          config.operaParams.SERVICING_BY_INVESTOR.DROPDOWN,
+        );
         //delinquent
         if (
           utils.isNotEmptyOfObject(
@@ -122,6 +125,9 @@ export const portfolioModel = types
         self.delinquentGridModel.pinLeftColumns = cast(
           config.operaParams.SERVICING_DELINQUENT.LEFT,
         );
+        self.delinquentGridModel.expandedColumns = cast(
+          config.operaParams.SERVICING_DELINQUENT.DROPDOWN,
+        );
         //maturity
         if (
           utils.isNotEmptyOfObject(
@@ -139,6 +145,9 @@ export const portfolioModel = types
         }
         self.maturityGridModel.pinLeftColumns = cast(
           config.operaParams.SERVICING_MATURITY.LEFT,
+        );
+        self.maturityGridModel.expandedColumns = cast(
+          config.operaParams.SERVICING_MATURITY.DROPDOWN,
         );
       } catch (e) {
         console.log(e);

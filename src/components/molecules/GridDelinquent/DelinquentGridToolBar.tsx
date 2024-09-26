@@ -6,12 +6,13 @@ import {
   comBineColumns,
   delinquentColumns,
   GridMoreIconButton,
+  SortButton,
   transferOrderColumns,
 } from '@/components/molecules';
 import { useDebounceFn } from '@/hooks';
 import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const DelinquentGridToolBar: FC = () => {
   const {
@@ -77,6 +78,27 @@ export const DelinquentGridToolBar: FC = () => {
         }}
         variant={'outlined'}
       />
+      {delinquentGridModel.queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            delinquentGridModel.queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            delinquentGridModel.queryModel.updateSort([
+              {
+                ...delinquentGridModel.queryModel.sort[0],
+                direction:
+                  delinquentGridModel.queryModel.sort[0].direction ===
+                  SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+            ]);
+          }}
+          sortItems={delinquentGridModel.queryModel.sort[0]}
+        />
+      )}
       <GridMoreIconButton
         columns={
           transferOrderColumns(

@@ -17,13 +17,21 @@ export const orderColumnsItem = types.model({
   visibility: types.boolean,
 });
 
+const expandedItem = types.model({
+  collapsed: types.boolean,
+  dropDownId: types.string,
+});
+
 export type IOrderColumnsItem = SnapshotOut<typeof orderColumnsItem>;
+
+export type IExpandedItem = SnapshotOut<typeof expandedItem>;
 
 export const allLoansModel = types
   .model({
     queryModel: allLoansGridQueryModel,
     orderColumns: types.array(orderColumnsItem),
     pinLeftColumns: types.array(types.string),
+    expandedColumns: types.array(expandedItem),
   })
   .actions((self) => ({
     updateOrderColumns(columns: IOrderColumnsItem[]) {

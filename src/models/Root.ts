@@ -117,7 +117,7 @@ const initialState = {
   userType: void 0,
   loginType: void 0,
   portfolio: {
-    displayType: void 0,
+    displayType: PortfolioGridTypeEnum.YOULAND,
     youlandGridModel: {
       queryModel: {
         size: 50,
@@ -133,6 +133,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
     cashFlowGridModel: {
       queryModel: {
@@ -149,6 +151,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
     alamedaGridModel: {
       queryModel: {
@@ -165,6 +169,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
     allLoansGridModel: {
       queryModel: {
@@ -181,6 +187,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
     investorGridModel: {
       queryModel: {
@@ -197,6 +205,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumns: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
     delinquentGridModel: {
       queryModel: {
@@ -214,6 +224,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumns: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
     maturityGridModel: {
       queryModel: {
@@ -231,6 +243,8 @@ const initialState = {
         pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
       orderColumns: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
   },
 };

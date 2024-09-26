@@ -1,4 +1,4 @@
-import { IOrderColumnsItem } from '@/models/gridModel';
+import { IExpandedItem, IOrderColumnsItem } from '@/models/gridModel';
 import { IAllLoansQueryParam } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 
@@ -6,6 +6,7 @@ type CommonGridConfig = {
   SEARCH: IAllLoansQueryParam;
   ALL: IOrderColumnsItem[];
   LEFT: string[];
+  DROPDOWN: IExpandedItem[];
 };
 
 export type IAllGridConfig = {

@@ -23,9 +23,13 @@ export const allLoansModel = types
   .model({
     queryModel: allLoansGridQueryModel,
     orderColumns: types.array(orderColumnsItem),
+    pinLeftColumns: types.array(types.string),
   })
   .actions((self) => ({
     updateOrderColumns(columns: IOrderColumnsItem[]) {
       self.orderColumns = cast(columns);
+    },
+    updatePinLeftColumns(columns: string[]) {
+      self.pinLeftColumns = cast(columns);
     },
   }));

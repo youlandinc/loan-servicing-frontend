@@ -5,7 +5,12 @@ import { cast, types } from 'mobx-state-tree';
 
 export const portfolioModel = types
   .model({
-    displayType: types.enumeration(Object.values(PortfolioGridTypeEnum)),
+    displayType: types.maybe(
+      types.enumeration(Object.values(PortfolioGridTypeEnum)),
+    ),
+    youlandGridModel: allLoansModel,
+    cashFlowGridModel: allLoansModel,
+    alamedaGridModel: allLoansModel,
     allLoansGridModel: allLoansModel,
     investorGridModel: allLoansModel,
     delinquentGridModel: allLoansModel,
@@ -17,6 +22,39 @@ export const portfolioModel = types
     },
     injectConfig(config: IAllGridConfig) {
       try {
+        if (config.operaParams?.SERVICING_YOULAND?.SEARCH) {
+          self.youlandGridModel.queryModel = cast(
+            config.operaParams.SERVICING_YOULAND.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_YOULAND?.ALL) {
+          self.youlandGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_YOULAND.ALL,
+          );
+        }
+
+        if (config.operaParams?.SERVICING_ALAMEDA?.SEARCH) {
+          self.alamedaGridModel.queryModel = cast(
+            config.operaParams.SERVICING_ALAMEDA.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_ALAMEDA?.ALL) {
+          self.alamedaGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_ALAMEDA.ALL,
+          );
+        }
+
+        if (config.operaParams?.SERVICING_CASH_FLOW?.SEARCH) {
+          self.cashFlowGridModel.queryModel = cast(
+            config.operaParams.SERVICING_CASH_FLOW.SEARCH,
+          );
+        }
+        if (config.operaParams?.SERVICING_CASH_FLOW?.ALL) {
+          self.cashFlowGridModel.orderColumns = cast(
+            config.operaParams.SERVICING_CASH_FLOW.ALL,
+          );
+        }
+
         //all loans
         if (config.operaParams?.SERVICING_ALL_LOAN?.SEARCH) {
           self.allLoansGridModel.queryModel = cast(
@@ -28,6 +66,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_ALL_LOAN.ALL,
           );
         }
+        self.allLoansGridModel.pinLeftColumns = cast(
+          config.operaParams.SERVICING_ALL_LOAN.LEFT,
+        );
         //investor
         if (config.operaParams?.SERVICING_BY_INVESTOR?.SEARCH) {
           self.investorGridModel.queryModel = cast(
@@ -39,6 +80,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_BY_INVESTOR.ALL,
           );
         }
+        self.investorGridModel.pinLeftColumns = cast(
+          config.operaParams.SERVICING_BY_INVESTOR.LEFT,
+        );
         //delinquent
         if (config.operaParams?.SERVICING_DELINQUENT?.SEARCH) {
           self.delinquentGridModel.queryModel = cast(
@@ -50,6 +94,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_DELINQUENT.ALL,
           );
         }
+        self.delinquentGridModel.pinLeftColumns = cast(
+          config.operaParams.SERVICING_DELINQUENT.LEFT,
+        );
         //maturity
         if (config.operaParams?.SERVICING_MATURITY?.SEARCH) {
           self.maturityGridModel.queryModel = cast(
@@ -61,6 +108,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_MATURITY.ALL,
           );
         }
+        self.maturityGridModel.pinLeftColumns = cast(
+          config.operaParams.SERVICING_MATURITY.LEFT,
+        );
       } catch (e) {
         console.log(e);
       }

@@ -211,6 +211,8 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               sx={{
                 width: 32,
                 height: 32,
+                maxHeight: 32,
+                maxWidth: 32,
                 cursor: 'pointer',
                 transition: 'all .3s',
               }}

@@ -1,22 +1,22 @@
 import React, { FC, useState } from 'react';
 import { CircularProgress, Icon, Menu, MenuItem, Stack } from '@mui/material';
+import { useSnackbar } from 'notistack';
+
 import { utils } from '@/utils';
+import { AUTO_HIDE_DURATION } from '@/constant';
+
+import { HttpError } from '@/types/common';
+import { _updateTableData } from '@/request';
 
 import LOGO_EXPEND_MORE from '@/components/molecules/GridYouland/logo-expend-more.svg';
-import { _updateTableData } from '@/request';
-import { GridYoulandItem } from '@/types/pipeline/youland';
-import { HttpError } from '@/types/common';
-import { AUTO_HIDE_DURATION } from '@/constant';
-import { useSnackbar } from 'notistack';
 
 interface GridDropDownProps {
   status: string;
   options: Option[];
   bgPalette: Record<string, string>;
   colorPalette?: Record<string, string>;
-  cb?: () => Promise<void>;
+  cb?: () => Promise<any>;
   paramsKey: string;
-  tableData?: Partial<GridYoulandItem>;
   loanId: number | string;
 }
 
@@ -27,7 +27,6 @@ export const GridDropDown: FC<GridDropDownProps> = ({
   colorPalette,
   cb,
   paramsKey,
-  tableData,
   loanId,
 }) => {
   const { enqueueSnackbar } = useSnackbar();

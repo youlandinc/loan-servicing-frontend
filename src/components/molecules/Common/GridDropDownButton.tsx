@@ -1,17 +1,17 @@
 import React, { FC, useState } from 'react';
 import { CircularProgress, Menu, MenuItem, Stack } from '@mui/material';
-import { GridYoulandItem } from '@/types/pipeline/youland';
-import { _updateTableData } from '@/request';
-import { HttpError } from '@/types/common';
-import { AUTO_HIDE_DURATION } from '@/constant';
 import { useSnackbar } from 'notistack';
+
+import { AUTO_HIDE_DURATION } from '@/constant';
+
+import { HttpError } from '@/types/common';
+import { _updateTableData } from '@/request';
 
 interface GridDropDownButtonProps {
   options?: Array<Option & { bgColor: string }>;
   status?: string | null | number;
   cb?: () => Promise<void>;
   paramsKey: string;
-  tableData?: Partial<GridYoulandItem>;
   loanId: number | string;
 }
 
@@ -20,7 +20,6 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
   options = [],
   cb,
   paramsKey,
-  tableData,
   loanId,
 }) => {
   const { enqueueSnackbar } = useSnackbar();

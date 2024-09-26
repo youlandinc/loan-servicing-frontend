@@ -4,56 +4,73 @@ import { Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import {
-  MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
+import useSWR from 'swr';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { AUTO_HIDE_DURATION } from '@/constant';
-
-import {
-  GridAlamedaItem,
-  GridAlamedaSummaryProps,
-  ResponseGridAlamedaTable,
-} from '@/types/pipeline/youland';
 import { PortfolioGridTypeEnum } from '@/types/enum';
-import { HttpError } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
-import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 
-const mock: Array<Partial<GridAlamedaItem>> = [
-  {
-    loanId: 1,
-    repaymentStatus: null,
-    submitDate: null,
-    propertyFullAddress: null,
-    estSaleDate: null,
-    investor: null,
-    prospectiveBuyer: null,
-    tradeStatus: null,
-    interestRate: null,
-    totalLoanAmount: null,
-    buyRate: null,
-    originatorSpread: null,
-    tradeConfirm: null,
-  },
-];
+import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 
 export const GridAlameda: FC = observer(() => {
   const {
-    portfolio: { displayType },
+    portfolio: {
+      displayType,
+      alamedaGridModel: { queryModel, orderColumns },
+    },
   } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
 
-  const { loading } = useAsync(async () => {
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { data, isLoading, mutate } = useSWR(
+    displayType === PortfolioGridTypeEnum.ALAMEDA
+      ? [
+          {
+            ...queryModel,
+            searchCondition: {
+              ...queryModel.searchCondition,
+              investors: [...queryModel.searchCondition.investors],
+              repaymentStatusList: [
+                ...queryModel.searchCondition.repaymentStatusList,
+              ],
+            },
+            sort: [...queryModel.sort],
+          },
+          displayType,
+        ]
+      : null,
+    async ([p]) => {
+      return await _fetchAlamedaTableData(p);
+    },
+    {
+      revalidateOnFocus: true,
+    },
+  );
+
+  const footerData = {
+    totalItems: data?.data?.totalItems ?? 0,
+    totalLoanAmount: data?.data?.totalLoanAmount ?? 0,
+    weightedAverageMargin: data?.data?.weightedAverageMargin ?? 0,
+    weightedAverageSheet: data?.data?.weightedAverageSheet ?? 0,
+  };
+
+  const page = {
+    number: data?.data?.page?.number ?? 0,
+    size: data?.data?.page?.size ?? 50,
+    totalElements: data?.data?.page?.totalElements ?? 0,
+    totalPages: data?.data?.page?.totalPages ?? 0,
+  };
+
+  useAsync(async () => {
     if (displayType !== PortfolioGridTypeEnum.ALAMEDA) {
       return;
     }
-    await fetchData();
     const { data } = await _fetchInvestorData();
     const temp = data.reduce(
       (acc, cur) => {
@@ -70,74 +87,21 @@ export const GridAlameda: FC = observer(() => {
     setInvestorData(temp);
   }, [displayType]);
 
-  const fetchData = async (page = 0, size = 50) => {
-    setFetchLoading(true);
-    try {
-      const {
-        data: {
-          content,
-          page: innerPage,
-          totalItems,
-          totalLoanAmount,
-          weightedAverageMargin,
-          weightedAverageSheet,
-        },
-      } = await _fetchAlamedaTableData({
-        page,
-        size,
-      });
-      setTableData(content);
-      setPage(innerPage);
-      setFooterData({
-        totalItems,
-        totalLoanAmount,
-        weightedAverageMargin,
-        weightedAverageSheet,
-      });
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    } finally {
-      setFetchLoading(false);
-    }
-  };
-
-  const [fetchLoading, setFetchLoading] = useState(false);
-  const [tableData, setTableData] = useState(mock);
   const [investorData, setInvestorData] = useState<
     Array<Option & { bgColor: string }>
   >([]);
-  const [page, setPage] = useState<ResponseGridAlamedaTable['page']>({
-    number: 0,
-    size: 50,
-    totalElements: 1,
-    totalPages: 1,
-  });
-  const [footerData, setFooterData] = useState<GridAlamedaSummaryProps>({
-    totalItems: 5,
-    totalLoanAmount: 50000,
-    weightedAverageMargin: 0,
-    weightedAverageSheet: 10,
-  });
 
   const onPageSizeChange = async (pageSize: number) => {
-    setPage((prev) => ({ ...prev, size: pageSize }));
-    await fetchData(page.number, pageSize);
+    queryModel.updatePage(page.number, pageSize);
   };
 
   const onPageChange = async (currentPage: number) => {
-    setPage((prev) => ({ ...prev, number: currentPage }));
-    await fetchData(currentPage, page.size);
+    queryModel.updatePage(currentPage, page.size);
   };
 
   const table = useMaterialReactTable({
-    columns: ALAMEDA_COLUMNS(fetchData, investorData) as MRT_ColumnDef<any>[],
-    data: tableData,
+    columns: ALAMEDA_COLUMNS(async () => await mutate(), investorData),
+    data: data?.data?.content || [],
     //rowCount: rowsTotal,
     enableExpandAll: false, //hide expand all double arrow in column header
     enableExpanding: false,
@@ -163,8 +127,7 @@ export const GridAlameda: FC = observer(() => {
 
     manualPagination: true,
     state: {
-      //isLoading: loading,
-      showSkeletons: loading,
+      showSkeletons: isLoading,
     },
     initialState: {
       showProgressBars: false,

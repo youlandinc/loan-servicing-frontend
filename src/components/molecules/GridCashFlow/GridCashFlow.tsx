@@ -1,104 +1,69 @@
-import React, { CSSProperties, FC, useState } from 'react';
-import router from 'next/router';
+import React, { CSSProperties, FC } from 'react';
+import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
-import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import {
   MRT_ExpandButton,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
+import useSWR from 'swr';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { AUTO_HIDE_DURATION } from '@/constant';
-
-import {
-  GridCashFlowItem,
-  GridCashFlowSummaryProps,
-} from '@/types/pipeline/youland';
 import { PortfolioGridTypeEnum } from '@/types/enum';
-import { HttpError } from '@/types/common';
 import { _fetchCashFlowTableData } from '@/request';
 
 import { GridCashFlowColumn, GridCashFlowFooter } from './index';
 
-const mock = [
-  {
-    loanId: 1,
-    repaymentStatus: null,
-    submitDate: null,
-    propertyFullAddress: null,
-    estSaleDate: null,
-    investor: null,
-    tradeConfirm: null,
-    tradeStatus: null,
-    interestRate: null,
-    totalLoanAmount: null,
-    buyRate: null,
-    originatorSpread: null,
-  },
-];
-
 export const GridCashFlow: FC = observer(() => {
   const {
-    portfolio: { displayType },
+    portfolio: {
+      displayType,
+      cashFlowGridModel: { queryModel, orderColumns },
+    },
   } = useMst();
+
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { loading } = useAsync(async () => await fetchData(), [displayType]);
+  const { data, isLoading, mutate } = useSWR(
+    displayType === PortfolioGridTypeEnum.CASH_FLOW
+      ? [
+          {
+            ...queryModel,
+            searchCondition: {
+              ...queryModel.searchCondition,
+              investors: [...queryModel.searchCondition.investors],
+              repaymentStatusList: [
+                ...queryModel.searchCondition.repaymentStatusList,
+              ],
+            },
+            sort: [...queryModel.sort],
+          },
+          displayType,
+        ]
+      : null,
+    async ([p]) => {
+      return await _fetchCashFlowTableData(p);
+    },
+    {
+      revalidateOnFocus: true,
+    },
+  );
 
-  const fetchData = async () => {
-    if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
-      return;
-    }
-    const postData = {};
-    setFetchLoading(true);
-    try {
-      const {
-        data: {
-          content,
-          totalItems,
-          totalLoanAmount,
-          weightedAverageMargin,
-          weightedAverageSheet,
-        },
-      } = await _fetchCashFlowTableData(postData);
-      setTableData(content);
-      setFooterData({
-        totalItems,
-        totalLoanAmount,
-        weightedAverageMargin,
-        weightedAverageSheet,
-      });
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    } finally {
-      setFetchLoading(false);
-    }
+  const footerData = {
+    totalItems: data?.data?.totalItems ?? 0,
+    totalLoanAmount: data?.data?.totalLoanAmount ?? 0,
+    weightedAverageMargin: data?.data?.weightedAverageMargin ?? 0,
+    weightedAverageSheet: data?.data?.weightedAverageSheet ?? 0,
   };
 
-  const [fetchLoading, setFetchLoading] = useState(false);
-  const [tableData, setTableData] =
-    useState<Array<Partial<GridCashFlowItem>>>(mock);
-  const [footerData, setFooterData] = useState<GridCashFlowSummaryProps>({
-    totalItems: 5,
-    totalLoanAmount: 50000,
-    weightedAverageMargin: 0,
-    weightedAverageSheet: 10,
-  });
-
   const table = useMaterialReactTable({
-    columns: GridCashFlowColumn(fetchData),
-    data: tableData || [],
+    columns: GridCashFlowColumn(async () => await mutate()),
+    data: data?.data?.content || [],
     //rowCount,
     enableExpandAll: true, //hide expand all double arrow in column header
     enableExpanding: true,
@@ -117,8 +82,7 @@ export const GridCashFlow: FC = observer(() => {
     manualPagination: true,
     state: {
       //columnOrder: columnOrder || [],
-      // isLoading: isValidating,
-      showSkeletons: loading,
+      showSkeletons: isLoading,
     },
     initialState: {
       // showSkeletons: false,

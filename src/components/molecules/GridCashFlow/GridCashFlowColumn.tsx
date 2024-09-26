@@ -14,7 +14,7 @@ import {
 import { GridDropDown } from '@/components/molecules';
 
 export const GridCashFlowColumn = (
-  cb?: () => Promise<void>,
+  cb?: () => Promise<any>,
   investorOptions?: Array<Option & { bgColor: string }>,
 ) => {
   const columns: MRT_ColumnDef<any>[] = [
@@ -35,7 +35,6 @@ export const GridCashFlowColumn = (
             options={REPAYMENT_STATUS_OPTIONS}
             paramsKey={'repaymentStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
-            tableData={row.original}
           />
         );
       },

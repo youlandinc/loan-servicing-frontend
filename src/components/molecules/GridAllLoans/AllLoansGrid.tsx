@@ -1,25 +1,24 @@
 import {
   AllLoansPagination,
   ColumnsHeaderMenus,
-  comBineColumns,
   commonColumns,
   defaultColumnPining,
   resortColumns,
-  transferFirstColumn,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
-import { _setColumnWidth } from '@/request/common';
+import { _setColumnPining, _setColumnWidth } from '@/request/common';
 import { _getAllLoansList } from '@/request/portfolio/allLoans';
-import { SetColumnWidthParam } from '@/types/common';
+import {
+  SetColumnWidthParam,
+  UpdateColumnPiningParamType,
+} from '@/types/common';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { Stack } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
-  MRT_TableHeadCellResizeHandle,
-  MRT_TableHeadCellResizeHandleProps,
   useMaterialReactTable,
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
@@ -44,9 +43,26 @@ export const AllLoansGrid: FC = observer(() => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
+  // const defaultColumnPining = allLoansGridModel.orderColumns?.length
+  //     ? {
+  //       left: allLoansGridModel.orderColumns
+  //           .filter(
+  //               (item) =>
+  //                   item.pinType === ColumnPiningDirectionEnum.LEFT &&
+  //                   item.visibility,
+  //           )
+  //           .sort((a, b) => (a.leftOrder as number) - (b.leftOrder as number))
+  //           .map((item) => item.field),
+  //     }
+  //     : {
+  //       left: [],
+  //     };
+
   const [columnPiningState, setColumnPiningState] = useState(
     defaultColumnPining(allLoansGridModel.orderColumns),
   );
+
+  const columnPiningConfig = allLoansGridModel.pinLeftColumns;
 
   const configColumnsOrderKeysArr = allLoansGridModel.orderColumns?.length
     ? transferOrderColumnsKeys(allLoansGridModel.orderColumns)
@@ -116,7 +132,7 @@ export const AllLoansGrid: FC = observer(() => {
       columnOrder: configColumnsOrderKeysArr,
       // isLoading: isValidating,
       showSkeletons: isLoading,
-      columnPinning: columnPiningState,
+      columnPinning: { left: columnPiningConfig },
     },
     initialState: {
       // showSkeletons: false,
@@ -263,6 +279,16 @@ export const AllLoansGrid: FC = observer(() => {
     [columnSizing],
   );
 
+  const [, updateColumnPining] = useAsyncFn(
+    async (param: UpdateColumnPiningParamType) => {
+      await _setColumnPining({
+        pageColumn: PortfolioGridTypeEnum.ALL_LOANS,
+        ...param,
+      });
+    },
+    [columnPining],
+  );
+
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
@@ -278,6 +304,19 @@ export const AllLoansGrid: FC = observer(() => {
     },
     500,
     [columnSizing],
+  );
+
+  useDebounce(
+    async () => {
+      if (columnPining.left?.length) {
+        await updateColumnPining({
+          leftColumn: (columnPining.left || []) as string[],
+          rightColumn: (columnPining.right || []) as string[],
+        });
+      }
+    },
+    500,
+    [columnPining.left?.join('')],
   );
 
   return (
@@ -314,6 +353,11 @@ export const AllLoansGrid: FC = observer(() => {
               .slice(0, tableHeaderIndex)
               .map((item) => item.accessorKey) as string[],
           });
+          allLoansGridModel.updatePinLeftColumns(
+            configColumns
+              .slice(0, tableHeaderIndex)
+              .map((item) => item.accessorKey) as string[],
+          );
         }}
         handleSort={() => {
           allLoansGridModel.queryModel.updateSort([
@@ -326,7 +370,8 @@ export const AllLoansGrid: FC = observer(() => {
           ] as ISortItemModel[]);
         }}
         handleUnfreeze={() => {
-          setColumnPiningState({ left: [] });
+          // setColumnPiningState({ left: [] });
+          allLoansGridModel.updatePinLeftColumns([]);
         }}
         onClose={() => setAnchorEl(null)}
         open={Boolean(anchorEl)}

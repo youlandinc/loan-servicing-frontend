@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Pagination, Stack, TablePagination, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { utils } from '@/utils';
 import { GridAlamedaSummaryProps } from '@/types/pipeline/youland';

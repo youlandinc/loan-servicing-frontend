@@ -349,11 +349,13 @@ export const LoanOverview: FC = observer(() => {
   }, []);
 
   const fetchComments = async (cb?: () => void) => {
+    const { loanId } = utils.getParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
     const {
       data: { content },
-    } = await _fetchOverviewComments(
-      utils.getParamsFromUrl(location.href).loanId,
-    );
+    } = await _fetchOverviewComments(loanId);
     setContent(content || []);
     cb?.();
   };

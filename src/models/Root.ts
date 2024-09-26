@@ -117,7 +117,55 @@ const initialState = {
   userType: void 0,
   loginType: void 0,
   portfolio: {
-    displayType: PortfolioGridTypeEnum.YOULAND,
+    displayType: void 0,
+    youlandGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      },
+      orderColumnsModel: [],
+    },
+    cashFlowGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      },
+      orderColumnsModel: [],
+    },
+    alamedaGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      },
+      orderColumnsModel: [],
+    },
     allLoansGridModel: {
       queryModel: {
         size: 50,

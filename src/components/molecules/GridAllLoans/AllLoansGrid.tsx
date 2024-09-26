@@ -369,9 +369,13 @@ export const AllLoansGrid: FC = observer(() => {
             },
           ] as ISortItemModel[]);
         }}
-        handleUnfreeze={() => {
+        handleUnfreeze={async () => {
           // setColumnPiningState({ left: [] });
           allLoansGridModel.updatePinLeftColumns([]);
+          await updateColumnPining({
+            leftColumn: [],
+            rightColumn: [],
+          });
         }}
         onClose={() => setAnchorEl(null)}
         open={Boolean(anchorEl)}

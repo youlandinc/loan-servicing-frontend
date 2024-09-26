@@ -29,6 +29,7 @@ import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 import { useAsync, useAsyncFn } from 'react-use';
+import useSWR from 'swr';
 
 const GridYouland = dynamic(
   () =>
@@ -165,14 +166,14 @@ export const Portfolio: FC = observer(() => {
     500,
   );
 
-  const { value, loading } = useAsync(async () => {
-    return await _getAllGridConfig().then((res) => {
+  const { isLoading: loading } = useSWR('true', async () => {
+    await _getAllGridConfig().then((res) => {
       if (res.data) {
         injectConfig(res.data);
       }
       return res;
     });
-  }, []);
+  });
 
   const menus = useMemo(
     () => [

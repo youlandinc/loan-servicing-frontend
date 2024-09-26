@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
-import { useSnackbar } from 'notistack';
 import {
   MRT_TableContainer,
   useMaterialReactTable,
@@ -26,7 +25,6 @@ export const GridYouland: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
 
   const { data, isLoading, mutate } = useSWR(
     displayType === PortfolioGridTypeEnum.YOULAND
@@ -54,10 +52,10 @@ export const GridYouland: FC = observer(() => {
   );
 
   const footerData = {
-    totalItems: data?.data?.totalItems ?? 0,
-    totalLoanAmount: data?.data?.totalLoanAmount ?? 0,
-    weightedAverageMargin: data?.data?.weightedAverageMargin ?? 0,
-    weightedAverageSheet: data?.data?.weightedAverageSheet ?? 0,
+    totalItems: data?.data?.totalItems,
+    totalLoanAmount: data?.data?.totalLoanAmount,
+    weightedAverageMargin: data?.data?.weightedAverageMargin,
+    weightedAverageSheet: data?.data?.weightedAverageSheet,
   };
 
   const page = {
@@ -135,7 +133,7 @@ export const GridYouland: FC = observer(() => {
     rowVirtualizerOptions: { overscan: 5 },
     columnVirtualizerOptions: { overscan: 5 },
 
-    renderEmptyRowsFallback: ({ table }) => {
+    renderEmptyRowsFallback: () => {
       return (
         <Stack pl={8} pt={4} width={'100%'}>
           <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>
@@ -221,6 +219,9 @@ export const GridYouland: FC = observer(() => {
     muiTableBodyCellProps: ({ row }) => {
       return {
         async onClick() {
+          if (isLoading) {
+            return;
+          }
           await router.push({
             pathname: '/loan/overview',
             query: { loanId: row.original.loanId },

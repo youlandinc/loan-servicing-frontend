@@ -2,7 +2,6 @@ import React, { CSSProperties, FC } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import {
   MRT_ExpandButton,
   MRT_TableContainer,
@@ -27,7 +26,6 @@ export const GridCashFlow: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
 
   const { data, isLoading, mutate } = useSWR(
     displayType === PortfolioGridTypeEnum.CASH_FLOW
@@ -55,10 +53,10 @@ export const GridCashFlow: FC = observer(() => {
   );
 
   const footerData = {
-    totalItems: data?.data?.totalItems ?? 0,
-    totalLoanAmount: data?.data?.totalLoanAmount ?? 0,
-    weightedAverageMargin: data?.data?.weightedAverageMargin ?? 0,
-    weightedAverageSheet: data?.data?.weightedAverageSheet ?? 0,
+    totalItems: data?.data?.totalItems,
+    totalLoanAmount: data?.data?.totalLoanAmount,
+    weightedAverageMargin: data?.data?.weightedAverageMargin,
+    weightedAverageSheet: data?.data?.weightedAverageSheet,
   };
 
   const table = useMaterialReactTable({
@@ -271,6 +269,9 @@ export const GridCashFlow: FC = observer(() => {
           row.toggleExpanded();
         }
         if (!original.servicingLoans) {
+          if (isLoading) {
+            return;
+          }
           await router.push({
             pathname: '/loan/overview',
             query: { loanId },

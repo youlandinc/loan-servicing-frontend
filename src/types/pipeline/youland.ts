@@ -40,10 +40,10 @@ export interface GridInvestorItem {
 }
 
 interface GridSummaryProps {
-  totalItems: number;
-  totalLoanAmount: number;
-  weightedAverageSheet: number;
-  weightedAverageMargin: number;
+  totalItems: number | undefined;
+  totalLoanAmount: number | undefined;
+  weightedAverageSheet: number | undefined;
+  weightedAverageMargin: number | undefined;
 }
 
 export type GridYoulandSummaryProps = GridSummaryProps;

@@ -2,6 +2,7 @@ import { get, post } from '@/request';
 import {
   GridInvestorItem,
   ResponseGridAlamedaTable,
+  ResponseGridCashFlowTable,
   ResponseGridYoulandTable,
 } from '@/types/pipeline/youland';
 
@@ -14,7 +15,7 @@ export const _fetchAlamedaTableData = (params: any) => {
 };
 
 export const _fetchCashFlowTableData = (params: any) => {
-  return post('/servicing/list/cash/flow', params);
+  return post<ResponseGridCashFlowTable>('/servicing/list/cash/flow', params);
 };
 
 export const _updateTableData = (params: any) => {

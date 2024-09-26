@@ -5,7 +5,6 @@ import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import {
-  MRT_ColumnDef,
   MRT_ExpandButton,
   MRT_TableContainer,
   useMaterialReactTable,
@@ -98,7 +97,7 @@ export const GridCashFlow: FC = observer(() => {
   });
 
   const table = useMaterialReactTable({
-    columns: GridCashFlowColumn(),
+    columns: GridCashFlowColumn(fetchData),
     data: tableData || [],
     //rowCount,
     enableExpandAll: true, //hide expand all double arrow in column header

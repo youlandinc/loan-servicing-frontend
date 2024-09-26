@@ -157,13 +157,14 @@ export const GridAlameda: FC = observer(() => {
 
     columnResizeMode: 'onChange',
     defaultColumn: {
+      minSize: 140,
       size: 250,
     },
 
     manualPagination: true,
     state: {
       //isLoading: loading,
-      showSkeletons: loading || fetchLoading,
+      showSkeletons: loading,
     },
     initialState: {
       showProgressBars: false,
@@ -188,13 +189,25 @@ export const GridAlameda: FC = observer(() => {
     },
     muiTableHeadProps: {
       sx: {
-        '& .MuiTableRow-root': {
-          boxShadow: 'none !important',
-          bgcolor: '#F4F6FA',
+        opacity: 1,
+        '& .MuiTableRow-head': {
+          boxShadow: 'none',
+        },
+        '& .Mui-TableHeadCell-Content-Wrapper': {
+          fontWeight: 600,
+          fontSize: 12,
+          lineHeight: '20px',
+          whiteSpace: 'nowrap',
         },
         '& .MuiTableCell-root': {
           border: 'none',
-          borderBottom: '1px solid #F4F6FA',
+        },
+        '& .MuiTableCell-root:last-child': {
+          bgcolor: '#F4F6FA',
+        },
+        '& .MuiTableRow-root': {
+          boxShadow: 'none !important',
+          bgcolor: '#F4F6FA',
         },
       },
     },
@@ -206,6 +219,37 @@ export const GridAlameda: FC = observer(() => {
         color: 'text.secondary',
         border: 'none',
         height: 40,
+        bgcolor: '#F4F6FA',
+        opacity: 1,
+        px: 1,
+        py: 1.25,
+        justifyContent: 'center',
+        '& .Mui-TableHeadCell-Content-Labels ': {
+          pl: 0,
+        },
+        '& .Mui-TableHeadCell-Content-Wrapper': {
+          fontWeight: 600,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          webkitBoxOrient: 'vertical',
+          webkitLineClamp: 2,
+          display: '-webkit-box',
+          whiteSpace: 'normal',
+          color: '#636A7C',
+        },
+        '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
+          mr: '-8px',
+        },
+        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
+          borderWidth: 1,
+        },
+        '&[data-pinned="true"]:before': {
+          bgcolor: 'transparent',
+        },
+        cursor: 'pointer',
+        '&:hover': {
+          bgcolor: '#ececec',
+        },
         '& .MuiDivider-root': {
           borderWidth: '1px',
           height: 16,

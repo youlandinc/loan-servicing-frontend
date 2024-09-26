@@ -13,7 +13,10 @@ import {
 
 import { GridDropDown } from '@/components/molecules';
 
-export const GridCashFlowColumn = () => {
+export const GridCashFlowColumn = (
+  cb?: () => Promise<void>,
+  investorOptions?: Array<Option & { bgColor: string }>,
+) => {
   const columns: MRT_ColumnDef<any>[] = [
     {
       header: 'Status',
@@ -26,7 +29,7 @@ export const GridCashFlowColumn = () => {
         return (
           <GridDropDown
             bgPalette={allLoansStatusBgcolor}
-            //cb={cb}
+            cb={cb}
             colorPalette={allLoansStatusColor}
             loanId={row.original.loanId}
             options={REPAYMENT_STATUS_OPTIONS}

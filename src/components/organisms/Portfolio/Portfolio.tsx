@@ -166,14 +166,14 @@ export const Portfolio: FC = observer(() => {
     500,
   );
 
-  const { isLoading: loading } = useSWR('true', async () => {
-    await _getAllGridConfig().then((res) => {
+  const { loading } = useAsync(async () => {
+    return await _getAllGridConfig().then((res) => {
       if (res.data) {
         injectConfig(res.data);
       }
       return res;
     });
-  });
+  }, []);
 
   const menus = useMemo(
     () => [
@@ -250,87 +250,89 @@ export const Portfolio: FC = observer(() => {
 
   return (
     <Layout isHomepage={false}>
-      <Fade in={!loading}>
-        <Stack height={'100%'} pb={3} pt={3} px={6}>
-          <Stack
-            alignItems={'flex-start'}
-            direction={'row'}
-            justifyContent={'space-between'}
-          >
-            <Stack direction={'row'}>
+      {!loading && (
+        <Fade in={!loading}>
+          <Stack height={'100%'} pb={3} pt={3} px={6}>
+            <Stack
+              alignItems={'flex-start'}
+              direction={'row'}
+              justifyContent={'space-between'}
+            >
+              <Stack direction={'row'}>
+                {menus.map((item, index) => (
+                  <StyledButton
+                    component={'div'}
+                    key={index}
+                    onClick={() => {
+                      if (item.key !== portfolioListType) {
+                        setPortfolioListType(item.key);
+                        set(item.key);
+                      }
+                    }}
+                    size={'small'}
+                    sx={{
+                      backgroundColor:
+                        item.key === portfolioListType
+                          ? '#F4F6FA !important'
+                          : 'transparent !important',
+                      fontWeight: '400 !important',
+                      border:
+                        item.key === portfolioListType ? '1px solid' : 'none',
+                      borderColor: 'border.normal',
+                      borderRadius: '16px 16px 0px 0px !important',
+                      borderBottom: 'none !important',
+                      px: '24px !important',
+                      py: '12px !important',
+                    }}
+                    variant={'text'}
+                  >
+                    <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+                      <Icon
+                        component={item.icon}
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          '& path': {
+                            fill: '#636A7C',
+                          },
+                        }}
+                      />
+                      <Typography color={'action.active'} variant={'body2'}>
+                        {item.label}
+                      </Typography>
+                    </Stack>
+                  </StyledButton>
+                ))}
+              </Stack>
               {menus.map((item, index) => (
-                <StyledButton
-                  component={'div'}
-                  key={index}
-                  onClick={() => {
-                    if (item.key !== portfolioListType) {
-                      setPortfolioListType(item.key);
-                      set(item.key);
-                    }
-                  }}
-                  size={'small'}
-                  sx={{
-                    backgroundColor:
-                      item.key === portfolioListType
-                        ? '#F4F6FA !important'
-                        : 'transparent !important',
-                    fontWeight: '400 !important',
-                    border:
-                      item.key === portfolioListType ? '1px solid' : 'none',
-                    borderColor: 'border.normal',
-                    borderRadius: '16px 16px 0px 0px !important',
-                    borderBottom: 'none !important',
-                    px: '24px !important',
-                    py: '12px !important',
-                  }}
-                  variant={'text'}
-                >
-                  <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-                    <Icon
-                      component={item.icon}
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        '& path': {
-                          fill: '#636A7C',
-                        },
-                      }}
-                    />
-                    <Typography color={'action.active'} variant={'body2'}>
-                      {item.label}
-                    </Typography>
-                  </Stack>
-                </StyledButton>
+                <Box hidden={item.key !== portfolioListType} key={index}>
+                  {item.key === portfolioListType && item.queryComponent}
+                </Box>
               ))}
             </Stack>
-            {menus.map((item, index) => (
-              <Box hidden={item.key !== portfolioListType} key={index}>
-                {item.key === portfolioListType && item.queryComponent}
-              </Box>
-            ))}
+            <Box flex={1} mt={'-1px'}>
+              {menus.map((item, index) => {
+                return (
+                  <Box
+                    border={'1px solid'}
+                    borderColor={'border.normal'}
+                    borderRadius={4}
+                    flex={1}
+                    hidden={item.key !== portfolioListType}
+                    key={index}
+                    sx={{
+                      borderTopLeftRadius: index === 0 ? 0 : 16,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {item.component}
+                  </Box>
+                );
+              })}
+            </Box>
           </Stack>
-          <Box flex={1} mt={'-1px'}>
-            {menus.map((item, index) => {
-              return (
-                <Box
-                  border={'1px solid'}
-                  borderColor={'border.normal'}
-                  borderRadius={4}
-                  flex={1}
-                  hidden={item.key !== portfolioListType}
-                  key={index}
-                  sx={{
-                    borderTopLeftRadius: index === 0 ? 0 : 16,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {item.component}
-                </Box>
-              );
-            })}
-          </Box>
-        </Stack>
-      </Fade>
+        </Fade>
+      )}
     </Layout>
   );
 });

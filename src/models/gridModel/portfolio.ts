@@ -1,6 +1,7 @@
 import { allLoansModel } from '@/models/gridModel/allLoansModel/allLoansModel';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { IAllGridConfig } from '@/types/pipeline';
+import { utils } from '@/utils';
 import { cast, types } from 'mobx-state-tree';
 
 export const portfolioModel = types
@@ -22,7 +23,11 @@ export const portfolioModel = types
     },
     injectConfig(config: IAllGridConfig) {
       try {
-        if (config.operaParams?.SERVICING_YOULAND?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_YOULAND?.SEARCH,
+          )
+        ) {
           self.youlandGridModel.queryModel = cast(
             config.operaParams.SERVICING_YOULAND.SEARCH,
           );
@@ -33,7 +38,11 @@ export const portfolioModel = types
           );
         }
 
-        if (config.operaParams?.SERVICING_ALAMEDA?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_ALAMEDA?.SEARCH,
+          )
+        ) {
           self.alamedaGridModel.queryModel = cast(
             config.operaParams.SERVICING_ALAMEDA.SEARCH,
           );
@@ -44,7 +53,11 @@ export const portfolioModel = types
           );
         }
 
-        if (config.operaParams?.SERVICING_CASH_FLOW?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_CASH_FLOW?.SEARCH,
+          )
+        ) {
           self.cashFlowGridModel.queryModel = cast(
             config.operaParams.SERVICING_CASH_FLOW.SEARCH,
           );
@@ -56,7 +69,11 @@ export const portfolioModel = types
         }
 
         //all loans
-        if (config.operaParams?.SERVICING_ALL_LOAN?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_ALL_LOAN?.SEARCH,
+          )
+        ) {
           self.allLoansGridModel.queryModel = cast(
             config.operaParams.SERVICING_ALL_LOAN.SEARCH,
           );
@@ -70,7 +87,11 @@ export const portfolioModel = types
           config.operaParams.SERVICING_ALL_LOAN.LEFT,
         );
         //investor
-        if (config.operaParams?.SERVICING_BY_INVESTOR?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_BY_INVESTOR?.SEARCH,
+          )
+        ) {
           self.investorGridModel.queryModel = cast(
             config.operaParams.SERVICING_BY_INVESTOR.SEARCH,
           );
@@ -84,7 +105,11 @@ export const portfolioModel = types
           config.operaParams.SERVICING_BY_INVESTOR.LEFT,
         );
         //delinquent
-        if (config.operaParams?.SERVICING_DELINQUENT?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_DELINQUENT?.SEARCH,
+          )
+        ) {
           self.delinquentGridModel.queryModel = cast(
             config.operaParams.SERVICING_DELINQUENT.SEARCH,
           );
@@ -98,7 +123,11 @@ export const portfolioModel = types
           config.operaParams.SERVICING_DELINQUENT.LEFT,
         );
         //maturity
-        if (config.operaParams?.SERVICING_MATURITY?.SEARCH) {
+        if (
+          utils.isNotEmptyOfObject(
+            config.operaParams?.SERVICING_MATURITY?.SEARCH,
+          )
+        ) {
           self.maturityGridModel.queryModel = cast(
             config.operaParams.SERVICING_MATURITY.SEARCH,
           );

@@ -10,7 +10,7 @@ type CommonGridConfig = {
 
 export type IAllGridConfig = {
   pageColumn: PortfolioGridTypeEnum;
-  operaParams: Partial<{
+  operaParams: {
     SERVICING_CASH_FLOW: CommonGridConfig;
     SERVICING_YOULAND: CommonGridConfig;
     SERVICING_ALAMEDA: CommonGridConfig;
@@ -18,5 +18,5 @@ export type IAllGridConfig = {
     SERVICING_ALL_LOAN: CommonGridConfig;
     SERVICING_BY_INVESTOR: CommonGridConfig;
     SERVICING_MATURITY: CommonGridConfig;
-  }>;
+  };
 };

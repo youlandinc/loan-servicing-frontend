@@ -240,15 +240,16 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
           mr: '-8px',
         },
-        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
-          borderWidth: 1,
-        },
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
         cursor: 'pointer',
         '&:hover': {
           bgcolor: '#ececec',
+        },
+        '& .MuiDivider-root': {
+          borderWidth: '1px',
+          height: 16,
         },
       },
       onClick: (e) => {

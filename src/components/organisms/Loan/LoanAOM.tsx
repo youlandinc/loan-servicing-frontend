@@ -12,17 +12,16 @@ import {
   StyledSelect,
   StyledTextFieldInput,
 } from '@/components/atoms';
-import { Layout, SideMenu } from '@/components/molecules';
 import { _creatAomPdf, _getAOMInfo, _getAomInvestorList } from '@/request';
+import { HttpError } from '@/types';
 import { CreateAomPdfParam } from '@/types/loan/aom';
 import { utils } from '@/utils';
-import { HttpError } from '@/types';
 
-export const LoanAOM: FC = (props) => {
+export const LoanAOM: FC = () => {
   const router = useRouter();
   const { loanId } = router.query;
   const formRef = useRef<HTMLFormElement | null>(null);
-  const pdfFile = useRef(null);
+  // const pdfFile = useRef(null);
   // const { renderFile } = useRenderPdf(pdfFile);
 
   const [instrumentNumber, setInstrumentNumber] = useState('');
@@ -52,7 +51,7 @@ export const LoanAOM: FC = (props) => {
       ? await _getAOMInfo(parseInt(loanId as string))
           .then((res) => {
             if (res.data.investorId) {
-              setBuyer(res.data.investorId);
+              setBuyer(res.data.investorId + '');
             }
             if (typeof res.data.instrumentNumber === 'string') {
               setInstrumentNumber(res.data.instrumentNumber);

@@ -45,7 +45,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
           DelinquentTimeRangeOpt.map((item) => ({
             ...item,
             label: (
-              <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+              <Stack alignItems={'center'} direction={'row'} gap={1}>
                 <Typography variant={'body2'}>{item.label}</Typography>
                 <Typography
                   bgcolor={'#95A8D7'}
@@ -69,8 +69,6 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
     getDelinquentRangeOpt();
   }, []);
 
-  console.log(delinquentGridModel.queryModel.searchCondition.delinquentDays);
-
   return (
     <StyledButton
       size={'small'}
@@ -87,7 +85,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
       }}
       variant={'text'}
     >
-      <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+      <Stack alignItems={'center'} direction={'row'} gap={1}>
         <Typography
           color={
             portfolioListType === PortfolioGridTypeEnum.DELINQUENT

@@ -23,12 +23,7 @@ const MENU_LIST = [
     key: 'LOAN_OVERVIEW',
     url: '/loan/overview',
   },
-  {
-    icon: MENU_LOGO_07,
-    label: 'AOM',
-    key: 'LOAN_AOM',
-    url: '/loan/aom',
-  },
+
   {
     icon: MENU_LOGO_02,
     label: 'Payments',
@@ -59,6 +54,12 @@ const MENU_LIST = [
     label: 'Loan details',
     key: 'LOAN_DETAILS',
     url: '/loan/details',
+  },
+  {
+    icon: MENU_LOGO_07,
+    label: 'AOM',
+    key: 'LOAN_AOM',
+    url: '/loan/aom',
   },
 ];
 

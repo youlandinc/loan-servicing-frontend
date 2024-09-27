@@ -10,7 +10,7 @@ import {
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
 import {
-  comBineColumns,
+  combineColumns,
   commonColumns,
   GridMoreIconButton,
   SortButton,
@@ -143,11 +143,7 @@ export const InvestorGridToolBar: FC = observer(() => {
         />
       )}
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            comBineColumns(commonColumns, investorGridModel.orderColumns),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(commonColumns, investorGridModel.orderColumns)}
         gridType={PortfolioGridTypeEnum.BY_INVESTOR}
         handleSave={(columns) => {
           investorGridModel.updateOrderColumns(columns);

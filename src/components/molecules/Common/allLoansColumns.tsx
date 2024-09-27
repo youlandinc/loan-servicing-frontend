@@ -393,33 +393,37 @@ export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
 export const combineColumns = (
   defaultColumns: MRT_ColumnDef<any>[],
   configColumns: IOrderColumnsItem[],
-): (MRT_ColumnDef<any> & {
-  sort: number;
-  visibility: boolean;
-  size: number;
-})[] => {
+): IOrderColumnsItem[] => {
   const result = configColumns?.length
     ? defaultColumns
         .map((item, index) => {
           const target = configColumns?.find(
             (j) => j.field === item.accessorKey,
           );
-          return {
-            ...item,
-            sort: target?.sort ?? 100 + index,
-            visibility: target?.visibility ?? true,
-            size: (target?.columnWidth ?? item.size) as number,
-          };
+          return target
+            ? target
+            : {
+                field: item.accessorKey as string,
+                headerName: item.header,
+                columnWidth: item.size as number,
+                sort: index,
+                visibility: true,
+                pinType: 'CENTER' as ColumnPiningDirectionEnum,
+                leftOrder: null,
+              };
         })
         .sort((a, b) => {
           return a.sort - b.sort;
         })
     : // .filter((item) => (item as any)?.visibility !== false)
       defaultColumns.map((item, index) => ({
-        ...item,
-        visibility: true,
-        size: item.size ?? 100,
+        field: item.accessorKey as string,
+        headerName: item.header,
+        columnWidth: item.size as number,
         sort: index,
+        visibility: true,
+        pinType: 'CENTER' as ColumnPiningDirectionEnum,
+        leftOrder: null,
       }));
   return result;
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import {
   Icon,
+  IconProps,
   Menu,
   MenuItem,
   MenuProps,
@@ -13,7 +14,7 @@ import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 
 interface ActionMenuProps {
   label: ReactNode;
-  icon?: ReactNode;
+  icon?: IconProps['component'];
   path?: string;
   handleClick?: (event?: unknown) => void;
   hidden?: boolean;
@@ -40,6 +41,12 @@ export const StyledActionsMenu: FC<StyledActionsMenuProps> = ({
         paper: {
           sx: {
             minWidth: 160,
+            boxShadow:
+              '0px 10px 10px 0px rgba(17, 52, 227, 0.10), 0px 0px 2px 0px rgba(17, 52, 227, 0.10)',
+            borderRadius: 2,
+            '& .MuiList-root': {
+              padding: 0,
+            },
             ...paperSx,
           },
         },
@@ -57,10 +64,11 @@ export const StyledActionsMenu: FC<StyledActionsMenuProps> = ({
           disabled={item?.disabled}
           key={index}
           onClick={item?.handleClick}
+          selected={item?.isSelected}
           sx={{ p: '14px 12px' }}
         >
           <Stack alignItems={'center'} direction={'row'} gap={1.25}>
-            {item?.icon}
+            {item?.icon && <Icon component={item.icon} />}
             <Typography component={'div'} variant={'body2'}>
               {item.label}
             </Typography>

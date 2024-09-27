@@ -43,7 +43,7 @@ export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
         menus={[
           {
             label: 'Edit columns',
-            icon: <VerticalSplitIcon />,
+            icon: VerticalSplitIcon,
             handleClick: open,
           },
         ]}

@@ -39,7 +39,7 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = observer(
     const [freeze, setFreeze] = useState(false);
     const DefaultTableHeaderMenu = [
       {
-        icon: <Icon component={BorderLeftIcon} sx={{ fontSize: 24 }} />,
+        icon: BorderLeftIcon,
         label: 'Freeze pane',
         handleClick: () => {
           setFreeze(true);
@@ -49,7 +49,7 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = observer(
         disabled: freeze,
       },
       {
-        icon: <Icon component={BorderClearIcon} sx={{ fontSize: 24 }} />,
+        icon: BorderClearIcon,
         label: 'Unfreeze pane',
         handleClick: () => {
           setFreeze(false);
@@ -61,7 +61,7 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = observer(
 
     const TableHeaderSortMenu = [
       {
-        icon: <ImportExportIcon sx={{ fontSize: 24 }} />,
+        icon: ImportExportIcon,
         label: 'Sort',
         handleClick: () => {
           handleSort?.();

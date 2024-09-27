@@ -1,35 +1,30 @@
-import { useDebounceFn } from '@/hooks';
-import { allLoansModel } from '@/models/gridModel';
-import { _getAllGridConfig, setDisplayType } from '@/request';
-import React, { FC, useEffect, useMemo } from 'react';
-import dynamic from 'next/dynamic';
-import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
-
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
-
 import {
+  StyledActionsMenu,
   StyledButton,
   StyledDelinquentSelect,
   StyledMaturitySelect,
 } from '@/components/atoms';
-import {
-  commonColumns,
-  Layout,
-  transferOrderColumns,
-} from '@/components/molecules';
+import { Layout } from '@/components/molecules';
 
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { useDebounceFn } from '@/hooks';
+import { useMst } from '@/models/Root';
+import { _getAllGridConfig, setDisplayType } from '@/request';
 
-import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
-import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
 import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
-import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
+import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
 import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
+import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
+import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
+
+import { PortfolioGridTypeEnum } from '@/types/enum';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import dynamic from 'next/dynamic';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useAsync, useAsyncFn } from 'react-use';
-import useSWR from 'swr';
 
 const GridYouland = dynamic(
   () =>
@@ -148,6 +143,8 @@ export const Portfolio: FC = observer(() => {
     },
   } = useMst();
 
+  const [anchor, setAnchor] = useState<null | HTMLElement>();
+
   const [, , updateDisplayDebounce] = useDebounceFn(
     allLoansGridModel.queryModel.updateQueryCondition,
     500,
@@ -258,7 +255,13 @@ export const Portfolio: FC = observer(() => {
               direction={'row'}
               justifyContent={'space-between'}
             >
-              <Stack direction={'row'}>
+              <Stack
+                direction={'row'}
+                display={{
+                  xs: 'none',
+                  xxl: 'flex',
+                }}
+              >
                 {menus.map((item, index) => (
                   <StyledButton
                     component={'div'}
@@ -290,8 +293,8 @@ export const Portfolio: FC = observer(() => {
                       <Icon
                         component={item.icon}
                         sx={{
-                          width: 16,
-                          height: 16,
+                          width: 20,
+                          height: 20,
                           '& path': {
                             fill: '#636A7C',
                           },
@@ -304,6 +307,61 @@ export const Portfolio: FC = observer(() => {
                   </StyledButton>
                 ))}
               </Stack>
+              <StyledButton
+                onClick={(e) => {
+                  setAnchor(e.currentTarget);
+                }}
+                size={'small'}
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 400,
+                  lineHeight: '20px',
+                  borderRadius: 2,
+                  bgcolor: 'rgba(91, 118, 188, 0.10) !important',
+                  '&:hover': {
+                    bgcolor: 'rgba(91, 118, 188, 0.15) !important',
+                  },
+                  '& .MuiButton-endIcon': {
+                    ml: 0.5,
+                  },
+                  px: 1.5,
+                  py: '6px',
+                  height: 'auto !important',
+                  display: {
+                    xs: 'flex',
+                    xxl: 'none',
+                  },
+                  mb: '6px',
+                }}
+                variant={'text'}
+              >
+                <Stack alignItems={'center'} direction={'row'} gap={0.5}>
+                  <Icon
+                    component={
+                      menus.find((item) => item.key === portfolioListType)
+                        ?.icon || menus[0].icon
+                    }
+                    sx={{
+                      width: 16,
+                      height: 16,
+                    }}
+                  />
+                  <Typography color={"    color: 'primary',"} variant={'body2'}>
+                    {menus.find((item) => item.key === portfolioListType)
+                      ?.label || menus[0].label}
+                  </Typography>
+                  {portfolioListType !== PortfolioGridTypeEnum.DELINQUENT &&
+                    portfolioListType !== PortfolioGridTypeEnum.MATURITY && (
+                      <Icon
+                        component={KeyboardArrowDownIcon}
+                        sx={{
+                          width: 16,
+                          height: 16,
+                        }}
+                      />
+                    )}
+                </Stack>
+              </StyledButton>
               {menus.map((item, index) => (
                 <Box hidden={item.key !== portfolioListType} key={index}>
                   {item.key === portfolioListType && item.queryComponent}
@@ -321,7 +379,10 @@ export const Portfolio: FC = observer(() => {
                     hidden={item.key !== portfolioListType}
                     key={index}
                     sx={{
-                      borderTopLeftRadius: index === 0 ? 0 : 16,
+                      borderTopLeftRadius: {
+                        xs: 16,
+                        xxl: index === 0 ? 0 : 16,
+                      },
                       overflow: 'hidden',
                     }}
                   >
@@ -333,6 +394,37 @@ export const Portfolio: FC = observer(() => {
           </Stack>
         </Fade>
       )}
+      <StyledActionsMenu
+        anchorEl={anchor}
+        menus={menus.map((item) => ({
+          ...item,
+          label:
+            item.key === PortfolioGridTypeEnum.DELINQUENT ||
+            item.key === PortfolioGridTypeEnum.MATURITY
+              ? {
+                  [PortfolioGridTypeEnum.DELINQUENT]: 'Days delinquent',
+                  [PortfolioGridTypeEnum.MATURITY]: 'Maturity',
+                }[item.key]
+              : item.label,
+          handleClick: () => {
+            if (item.key !== portfolioListType) {
+              setPortfolioListType(item.key);
+              set(item.key);
+            }
+            setAnchor(null);
+          },
+          isSelected: item.key === portfolioListType,
+        }))}
+        onClose={() => setAnchor(null)}
+        open={Boolean(anchor)}
+        sx={{
+          '& .Mui-selected': {
+            'svg path': {
+              fill: '#5B76BC',
+            },
+          },
+        }}
+      />
     </Layout>
   );
 });

@@ -107,10 +107,6 @@ export const YOULAND_COLUMNS = (
               aria-hidden="true"
               content={
                 <Stack gap={3} py={3}>
-                  <Typography color={'text.secondary'} variant={'body2'}>
-                    Please confirm the submit date below is correct before you
-                    mark the trade as completed.
-                  </Typography>
                   <StyledDatePicker
                     disableFuture
                     label={'Submit date'}
@@ -178,7 +174,7 @@ export const YOULAND_COLUMNS = (
                   </StyledButton>
                 </Stack>
               }
-              header={'Confirm submit date'}
+              header={'Submit date'}
               onClose={(e: MouseEvent) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -212,7 +208,7 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
-      header: 'Est sale date',
+      header: 'Est. sale date',
       accessorKey: 'estSaleDate',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
@@ -259,13 +255,9 @@ export const YOULAND_COLUMNS = (
               aria-hidden="true"
               content={
                 <Stack gap={3} py={3}>
-                  <Typography color={'text.secondary'} variant={'body2'}>
-                    Please confirm the sale date below is correct before you
-                    mark the trade as completed.
-                  </Typography>
                   <StyledDatePicker
                     disableFuture
-                    label={'Sale date'}
+                    label={'Est. sale date'}
                     maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
@@ -330,7 +322,7 @@ export const YOULAND_COLUMNS = (
                   </StyledButton>
                 </Stack>
               }
-              header={'Confirm sale date'}
+              header={'Est. sale date'}
               onClose={(e: MouseEvent) => {
                 e.preventDefault();
                 e.stopPropagation();

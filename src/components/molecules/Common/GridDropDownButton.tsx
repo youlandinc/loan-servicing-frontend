@@ -1,11 +1,21 @@
 import React, { FC, useState } from 'react';
-import { CircularProgress, Menu, MenuItem, Stack } from '@mui/material';
+import {
+  CircularProgress,
+  Icon,
+  Menu,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
 
 import { HttpError } from '@/types/common';
 import { _updateTableData } from '@/request';
+
+import LOGO_EXPEND_MORE from '@/components/molecules/GridYouland/logo-expend-more.svg';
 
 interface GridDropDownButtonProps {
   options?: Array<Option & { bgColor: string }>;
@@ -39,8 +49,9 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
       <Stack
         alignItems={'center'}
         borderRadius={1}
-        fontSize={12}
-        height={20}
+        flexDirection={'row'}
+        flexShrink={0}
+        height={24}
         justifyContent={'center'}
         onClick={(e) => {
           e.stopPropagation();
@@ -60,11 +71,43 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
           textDecorationColor: '#2B52B6',
           cursor: 'pointer',
         }}
-        width={100}
+        width={120}
       >
-        {status
-          ? options.find((item) => item.label === status)?.label || status
-          : 'Add'}
+        <Typography
+          color={
+            status
+              ? options.find((item) => item.label === status)?.bgColor ||
+                'hsla(223, 45%, 72%, 1)'
+              : '#2B52B6'
+          }
+          ml={1}
+          sx={{
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+          }}
+          variant={'subtitle3'}
+          width={76}
+        >
+          {status
+            ? options.find((item) => item.label === status)?.label || status
+            : 'Add'}
+        </Typography>
+        {status && (
+          <Icon
+            component={LOGO_EXPEND_MORE}
+            sx={{
+              width: 18,
+              height: 18,
+              ml: 0.25,
+              '& path': {
+                fill:
+                  options.find((item) => item.label === status)?.bgColor ||
+                  'hsla(223, 45%, 72%, 1)',
+              },
+            }}
+          />
+        )}
       </Stack>
 
       <Menu
@@ -160,22 +203,31 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
           >
             {loading && activeIndex === index ? (
               <CircularProgress
-                size={20}
+                size={24}
                 sx={{ m: '0 auto', color: '#E3E3EE' }}
               />
             ) : (
-              <Stack
-                alignItems={'center'}
-                bgcolor={item.bgColor || 'hsla(223, 45%, 72%, .2)'}
-                borderRadius={1}
-                color={'hsla(223, 45%, 72%, 1)' || '#ffffff'}
-                fontSize={12}
-                height={20}
-                justifyContent={'center'}
-                width={100}
-              >
-                {item.label}
-              </Stack>
+              <Tooltip title={item.label}>
+                <Typography
+                  bgcolor={item.bgColor || 'hsla(223, 45%, 72%, .2)'}
+                  borderRadius={1}
+                  color={'hsla(223, 45%, 72%, 1)' || '#ffffff'}
+                  height={24}
+                  justifyContent={'center'}
+                  lineHeight={'24px'}
+                  px={1}
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                  }}
+                  textAlign={'center'}
+                  variant={'subtitle3'}
+                  width={120}
+                >
+                  {item.label}
+                </Typography>
+              </Tooltip>
             )}
           </MenuItem>
         ))}

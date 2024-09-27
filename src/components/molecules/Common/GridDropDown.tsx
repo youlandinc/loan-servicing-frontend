@@ -1,5 +1,13 @@
 import React, { FC, useState } from 'react';
-import { CircularProgress, Icon, Menu, MenuItem, Stack } from '@mui/material';
+import {
+  CircularProgress,
+  Icon,
+  Menu,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { utils } from '@/utils';
@@ -48,8 +56,11 @@ export const GridDropDown: FC<GridDropDownProps> = ({
         borderRadius={1}
         color={colorPalette ? colorPalette[status] : '#ffffff'}
         flexDirection={'row'}
+        flexShrink={0}
         fontSize={12}
-        height={20}
+        fontWeight={600}
+        gap={0.25}
+        height={24}
         justifyContent={'center'}
         onClick={(e) => {
           e.stopPropagation();
@@ -59,14 +70,14 @@ export const GridDropDown: FC<GridDropDownProps> = ({
         sx={{
           cursor: 'pointer',
         }}
-        width={100}
+        width={120}
       >
         {utils.findLabel(options, status) || '-'}
         <Icon
           component={LOGO_EXPEND_MORE}
           sx={{
-            width: 12,
-            height: 12,
+            width: 18,
+            height: 18,
             '& path': { fill: colorPalette ? colorPalette[status] : '#ffffff' },
           }}
         />
@@ -163,18 +174,27 @@ export const GridDropDown: FC<GridDropDownProps> = ({
                 sx={{ m: '0 auto', color: '#E3E3EE' }}
               />
             ) : (
-              <Stack
-                alignItems={'center'}
+              //<Tooltip title={item.label}>
+              <Typography
                 bgcolor={bgPalette[item.key]}
                 borderRadius={1}
                 color={colorPalette ? colorPalette[item.key] : '#ffffff'}
-                fontSize={12}
-                height={20}
+                height={24}
                 justifyContent={'center'}
-                width={100}
+                lineHeight={'24px'}
+                px={1}
+                sx={{
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                }}
+                textAlign={'center'}
+                variant={'subtitle3'}
+                width={120}
               >
                 {item.label}
-              </Stack>
+              </Typography>
+              //</Tooltip>
             )}
           </MenuItem>
         ))}

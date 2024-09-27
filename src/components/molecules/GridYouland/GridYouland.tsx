@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
@@ -15,6 +15,10 @@ import { PortfolioGridTypeEnum } from '@/types/enum';
 import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
 
 import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
+import {
+  resortColumns,
+  transferOrderColumnsKeys,
+} from '@/components/molecules';
 
 export const GridYouland: FC = observer(() => {
   const {
@@ -25,6 +29,38 @@ export const GridYouland: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
+
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+
+  const onPageSizeChange = async (pageSize: number) => {
+    queryModel.updatePage(page.number, pageSize);
+  };
+
+  const onPageChange = async (currentPage: number) => {
+    queryModel.updatePage(currentPage, page.size);
+  };
+
+  useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.YOULAND) {
+      return;
+    }
+    const { data } = await _fetchInvestorData();
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.id,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, [displayType]);
 
   const { data, isLoading, mutate } = useSWR(
     displayType === PortfolioGridTypeEnum.YOULAND
@@ -65,40 +101,22 @@ export const GridYouland: FC = observer(() => {
     totalPages: data?.data?.page?.totalPages ?? 0,
   };
 
-  useAsync(async () => {
-    if (displayType !== PortfolioGridTypeEnum.YOULAND) {
-      return;
-    }
-    const { data } = await _fetchInvestorData();
-    const temp = data.reduce(
-      (acc, cur) => {
-        acc.push({
-          label: cur.investorName,
-          value: cur.id,
-          key: cur.id,
-          bgColor: '',
-        });
-        return acc;
-      },
-      [] as Array<Option & { bgColor: string }>,
-    );
-    setInvestorData(temp);
-  }, [displayType]);
+  const configColumnsOrderKeysArr = orderColumns?.length
+    ? transferOrderColumnsKeys(orderColumns)
+    : [];
 
-  const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
-  >([]);
-
-  const onPageSizeChange = async (pageSize: number) => {
-    queryModel.updatePage(page.number, pageSize);
-  };
-
-  const onPageChange = async (currentPage: number) => {
-    queryModel.updatePage(currentPage, page.size);
-  };
+  const configColumns = useMemo(() => {
+    return orderColumns.length
+      ? resortColumns(
+          orderColumns,
+          YOULAND_COLUMNS(async () => await mutate(), investorData),
+        )
+      : YOULAND_COLUMNS(async () => await mutate(), investorData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [configColumnsOrderKeysArr.join('')]);
 
   const table = useMaterialReactTable({
-    columns: YOULAND_COLUMNS(async () => await mutate(), investorData),
+    columns: configColumns,
     data: data?.data?.content || [],
     enableExpandAll: false,
     enableExpanding: false,
@@ -124,6 +142,7 @@ export const GridYouland: FC = observer(() => {
 
     manualPagination: true,
     state: {
+      columnOrder: configColumnsOrderKeysArr,
       showSkeletons: isLoading,
     },
     initialState: {

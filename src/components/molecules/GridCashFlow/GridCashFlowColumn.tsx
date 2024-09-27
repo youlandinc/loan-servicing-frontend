@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MRT_ColumnDef } from 'material-react-table';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Tooltip, Typography } from '@mui/material';
 
 import { utils } from '@/utils';
 import { AUTO_HIDE_DURATION, REPAYMENT_STATUS_OPTIONS } from '@/constant';
@@ -23,11 +23,11 @@ import { format } from 'date-fns';
 import { _updateTableData } from '@/request';
 import { HttpError } from '@/types/common';
 
-export const GridCashFlowColumn = (
+export const CASH_FLOW_COLUMNS = (
   cb?: () => Promise<any>,
   investorOptions?: Array<Option & { bgColor: string }>,
 ) => {
-  const columns: MRT_ColumnDef<any>[] = [
+  return [
     {
       header: 'Status',
       accessorKey: 'repaymentStatus',
@@ -189,15 +189,17 @@ export const GridCashFlowColumn = (
       size: 300,
       Cell: ({ renderedCellValue }) => {
         return (
-          <Typography
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-            variant={'body3'}
-          >
-            {renderedCellValue ? renderedCellValue : '-'}
-          </Typography>
+          <Tooltip title={renderedCellValue ? renderedCellValue : '-'}>
+            <Typography
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+              }}
+              variant={'body3'}
+            >
+              {renderedCellValue ? renderedCellValue : '-'}
+            </Typography>
+          </Tooltip>
         );
       },
     },
@@ -451,8 +453,10 @@ export const GridCashFlowColumn = (
         );
       },
     },
-  ];
+  ] as MRT_ColumnDef<any>[];
+};
 
+export const reduceCashFlowColumn = (columns: MRT_ColumnDef<any>[]) => {
   return columns.reduce((acc, cur: any, index) => {
     if (!cur) {
       return acc;

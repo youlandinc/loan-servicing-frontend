@@ -1,4 +1,4 @@
-import { cast, SnapshotOut, types } from 'mobx-state-tree';
+import { cast, detach, SnapshotOut, types } from 'mobx-state-tree';
 
 import { ColumnPiningDirectionEnum } from '@/types/enum';
 
@@ -35,6 +35,7 @@ export const allLoansModel = types
   })
   .actions((self) => ({
     updateOrderColumns(columns: IOrderColumnsItem[]) {
+      detach(self.orderColumns);
       self.orderColumns = cast(columns);
     },
     updatePinLeftColumns(columns: string[]) {

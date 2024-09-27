@@ -341,7 +341,7 @@ export const transferOrderColumns = (
     headerName: item.header,
     columnWidth: item.size,
     sort: index,
-    visibility: item.visibility,
+    visibility: item.visibility ?? true,
     pinType: 'CENTER' as ColumnPiningDirectionEnum,
     leftOrder: null,
   }));

@@ -7,24 +7,33 @@ import { useMst } from '@/models/Root';
 import { useDebounceFn } from '@/hooks';
 
 import { StyledSearchTextFieldInput } from '@/components/atoms';
+import {
+  combineColumns,
+  GridMoreIconButton,
+  transferOrderColumns,
+  YOULAND_COLUMNS,
+} from '@/components/molecules';
+import { IOrderColumnsItem } from '@/models/gridModel';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const GridYoulandToolbar: FC = observer(() => {
   const {
-    portfolio: { youlandGridModel },
+    portfolio: {
+      youlandGridModel: { updateOrderColumns, queryModel, orderColumns },
+    },
   } = useMst();
 
   const keywordRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    youlandGridModel.queryModel.updateQueryCondition,
+    queryModel.updateQueryCondition,
     500,
   );
 
   useEffect(
     () => {
       if (keywordRef.current) {
-        keywordRef.current.value =
-          youlandGridModel.queryModel.searchCondition.keyword;
+        keywordRef.current.value = queryModel.searchCondition.keyword;
       }
 
       return () => {
@@ -47,6 +56,18 @@ export const GridYoulandToolbar: FC = observer(() => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+
+      <GridMoreIconButton
+        columns={
+          transferOrderColumns(
+            combineColumns(YOULAND_COLUMNS(), orderColumns),
+          ) as IOrderColumnsItem[]
+        }
+        gridType={PortfolioGridTypeEnum.YOULAND}
+        handleSave={(columns) => {
+          updateOrderColumns(columns);
+        }}
       />
     </Stack>
   );

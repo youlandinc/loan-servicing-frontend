@@ -100,11 +100,10 @@ export const DelinquentGridToolBar: FC = () => {
         />
       )}
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            combineColumns(delinquentColumns, delinquentGridModel.orderColumns),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(
+          delinquentColumns,
+          delinquentGridModel.orderColumns,
+        )}
         gridType={PortfolioGridTypeEnum.DELINQUENT}
         handleSave={(columns) => {
           delinquentGridModel.updateOrderColumns(columns);

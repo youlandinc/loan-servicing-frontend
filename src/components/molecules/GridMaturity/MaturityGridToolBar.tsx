@@ -105,17 +105,13 @@ export const MaturityGridToolBar: FC = observer(() => {
         />
       )}
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            combineColumns(
-              maturityColumns(
-                maturityGridModel.queryModel.searchCondition
-                  .maturityDays as MaturityTimeRangeEnum,
-              ),
-              maturityGridModel.orderColumns,
-            ),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(
+          maturityColumns(
+            maturityGridModel.queryModel.searchCondition
+              .maturityDays as MaturityTimeRangeEnum,
+          ),
+          maturityGridModel.orderColumns,
+        )}
         gridType={PortfolioGridTypeEnum.MATURITY}
         handleSave={(columns) => {
           maturityGridModel.updateOrderColumns(columns);

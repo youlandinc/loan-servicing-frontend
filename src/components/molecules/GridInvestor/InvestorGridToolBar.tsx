@@ -143,11 +143,7 @@ export const InvestorGridToolBar: FC = observer(() => {
         />
       )}
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            combineColumns(commonColumns, investorGridModel.orderColumns),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(commonColumns, investorGridModel.orderColumns)}
         gridType={PortfolioGridTypeEnum.BY_INVESTOR}
         handleSave={(columns) => {
           investorGridModel.updateOrderColumns(columns);

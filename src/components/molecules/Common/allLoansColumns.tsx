@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -72,17 +72,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue || ''}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue || '—'}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {renderedCellValue || '—'}
+        </Typography>
       );
     },
   },
@@ -99,17 +97,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue || ''}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue || '—'}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {renderedCellValue || '—'}
+        </Typography>
       );
     },
   },
@@ -126,17 +122,17 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          <Tooltip title={renderedCellValue}>
+            <Box component={'span'}>{renderedCellValue}</Box>
+          </Tooltip>
+        </Typography>
       );
     },
   },

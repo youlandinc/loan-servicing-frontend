@@ -3,7 +3,7 @@ import React, { FC, useEffect, useRef } from 'react';
 
 import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
-  comBineColumns,
+  combineColumns,
   delinquentColumns,
   GridMoreIconButton,
   SortButton,
@@ -100,11 +100,10 @@ export const DelinquentGridToolBar: FC = () => {
         />
       )}
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            comBineColumns(delinquentColumns, delinquentGridModel.orderColumns),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(
+          delinquentColumns,
+          delinquentGridModel.orderColumns,
+        )}
         gridType={PortfolioGridTypeEnum.DELINQUENT}
         handleSave={(columns) => {
           delinquentGridModel.updateOrderColumns(columns);

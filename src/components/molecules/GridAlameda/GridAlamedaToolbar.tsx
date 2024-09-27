@@ -6,24 +6,31 @@ import { useMst } from '@/models/Root';
 import { StyledSearchTextFieldInput } from '@/components/atoms';
 import { observer } from 'mobx-react-lite';
 import { useDebounceFn } from '@/hooks';
+import {
+  combineColumns,
+  GridMoreIconButton,
+  YOULAND_COLUMNS,
+} from '@/components/molecules';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const GridAlamedaToolbar: FC = observer(() => {
   const {
-    portfolio: { alamedaGridModel },
+    portfolio: {
+      alamedaGridModel: { queryModel, orderColumns, updateOrderColumns },
+    },
   } = useMst();
 
   const keywordRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    alamedaGridModel.queryModel.updateQueryCondition,
+    queryModel.updateQueryCondition,
     500,
   );
 
   useEffect(
     () => {
       if (keywordRef.current) {
-        keywordRef.current.value =
-          alamedaGridModel.queryModel.searchCondition.keyword;
+        keywordRef.current.value = queryModel.searchCondition.keyword;
       }
 
       return () => {
@@ -46,6 +53,14 @@ export const GridAlamedaToolbar: FC = observer(() => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+
+      <GridMoreIconButton
+        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
+        gridType={PortfolioGridTypeEnum.YOULAND}
+        handleSave={(columns) => {
+          updateOrderColumns(columns);
+        }}
       />
     </Stack>
   );

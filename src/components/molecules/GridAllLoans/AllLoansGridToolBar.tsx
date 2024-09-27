@@ -1,8 +1,3 @@
-import { FC, useEffect, useRef } from 'react';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -10,19 +5,20 @@ import {
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
 import {
-  comBineColumns,
+  combineColumns,
   commonColumns,
   GridMoreIconButton,
   SortButton,
-  transferOrderColumns,
 } from '@/components/molecules';
-
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import { useMst } from '@/models/Root';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+import { FC, useEffect, useRef } from 'react';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -145,11 +141,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
       )}
 
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            comBineColumns(commonColumns, allLoansGridModel.orderColumns),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(commonColumns, allLoansGridModel.orderColumns)}
         gridType={PortfolioGridTypeEnum.ALL_LOANS}
         handleSave={(columns) => {
           allLoansGridModel.updateOrderColumns(columns);

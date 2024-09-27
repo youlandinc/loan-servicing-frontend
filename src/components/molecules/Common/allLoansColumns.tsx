@@ -333,13 +333,19 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   },
 ];
 
-export const transferOrderColumns = (columns: MRT_ColumnDef<any>[]) => {
+export const transferOrderColumns = (
+  columns: (MRT_ColumnDef<any> & {
+    sort: number;
+    visibility: boolean;
+    size: number;
+  })[],
+) => {
   return columns.map((item, index) => ({
     field: item.accessorKey as string,
     headerName: item.header,
     columnWidth: item.size,
     sort: index,
-    visibility: true,
+    visibility: item?.visibility ?? true,
     pinType: 'CENTER' as ColumnPiningDirectionEnum,
     leftOrder: null,
   }));
@@ -384,28 +390,41 @@ export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
     .map((item: IOrderColumnsItem) => item.field);
 };
 
-export const comBineColumns = (
+export const combineColumns = (
   defaultColumns: MRT_ColumnDef<any>[],
   configColumns: IOrderColumnsItem[],
-) => {
+): IOrderColumnsItem[] => {
   const result = configColumns?.length
     ? defaultColumns
         .map((item, index) => {
           const target = configColumns?.find(
             (j) => j.field === item.accessorKey,
           );
-          return {
-            ...item,
-            sort: target?.sort ?? 100 + index,
-            visibility: target?.visibility || true,
-            size: target?.columnWidth || item.size,
-          };
+          return target
+            ? target
+            : {
+                field: item.accessorKey as string,
+                headerName: item.header,
+                columnWidth: item.size as number,
+                sort: index,
+                visibility: true,
+                pinType: 'CENTER' as ColumnPiningDirectionEnum,
+                leftOrder: null,
+              };
         })
         .sort((a, b) => {
           return a.sort - b.sort;
         })
     : // .filter((item) => (item as any)?.visibility !== false)
-      defaultColumns;
+      defaultColumns.map((item, index) => ({
+        field: item.accessorKey as string,
+        headerName: item.header,
+        columnWidth: item.size as number,
+        sort: index,
+        visibility: true,
+        pinType: 'CENTER' as ColumnPiningDirectionEnum,
+        leftOrder: null,
+      }));
   return result;
   // eslint-disable-next-line react-hooks/exhaustive-deps
 };

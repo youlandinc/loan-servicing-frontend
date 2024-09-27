@@ -8,7 +8,7 @@ export const orderColumnsItem = types.model({
   columnWidth: types.maybeNull(types.number),
   field: types.string,
   headerName: types.string,
-  id: types.maybe(types.number),
+  // id: types.maybe(types.number),
   leftOrder: types.maybeNull(types.number),
   pinType: types.maybeNull(
     types.enumeration(Object.values(ColumnPiningDirectionEnum)),

@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC } from 'react';
+import React, { CSSProperties, FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
@@ -13,9 +13,10 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { PortfolioGridTypeEnum } from '@/types/enum';
-import { _fetchCashFlowTableData } from '@/request';
+import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
 
 import { GridCashFlowColumn, GridCashFlowFooter } from './index';
+import { useAsync } from 'react-use';
 
 export const GridCashFlow: FC = observer(() => {
   const {
@@ -52,6 +53,30 @@ export const GridCashFlow: FC = observer(() => {
     },
   );
 
+  useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
+      return;
+    }
+    const { data } = await _fetchInvestorData();
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.id,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, [displayType]);
+
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+
   const footerData = {
     totalItems: data?.data?.totalItems,
     totalLoanAmount: data?.data?.totalLoanAmount,
@@ -60,7 +85,7 @@ export const GridCashFlow: FC = observer(() => {
   };
 
   const table = useMaterialReactTable({
-    columns: GridCashFlowColumn(async () => await mutate()),
+    columns: GridCashFlowColumn(async () => await mutate(), investorData),
     data: data?.data?.content || [],
     //rowCount,
     enableExpandAll: true, //hide expand all double arrow in column header
@@ -236,6 +261,10 @@ export const GridCashFlow: FC = observer(() => {
         sx: {
           '& .MuiTableCell-root': {
             borderBottom: row.getIsExpanded() ? '1px solid #EDF1FF' : 'none',
+          },
+          '& td': {
+            py: 0,
+            height: 40,
           },
           '&:hover': {
             '& td:nth-of-type(2)': {

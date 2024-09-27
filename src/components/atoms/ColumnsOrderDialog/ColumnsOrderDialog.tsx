@@ -7,7 +7,7 @@ import {
   Draggable,
   Droppable,
   DropResult,
-} from 'react-beautiful-dnd';
+} from '@hello-pangea/dnd';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 
 import {

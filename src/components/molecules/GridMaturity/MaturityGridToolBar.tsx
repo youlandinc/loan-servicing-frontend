@@ -4,7 +4,7 @@ import React, { FC, useEffect, useRef } from 'react';
 
 import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
-  comBineColumns,
+  combineColumns,
   GridMoreIconButton,
   maturityColumns,
   SortButton,
@@ -105,17 +105,13 @@ export const MaturityGridToolBar: FC = observer(() => {
         />
       )}
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            comBineColumns(
-              maturityColumns(
-                maturityGridModel.queryModel.searchCondition
-                  .maturityDays as MaturityTimeRangeEnum,
-              ),
-              maturityGridModel.orderColumns,
-            ),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(
+          maturityColumns(
+            maturityGridModel.queryModel.searchCondition
+              .maturityDays as MaturityTimeRangeEnum,
+          ),
+          maturityGridModel.orderColumns,
+        )}
         gridType={PortfolioGridTypeEnum.MATURITY}
         handleSave={(columns) => {
           maturityGridModel.updateOrderColumns(columns);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Tooltip, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { useSnackbar } from 'notistack';
 import { MRT_ColumnDef } from 'material-react-table';
@@ -195,15 +195,17 @@ export const ALAMEDA_COLUMNS = (
       size: 300,
       Cell: ({ renderedCellValue }) => {
         return (
-          <Typography
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-            variant={'body3'}
-          >
-            {renderedCellValue ? renderedCellValue : '-'}
-          </Typography>
+          <Tooltip title={renderedCellValue ? renderedCellValue : '-'}>
+            <Typography
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+              }}
+              variant={'body3'}
+            >
+              {renderedCellValue ? renderedCellValue : '-'}
+            </Typography>
+          </Tooltip>
         );
       },
     },

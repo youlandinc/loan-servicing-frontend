@@ -55,8 +55,8 @@ export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
         gridType={gridType}
         handleSave={(columns) => {
           handleSave?.(columns);
-          setAnchorEl(null);
           close();
+          setAnchorEl(null);
         }}
         onClose={() => {
           close();

@@ -57,7 +57,7 @@ export const GridAlamedaToolbar: FC = observer(() => {
 
       <GridMoreIconButton
         columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
-        gridType={PortfolioGridTypeEnum.YOULAND}
+        gridType={PortfolioGridTypeEnum.ALAMEDA}
         handleSave={(columns) => {
           updateOrderColumns(columns);
         }}

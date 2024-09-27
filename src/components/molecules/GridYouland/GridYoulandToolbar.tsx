@@ -10,10 +10,8 @@ import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
   combineColumns,
   GridMoreIconButton,
-  transferOrderColumns,
   YOULAND_COLUMNS,
 } from '@/components/molecules';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const GridYoulandToolbar: FC = observer(() => {
@@ -59,9 +57,7 @@ export const GridYoulandToolbar: FC = observer(() => {
       />
 
       <GridMoreIconButton
-        columns={transferOrderColumns(
-          combineColumns(YOULAND_COLUMNS(), orderColumns),
-        )}
+        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
         gridType={PortfolioGridTypeEnum.YOULAND}
         handleSave={(columns) => {
           updateOrderColumns(columns);

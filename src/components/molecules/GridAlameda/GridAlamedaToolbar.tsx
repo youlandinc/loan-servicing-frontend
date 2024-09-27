@@ -9,10 +9,8 @@ import { useDebounceFn } from '@/hooks';
 import {
   combineColumns,
   GridMoreIconButton,
-  transferOrderColumns,
   YOULAND_COLUMNS,
 } from '@/components/molecules';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const GridAlamedaToolbar: FC = observer(() => {
@@ -58,11 +56,7 @@ export const GridAlamedaToolbar: FC = observer(() => {
       />
 
       <GridMoreIconButton
-        columns={
-          transferOrderColumns(
-            combineColumns(YOULAND_COLUMNS(), orderColumns),
-          ) as IOrderColumnsItem[]
-        }
+        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
         gridType={PortfolioGridTypeEnum.YOULAND}
         handleSave={(columns) => {
           updateOrderColumns(columns);

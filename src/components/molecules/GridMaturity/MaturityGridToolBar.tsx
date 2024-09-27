@@ -4,7 +4,7 @@ import React, { FC, useEffect, useRef } from 'react';
 
 import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
-  comBineColumns,
+  combineColumns,
   GridMoreIconButton,
   maturityColumns,
   SortButton,
@@ -107,7 +107,7 @@ export const MaturityGridToolBar: FC = observer(() => {
       <GridMoreIconButton
         columns={
           transferOrderColumns(
-            comBineColumns(
+            combineColumns(
               maturityColumns(
                 maturityGridModel.queryModel.searchCondition
                   .maturityDays as MaturityTimeRangeEnum,

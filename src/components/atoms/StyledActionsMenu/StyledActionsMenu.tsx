@@ -14,7 +14,7 @@ import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 
 interface ActionMenuProps {
   label: ReactNode;
-  icon?: IconProps['component'];
+  icon?: React.ElementType;
   path?: string;
   handleClick?: (event?: unknown) => void;
   hidden?: boolean;

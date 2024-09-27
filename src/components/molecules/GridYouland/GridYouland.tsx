@@ -235,7 +235,7 @@ export const GridYouland: FC = observer(() => {
         '& td': {
           height: 40,
           borderRight: '1px solid',
-          borderColor: '#D2D6E1',
+          borderColor: '#edf1ff',
           py: 0,
           '&:last-of-type': {
             borderRight: 'none',
@@ -247,7 +247,7 @@ export const GridYouland: FC = observer(() => {
           },
         },
         '&:first-of-type': {
-          borderTop: '1px solid #D2D6E1',
+          borderTop: '1px solid #edf1ff',
         },
       },
     },

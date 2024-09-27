@@ -69,7 +69,7 @@ export const GridCashFlowColumn = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-1.75}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -202,11 +202,12 @@ export const GridCashFlowColumn = (
       },
     },
     {
-      header: 'Est sale date',
+      header: 'Est. sale date',
       accessorKey: 'estSaleDate',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 140,
+      minSize: 140,
       Cell: ({ renderedCellValue, row }) => {
         const { enqueueSnackbar } = useSnackbar();
         const { visible, close, open } = useSwitch(false);
@@ -319,7 +320,7 @@ export const GridCashFlowColumn = (
                   </StyledButton>
                 </Stack>
               }
-              header={'Confirm sale date'}
+              header={'Est. sale date'}
               onClose={(e: MouseEvent) => {
                 e.preventDefault();
                 e.stopPropagation();

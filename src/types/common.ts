@@ -62,7 +62,7 @@ export interface SetColumnOrderedParam {
     headerName: string;
     sort: number;
     visibility: boolean;
-    id: number;
+    // id: number;
   }[];
 }
 

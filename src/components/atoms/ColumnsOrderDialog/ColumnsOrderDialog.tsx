@@ -81,7 +81,6 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
       return {
         field: item.field,
         headerName: item.headerName,
-        id: item.id as number,
         visibility: item.visibility,
         sort: index,
       };

@@ -334,14 +334,18 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
 ];
 
 export const transferOrderColumns = (
-  columns: (MRT_ColumnDef<any> & { visibility: boolean })[],
+  columns: (MRT_ColumnDef<any> & {
+    sort: number;
+    visibility: boolean;
+    size: number;
+  })[],
 ) => {
   return columns.map((item, index) => ({
     field: item.accessorKey as string,
     headerName: item.header,
     columnWidth: item.size,
     sort: index,
-    visibility: item.visibility,
+    visibility: item?.visibility ?? true,
     pinType: 'CENTER' as ColumnPiningDirectionEnum,
     leftOrder: null,
   }));
@@ -389,7 +393,11 @@ export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
 export const combineColumns = (
   defaultColumns: MRT_ColumnDef<any>[],
   configColumns: IOrderColumnsItem[],
-) => {
+): (MRT_ColumnDef<any> & {
+  sort: number;
+  visibility: boolean;
+  size: number;
+})[] => {
   const result = configColumns?.length
     ? defaultColumns
         .map((item, index) => {
@@ -400,14 +408,19 @@ export const combineColumns = (
             ...item,
             sort: target?.sort ?? 100 + index,
             visibility: target?.visibility ?? true,
-            size: target?.columnWidth || item.size,
+            size: (target?.columnWidth ?? item.size) as number,
           };
         })
         .sort((a, b) => {
           return a.sort - b.sort;
         })
     : // .filter((item) => (item as any)?.visibility !== false)
-      defaultColumns;
+      defaultColumns.map((item, index) => ({
+        ...item,
+        visibility: true,
+        size: item.size ?? 100,
+        sort: index,
+      }));
   return result;
   // eslint-disable-next-line react-hooks/exhaustive-deps
 };

@@ -7,24 +7,31 @@ import { useMst } from '@/models/Root';
 import { useDebounceFn } from '@/hooks';
 
 import { StyledSearchTextFieldInput } from '@/components/atoms';
+import {
+  combineColumns,
+  GridMoreIconButton,
+  YOULAND_COLUMNS,
+} from '@/components/molecules';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 export const GridCashFlowToolbar: FC = observer(() => {
   const {
-    portfolio: { cashFlowGridModel },
+    portfolio: {
+      cashFlowGridModel: { queryModel, orderColumns, updateOrderColumns },
+    },
   } = useMst();
 
   const keywordRef = useRef<HTMLInputElement | null>(null);
 
   const [, , updateQueryDebounce] = useDebounceFn(
-    cashFlowGridModel.queryModel.updateQueryCondition,
+    queryModel.updateQueryCondition,
     500,
   );
 
   useEffect(
     () => {
       if (keywordRef.current) {
-        keywordRef.current.value =
-          cashFlowGridModel.queryModel.searchCondition.keyword;
+        keywordRef.current.value = queryModel.searchCondition.keyword;
       }
 
       return () => {
@@ -47,6 +54,14 @@ export const GridCashFlowToolbar: FC = observer(() => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+
+      <GridMoreIconButton
+        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
+        gridType={PortfolioGridTypeEnum.CASH_FLOW}
+        handleSave={(columns) => {
+          updateOrderColumns(columns);
+        }}
       />
     </Stack>
   );

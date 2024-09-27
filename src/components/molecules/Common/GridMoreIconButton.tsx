@@ -43,7 +43,7 @@ export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
         menus={[
           {
             label: 'Edit columns',
-            icon: <VerticalSplitIcon />,
+            icon: VerticalSplitIcon,
             handleClick: open,
           },
         ]}
@@ -55,8 +55,8 @@ export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
         gridType={gridType}
         handleSave={(columns) => {
           handleSave?.(columns);
-          setAnchorEl(null);
           close();
+          setAnchorEl(null);
         }}
         onClose={() => {
           close();

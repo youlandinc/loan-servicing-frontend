@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useState } from 'react';
+import React, { CSSProperties, FC, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
@@ -15,8 +15,17 @@ import { useMst } from '@/models/Root';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
 
-import { GridCashFlowColumn, GridCashFlowFooter } from './index';
+import {
+  CASH_FLOW_COLUMNS,
+  GridCashFlowFooter,
+  reduceCashFlowColumn,
+} from './index';
 import { useAsync } from 'react-use';
+import {
+  resortColumns,
+  transferOrderColumnsKeys,
+  YOULAND_COLUMNS,
+} from '@/components/molecules';
 
 export const GridCashFlow: FC = observer(() => {
   const {
@@ -27,6 +36,30 @@ export const GridCashFlow: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
+
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+
+  useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
+      return;
+    }
+    const { data } = await _fetchInvestorData();
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.id,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, [displayType]);
 
   const { data, isLoading, mutate } = useSWR(
     displayType === PortfolioGridTypeEnum.CASH_FLOW
@@ -53,30 +86,6 @@ export const GridCashFlow: FC = observer(() => {
     },
   );
 
-  useAsync(async () => {
-    if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
-      return;
-    }
-    const { data } = await _fetchInvestorData();
-    const temp = data.reduce(
-      (acc, cur) => {
-        acc.push({
-          label: cur.investorName,
-          value: cur.id,
-          key: cur.id,
-          bgColor: '',
-        });
-        return acc;
-      },
-      [] as Array<Option & { bgColor: string }>,
-    );
-    setInvestorData(temp);
-  }, [displayType]);
-
-  const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
-  >([]);
-
   const footerData = {
     totalItems: data?.data?.totalItems,
     totalLoanAmount: data?.data?.totalLoanAmount,
@@ -84,8 +93,29 @@ export const GridCashFlow: FC = observer(() => {
     weightedAverageSheet: data?.data?.weightedAverageSheet,
   };
 
+  const configColumnsOrderKeysArr = orderColumns?.length
+    ? transferOrderColumnsKeys(orderColumns)
+    : [];
+
+  const configColumns = useMemo(() => {
+    return orderColumns.length
+      ? reduceCashFlowColumn(
+          resortColumns(
+            orderColumns,
+            CASH_FLOW_COLUMNS(async () => await mutate(), investorData),
+          ),
+        )
+      : reduceCashFlowColumn(
+          resortColumns(
+            orderColumns,
+            CASH_FLOW_COLUMNS(async () => await mutate(), investorData),
+          ),
+        );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [configColumnsOrderKeysArr.join('')]);
+
   const table = useMaterialReactTable({
-    columns: GridCashFlowColumn(async () => await mutate(), investorData),
+    columns: configColumns,
     data: data?.data?.content || [],
     //rowCount,
     enableExpandAll: true, //hide expand all double arrow in column header

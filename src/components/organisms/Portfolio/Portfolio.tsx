@@ -344,9 +344,12 @@ export const Portfolio: FC = observer(() => {
                     sx={{
                       width: 16,
                       height: 16,
+                      '& path': {
+                        fill: '#5B76BC',
+                      },
                     }}
                   />
-                  <Typography color={"    color: 'primary',"} variant={'body2'}>
+                  <Typography color={'primary'} variant={'body2'}>
                     {menus.find((item) => item.key === portfolioListType)
                       ?.label || menus[0].label}
                   </Typography>
@@ -419,6 +422,8 @@ export const Portfolio: FC = observer(() => {
         open={Boolean(anchor)}
         sx={{
           '& .Mui-selected': {
+            color: '#5B76BC',
+            bgcolor: 'rgba(54, 94, 198, 0.08)',
             'svg path': {
               fill: '#5B76BC',
             },

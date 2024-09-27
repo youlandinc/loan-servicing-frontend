@@ -333,13 +333,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
   },
 ];
 
-export const transferOrderColumns = (columns: MRT_ColumnDef<any>[]) => {
+export const transferOrderColumns = (
+  columns: (MRT_ColumnDef<any> & { visibility: boolean })[],
+) => {
   return columns.map((item, index) => ({
     field: item.accessorKey as string,
     headerName: item.header,
     columnWidth: item.size,
     sort: index,
-    visibility: true,
+    visibility: item.visibility,
     pinType: 'CENTER' as ColumnPiningDirectionEnum,
     leftOrder: null,
   }));
@@ -384,7 +386,7 @@ export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
     .map((item: IOrderColumnsItem) => item.field);
 };
 
-export const comBineColumns = (
+export const combineColumns = (
   defaultColumns: MRT_ColumnDef<any>[],
   configColumns: IOrderColumnsItem[],
 ) => {
@@ -397,7 +399,7 @@ export const comBineColumns = (
           return {
             ...item,
             sort: target?.sort ?? 100 + index,
-            visibility: target?.visibility || true,
+            visibility: target?.visibility ?? true,
             size: target?.columnWidth || item.size,
           };
         })

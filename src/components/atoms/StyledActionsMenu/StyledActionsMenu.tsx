@@ -22,6 +22,7 @@ interface ActionMenuProps {
   disabled?: boolean;
   loading?: boolean;
   isSelected?: boolean;
+  iconSx?: SxProps;
 }
 
 export interface StyledActionsMenuProps extends MenuProps {
@@ -33,6 +34,7 @@ export const StyledActionsMenu: FC<StyledActionsMenuProps> = ({
   menus,
   sx,
   paperSx,
+
   ...rest
 }) => {
   return (
@@ -68,7 +70,12 @@ export const StyledActionsMenu: FC<StyledActionsMenuProps> = ({
           sx={{ p: '14px 12px' }}
         >
           <Stack alignItems={'center'} direction={'row'} gap={1.25}>
-            {item?.icon && <Icon component={item.icon} />}
+            {item?.icon && (
+              <Icon
+                component={item.icon}
+                sx={{ width: 20, height: 20, ...item?.iconSx }}
+              />
+            )}
             <Typography component={'div'} variant={'body2'}>
               {item.label}
             </Typography>

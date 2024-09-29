@@ -173,7 +173,6 @@ export const AllLoansGrid: FC = observer(() => {
         '& .MuiTableRow-head': {
           boxShadow: 'none',
         },
-
         '& .Mui-TableHeadCell-Content-Wrapper': {
           fontWeight: 600,
           fontSize: 12,
@@ -213,7 +212,6 @@ export const AllLoansGrid: FC = observer(() => {
         '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
           mr: '-8px',
         },
-
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },

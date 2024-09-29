@@ -135,7 +135,7 @@ export const AllLoansGrid: FC = observer(() => {
           height: 32,
           borderRight: '1px solid',
           borderBottom: '1px solid',
-          borderColor: '#D2D6E1',
+          borderColor: '#EDF1FF',
           '&:last-of-type': {
             borderRight: 'none',
           },

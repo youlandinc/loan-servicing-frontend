@@ -161,7 +161,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       return {
         sx: {
           '& .MuiTableCell-root:last-child': {
-            borderColor: '#D2D6E1 !important',
+            borderColor: '#EDF1FF !important',
             borderBottom:
               row.original.servicingLoans && !row.getIsExpanded()
                 ? 'none'
@@ -190,7 +190,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
           height: '32px',
           bgcolor: 'transparent',
           borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
-          borderColor: '#D2D6E1 !important',
+          borderColor: '#EDF1FF !important',
           overflow: 'visible',
           '&:first-of-type': {
             p: 0,

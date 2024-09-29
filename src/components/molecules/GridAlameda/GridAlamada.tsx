@@ -79,7 +79,7 @@ export const GridAlameda: FC = observer(() => {
       (acc, cur) => {
         acc.push({
           label: cur.investorName,
-          value: cur.id,
+          value: cur.investorName,
           key: cur.id,
           bgColor: '',
         });
@@ -87,6 +87,12 @@ export const GridAlameda: FC = observer(() => {
       },
       [] as Array<Option & { bgColor: string }>,
     );
+    temp.unshift({
+      label: 'None',
+      value: 'None',
+      key: NaN,
+      bgColor: '',
+    });
     setInvestorData(temp);
   }, [displayType]);
 

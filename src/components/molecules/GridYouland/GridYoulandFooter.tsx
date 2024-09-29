@@ -6,6 +6,7 @@ import {
   GridYoulandSummaryProps,
   ResponseGridYoulandTable,
 } from '@/types/pipeline/youland';
+import { useBreakpoints } from '@/hooks';
 
 interface GridYoulandFooterProps {
   footerData: GridYoulandSummaryProps;
@@ -20,6 +21,8 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
   onPageSizeChange,
   onPageChange,
 }) => {
+  const breakpoint = useBreakpoints();
+
   return (
     <Stack
       alignItems={'center'}
@@ -29,17 +32,33 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
       px={4}
     >
       <Stack flexDirection={'row'} gap={3}>
-        <Typography variant={'subtitle2'}>
+        <Typography
+          variant={
+            ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+          }
+        >
           Total amount: {utils.formatDollar(footerData.totalLoanAmount)}
         </Typography>
-        <Typography variant={'subtitle2'}>
+        <Typography
+          variant={
+            ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+          }
+        >
           Number of loans: {footerData.totalItems}
         </Typography>
-        <Typography variant={'subtitle2'}>
+        <Typography
+          variant={
+            ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+          }
+        >
           Weighted average note sheet:{' '}
           {utils.formatPercent(footerData.weightedAverageSheet, 2)}
         </Typography>
-        <Typography variant={'subtitle2'}>
+        <Typography
+          variant={
+            ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+          }
+        >
           Weighted average margin:{' '}
           {utils.formatPercent(footerData.weightedAverageMargin, 2)}
         </Typography>
@@ -114,6 +133,8 @@ export const GridYoulandFooter: FC<GridYoulandFooterProps> = ({
           }}
           page={page.number + 1}
           shape={'circular'}
+          siblingCount={0}
+          size={'small'}
           sx={{
             fontSize: 14,
             '& .MuiPaginationItem-previousNext': {

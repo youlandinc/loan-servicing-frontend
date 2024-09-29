@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import {
   CircularProgress,
   Icon,
@@ -44,6 +44,10 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
     setTarget(null);
   };
 
+  const condition = useMemo(() => {
+    return status && status !== 'None';
+  }, [status]);
+
   return (
     <>
       <Stack
@@ -59,15 +63,15 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
           setTarget(e.currentTarget);
         }}
         sx={{
-          bgcolor: status
+          bgcolor: condition
             ? options.find((item) => item.label === status)?.bgColor ||
               'hsla(223, 45%, 72%, .2)'
             : 'transparent',
-          color: status
+          color: condition
             ? options.find((item) => item.label === status)?.bgColor ||
               'hsla(223, 45%, 72%, 1)'
             : '#2B52B6',
-          textDecoration: status ? 'none' : 'underline',
+          textDecoration: condition ? 'none' : 'underline',
           textDecorationColor: '#2B52B6',
           cursor: 'pointer',
         }}
@@ -75,7 +79,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
       >
         <Typography
           color={
-            status
+            condition
               ? options.find((item) => item.label === status)?.bgColor ||
                 'hsla(223, 45%, 72%, 1)'
               : '#2B52B6'
@@ -89,11 +93,11 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
           variant={'subtitle3'}
           width={76}
         >
-          {status
+          {condition
             ? options.find((item) => item.label === status)?.label || status
             : 'Add'}
         </Typography>
-        {status && (
+        {condition && (
           <Icon
             component={LOGO_EXPEND_MORE}
             sx={{
@@ -162,7 +166,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
               };
               if (paramsKey === 'prospectiveBuyer') {
                 Object.assign(postData, {
-                  prospectiveBuyer: item.label,
+                  prospectiveBuyer: item.value,
                   prospectiveBuyerId: item.key,
                 });
               }

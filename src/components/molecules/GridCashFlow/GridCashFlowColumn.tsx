@@ -460,7 +460,7 @@ export const CASH_FLOW_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();

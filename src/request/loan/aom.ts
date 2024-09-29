@@ -12,5 +12,7 @@ export const _creatAomPdf = (param: CreateAomPdfParam) => {
 };
 
 export const _getAomInvestorList = () => {
-  return get<{ id: number; investorName: string }[]>('/servicing/investor');
+  return post<{ id: number; investorName: string }[]>('/servicing/investor', {
+    investorName: 'YOULAND',
+  });
 };

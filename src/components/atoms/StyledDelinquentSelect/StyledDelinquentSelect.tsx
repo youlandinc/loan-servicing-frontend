@@ -71,6 +71,9 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
 
   return (
     <StyledButton
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
       size={'small'}
       sx={{
         position: 'relative',
@@ -139,7 +142,8 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
         onClose={() => {
           close();
         }}
-        onOpen={async () => {
+        onOpen={async (e) => {
+          e.stopPropagation();
           if (portfolioListType === PortfolioGridTypeEnum.DELINQUENT) {
             await getDelinquentRangeOpt();
             open();

@@ -30,33 +30,6 @@ export const DelinquentGridToolBar: FC = () => {
     500,
   );
 
-  // const [state, getDelinquentRangeOpt] = useAsyncFn(async () => {
-  //   return await _getDelinquentRangeOpt().then((res) => {
-  //     if (res.data) {
-  //       setOpts(
-  //         DelinquentTimeRangeOpt.map((item) => ({
-  //           ...item,
-  //           label: (
-  //             <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-  //               <Typography variant={'body2'}>{item.label}</Typography>
-  //               <Typography
-  //                 bgcolor={'#95A8D7'}
-  //                 borderRadius={1}
-  //                 color={'#fff'}
-  //                 px={0.5}
-  //                 variant={'subtitle3'}
-  //               >
-  //                 {res.data[item.value] || 0}
-  //               </Typography>
-  //             </Stack>
-  //           ),
-  //         })),
-  //       );
-  //     }
-  //     return res;
-  //   });
-  // }, []);
-
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
@@ -109,83 +82,6 @@ export const DelinquentGridToolBar: FC = () => {
           delinquentGridModel.updateOrderColumns(columns);
         }}
       />
-      {/*<StyledButton
-        size={'small'}
-        sx={{
-          position: 'relative',
-          fontSize: '14px !important',
-          fontWeight: '400 !important',
-        }}
-        variant={'text'}
-      >
-        <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-          Delinquent:
-          <Typography variant={'body2'}>
-            {
-              DelinquentTimeRangeOpt.find(
-                (item) =>
-                  item.value ===
-                  delinquentGridModel.queryModel.searchCondition.delinquentDays,
-              )?.label
-            }
-          </Typography>
-          <Typography
-            bgcolor={'#95A8D7'}
-            borderRadius={1}
-            color={'#fff'}
-            px={0.5}
-            variant={'subtitle3'}
-          >
-            {state.value?.data?.[
-              delinquentGridModel.queryModel.searchCondition
-                .delinquentDays as DelinquentTimeRangeEnum
-            ] || 0}
-          </Typography>
-          {state.loading ? (
-            <CircularProgress color="inherit" size={12} />
-          ) : (
-            <KeyboardArrowDownIcon
-              sx={{
-                fontSize: 12,
-                right: 0,
-              }}
-            />
-          )}
-        </Stack>
-        <StyledSelect
-          onChange={(e) => {
-            delinquentGridModel.queryModel.updateQueryCondition(
-              'delinquentDays',
-              e.target.value as DelinquentTimeRangeEnum,
-            );
-          }}
-          onClose={() => {
-            close();
-          }}
-          onOpen={async () => {
-            await getDelinquentRangeOpt();
-            open();
-          }}
-          open={visible}
-          options={opts}
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0,
-            '& .MuiSelect-outlined': {
-              padding: '0 !important',
-              height: '100%',
-            },
-            '& .MuiInputBase-root': {
-              height: '100%',
-            },
-          }}
-          value={delinquentGridModel.queryModel.searchCondition.delinquentDays}
-        />
-      </StyledButton>*/}
     </Stack>
   );
 };

@@ -300,7 +300,11 @@ export const Portfolio: FC = observer(() => {
                           },
                         }}
                       />
-                      <Typography color={'action.active'} variant={'body2'}>
+                      <Typography
+                        color={'action.active'}
+                        component={'div'}
+                        variant={'body2'}
+                      >
                         {item.label}
                       </Typography>
                     </Stack>
@@ -308,7 +312,9 @@ export const Portfolio: FC = observer(() => {
                 ))}
               </Stack>
               <StyledButton
+                component={'div'}
                 onClick={(e) => {
+                  e.stopPropagation();
                   setAnchor(e.currentTarget);
                 }}
                 size={'small'}

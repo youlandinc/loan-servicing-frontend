@@ -132,7 +132,7 @@ export const AllLoansGrid: FC = observer(() => {
         },
         boxShadow: 'none',
         '& td': {
-          height: 40,
+          height: 32,
           borderRight: '1px solid',
           borderBottom: '1px solid',
           borderColor: '#D2D6E1',
@@ -149,8 +149,8 @@ export const AllLoansGrid: FC = observer(() => {
     },
     muiTableBodyCellProps: ({ row: { original } }) => ({
       sx: {
-        px: 1.5,
-        py: 1.5,
+        px: 1,
+        py: 0,
         borderBottom: 'none',
       },
       onClick: async () => {

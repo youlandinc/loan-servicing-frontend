@@ -14,7 +14,6 @@ import {
   StyledSelect,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-import { Layout, SideMenu } from '@/components/molecules';
 import { ExtensionPaidTypeOpt, MATURITY_DATE } from '@/constant';
 
 import { useRenderPdf, useSwitch } from '@/hooks';
@@ -290,6 +289,7 @@ export const LoanExtensionRequest: FC = () => {
                     await viewExtensionPdf();
                   }}
                   sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  width={'fit-content'}
                 >
                   Extension agreement -{' '}
                   {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
@@ -417,6 +417,6 @@ export const LoanExtensionRequest: FC = () => {
           }}
         />
       </Box>
-    </Fade >
+    </Fade>
   );
 };

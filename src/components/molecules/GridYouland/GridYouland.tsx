@@ -6,6 +6,7 @@ import {
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
+import { enqueueSnackbar } from 'notistack';
 import useSWR from 'swr';
 
 import { observer } from 'mobx-react-lite';
@@ -26,7 +27,6 @@ import {
   UpdateColumnPiningParamType,
 } from '@/types/common';
 import { _setColumnPining, _setColumnWidth } from '@/request/common';
-import { enqueueSnackbar } from 'notistack';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 
 export const GridYouland: FC = observer(() => {

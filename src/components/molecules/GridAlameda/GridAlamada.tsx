@@ -6,13 +6,11 @@ import {
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
+import { enqueueSnackbar } from 'notistack';
 import useSWR from 'swr';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 
 import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 import {
@@ -21,13 +19,15 @@ import {
   resortColumns,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
+
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import {
   SetColumnWidthParam,
   UpdateColumnPiningParamType,
 } from '@/types/common';
+import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 import { _setColumnPining, _setColumnWidth } from '@/request/common';
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { enqueueSnackbar } from 'notistack';
 
 export const GridAlameda: FC = observer(() => {
   const {

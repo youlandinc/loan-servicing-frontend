@@ -69,6 +69,9 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
 
     return (
       <StyledButton
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
         size={'small'}
         sx={{
           position: 'relative',

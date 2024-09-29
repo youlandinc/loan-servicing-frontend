@@ -121,6 +121,8 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         width: 20,
         height: 20,
         padding: 0,
+        px: 1.5,
+        m: 0,
       },
       title: '',
     }),
@@ -167,7 +169,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           },
           '& .MuiTableCell-root:first-of-type': {
-            width: 40,
+            width: 'auto',
             minWidth: 40,
             border: 'none',
           },
@@ -178,14 +180,22 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     muiTableBodyCellProps: ({ row }) => {
       return {
         sx: {
-          px: 1.5,
-          py: 1.5,
+          px: 1,
+          py: 0,
+          height: '32px',
           bgcolor: 'transparent',
           borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           borderColor: '#D2D6E1 !important',
           overflow: 'visible',
-          '&:first-of-type button': {
-            visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+          '&:first-of-type': {
+            p: 0,
+            '& button': {
+              px: 1.5,
+              py: 0,
+              visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+              width: 'auto',
+              height: 'auto',
+            },
           },
           borderBottom:
             row.original.servicingLoans && !row.getIsExpanded()
@@ -226,10 +236,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         '& .MuiTableCell-root:last-child': {
           bgcolor: '#F4F6FA',
         },
-        '& .MuiTableCell-root:first-of-type': {
-          width: 40,
-          minWidth: 40,
-        },
       },
     },
     muiTableHeadCellProps: (props) => ({
@@ -268,6 +274,19 @@ export const GroupLoans: FC<GroupLoansProps> = ({
           borderWidth: '1px',
           height: 16,
         },
+        '&:first-of-type': {
+          width: 'auto',
+          minWidth: 40,
+          p: 0,
+          '& button': {
+            height: 'auto',
+            px: 1.5,
+            py: 1.25,
+            width: 'auto',
+            minWidth: 'auto',
+            // height
+          },
+        },
       },
       onClick: (e) => {
         e.stopPropagation();
@@ -287,6 +306,12 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     },
     muiExpandAllButtonProps: (props) => {
       return {
+        sx: {
+          m: 0,
+          p: 0,
+          px: 1.5,
+          width: 'auto',
+        },
         title: '',
         onClick: () => {
           props.table.toggleAllRowsExpanded();

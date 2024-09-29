@@ -1,8 +1,11 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
 import { Icon, Stack, SxProps, Typography } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { enqueueSnackbar } from 'notistack';
+import { FC, ReactNode, useState } from 'react';
+import useSWR from 'swr';
 
 import { StyledButton, StyledSelectMultiple } from '@/components/atoms';
+import { _getAllStatus } from '@/request';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const BtnDefaultStyle = {
   position: 'relative',
@@ -33,9 +36,23 @@ export const StyledSearchSelectMultiple: FC<
 > = ({ onChange, label, sx, value, options }) => {
   const [selected, setSelected] = useState<any[]>([]);
 
-  useEffect(() => {
-    value && setSelected(value);
-  }, [value]);
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus()
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          value && setSelected(value);
+        }
+        return res;
+      })
+      .catch(({ message, variant, header }) => {
+        close();
+        enqueueSnackbar(message ?? 'error!', {
+          variant,
+          isSimple: !header,
+          header,
+        });
+      });
+  });
 
   return (
     <StyledButton
@@ -100,7 +117,7 @@ export const StyledSearchSelectMultiple: FC<
           setSelected(e);
           onChange?.(e);
         }}
-        options={options}
+        options={data?.data || []}
         size={'small'}
         sx={{
           width: 'auto',

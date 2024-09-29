@@ -24,3 +24,7 @@ export const _getAllGridConfig = () => {
 export const setDisplayType = (type: PortfolioGridTypeEnum) => {
   return post(`/servicing/page/exe/his/pageColumn?pageColumn=${type}`);
 };
+
+export const _getAllStatus = () => {
+  return get<Option[]>('/servicing/repayment/status');
+};

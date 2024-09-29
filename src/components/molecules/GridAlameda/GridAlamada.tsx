@@ -28,6 +28,7 @@ import {
 } from '@/types/common';
 import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 import { _setColumnPining, _setColumnWidth } from '@/request/common';
+import { TableTypeEnum } from '@/types/pipeline/youland';
 
 export const GridAlameda: FC = observer(() => {
   const {
@@ -71,7 +72,9 @@ export const GridAlameda: FC = observer(() => {
     if (displayType !== PortfolioGridTypeEnum.ALAMEDA) {
       return;
     }
-    const { data } = await _fetchInvestorData();
+    const { data } = await _fetchInvestorData({
+      investorName: TableTypeEnum.alameda,
+    });
     const temp = data.reduce(
       (acc, cur) => {
         acc.push({

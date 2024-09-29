@@ -46,8 +46,9 @@ export const MaturityGrid: FC = observer(() => {
             ...maturityGridModel.queryModel,
             searchCondition: {
               ...maturityGridModel.queryModel.searchCondition,
-              investors: [
-                ...maturityGridModel.queryModel.searchCondition.investors,
+              repaymentStatusList: [
+                ...maturityGridModel.queryModel.searchCondition
+                  .repaymentStatusList,
               ],
             },
           },

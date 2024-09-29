@@ -3,7 +3,12 @@ import { MRT_ColumnDef } from 'material-react-table';
 import { Stack, Tooltip, Typography } from '@mui/material';
 
 import { utils } from '@/utils';
-import { AUTO_HIDE_DURATION, REPAYMENT_STATUS_OPTIONS } from '@/constant';
+import {
+  AUTO_HIDE_DURATION,
+  REPAYMENT_STATUS_OPTIONS,
+  TRADE_STATUS_BGCOLOR_PALETTE,
+  TRADE_STATUS_OPTIONS,
+} from '@/constant';
 import { ellipsisStyle } from '@/styles';
 
 import {
@@ -369,6 +374,26 @@ export const CASH_FLOW_COLUMNS = (
             options={investorOptions}
             paramsKey={'prospectiveBuyer'}
             status={renderedCellValue as string | null}
+          />
+        );
+      },
+    },
+    {
+      header: 'Trade status',
+      accessorKey: 'tradeStatus',
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      size: 160,
+      minSize: 160,
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <GridDropDown
+            bgPalette={TRADE_STATUS_BGCOLOR_PALETTE}
+            cb={cb}
+            loanId={row.original.loanId}
+            options={TRADE_STATUS_OPTIONS}
+            paramsKey={'tradeStatus'}
+            status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />
         );
       },

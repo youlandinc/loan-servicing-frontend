@@ -518,8 +518,6 @@ export const maturityColumns = (type: MaturityTimeRangeEnum) => {
           );
         },
       } as MRT_ColumnDef<any>,
-    ].concat(
-      commonColumns.filter((item) => item.accessorKey !== 'repaymentStatus'),
-    ),
+    ].concat(commonColumns),
   );
 };

@@ -1,23 +1,25 @@
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef } from 'react';
-
-import { StyledSearchTextFieldInput } from '@/components/atoms';
+import {
+  StyledSearchLoanOfficer,
+  StyledSearchSelectMultiple,
+  StyledSearchTextFieldInput,
+} from '@/components/atoms';
 import {
   combineColumns,
   GridMoreIconButton,
   maturityColumns,
   SortButton,
-  transferOrderColumns,
 } from '@/components/molecules';
+import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
 import {
   MaturityTimeRangeEnum,
   PortfolioGridTypeEnum,
   SortDirection,
 } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useRef } from 'react';
 
 export const MaturityGridToolBar: FC = observer(() => {
   const {
@@ -82,6 +84,14 @@ export const MaturityGridToolBar: FC = observer(() => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+      <StyledSearchSelectMultiple
+        label={'Status'}
+        onChange={(e) => {
+          updateQueryDebounce('repaymentStatusList', e);
+        }}
+        options={PIPELINE_STATUS}
+        value={maturityGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       {maturityGridModel.queryModel.sort.length > 0 && (
         <SortButton

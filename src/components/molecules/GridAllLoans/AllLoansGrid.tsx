@@ -131,15 +131,7 @@ export const AllLoansGrid: FC = observer(() => {
           // borderBottom: 'none',
         },
         boxShadow: 'none',
-        '& td': {
-          height: 32,
-          borderRight: '1px solid',
-          borderBottom: '1px solid',
-          borderColor: '#EDF1FF',
-          '&:last-of-type': {
-            borderRight: 'none',
-          },
-        },
+        '& td': {},
         '&:hover': {
           '& td:after': {
             background: '#F6F6F6',
@@ -157,7 +149,13 @@ export const AllLoansGrid: FC = observer(() => {
       sx: {
         px: 1,
         py: 0,
-        borderBottom: 'none',
+        height: 32,
+        borderRight: '1px solid',
+        borderBottom: '1px solid',
+        borderColor: '#EDF1FF',
+        '&:last-of-type': {
+          borderRight: 'none',
+        },
       },
       onClick: async () => {
         const { loanId } = original;

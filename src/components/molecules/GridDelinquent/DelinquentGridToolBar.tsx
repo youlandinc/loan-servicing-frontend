@@ -33,7 +33,7 @@ export const DelinquentGridToolBar: FC = () => {
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        delinquentGridModel.queryModel.searchCondition.keyword;
+        delinquentGridModel.queryModel.searchCondition.keyword || '';
     }
     // getDelinquentRangeOpt();
   }, []);

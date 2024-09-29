@@ -1,7 +1,9 @@
 import { Stack } from '@mui/material';
 import { isValid } from 'date-fns';
 import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
 import { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
 
 import {
   StyledSearchDateRange,
@@ -14,13 +16,10 @@ import {
   commonColumns,
   GridMoreIconButton,
   SortButton,
-  transferOrderColumns,
 } from '@/components/molecules';
-
-import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
+import { _getAllStatus } from '@/request';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const InvestorGridToolBar: FC = observer(() => {
@@ -40,10 +39,21 @@ export const InvestorGridToolBar: FC = observer(() => {
     500,
   );
 
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus().catch(({ message, variant, header }) => {
+      close();
+      enqueueSnackbar(message ?? 'error!', {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  });
+
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        investorGridModel.queryModel.searchCondition.keyword;
+        investorGridModel.queryModel.searchCondition.keyword || '';
     }
     return () => {
       // investorGridModel.queryModel.resetDefault();
@@ -107,7 +117,7 @@ export const InvestorGridToolBar: FC = observer(() => {
         onChange={(e) => {
           updateQueryDebounce('repaymentStatusList', e);
         }}
-        options={PIPELINE_STATUS}
+        options={data?.data || []}
         value={[
           ...investorGridModel.queryModel.searchCondition.repaymentStatusList,
         ]}

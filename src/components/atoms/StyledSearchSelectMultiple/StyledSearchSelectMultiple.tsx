@@ -36,24 +36,6 @@ export const StyledSearchSelectMultiple: FC<
 > = ({ onChange, label, sx, value, options }) => {
   const [selected, setSelected] = useState<any[]>([]);
 
-  const { data } = useSWR('_getAllStatus', async () => {
-    return await _getAllStatus()
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          value && setSelected(value);
-        }
-        return res;
-      })
-      .catch(({ message, variant, header }) => {
-        close();
-        enqueueSnackbar(message ?? 'error!', {
-          variant,
-          isSimple: !header,
-          header,
-        });
-      });
-  });
-
   useEffect(() => {
     value && setSelected(value);
   }, [value]);
@@ -121,7 +103,7 @@ export const StyledSearchSelectMultiple: FC<
           setSelected(e);
           onChange?.(e);
         }}
-        options={data?.data || []}
+        options={options}
         size={'small'}
         sx={{
           width: 'auto',

@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import {

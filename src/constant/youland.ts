@@ -19,19 +19,6 @@ export const TRADE_STATUS_OPTIONS: Option[] = [
   },
 ];
 
-export const SEARCH_TRADE_STATUS_OPTIONS: Option[] = [
-  {
-    label: 'In progress',
-    value: GridTradeStatusEnum.in_progress,
-    key: GridTradeStatusEnum.in_progress,
-  },
-  {
-    label: 'Confirmed',
-    value: GridTradeStatusEnum.confirmed,
-    key: GridTradeStatusEnum.confirmed,
-  },
-];
-
 export const REPAYMENT_STATUS_OPTIONS: Option[] = [
   {
     label: 'Performing',
@@ -50,7 +37,7 @@ export const REPAYMENT_STATUS_OPTIONS: Option[] = [
     value: PipelineStatusEnum.FORECLOSURE,
   },
   {
-    label: 'Paid Off',
+    label: 'Paid off',
     key: PipelineStatusEnum.PAID_OFF,
     value: PipelineStatusEnum.PAID_OFF,
   },

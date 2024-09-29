@@ -1,22 +1,32 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
+import { useAsync } from 'react-use';
 
+import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { StyledSearchTextFieldInput } from '@/components/atoms';
-import { observer } from 'mobx-react-lite';
 import { useDebounceFn } from '@/hooks';
+import { REPAYMENT_STATUS_OPTIONS, TRADE_STATUS_OPTIONS } from '@/constant';
+
+import {
+  StyledSearchSelectMultiple,
+  StyledSearchTextFieldInput,
+} from '@/components/atoms';
 import {
   ALAMEDA_COLUMNS,
   combineColumns,
   GridMoreIconButton,
   SortButton,
 } from '@/components/molecules';
+
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { _fetchInvestorData } from '@/request';
+import { TableTypeEnum } from '@/types/pipeline/youland';
 
 export const GridAlamedaToolbar: FC = observer(() => {
   const {
     portfolio: {
+      displayType,
       alamedaGridModel: { queryModel, orderColumns, updateOrderColumns },
     },
   } = useMst();
@@ -27,6 +37,32 @@ export const GridAlamedaToolbar: FC = observer(() => {
     queryModel.updateQueryCondition,
     500,
   );
+
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+
+  useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.ALAMEDA) {
+      return;
+    }
+    const { data } = await _fetchInvestorData({
+      investorName: TableTypeEnum.youland,
+    });
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.investorName,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, [displayType]);
 
   useEffect(
     () => {
@@ -54,6 +90,33 @@ export const GridAlamedaToolbar: FC = observer(() => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+
+      <StyledSearchSelectMultiple
+        label={'Status'}
+        onChange={(e) => {
+          updateQueryDebounce('repaymentStatusList', e);
+        }}
+        options={REPAYMENT_STATUS_OPTIONS}
+        value={[...queryModel.searchCondition.repaymentStatusList]}
+      />
+
+      <StyledSearchSelectMultiple
+        label={'Trade status'}
+        onChange={(e) => {
+          updateQueryDebounce('tradeStatus', e);
+        }}
+        options={TRADE_STATUS_OPTIONS}
+        value={[...queryModel.searchCondition.tradeStatus]}
+      />
+
+      <StyledSearchSelectMultiple
+        label={'Prospective buyer'}
+        onChange={(e) => {
+          updateQueryDebounce('prospectiveBuyers', e);
+        }}
+        options={investorData}
+        value={[...queryModel.searchCondition.prospectiveBuyers]}
       />
 
       {queryModel.sort.length > 0 && (

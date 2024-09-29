@@ -300,6 +300,8 @@ export const GridAlameda: FC = observer(() => {
         boxShadow: 'none',
         '& td': {
           height: 32,
+          py: 0,
+          px: 1.5,
           borderRight: '1px solid',
           borderBottom: '1px solid',
           borderColor: '#EDF1FF',

@@ -1,6 +1,6 @@
 import { Icon, Stack, SxProps, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import { StyledButton, StyledSelectMultiple } from '@/components/atoms';
@@ -53,6 +53,10 @@ export const StyledSearchSelectMultiple: FC<
         });
       });
   });
+
+  useEffect(() => {
+    value && setSelected(value);
+  }, [value]);
 
   return (
     <StyledButton

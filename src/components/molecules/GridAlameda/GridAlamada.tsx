@@ -301,8 +301,8 @@ export const GridAlameda: FC = observer(() => {
         '& td': {
           height: 32,
           borderRight: '1px solid',
-          borderColor: '#edf1ff',
-          py: 0,
+          borderBottom: '1px solid',
+          borderColor: '#EDF1FF',
           '&:last-of-type': {
             borderRight: 'none',
           },
@@ -312,8 +312,11 @@ export const GridAlameda: FC = observer(() => {
             background: '#F6F6F6',
           },
         },
-        '&:first-of-type': {
-          borderTop: '1px solid #edf1ff',
+        '&:hover .MuiTableCell-root[data-pinned="true"]::before': {
+          bgcolor: '#F6F6F6',
+        },
+        '& .MuiTableCell-root[data-pinned="true"]::after': {
+          zIndex: -2,
         },
       },
     },

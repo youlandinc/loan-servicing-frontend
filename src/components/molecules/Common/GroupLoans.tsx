@@ -174,6 +174,11 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             border: 'none',
           },
           boxShadow: 'none',
+          '&:hover': {
+            '& td:after': {
+              background: '#F6F6F6',
+            },
+          },
         },
       };
     },

@@ -174,24 +174,6 @@ export const Portfolio: FC = observer(() => {
     });
   }, []);
 
-  useSWR(
-    portfolioListType === PortfolioGridTypeEnum.ALL_LOANS ||
-      portfolioListType === PortfolioGridTypeEnum.BY_INVESTOR ||
-      portfolioListType === PortfolioGridTypeEnum.MATURITY
-      ? '_getAllStatus'
-      : null,
-    async () => {
-      return await _getAllStatus().catch(({ message, variant, header }) => {
-        close();
-        enqueueSnackbar(message ?? 'error!', {
-          variant,
-          isSimple: !header,
-          header,
-        });
-      });
-    },
-  );
-
   const menus = useMemo(
     () => [
       {

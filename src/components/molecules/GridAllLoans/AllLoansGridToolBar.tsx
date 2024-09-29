@@ -1,3 +1,10 @@
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
+
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -10,15 +17,11 @@ import {
   GridMoreIconButton,
   SortButton,
 } from '@/components/molecules';
-import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import { useMst } from '@/models/Root';
+import { _getAllStatus } from '@/request';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useRef } from 'react';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -37,10 +40,21 @@ export const AllLoansGridToolBar: FC = observer(() => {
     500,
   );
 
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus().catch(({ message, variant, header }) => {
+      close();
+      enqueueSnackbar(message ?? 'error!', {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  });
+
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        allLoansGridModel.queryModel.searchCondition.keyword;
+        allLoansGridModel.queryModel.searchCondition.keyword || '';
     }
 
     return () => {
@@ -105,7 +119,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
         onChange={(e) => {
           updateQueryDebounce('repaymentStatusList', e);
         }}
-        options={PIPELINE_STATUS}
+        options={data?.data || []}
         value={allLoansGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       <StyledSearchLoanOfficer

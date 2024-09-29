@@ -275,7 +275,6 @@ export const GridCashFlow: FC = observer(() => {
         '& .MuiTableRow-head': {
           boxShadow: 'none',
         },
-
         '& .Mui-TableHeadCell-Content-Wrapper': {
           fontWeight: 600,
           fontSize: 12,
@@ -287,10 +286,6 @@ export const GridCashFlow: FC = observer(() => {
         },
         '& .MuiTableCell-root:last-child': {
           bgcolor: '#F4F6FA',
-        },
-        '& .MuiTableCell-root:first-of-type': {
-          width: 40,
-          minWidth: 40,
         },
       },
     },
@@ -330,13 +325,25 @@ export const GridCashFlow: FC = observer(() => {
           borderWidth: '1px',
           height: 16,
         },
+        '&:first-of-type': {
+          width: 'auto',
+          minWidth: 40,
+          p: 0,
+          '& button': {
+            height: 'auto',
+            px: 1.5,
+            py: 1.25,
+            width: 'auto',
+            minWidth: 'auto',
+            // height
+          },
+        },
       },
       onClick: (e) => {
         e.stopPropagation();
         if (props.column.id === 'mrt-row-expand') {
           return;
         }
-        // handleHeaderClick?.(e, props.column);
         setAnchorEl(e.currentTarget);
         setHeaderColumnId(props.column.id);
         setHeaderTitle(props.column.columnDef.header);
@@ -354,7 +361,7 @@ export const GridCashFlow: FC = observer(() => {
             borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           },
           '& .MuiTableCell-root:first-of-type': {
-            width: 40,
+            width: 'auto',
             minWidth: 40,
             border: 'none',
           },
@@ -365,15 +372,22 @@ export const GridCashFlow: FC = observer(() => {
     muiTableBodyCellProps: ({ row }) => {
       return {
         sx: {
+          px: 1,
           py: 0,
-          px: 1.5,
+          height: '32px',
           bgcolor: 'transparent',
-          height: 40,
           borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           borderColor: '#D2D6E1 !important',
           overflow: 'visible',
-          '&:first-of-type button': {
-            visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+          '&:first-of-type': {
+            p: 0,
+            '& button': {
+              px: 1.5,
+              py: 0,
+              visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+              width: 'auto',
+              height: 'auto',
+            },
           },
           borderBottom:
             row.original.servicingLoans && !row.getIsExpanded()
@@ -397,22 +411,28 @@ export const GridCashFlow: FC = observer(() => {
     },
     muiExpandAllButtonProps: (props) => {
       return {
+        sx: {
+          m: 0,
+          p: 0,
+          px: 1.5,
+          width: 'auto',
+        },
         title: '',
         onClick: () => {
           props.table.toggleAllRowsExpanded();
         },
       };
     },
-    muiExpandButtonProps: {
+    muiExpandButtonProps: () => ({
       sx: {
         width: 20,
         height: 20,
+        padding: 0,
+        px: 1.5,
+        m: 0,
       },
       title: '',
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-      },
-    },
+    }),
   });
 
   const expanded = table.getState().expanded;

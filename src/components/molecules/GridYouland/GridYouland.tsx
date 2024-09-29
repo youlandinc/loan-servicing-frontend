@@ -224,10 +224,6 @@ export const GridYouland: FC = observer(() => {
         '& .MuiTableCell-root:last-child': {
           bgcolor: '#F4F6FA',
         },
-        '& .MuiTableRow-root': {
-          boxShadow: 'none !important',
-          bgcolor: '#F4F6FA',
-        },
       },
     },
     muiTableHeadCellProps: (props) => ({
@@ -302,7 +298,7 @@ export const GridYouland: FC = observer(() => {
       sx: {
         boxShadow: 'none',
         '& td': {
-          height: 40,
+          height: 32,
           borderRight: '1px solid',
           borderColor: '#edf1ff',
           py: 0,

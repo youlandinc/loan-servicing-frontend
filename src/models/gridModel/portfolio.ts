@@ -37,6 +37,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_YOULAND.ALL,
           );
         }
+        self.youlandGridModel.pinLeftColumns = cast(
+          config.operaParams.SERVICING_YOULAND.LEFT,
+        );
 
         if (
           utils.isNotEmptyOfObject(
@@ -52,6 +55,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_ALAMEDA.ALL,
           );
         }
+        self.alamedaGridModel.pinLeftColumns = cast(
+          config.operaParams.SERVICING_ALAMEDA.LEFT,
+        );
 
         if (
           utils.isNotEmptyOfObject(
@@ -67,6 +73,9 @@ export const portfolioModel = types
             config.operaParams.SERVICING_CASH_FLOW.ALL,
           );
         }
+        self.cashFlowGridModel.expandedColumns = cast(
+          config.operaParams.SERVICING_CASH_FLOW.DROPDOWN,
+        );
 
         //all loans
         if (

@@ -1,7 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
-import { useAsync } from 'react-use';
+import { useAsync, useAsyncFn, useDebounce } from 'react-use';
 import {
   MRT_TableContainer,
   useMaterialReactTable,
@@ -11,28 +11,49 @@ import useSWR from 'swr';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
 
 import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
 import {
+  ColumnsHeaderMenus,
+  defaultColumnPining,
   resortColumns,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
+import {
+  SetColumnWidthParam,
+  UpdateColumnPiningParamType,
+} from '@/types/common';
+import { _setColumnPining, _setColumnWidth } from '@/request/common';
+import { enqueueSnackbar } from 'notistack';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 
 export const GridYouland: FC = observer(() => {
   const {
     portfolio: {
       displayType,
-      youlandGridModel: { queryModel, orderColumns },
+      youlandGridModel: {
+        queryModel,
+        orderColumns,
+        pinLeftColumns,
+        updatePinLeftColumns,
+      },
     },
   } = useMst();
 
   const router = useRouter();
 
-  const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
-  >([]);
+  const [headerColumnId, setHeaderColumnId] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
+  const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
+  const [columnPiningState, setColumnPiningState] = useState(
+    defaultColumnPining(orderColumns),
+  );
+
+  const columnPiningConfig = pinLeftColumns;
 
   const onPageSizeChange = async (pageSize: number) => {
     queryModel.updatePage(page.number, pageSize);
@@ -42,7 +63,11 @@ export const GridYouland: FC = observer(() => {
     queryModel.updatePage(currentPage, page.size);
   };
 
-  useAsync(async () => {
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+
+  const { loading } = useAsync(async () => {
     if (displayType !== PortfolioGridTypeEnum.YOULAND) {
       return;
     }
@@ -113,7 +138,7 @@ export const GridYouland: FC = observer(() => {
         )
       : YOULAND_COLUMNS(async () => await mutate(), investorData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [configColumnsOrderKeysArr.join('')]);
+  }, [configColumnsOrderKeysArr.join(''), loading]);
 
   const table = useMaterialReactTable({
     columns: configColumns,
@@ -133,6 +158,7 @@ export const GridYouland: FC = observer(() => {
     enableColumnDragging: false,
     enableColumnResizing: true,
     enableColumnVirtualization: true,
+    enableColumnPinning: true,
 
     columnResizeMode: 'onChange',
     defaultColumn: {
@@ -143,7 +169,8 @@ export const GridYouland: FC = observer(() => {
     manualPagination: true,
     state: {
       columnOrder: configColumnsOrderKeysArr,
-      showSkeletons: isLoading,
+      showSkeletons: isLoading || loading,
+      columnPinning: { left: columnPiningConfig },
     },
     initialState: {
       showProgressBars: false,
@@ -190,16 +217,12 @@ export const GridYouland: FC = observer(() => {
         },
       },
     },
-    muiTableHeadCellProps: {
+    muiTableHeadCellProps: (props) => ({
       sx: {
-        boxShadow: 'none',
-        fontWeight: 600,
-        fontSize: 12,
-        color: 'text.secondary',
-        border: 'none',
-        height: 40,
         bgcolor: '#F4F6FA',
         opacity: 1,
+        border: 'none',
+        minHeight: 36,
         px: 1,
         py: 1.25,
         justifyContent: 'center',
@@ -219,9 +242,6 @@ export const GridYouland: FC = observer(() => {
         '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
           mr: '-8px',
         },
-        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
-          borderWidth: 1,
-        },
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
@@ -234,7 +254,24 @@ export const GridYouland: FC = observer(() => {
           height: 16,
         },
       },
-    },
+      onClick: (e) => {
+        if (
+          (e.target as HTMLElement).className?.includes(
+            'Mui-TableHeadCell-ResizeHandle-Wrapper',
+          ) ||
+          (e.target as HTMLElement).className?.includes(
+            'Mui-TableHeadCell-ResizeHandle-Divider',
+          )
+        ) {
+          return;
+        }
+        setAnchorEl(e.currentTarget);
+        setTableHeaderIndex(props.column.getIndex());
+        // setHeaderColumn(props.column);
+        setHeaderColumnId(props.column.id);
+        setHeaderTitle(props.column.columnDef.header);
+      },
+    }),
     muiTableBodyCellProps: ({ row }) => {
       return {
         async onClick() {
@@ -272,6 +309,63 @@ export const GridYouland: FC = observer(() => {
     },
   });
 
+  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const columnPining = table.getState().columnPinning;
+
+  const [, setColumnWidth] = useAsyncFn(async (result: SetColumnWidthParam) => {
+    await _setColumnWidth(result).catch(({ message, variant, header }) => {
+      enqueueSnackbar(message, {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  }, []);
+
+  const [, updateColumnPining] = useAsyncFn(
+    async (param: UpdateColumnPiningParamType) => {
+      await _setColumnPining({
+        pageColumn: PortfolioGridTypeEnum.YOULAND,
+        ...param,
+      });
+    },
+    [columnPining],
+  );
+
+  useDebounce(
+    async () => {
+      if (Object.keys(columnSizing).length) {
+        //handle column sizing
+        await setColumnWidth({
+          pageColumn: PortfolioGridTypeEnum.YOULAND,
+          columnWidths: Object.keys(columnSizing).map((field) => ({
+            field,
+            columnWidth: columnSizing[field],
+          })),
+        });
+      }
+    },
+    500,
+    [
+      Object.keys(columnSizing)
+        .map((item) => item)
+        .join(''),
+    ],
+  );
+
+  useDebounce(
+    async () => {
+      if (columnPining.left?.length) {
+        await updateColumnPining({
+          leftColumn: (columnPining.left || []) as string[],
+          rightColumn: (columnPining.right || []) as string[],
+        });
+      }
+    },
+    500,
+    [columnPining.left?.join('')],
+  );
+
   return (
     <Stack>
       <MRT_TableContainer sx={{ height: '100%' }} table={table} />
@@ -280,6 +374,41 @@ export const GridYouland: FC = observer(() => {
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
         page={page}
+      />
+      <ColumnsHeaderMenus
+        anchorEl={anchorEl}
+        handleFreeze={() => {
+          setColumnPiningState({
+            left: configColumns
+              .slice(0, tableHeaderIndex)
+              .map((item) => item.accessorKey) as string[],
+          });
+          updatePinLeftColumns(
+            configColumns
+              .slice(0, tableHeaderIndex)
+              .map((item) => item.accessorKey) as string[],
+          );
+        }}
+        handleSort={() => {
+          queryModel.updateSort([
+            {
+              property: headerColumnId, //.id as string,
+              direction: SortDirection.DESC,
+              ignoreCase: true,
+              label: headerTitle as string,
+            },
+          ] as ISortItemModel[]);
+        }}
+        handleUnfreeze={async () => {
+          // setColumnPiningState({ left: [] });
+          updatePinLeftColumns([]);
+          await updateColumnPining({
+            leftColumn: [],
+            rightColumn: [],
+          });
+        }}
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
       />
     </Stack>
   );

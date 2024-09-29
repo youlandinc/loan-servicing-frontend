@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -6,17 +6,25 @@ import { useMst } from '@/models/Root';
 
 import { useDebounceFn } from '@/hooks';
 
-import { StyledSearchTextFieldInput } from '@/components/atoms';
+import {
+  StyledSearchSelectMultiple,
+  StyledSearchTextFieldInput,
+} from '@/components/atoms';
 import {
   combineColumns,
   GridMoreIconButton,
+  SortButton,
   YOULAND_COLUMNS,
 } from '@/components/molecules';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { SEARCH_TRADE_STATUS_OPTIONS } from '@/constant';
+import { useAsync } from 'react-use';
+import { _fetchInvestorData } from '@/request';
 
 export const GridCashFlowToolbar: FC = observer(() => {
   const {
     portfolio: {
+      displayType,
       cashFlowGridModel: { queryModel, orderColumns, updateOrderColumns },
     },
   } = useMst();
@@ -42,6 +50,30 @@ export const GridCashFlowToolbar: FC = observer(() => {
     [],
   );
 
+  const [investorData, setInvestorData] = useState<
+    Array<Option & { bgColor: string }>
+  >([]);
+
+  const { loading } = useAsync(async () => {
+    if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
+      return;
+    }
+    const { data } = await _fetchInvestorData();
+    const temp = data.reduce(
+      (acc, cur) => {
+        acc.push({
+          label: cur.investorName,
+          value: cur.investorName,
+          key: cur.id,
+          bgColor: '',
+        });
+        return acc;
+      },
+      [] as Array<Option & { bgColor: string }>,
+    );
+    setInvestorData(temp);
+  }, [displayType]);
+
   return (
     <Stack alignItems={'center'} direction={'row'} gap={1.5}>
       <StyledSearchTextFieldInput
@@ -55,6 +87,45 @@ export const GridCashFlowToolbar: FC = observer(() => {
         }}
         variant={'outlined'}
       />
+
+      <StyledSearchSelectMultiple
+        label={'Trade status'}
+        onChange={(e) => {
+          updateQueryDebounce('tradeStatus', e);
+        }}
+        options={SEARCH_TRADE_STATUS_OPTIONS}
+        value={[...queryModel.searchCondition.tradeStatus]}
+      />
+
+      <StyledSearchSelectMultiple
+        label={'Prospective buyer'}
+        onChange={(e) => {
+          updateQueryDebounce('prospectiveBuyers', e);
+        }}
+        options={investorData}
+        value={[...queryModel.searchCondition.prospectiveBuyers]}
+      />
+
+      {queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            queryModel.updateSort([
+              {
+                ...queryModel.sort[0],
+                direction:
+                  queryModel.sort[0].direction === SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+            ]);
+          }}
+          sortItems={queryModel.sort[0]}
+        />
+      )}
 
       <GridMoreIconButton
         columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}

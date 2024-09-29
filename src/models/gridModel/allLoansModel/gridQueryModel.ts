@@ -36,6 +36,8 @@ const searchConditionModel = types.model({
       types.undefined,
     ),
   ),
+  tradeStatus: types.array(types.string),
+  prospectiveBuyers: types.array(types.union(types.string, types.number)),
 });
 export type ISearchConditionModel = SnapshotOut<typeof searchConditionModel>;
 

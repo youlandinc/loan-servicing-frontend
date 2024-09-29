@@ -101,6 +101,7 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
             }}
             page={currentPage + 1}
             shape="circular"
+            siblingCount={0}
             sx={{
               fontSize: 14,
               '& .MuiPaginationItem-previousNext': {

@@ -145,6 +145,12 @@ export const AllLoansGrid: FC = observer(() => {
             background: '#F6F6F6',
           },
         },
+        '&:hover .MuiTableCell-root[data-pinned="true"]::before': {
+          bgcolor: '#F6F6F6',
+        },
+        '& .MuiTableCell-root[data-pinned="true"]::after': {
+          zIndex: -2,
+        },
       },
     },
     muiTableBodyCellProps: ({ row: { original } }) => ({

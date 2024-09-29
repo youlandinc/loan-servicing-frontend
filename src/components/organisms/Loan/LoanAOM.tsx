@@ -172,7 +172,6 @@ export const LoanAOM: FC = () => {
                       onChange={(e) => {
                         setInstrumentNumber(e.target.value as string);
                       }}
-                      required
                       value={instrumentNumber}
                       variant={'outlined'}
                     />
@@ -192,7 +191,7 @@ export const LoanAOM: FC = () => {
                     await createPdf({
                       loanId: parseInt(loanId as string),
                       recordedDate: format(executionDate as Date, 'yyyy-MM-dd'),
-                      instrumentNumber: instrumentNumber + '',
+                      instrumentNumber: instrumentNumber || '',
                       investorId: parseInt(buyer),
                       investorName: buyersOpts.find(
                         (item) => item.value === buyer,

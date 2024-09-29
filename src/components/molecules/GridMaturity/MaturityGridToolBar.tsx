@@ -1,5 +1,10 @@
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import React, { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
+
 import {
-  StyledSearchLoanOfficer,
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
@@ -9,17 +14,14 @@ import {
   maturityColumns,
   SortButton,
 } from '@/components/molecules';
-import { PIPELINE_STATUS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
+import { _getAllStatus } from '@/request';
 import {
   MaturityTimeRangeEnum,
   PortfolioGridTypeEnum,
   SortDirection,
 } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef } from 'react';
 
 export const MaturityGridToolBar: FC = observer(() => {
   const {
@@ -33,10 +35,21 @@ export const MaturityGridToolBar: FC = observer(() => {
     500,
   );
 
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus().catch(({ message, variant, header }) => {
+      close();
+      enqueueSnackbar(message ?? 'error!', {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  });
+
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
-        maturityGridModel.queryModel.searchCondition.keyword;
+        maturityGridModel.queryModel.searchCondition.keyword || '';
     }
     // getMaturityRangeOpt();
   }, []);
@@ -59,7 +72,7 @@ export const MaturityGridToolBar: FC = observer(() => {
         onChange={(e) => {
           updateQueryDebounce('repaymentStatusList', e);
         }}
-        options={PIPELINE_STATUS}
+        options={data?.data || []}
         value={maturityGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       {maturityGridModel.queryModel.sort.length > 0 && (

@@ -39,24 +39,7 @@ export const AllLoansGrid: FC = observer(() => {
   const [headerTitle, setHeaderTitle] = useState('');
   const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
 
-  // const [headerColumn, setHeaderColumn] = useState({} as MRT_Column<any>);
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
-
-  // const defaultColumnPining = allLoansGridModel.orderColumns?.length
-  //     ? {
-  //       left: allLoansGridModel.orderColumns
-  //           .filter(
-  //               (item) =>
-  //                   item.pinType === ColumnPiningDirectionEnum.LEFT &&
-  //                   item.visibility,
-  //           )
-  //           .sort((a, b) => (a.leftOrder as number) - (b.leftOrder as number))
-  //           .map((item) => item.field),
-  //     }
-  //     : {
-  //       left: [],
-  //     };
 
   const [columnPiningState, setColumnPiningState] = useState(
     defaultColumnPining(allLoansGridModel.orderColumns),

@@ -1,5 +1,5 @@
-import React, { CSSProperties, FC, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
+import router, { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import {
@@ -7,31 +7,35 @@ import {
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
+import { useAsync, useAsyncFn, useDebounce } from 'react-use';
+import { enqueueSnackbar } from 'notistack';
 import useSWR from 'swr';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
 
 import {
   CASH_FLOW_COLUMNS,
   GridCashFlowFooter,
   reduceCashFlowColumn,
 } from './index';
-import { useAsync } from 'react-use';
 import {
+  ColumnsHeaderMenus,
   resortColumns,
   transferOrderColumnsKeys,
-  YOULAND_COLUMNS,
 } from '@/components/molecules';
+
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { SetColumnWidthParam } from '@/types/common';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
+import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
 
 export const GridCashFlow: FC = observer(() => {
   const {
     portfolio: {
       displayType,
-      cashFlowGridModel: { queryModel, orderColumns },
+      cashFlowGridModel: { queryModel, orderColumns, expandedColumns },
     },
   } = useMst();
 
@@ -40,6 +44,33 @@ export const GridCashFlow: FC = observer(() => {
   const [investorData, setInvestorData] = useState<
     Array<Option & { bgColor: string }>
   >([]);
+
+  const [headerColumnId, setHeaderColumnId] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
+  const [, updateGroupExpanded] = useAsyncFn(
+    async (params?: { dropDownId: string; collapsed: boolean }[]) => {
+      if (!params) {
+        return;
+      }
+      await _setGroupExpanded({
+        pageColumn: PortfolioGridTypeEnum.CASH_FLOW,
+        dropDowns: params,
+      });
+    },
+    [],
+  );
+
+  const [, setColumnWidth] = useAsyncFn(async (result: SetColumnWidthParam) => {
+    await _setColumnWidth(result).catch(({ message, variant, header }) => {
+      enqueueSnackbar(message, {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  }, []);
 
   useAsync(async () => {
     if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
@@ -69,8 +100,9 @@ export const GridCashFlow: FC = observer(() => {
             searchCondition: {
               ...queryModel.searchCondition,
               investors: [...queryModel.searchCondition.investors],
-              repaymentStatusList: [
-                ...queryModel.searchCondition.repaymentStatusList,
+              tradeStatus: [...queryModel.searchCondition.tradeStatus],
+              prospectiveBuyers: [
+                ...queryModel.searchCondition.prospectiveBuyers,
               ],
             },
             sort: [...queryModel.sort],
@@ -97,6 +129,8 @@ export const GridCashFlow: FC = observer(() => {
     ? transferOrderColumnsKeys(orderColumns)
     : [];
 
+  configColumnsOrderKeysArr.unshift('mrt-row-expand');
+
   const configColumns = useMemo(() => {
     return orderColumns.length
       ? reduceCashFlowColumn(
@@ -113,6 +147,15 @@ export const GridCashFlow: FC = observer(() => {
         );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join('')]);
+
+  const expandedData =
+    expandedColumns?.reduce(
+      (pre, cur) => {
+        pre[cur.dropDownId] = true;
+        return pre;
+      },
+      {} as Record<string, boolean>,
+    ) || {};
 
   const table = useMaterialReactTable({
     columns: configColumns,
@@ -134,13 +177,12 @@ export const GridCashFlow: FC = observer(() => {
     enableColumnPinning: true,
     manualPagination: true,
     state: {
-      //columnOrder: columnOrder || [],
+      columnOrder: configColumnsOrderKeysArr,
       showSkeletons: isLoading,
     },
     initialState: {
-      // showSkeletons: false,
       showProgressBars: false,
-      // expanded: defaultExpanded,
+      expanded: expandedData,
     },
     getRowId: (row) => {
       if (row.servicingLoans?.length) {
@@ -151,7 +193,15 @@ export const GridCashFlow: FC = observer(() => {
     getSubRows: (row) => row.servicingLoans,
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
-
+    renderEmptyRowsFallback: () => {
+      return (
+        <Stack pl={8} pt={4} width={'100%'}>
+          <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>
+            No recorded transactions
+          </Typography>
+        </Stack>
+      );
+    },
     icons: {
       KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
         const { style } = props;
@@ -189,14 +239,19 @@ export const GridCashFlow: FC = observer(() => {
         );
       },
     },
-    renderEmptyRowsFallback: () => {
-      return (
-        <Stack pl={8} pt={4} width={'100%'}>
-          <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>
-            No recorded transactions
-          </Typography>
-        </Stack>
-      );
+    displayColumnDefOptions: {
+      'mrt-row-expand': {
+        size: 40,
+        Cell: ({ row, table }) => {
+          return (
+            <>
+              {row.subRows?.length ? (
+                <MRT_ExpandButton row={row} table={table} />
+              ) : null}
+            </>
+          );
+        },
+      },
     },
     muiTableContainerProps: {
       style: {
@@ -253,9 +308,6 @@ export const GridCashFlow: FC = observer(() => {
         '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
           mr: '-8px',
         },
-        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
-          borderWidth: 1,
-        },
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
@@ -263,81 +315,75 @@ export const GridCashFlow: FC = observer(() => {
         '&:hover': {
           bgcolor: '#ececec',
         },
+        '& .MuiDivider-root': {
+          borderWidth: '1px',
+          height: 16,
+        },
       },
       onClick: (e) => {
         e.stopPropagation();
         if (props.column.id === 'mrt-row-expand') {
           return;
         }
-        //handleHeaderClick?.(e, props.column);
+        // handleHeaderClick?.(e, props.column);
+        setAnchorEl(e.currentTarget);
+        setHeaderColumnId(props.column.id);
+        setHeaderTitle(props.column.columnDef.header);
       },
     }),
-    displayColumnDefOptions: {
-      'mrt-row-expand': {
-        size: 40,
-        Cell: ({ row, table }) => {
-          return (
-            <>
-              {row.subRows?.length ? (
-                <MRT_ExpandButton row={row} table={table} />
-              ) : null}
-            </>
-          );
-        },
-      },
-    },
     muiTableBodyRowProps: ({ row }) => {
       return {
         sx: {
-          '& .MuiTableCell-root': {
-            borderBottom: row.getIsExpanded() ? '1px solid #EDF1FF' : 'none',
-          },
-          '& td': {
-            py: 0,
-            height: 40,
-          },
-          '&:hover': {
-            '& td:nth-of-type(2)': {
-              zIndex: '1 !important',
-            },
-            '& td:after': {
-              backgroundColor: '#F6F6F6',
-            },
-          },
           '& .MuiTableCell-root:last-child': {
-            borderBottom: 'none',
+            borderColor: '#D2D6E1 !important',
+            borderBottom:
+              row.original.servicingLoans && !row.getIsExpanded()
+                ? 'none'
+                : '1px solid',
+            borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           },
+          '& .MuiTableCell-root:first-of-type': {
+            width: 40,
+            minWidth: 40,
+            border: 'none',
+          },
+          boxShadow: 'none',
         },
       };
     },
-    muiTableBodyCellProps: ({ row }) => ({
-      sx: {
-        px: 1.5,
-        py: 1.5,
-        borderBottom: 'none',
-        bgcolor: 'transparent',
-        overflow: 'visible',
-        '&:first-of-type button': {
-          visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+    muiTableBodyCellProps: ({ row }) => {
+      return {
+        sx: {
+          py: 0,
+          px: 1.5,
+          bgcolor: 'transparent',
+          height: 40,
+          borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+          borderColor: '#D2D6E1 !important',
+          overflow: 'visible',
+          '&:first-of-type button': {
+            visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+          },
+          borderBottom:
+            row.original.servicingLoans && !row.getIsExpanded()
+              ? 'none'
+              : '1px solid',
         },
-      },
-      onClick: async () => {
-        const { original } = row;
-        const { loanId } = original;
-        if (original.servicingLoans) {
-          row.toggleExpanded();
-        }
-        if (!original.servicingLoans) {
-          if (isLoading) {
-            return;
+        onClick: async () => {
+          const { original } = row;
+          const { loanId } = original;
+          if (original.servicingLoans) {
+            row.toggleExpanded();
           }
-          await router.push({
-            pathname: '/loan/overview',
-            query: { loanId },
-          });
-        }
-      },
-    }),
+          if (!original.servicingLoans) {
+            await router.push({
+              pathname: '/loan/overview',
+              query: { loanId },
+            });
+          }
+        },
+      };
+    },
     muiExpandAllButtonProps: (props) => {
       return {
         title: '',
@@ -354,15 +400,87 @@ export const GridCashFlow: FC = observer(() => {
       title: '',
       onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        //handleExpandClick();
       },
     },
   });
+
+  const expanded = table.getState().expanded;
+
+  const [, cancelUpdateGroupExpanded] = useDebounce(
+    async () => {
+      if (typeof expanded === 'boolean') {
+        await updateGroupExpanded(
+          data?.data.content.map((item) => {
+            return {
+              dropDownId: item.groupById,
+              collapsed: true,
+            };
+          }),
+        );
+      } else {
+        await updateGroupExpanded(
+          Object.keys(expanded).map((id) => ({
+            dropDownId: id,
+            collapsed: true,
+          })),
+        );
+      }
+    },
+    500,
+    [expanded],
+  );
+
+  const columnSizing: Record<string, number> = table.getState().columnSizing;
+
+  useDebounce(
+    async () => {
+      if (Object.keys(columnSizing).length) {
+        //handle column sizing
+        await setColumnWidth({
+          pageColumn: PortfolioGridTypeEnum.CASH_FLOW,
+          columnWidths: Object.keys(columnSizing).map((field) => ({
+            field,
+            columnWidth: columnSizing[field],
+          })),
+        });
+      }
+    },
+    500,
+    [
+      Object.keys(columnSizing)
+        .map((item) => item)
+        .join(''),
+    ],
+  );
+
+  useEffect(
+    () => {
+      cancelUpdateGroupExpanded();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <Stack>
       <MRT_TableContainer sx={{ height: '100%' }} table={table} />
       <GridCashFlowFooter footerData={footerData} />
+      <ColumnsHeaderMenus
+        anchorEl={anchorEl}
+        handleSort={() => {
+          queryModel.updateSort([
+            {
+              property: headerColumnId, //.id as string,
+              direction: SortDirection.DESC,
+              ignoreCase: true,
+              label: headerTitle,
+            },
+          ] as ISortItemModel[]);
+        }}
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
+        type={'group'}
+      />
     </Stack>
   );
 });

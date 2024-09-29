@@ -120,13 +120,9 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       sx: {
         width: 20,
         height: 20,
+        padding: 0,
       },
       title: '',
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        //handleExpandClick();
-        // console.log(props.row.id);
-      },
     }),
     icons: {
       KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
@@ -160,34 +156,24 @@ export const GroupLoans: FC<GroupLoansProps> = ({
       },
     },
     muiTableBodyRowProps: ({ row }) => {
-      const temp = {
+      return {
         sx: {
           '& .MuiTableCell-root:last-child': {
-            borderBottom: 'none',
-            // borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
-            // borderBottom: '1px solid',
-            // borderColor: '#D2D6E1 !important',
+            borderColor: '#D2D6E1 !important',
+            borderBottom:
+              row.original.servicingLoans && !row.getIsExpanded()
+                ? 'none'
+                : '1px solid',
+            borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           },
           '& .MuiTableCell-root:first-of-type': {
             width: 40,
             minWidth: 40,
             border: 'none',
           },
-          '& .MuiTableCell-root': {
-            // borderBottom: 'none',
-          },
           boxShadow: 'none',
         },
       };
-
-      return row.getIsExpanded()
-        ? {
-            ...temp,
-            '& .MuiTableCell-root': {
-              borderBottom: '1px solid ',
-            },
-          }
-        : temp;
     },
     muiTableBodyCellProps: ({ row }) => {
       return {
@@ -195,13 +181,16 @@ export const GroupLoans: FC<GroupLoansProps> = ({
           px: 1.5,
           py: 1.5,
           bgcolor: 'transparent',
-          // borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
-          // borderColor: '#D2D6E1 !important',
+          borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+          borderColor: '#D2D6E1 !important',
           overflow: 'visible',
           '&:first-of-type button': {
             visibility: row.original.servicingLoans ? 'visible' : 'hidden',
           },
-          borderBottom: 'none',
+          borderBottom:
+            row.original.servicingLoans && !row.getIsExpanded()
+              ? 'none'
+              : '1px solid',
         },
         onClick: async () => {
           const { original } = row;

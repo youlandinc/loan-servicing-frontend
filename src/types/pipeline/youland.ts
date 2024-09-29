@@ -61,7 +61,13 @@ interface _ResponseGridAlamedaTable {
 }
 
 interface _ResponseGridCashFlowTable {
-  content: GridCashFlowItem[];
+  content: {
+    currentTotalAmount: number | null;
+    currentTotalItems: number | null;
+    groupById: string;
+    groupByName: string | null;
+    servicingLoans: GridCashFlowItem[];
+  }[];
   page: PageProps;
 }
 

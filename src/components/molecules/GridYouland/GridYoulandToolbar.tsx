@@ -10,9 +10,11 @@ import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
   combineColumns,
   GridMoreIconButton,
+  SortButton,
   YOULAND_COLUMNS,
 } from '@/components/molecules';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 export const GridYoulandToolbar: FC = observer(() => {
   const {
@@ -55,6 +57,27 @@ export const GridYoulandToolbar: FC = observer(() => {
         }}
         variant={'outlined'}
       />
+
+      {queryModel.sort.length > 0 && (
+        <SortButton
+          handleClear={(e) => {
+            e.stopPropagation();
+            queryModel.updateSort([]);
+          }}
+          handleClick={() => {
+            queryModel.updateSort([
+              {
+                ...queryModel.sort[0],
+                direction:
+                  queryModel.sort[0].direction === SortDirection.DESC
+                    ? SortDirection.ASC
+                    : SortDirection.DESC,
+              },
+            ]);
+          }}
+          sortItems={queryModel.sort[0]}
+        />
+      )}
 
       <GridMoreIconButton
         columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}

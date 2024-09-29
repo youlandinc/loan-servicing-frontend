@@ -28,6 +28,7 @@ import {
 } from '@/types/common';
 import { _setColumnPining, _setColumnWidth } from '@/request/common';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { TableTypeEnum } from '@/types/pipeline/youland';
 
 export const GridYouland: FC = observer(() => {
   const {
@@ -71,7 +72,9 @@ export const GridYouland: FC = observer(() => {
     if (displayType !== PortfolioGridTypeEnum.YOULAND) {
       return;
     }
-    const { data } = await _fetchInvestorData();
+    const { data } = await _fetchInvestorData({
+      investorName: TableTypeEnum.youland,
+    });
     const temp = data.reduce(
       (acc, cur) => {
         acc.push({

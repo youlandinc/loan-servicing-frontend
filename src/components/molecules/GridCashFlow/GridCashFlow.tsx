@@ -76,7 +76,7 @@ export const GridCashFlow: FC = observer(() => {
     if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
       return;
     }
-    const { data } = await _fetchInvestorData();
+    const { data } = await _fetchInvestorData({});
     const temp = data.reduce(
       (acc, cur) => {
         acc.push({

@@ -4,6 +4,7 @@ import {
   ResponseGridAlamedaTable,
   ResponseGridCashFlowTable,
   ResponseGridYoulandTable,
+  TableTypeEnum,
 } from '@/types/pipeline/youland';
 
 export const _fetchYoulandTableData = (params: any) => {
@@ -22,6 +23,8 @@ export const _updateTableData = (params: any) => {
   return post('/servicing/list/custom', params);
 };
 
-export const _fetchInvestorData = () => {
-  return get<GridInvestorItem[]>('/servicing/investor');
+export const _fetchInvestorData = (params: {
+  investorName?: TableTypeEnum;
+}) => {
+  return post<GridInvestorItem[]>('/servicing/investor', params);
 };

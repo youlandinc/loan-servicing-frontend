@@ -5,7 +5,7 @@ import { useAsync } from 'react-use';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { SEARCH_TRADE_STATUS_OPTIONS } from '@/constant';
+import { TRADE_STATUS_OPTIONS } from '@/constant';
 import { useDebounceFn } from '@/hooks';
 
 import {
@@ -13,10 +13,10 @@ import {
   StyledSearchTextFieldInput,
 } from '@/components/atoms';
 import {
+  CASH_FLOW_COLUMNS,
   combineColumns,
   GridMoreIconButton,
   SortButton,
-  YOULAND_COLUMNS,
 } from '@/components/molecules';
 
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
@@ -55,11 +55,11 @@ export const GridCashFlowToolbar: FC = observer(() => {
     Array<Option & { bgColor: string }>
   >([]);
 
-  const { loading } = useAsync(async () => {
+  useAsync(async () => {
     if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
       return;
     }
-    const { data } = await _fetchInvestorData();
+    const { data } = await _fetchInvestorData({});
     const temp = data.reduce(
       (acc, cur) => {
         acc.push({
@@ -94,7 +94,7 @@ export const GridCashFlowToolbar: FC = observer(() => {
         onChange={(e) => {
           updateQueryDebounce('tradeStatus', e);
         }}
-        options={SEARCH_TRADE_STATUS_OPTIONS}
+        options={TRADE_STATUS_OPTIONS}
         value={[...queryModel.searchCondition.tradeStatus]}
       />
 
@@ -129,7 +129,7 @@ export const GridCashFlowToolbar: FC = observer(() => {
       )}
 
       <GridMoreIconButton
-        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
+        columns={combineColumns(CASH_FLOW_COLUMNS(), orderColumns)}
         gridType={PortfolioGridTypeEnum.CASH_FLOW}
         handleSave={(columns) => {
           updateOrderColumns(columns);

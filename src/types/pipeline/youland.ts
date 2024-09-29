@@ -1,6 +1,11 @@
 import { PipelineStatusEnum } from '@/types/enum';
 import { PageProps } from '@/types/loan/payments';
 
+export enum TableTypeEnum {
+  youland = 'YOULAND',
+  alameda = 'ALAMEDA',
+}
+
 export enum GridTradeStatusEnum {
   in_progress = 'IN_PROCESS',
   confirmed = 'CONFIRMED',

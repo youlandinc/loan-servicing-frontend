@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import {
@@ -239,6 +239,25 @@ export const GridCashFlow: FC = observer(() => {
         );
       },
     },
+    displayColumnDefOptions: {
+      'mrt-row-expand': {
+        size: 40,
+        Cell: ({ row, table }) => {
+          return (
+            <>
+              {row.subRows?.length ? (
+                <MRT_ExpandButton row={row} table={table} />
+              ) : null}
+            </>
+          );
+        },
+      },
+    },
+    muiTableContainerProps: {
+      style: {
+        maxHeight: 'calc(100vh - 212px)',
+      },
+    },
     muiTableHeadProps: {
       sx: {
         opacity: 1,
@@ -289,9 +308,6 @@ export const GridCashFlow: FC = observer(() => {
         '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
           mr: '-8px',
         },
-        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
-          borderWidth: 1,
-        },
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
@@ -299,83 +315,75 @@ export const GridCashFlow: FC = observer(() => {
         '&:hover': {
           bgcolor: '#ececec',
         },
+        '& .MuiDivider-root': {
+          borderWidth: '1px',
+          height: 16,
+        },
       },
       onClick: (e) => {
         e.stopPropagation();
         if (props.column.id === 'mrt-row-expand') {
           return;
         }
+        // handleHeaderClick?.(e, props.column);
         setAnchorEl(e.currentTarget);
         setHeaderColumnId(props.column.id);
         setHeaderTitle(props.column.columnDef.header);
       },
     }),
-    displayColumnDefOptions: {
-      'mrt-row-expand': {
-        size: 40,
-        Cell: ({ row, table }) => {
-          return (
-            <>
-              {row.subRows?.length ? (
-                <MRT_ExpandButton row={row} table={table} />
-              ) : null}
-            </>
-          );
-        },
-      },
-    },
     muiTableBodyRowProps: ({ row }) => {
       return {
         sx: {
-          '& .MuiTableCell-root': {
-            borderBottom: row.getIsExpanded() ? '1px solid #EDF1FF' : 'none',
-          },
-          '& td': {
-            py: 0,
-            height: 40,
-          },
-          '&:hover': {
-            '& td:nth-of-type(2)': {
-              zIndex: '1 !important',
-            },
-            '& td:after': {
-              backgroundColor: '#F6F6F6',
-            },
-          },
           '& .MuiTableCell-root:last-child': {
-            borderBottom: 'none',
+            borderColor: '#D2D6E1 !important',
+            borderBottom:
+              row.original.servicingLoans && !row.getIsExpanded()
+                ? 'none'
+                : '1px solid',
+            borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           },
+          '& .MuiTableCell-root:first-of-type': {
+            width: 40,
+            minWidth: 40,
+            border: 'none',
+          },
+          boxShadow: 'none',
         },
       };
     },
-    muiTableBodyCellProps: ({ row }) => ({
-      sx: {
-        px: 1.5,
-        py: 1.5,
-        borderBottom: 'none',
-        bgcolor: 'transparent',
-        overflow: 'visible',
-        '&:first-of-type button': {
-          visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+    muiTableBodyCellProps: ({ row }) => {
+      return {
+        sx: {
+          py: 0,
+          px: 1.5,
+          bgcolor: 'transparent',
+          height: 40,
+          borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+          borderColor: '#D2D6E1 !important',
+          overflow: 'visible',
+          '&:first-of-type button': {
+            visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+          },
+          borderBottom:
+            row.original.servicingLoans && !row.getIsExpanded()
+              ? 'none'
+              : '1px solid',
         },
-      },
-      onClick: async () => {
-        const { original } = row;
-        const { loanId } = original;
-        if (original.servicingLoans) {
-          row.toggleExpanded();
-        }
-        if (!original.servicingLoans) {
-          if (isLoading) {
-            return;
+        onClick: async () => {
+          const { original } = row;
+          const { loanId } = original;
+          if (original.servicingLoans) {
+            row.toggleExpanded();
           }
-          await router.push({
-            pathname: '/loan/overview',
-            query: { loanId },
-          });
-        }
-      },
-    }),
+          if (!original.servicingLoans) {
+            await router.push({
+              pathname: '/loan/overview',
+              query: { loanId },
+            });
+          }
+        },
+      };
+    },
     muiExpandAllButtonProps: (props) => {
       return {
         title: '',

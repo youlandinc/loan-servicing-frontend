@@ -61,6 +61,12 @@ export const GridYoulandToolbar: FC = observer(() => {
       },
       [] as Array<Option & { bgColor: string }>,
     );
+    temp.unshift({
+      label: 'None',
+      value: 'None',
+      key: NaN,
+      bgColor: '',
+    });
     setInvestorData(temp);
   }, [displayType]);
 

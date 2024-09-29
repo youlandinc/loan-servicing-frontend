@@ -81,7 +81,7 @@ export const GridCashFlow: FC = observer(() => {
       (acc, cur) => {
         acc.push({
           label: cur.investorName,
-          value: cur.id,
+          value: cur.investorName,
           key: cur.id,
           bgColor: '',
         });
@@ -89,6 +89,12 @@ export const GridCashFlow: FC = observer(() => {
       },
       [] as Array<Option & { bgColor: string }>,
     );
+    temp.unshift({
+      label: 'None',
+      value: 'None',
+      key: NaN,
+      bgColor: '',
+    });
     setInvestorData(temp);
   }, [displayType]);
 
@@ -190,6 +196,11 @@ export const GridCashFlow: FC = observer(() => {
       }
       return row.loanId;
     }, //default
+    defaultColumn: {
+      minSize: 140,
+      size: 250,
+    },
+
     getSubRows: (row) => row.servicingLoans,
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer

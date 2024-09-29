@@ -7,10 +7,10 @@ import { StyledSearchTextFieldInput } from '@/components/atoms';
 import { observer } from 'mobx-react-lite';
 import { useDebounceFn } from '@/hooks';
 import {
+  ALAMEDA_COLUMNS,
   combineColumns,
   GridMoreIconButton,
   SortButton,
-  YOULAND_COLUMNS,
 } from '@/components/molecules';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
@@ -78,7 +78,10 @@ export const GridAlamedaToolbar: FC = observer(() => {
       )}
 
       <GridMoreIconButton
-        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
+        columns={combineColumns(
+          ALAMEDA_COLUMNS().filter((item) => item.header),
+          orderColumns,
+        )}
         gridType={PortfolioGridTypeEnum.ALAMEDA}
         handleSave={(columns) => {
           updateOrderColumns(columns);

@@ -80,7 +80,10 @@ export const GridYoulandToolbar: FC = observer(() => {
       )}
 
       <GridMoreIconButton
-        columns={combineColumns(YOULAND_COLUMNS(), orderColumns)}
+        columns={combineColumns(
+          YOULAND_COLUMNS().filter((item) => item.header),
+          orderColumns,
+        )}
         gridType={PortfolioGridTypeEnum.YOULAND}
         handleSave={(columns) => {
           updateOrderColumns(columns);

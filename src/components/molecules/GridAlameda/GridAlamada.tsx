@@ -107,6 +107,10 @@ export const GridAlameda: FC = observer(() => {
               repaymentStatusList: [
                 ...queryModel.searchCondition.repaymentStatusList,
               ],
+              tradeStatus: [...queryModel.searchCondition.tradeStatus],
+              prospectiveBuyer: [
+                ...queryModel.searchCondition.prospectiveBuyers,
+              ],
             },
             sort: [...queryModel.sort],
           },

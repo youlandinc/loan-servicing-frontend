@@ -28,6 +28,7 @@ import {
   StyledButton,
   StyledDatePicker,
   StyledDialog,
+  StyledTextFieldNumber,
 } from '@/components/atoms';
 import { GridDropDown, GridDropDownButton } from '@/components/molecules';
 import { _updateTableData } from '@/request';
@@ -441,17 +442,127 @@ export const ALAMEDA_COLUMNS = (
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       size: 160,
-      Cell: ({ renderedCellValue }) => {
+      Cell: ({ renderedCellValue, row }) => {
+        const { enqueueSnackbar } = useSnackbar();
+        const { visible, close, open } = useSwitch(false);
+        const [value, setValue] = useState<string | number | undefined>(
+          utils.notNull(row.original.buyRate)
+            ? row.original.buyRate
+            : undefined,
+        );
+        const [updating, setUpdating] = useState(false);
+
         return (
-          <Typography
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
+          <Stack
+            className={'edit-cell'}
+            height={'100%'}
+            justifyContent={'center'}
+            mx={-2}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              open();
+              return;
             }}
-            variant={'body3'}
+            sx={{
+              '&:hover': {
+                border: '1px solid rgba(144, 149, 163, 0.3)',
+              },
+              cursor: 'text',
+            }}
+            width={'calc(100% + 48px)'}
           >
-            {utils.formatPercent(renderedCellValue as number, 2)}
-          </Typography>
+            <Typography
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+              }}
+              variant={'body3'}
+            >
+              {utils.formatPercent(renderedCellValue as number)}
+            </Typography>
+            <StyledDialog
+              aria-hidden="true"
+              content={
+                <Stack gap={3} py={3}>
+                  <StyledTextFieldNumber
+                    label={'Buy rate'}
+                    onValueChange={({ floatValue }) => setValue(floatValue)}
+                    suffix={'%'}
+                    value={value}
+                  />
+                </Stack>
+              }
+              footer={
+                <Stack flexDirection={'row'} gap={1.5}>
+                  <StyledButton
+                    color={'info'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      close();
+                    }}
+                    size={'small'}
+                    sx={{
+                      width: 82,
+                    }}
+                    variant={'outlined'}
+                  >
+                    Cancel
+                  </StyledButton>
+                  <StyledButton
+                    disabled={
+                      !utils.notNull(value) ||
+                      !utils.notUndefined(value) ||
+                      updating
+                    }
+                    loading={updating}
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      if (!utils.notNull(value)) {
+                        return;
+                      }
+                      const postData = {
+                        loanId: row.original.loanId,
+                        buyRate: value,
+                      };
+                      setUpdating(true);
+                      try {
+                        await _updateTableData(postData);
+                        await cb?.();
+                      } catch (err) {
+                        const { header, message, variant } = err as HttpError;
+                        enqueueSnackbar(message, {
+                          variant: variant || 'error',
+                          autoHideDuration: AUTO_HIDE_DURATION,
+                          isSimple: !header,
+                          header,
+                        });
+                      } finally {
+                        setUpdating(false);
+                        close();
+                      }
+                    }}
+                    size={'small'}
+                    sx={{
+                      width: 82,
+                    }}
+                  >
+                    Confirm
+                  </StyledButton>
+                </Stack>
+              }
+              header={'Buy rate'}
+              onClose={(e: MouseEvent) => {
+                e.preventDefault();
+                e.stopPropagation();
+                close();
+              }}
+              open={visible}
+              scroll={'body'}
+            />
+          </Stack>
         );
       },
     },

@@ -72,7 +72,7 @@ export const GridCashFlow: FC = observer(() => {
     });
   }, []);
 
-  useAsync(async () => {
+  const { loading } = useAsync(async () => {
     if (displayType !== PortfolioGridTypeEnum.CASH_FLOW) {
       return;
     }
@@ -146,7 +146,7 @@ export const GridCashFlow: FC = observer(() => {
           ),
         );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [configColumnsOrderKeysArr.join('')]);
+  }, [configColumnsOrderKeysArr.join(''), loading]);
 
   const expandedData =
     expandedColumns?.reduce(
@@ -178,7 +178,7 @@ export const GridCashFlow: FC = observer(() => {
     manualPagination: true,
     state: {
       columnOrder: configColumnsOrderKeysArr,
-      showSkeletons: isLoading,
+      showSkeletons: isLoading || loading,
     },
     initialState: {
       showProgressBars: false,

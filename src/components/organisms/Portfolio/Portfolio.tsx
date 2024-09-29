@@ -8,7 +8,7 @@ import { Layout } from '@/components/molecules';
 
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
-import { _getAllGridConfig, setDisplayType } from '@/request';
+import { _getAllGridConfig, _getAllStatus, setDisplayType } from '@/request';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
@@ -23,8 +23,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
+import { enqueueSnackbar } from 'notistack';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useAsync, useAsyncFn } from 'react-use';
+import useSWR from 'swr';
 
 const GridYouland = dynamic(
   () =>
@@ -171,6 +173,24 @@ export const Portfolio: FC = observer(() => {
       return res;
     });
   }, []);
+
+  useSWR(
+    portfolioListType === PortfolioGridTypeEnum.ALL_LOANS ||
+      portfolioListType === PortfolioGridTypeEnum.BY_INVESTOR ||
+      portfolioListType === PortfolioGridTypeEnum.MATURITY
+      ? '_getAllStatus'
+      : null,
+    async () => {
+      return await _getAllStatus().catch(({ message, variant, header }) => {
+        close();
+        enqueueSnackbar(message ?? 'error!', {
+          variant,
+          isSimple: !header,
+          header,
+        });
+      });
+    },
+  );
 
   const menus = useMemo(
     () => [

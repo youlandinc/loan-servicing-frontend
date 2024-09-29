@@ -225,10 +225,6 @@ export const GridAlameda: FC = observer(() => {
         '& .MuiTableCell-root:last-child': {
           bgcolor: '#F4F6FA',
         },
-        '& .MuiTableRow-root': {
-          boxShadow: 'none !important',
-          bgcolor: '#F4F6FA',
-        },
       },
     },
     muiTableHeadCellProps: (props) => ({
@@ -281,6 +277,7 @@ export const GridAlameda: FC = observer(() => {
         }
         setAnchorEl(e.currentTarget);
         setTableHeaderIndex(props.column.getIndex());
+        // setHeaderColumn(props.column);
         setHeaderColumnId(props.column.id);
         setHeaderTitle(props.column.columnDef.header);
       },
@@ -302,7 +299,7 @@ export const GridAlameda: FC = observer(() => {
       sx: {
         boxShadow: 'none',
         '& td': {
-          height: 40,
+          height: 32,
           borderRight: '1px solid',
           borderColor: '#edf1ff',
           py: 0,

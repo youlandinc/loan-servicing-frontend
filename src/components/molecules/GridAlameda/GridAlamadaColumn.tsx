@@ -612,6 +612,7 @@ export const ALAMEDA_COLUMNS = (
               color={'primary'}
               disabled={
                 !row.original.prospectiveBuyer ||
+                row.original.prospectiveBuyer === 'None' ||
                 renderedCellValue === GridTradeConfirmEnum.completed ||
                 row.original.tradeStatus !== GridTradeStatusEnum.confirmed
               }

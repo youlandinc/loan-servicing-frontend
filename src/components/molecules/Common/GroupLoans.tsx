@@ -173,6 +173,9 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             minWidth: 40,
             border: 'none',
           },
+          '& .MuiTableCell-root:nth-child(2)': {
+            zIndex: 1,
+          },
           boxShadow: 'none',
           '&:hover': {
             '& td:after': {

@@ -80,7 +80,7 @@ export const YOULAND_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -230,7 +230,7 @@ export const YOULAND_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -457,7 +457,7 @@ export const YOULAND_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -470,7 +470,7 @@ export const YOULAND_COLUMNS = (
               },
               cursor: 'text',
             }}
-            width={'calc(100% + 48px)'}
+            width={'calc(100% + 24px)'}
           >
             <Typography
               sx={{

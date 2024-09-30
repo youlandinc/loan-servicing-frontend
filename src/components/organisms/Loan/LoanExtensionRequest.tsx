@@ -59,6 +59,15 @@ export const LoanExtensionRequest: FC = () => {
       ? await _getExtensionInfo(parseInt(loanId as string))
           .then((res) => {
             setDownloadId(res.data.downloadId);
+            if (res.data.paidMode) {
+              setPaidType(res.data.paidMode);
+            }
+            if (typeof res.data.extensionFee === 'number') {
+              setExtensionFee(res.data.extensionFee);
+            }
+            if (typeof res.data.executionData === 'string') {
+              setExtensionDate(new Date(res.data.executionData));
+            }
             return res;
           })
           .catch(({ message, variant, header }) => {

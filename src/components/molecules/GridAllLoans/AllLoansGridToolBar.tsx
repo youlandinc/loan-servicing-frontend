@@ -1,10 +1,3 @@
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
-import { FC, useEffect, useRef } from 'react';
-import useSWR from 'swr';
-
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -22,6 +15,12 @@ import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { _getAllStatus } from '@/request';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -56,10 +55,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
       propertyAddressRef.current.value =
         allLoansGridModel.queryModel.searchCondition.keyword || '';
     }
-
-    return () => {
-      // allLoansGridModel.queryModel.resetDefault();
-    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

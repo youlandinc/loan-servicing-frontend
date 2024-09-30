@@ -1,14 +1,13 @@
-import { FC, forwardRef, useEffect, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
-
-import ClearIcon from '@mui/icons-material/Clear';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
 import {
   StyledButton,
   StyledDateRange,
   StyledDateRangeProps,
 } from '@/components/atoms';
+
+import ClearIcon from '@mui/icons-material/Clear';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Stack, Typography } from '@mui/material';
+import { FC, forwardRef, useEffect, useState } from 'react';
 
 const BtnDefaultStyle = {
   position: 'relative',
@@ -37,7 +36,7 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
     null,
   ]);
 
-  const CustomInput = forwardRef((props: any, ref) => {
+  const CustomInput = forwardRef((props: any) => {
     const { onClear, ...rest } = props;
     return (
       <StyledButton

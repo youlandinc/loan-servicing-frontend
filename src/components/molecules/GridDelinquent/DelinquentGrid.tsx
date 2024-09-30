@@ -73,6 +73,7 @@ export const DelinquentGrid: FC = observer(() => {
             resortColumns(delinquentGridModel.orderColumns, delinquentColumns),
           )
         : transferFirstColumn(delinquentColumns),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [configColumnsOrderKeysArr.join('')],
   );
 

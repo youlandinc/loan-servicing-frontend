@@ -1,15 +1,13 @@
-import { allLoansModel, IOrderColumnsItem } from '@/models/gridModel';
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { IconButton } from '@mui/material';
-import React, { FC, useState } from 'react';
-
 import { ColumnsOrderDialog, StyledActionsMenu } from '@/components/atoms';
-import { transferOrderColumns } from '@/components/molecules';
 
 import { useSwitch } from '@/hooks';
+import { IOrderColumnsItem } from '@/models/gridModel';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
+import { IconButton } from '@mui/material';
+import React, { FC, useState } from 'react';
 
 interface GridMoreIconButtonProps {
   columns: IOrderColumnsItem[];

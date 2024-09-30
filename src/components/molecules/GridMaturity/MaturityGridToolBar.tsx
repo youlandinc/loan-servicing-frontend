@@ -1,9 +1,3 @@
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
-import React, { FC, useEffect, useRef } from 'react';
-import useSWR from 'swr';
-
 import {
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
@@ -22,6 +16,11 @@ import {
   PortfolioGridTypeEnum,
   SortDirection,
 } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import React, { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
 
 export const MaturityGridToolBar: FC = observer(() => {
   const {
@@ -52,6 +51,7 @@ export const MaturityGridToolBar: FC = observer(() => {
         maturityGridModel.queryModel.searchCondition.keyword || '';
     }
     // getMaturityRangeOpt();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

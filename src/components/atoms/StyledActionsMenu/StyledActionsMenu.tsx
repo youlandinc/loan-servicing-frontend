@@ -1,7 +1,5 @@
-import React, { FC, ReactNode } from 'react';
 import {
   Icon,
-  IconProps,
   Menu,
   MenuItem,
   MenuProps,
@@ -9,8 +7,7 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
-
-import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
+import React, { FC, ReactNode } from 'react';
 
 interface ActionMenuProps {
   label: ReactNode;

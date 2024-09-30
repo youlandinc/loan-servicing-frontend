@@ -1,18 +1,15 @@
-import { Stack } from '@mui/material';
-import React, { FC, useEffect, useRef } from 'react';
-
 import { StyledSearchTextFieldInput } from '@/components/atoms';
 import {
   combineColumns,
   delinquentColumns,
   GridMoreIconButton,
   SortButton,
-  transferOrderColumns,
 } from '@/components/molecules';
 import { useDebounceFn } from '@/hooks';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { Stack } from '@mui/material';
+import React, { FC, useEffect, useRef } from 'react';
 
 export const DelinquentGridToolBar: FC = () => {
   const {
@@ -36,6 +33,7 @@ export const DelinquentGridToolBar: FC = () => {
         delinquentGridModel.queryModel.searchCondition.keyword || '';
     }
     // getDelinquentRangeOpt();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

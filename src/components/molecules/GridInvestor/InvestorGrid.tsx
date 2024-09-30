@@ -1,35 +1,24 @@
-import { allLoansModel } from '@/models/gridModel';
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { Stack } from '@mui/material';
-import { MRT_ColumnDef } from 'material-react-table';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo, useState } from 'react';
-import useSWR from 'swr';
-
 import {
   AllLoansPagination,
-  ColumnsHeaderMenus,
   commonColumns,
-  defaultColumnPining,
-  groupCommonColumns,
   GroupLoans,
   resortColumns,
   transferFirstColumn,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useMemo } from 'react';
+import useSWR from 'swr';
 
 export const InvestorGrid: FC = observer(() => {
   const {
     portfolio: { investorGridModel, displayType },
   } = useMst();
-
-  const [headerColumnId, setHeaderColumnId] = useState('');
-  const [headerTitle, setHeaderTitle] = useState('');
-  // const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
   const configColumnsOrderKeysArr = investorGridModel.orderColumns?.length
     ? transferOrderColumnsKeys(investorGridModel.orderColumns)
@@ -76,6 +65,7 @@ export const InvestorGrid: FC = observer(() => {
           resortColumns(investorGridModel.orderColumns, commonColumns),
         )
       : transferFirstColumn(commonColumns);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join('')]);
 
   const rowsTotal = data?.data?.totalItems ?? 0;

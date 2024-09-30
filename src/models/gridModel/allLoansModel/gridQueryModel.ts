@@ -1,11 +1,9 @@
-import { cast, SnapshotOut, types } from 'mobx-state-tree';
-
 import {
   DelinquentTimeRangeEnum,
   MaturityTimeRangeEnum,
-  PipelineMode,
   SortDirection,
 } from '@/types/enum';
+import { cast, SnapshotOut, types } from 'mobx-state-tree';
 
 const SortItemModel = types.model({
   direction: types.enumeration(Object.values(SortDirection)),

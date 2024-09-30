@@ -61,8 +61,8 @@ export const LoanAOM: FC = () => {
         setBuyersOpts(
           res.data.map((item) => ({
             label: item.investorName,
-            key: item.id+'',
-            value: item.id+'',
+            key: item.id + '',
+            value: item.id + '',
           })),
         );
       }
@@ -186,8 +186,8 @@ export const LoanAOM: FC = () => {
                     onChange={(e) => {
                       setBuyer(e.target.value as string);
                     }}
-                    required
                     options={buyersOpts}
+                    required
                     value={buyer}
                   />
                 </Stack>
@@ -195,7 +195,6 @@ export const LoanAOM: FC = () => {
               <StyledButton
                 loading={state.loading}
                 onClick={async () => {
-                  
                   await createPdf({
                     loanId: parseInt(loanId as string),
                     recordedDate: format(executionDate as Date, 'yyyy-MM-dd'),

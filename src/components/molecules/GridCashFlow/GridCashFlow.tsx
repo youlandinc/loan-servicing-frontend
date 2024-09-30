@@ -372,7 +372,7 @@ export const GridCashFlow: FC = observer(() => {
     muiTableBodyCellProps: ({ row }) => {
       return {
         sx: {
-          px: 1,
+          px: 1.5,
           py: 0,
           height: '32px',
           bgcolor: 'transparent',

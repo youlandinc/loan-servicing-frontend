@@ -173,6 +173,9 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             minWidth: 40,
             border: 'none',
           },
+          '& .MuiTableCell-root:nth-child(2)': {
+            zIndex: 1,
+          },
           boxShadow: 'none',
           '&:hover': {
             '& td:after': {
@@ -228,7 +231,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         '& .MuiTableRow-head': {
           boxShadow: 'none',
         },
-
         '& .Mui-TableHeadCell-Content-Wrapper': {
           fontWeight: 600,
           fontSize: 12,
@@ -289,7 +291,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             py: 1.25,
             width: 'auto',
             minWidth: 'auto',
-            // height
           },
         },
       },
@@ -298,7 +299,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         if (props.column.id === 'mrt-row-expand') {
           return;
         }
-        // handleHeaderClick?.(e, props.column);
         setAnchorEl(e.currentTarget);
         setHeaderColumnId(props.column.id);
         setHeaderTitle(props.column.columnDef.header);

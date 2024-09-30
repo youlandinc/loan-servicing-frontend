@@ -1,7 +1,8 @@
-import { SelectProps, SxProps } from '@mui/material';
+import { SxProps } from '@mui/material';
 import * as React from 'react';
+import { BaseSelectProps } from '@mui/material/Select/Select';
 
-export interface StyledSelectProps extends SelectProps {
+export interface StyledSelectProps extends BaseSelectProps {
   validate?: undefined | string[];
   options: Option[];
   sxHelperText?: SxProps;

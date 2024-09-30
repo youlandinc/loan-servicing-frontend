@@ -1,16 +1,16 @@
-import { useMst } from '@/models/Root';
-import React, { FC, useEffect, useState } from 'react';
-import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
-import { useAsyncFn } from 'react-use';
-
 import { StyledButton, StyledSelect } from '@/components/atoms';
+import { DelinquentTimeRangeOpt } from '@/constant';
 
 import { useSwitch } from '@/hooks';
-import { DelinquentTimeRangeOpt } from '@/constant';
+import { useMst } from '@/models/Root';
 import { _getDelinquentRangeOpt } from '@/request/portfolio/delinquen';
 import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
+import React, { FC, useEffect, useState } from 'react';
+import { useAsyncFn } from 'react-use';
 
 interface StyledDelinquentSelectProps {
   sx?: SxProps;
@@ -20,7 +20,6 @@ interface StyledDelinquentSelectProps {
 
 export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
   sx,
-  value,
   onChange,
 }) => {
   const {
@@ -66,7 +65,14 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = ({
   }, []);
 
   useEffect(() => {
-    getDelinquentRangeOpt();
+    getDelinquentRangeOpt().catch(({ message, variant, header }) => {
+      enqueueSnackbar(message, {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

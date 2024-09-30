@@ -1,5 +1,11 @@
 import { ColumnsHeaderMenus } from '@/components/molecules';
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
+import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
+import { SetColumnWidthParam } from '@/types/common';
+import { PortfolioGridTypeEnum } from '@/types/enum';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import {
   MRT_Column,
   MRT_TableContainer,
@@ -10,13 +16,6 @@ import router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import React, { CSSProperties, FC, useEffect, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
-
-import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
-import { SetColumnWidthParam } from '@/types/common';
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
 type GroupLoansProps = MRT_TableOptions<any> & {
   loading?: boolean;
@@ -39,7 +38,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   rowCount,
   loading,
   columnOrder,
-  handleHeaderClick,
   gridType,
   expandedData = {},
   handleSort,
@@ -116,7 +114,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     getSubRows: (row) => row.servicingLoans,
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
-    muiExpandButtonProps: (props) => ({
+    muiExpandButtonProps: () => ({
       sx: {
         width: 20,
         height: 20,
@@ -381,6 +379,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
 
   useEffect(() => {
     cancelUpdateGroupExpanded();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

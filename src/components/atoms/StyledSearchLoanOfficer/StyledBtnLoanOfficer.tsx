@@ -1,6 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import { StyledButton } from '@/components/atoms';
+import { useSwitch } from '@/hooks';
+
+import ClearIcon from '@mui/icons-material/Clear';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
-  Avatar,
   CircularProgress,
   MenuItem,
   PopoverOrigin,
@@ -8,12 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-import ClearIcon from '@mui/icons-material/Clear';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
-import { StyledButton } from '@/components/atoms';
-import { useSwitch } from '@/hooks';
+import React, { FC, useEffect, useState } from 'react';
 
 type StyledBtnLoanOfficerProps = {
   autoCompleteLoading?: boolean;
@@ -71,6 +69,7 @@ export const StyledBtnLoanOfficer: FC<StyledBtnLoanOfficerProps> = ({
 
   useEffect(() => {
     setUserInfo(value || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

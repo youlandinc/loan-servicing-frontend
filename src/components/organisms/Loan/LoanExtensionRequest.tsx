@@ -50,7 +50,7 @@ export const LoanExtensionRequest: FC = () => {
 
   const {
     visible: confirmShow,
-    open: confirmOpen,
+    // open: confirmOpen,
     close: confirmClose,
   } = useSwitch();
 

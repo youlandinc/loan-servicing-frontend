@@ -1,18 +1,12 @@
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
-import useSWR from 'swr';
-
 import {
   AllLoansPagination,
-  delinquentColumns,
   GroupLoans,
   maturityColumns,
   resortColumns,
   transferFirstColumn,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 import { _getGroupMaturity } from '@/request/portfolio/maturity';
 import {
@@ -20,6 +14,10 @@ import {
   PortfolioGridTypeEnum,
   SortDirection,
 } from '@/types/enum';
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useMemo } from 'react';
+import useSWR from 'swr';
 
 export const MaturityGrid: FC = observer(() => {
   const {
@@ -79,7 +77,9 @@ export const MaturityGrid: FC = observer(() => {
           resortColumns(maturityGridModel.orderColumns, columns),
         )
       : transferFirstColumn(columns);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     configColumnsOrderKeysArr.join(''),
     maturityGridModel.queryModel.searchCondition?.maturityDays,
   ]);

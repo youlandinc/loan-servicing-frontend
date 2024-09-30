@@ -1,11 +1,12 @@
-import { rootStore, useMst } from '@/models/Root';
-import { _fetchUserInfoWithToken } from '@/request/user';
-
-import { utils } from '@/utils';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC, PropsWithChildren } from 'react';
 import { useAsync } from 'react-use';
+
+import { rootStore, useMst } from '@/models/Root';
+import { _fetchUserInfoWithToken } from '@/request/user';
+
+import { utils } from '@/utils';
 
 export type LoginWithTokenProps = {
   success?: () => void;
@@ -13,7 +14,6 @@ export type LoginWithTokenProps = {
 };
 
 export const LoginWithToken: FC<PropsWithChildren<LoginWithTokenProps>> = ({
-  success,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   routeTo,
   children,
@@ -43,7 +43,7 @@ export const LoginWithToken: FC<PropsWithChildren<LoginWithTokenProps>> = ({
             ? router.push(routeTo)
             : router.push(`${router.pathname}?loanId=${loanId}`);
         })
-        .catch((err) => {
+        .catch(() => {
           rootStore.logout();
         });
     }

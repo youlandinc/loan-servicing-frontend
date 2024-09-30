@@ -1,4 +1,4 @@
-import { get, post } from '@/request';
+import { post } from '@/request';
 import {
   GridInvestorItem,
   ResponseGridAlamedaTable,

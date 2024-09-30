@@ -41,7 +41,7 @@ export const AllLoansGrid: FC = observer(() => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
-  const [columnPiningState, setColumnPiningState] = useState(
+  const [, setColumnPiningState] = useState(
     defaultColumnPining(allLoansGridModel.orderColumns),
   );
 

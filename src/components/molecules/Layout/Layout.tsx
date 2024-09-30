@@ -38,7 +38,12 @@ export const Layout: FC<LayoutProps> = observer(
     );
 
     return (
-      <Stack height={'100vh'} minHeight={'100vh'} width={'100%'}>
+      <Stack
+        height={'100vh'}
+        minHeight={'100vh'}
+        minWidth={1367}
+        width={'100%'}
+      >
         <LayoutHeader actions={actions} isHomepage={isHomepage} />
         <Stack
           flex={1}

@@ -84,7 +84,7 @@ export enum ProductCategoryEnum {
   ground = 'Ground-up Construction', //'GROUND_UP_CONSTRUCTION',
 }
 
-export enum LoanPurposeEnum {
+export enum LoanDetailsPurposeEnum {
   purchase = 'Purchase', //'PURCHASE',
   refinance = 'Refinance', //'REFINANCE',
 }
@@ -124,10 +124,13 @@ export enum MaturityDateTypeEnum {
 }
 
 export enum PortfolioGridTypeEnum {
-  ALL_LOANS = 'ALL_LOANS',
-  BY_INVESTOR = 'BY_INVESTOR',
-  DELINQUENT = 'DELINQUENT',
-  MATURITY = 'MATURITY',
+  YOULAND = 'SERVICING_YOULAND',
+  ALAMEDA = 'SERVICING_ALAMEDA',
+  CASH_FLOW = 'SERVICING_CASH_FLOW',
+  ALL_LOANS = 'SERVICING_ALL_LOAN',
+  BY_INVESTOR = 'SERVICING_BY_INVESTOR',
+  DELINQUENT = 'SERVICING_DELINQUENT',
+  MATURITY = 'SERVICING_MATURITY',
 }
 
 export enum DelinquentTimeRangeEnum {
@@ -143,4 +146,15 @@ export enum MaturityTimeRangeEnum {
   MONTH_END = 'MONTH_END',
   NEXT_MONTH_END = 'NEXT_MONTH_END',
   ALREADY_END = 'ALREADY_END',
+}
+
+export enum ColumnPiningDirectionEnum {
+  left = 'LEFT',
+  right = 'RIGHT',
+  center = 'CENTER',
+}
+
+export enum ExtensionPaidTypeEnum {
+  Upfront = 'UPFRONT',
+  Deferred = 'DEFERRED',
 }

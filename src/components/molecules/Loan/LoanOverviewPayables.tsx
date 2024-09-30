@@ -1,13 +1,18 @@
 import { FC } from 'react';
-import { Icon, Stack, SxProps, Typography } from '@mui/material';
+import {
+  //Icon,
+  Stack,
+  SxProps,
+  Typography,
+} from '@mui/material';
 import { GridRowsProp } from '@mui/x-data-grid/models/gridRows';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 
 import { utils } from '@/utils';
-import { OverviewOutstandingPayAble } from '@/types/overview';
+import { OverviewOutstandingPayAble } from '@/types/loan/overview';
 
-import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
+//import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 const mockData = [
   {
@@ -118,7 +123,7 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
   sx = { minWidth: 682 },
   outstandingPayAbles = mockData,
 }) => {
-  const router = useRouter();
+  //const router = useRouter();
   const lastChildIndex = columns.length;
 
   return (

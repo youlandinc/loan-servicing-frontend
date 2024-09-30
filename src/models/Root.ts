@@ -1,17 +1,17 @@
-import { createContext, useContext } from 'react';
 import { Instance, types } from 'mobx-state-tree';
-import { MaturityGrid } from '@/components/molecules/MaturityGrid';
+import { createContext, useContext } from 'react';
 
-import { User } from '@/types/user';
+import { portfolioModel } from '@/models/gridModel';
 import {
   DelinquentTimeRangeEnum,
   MaturityTimeRangeEnum,
   PipelineMode,
   PortfolioGridTypeEnum,
 } from '@/types/enum';
+
 import { URL_LOGOUT_REDIRECTION } from '@/constant';
 
-import { allLoansGridQueryModel, portfolioModel } from '@/models/gridModel';
+import { User } from '@/types/user';
 
 import { UserSetting } from './base';
 
@@ -117,60 +117,134 @@ const initialState = {
   userType: void 0,
   loginType: void 0,
   portfolio: {
-    displayType: PortfolioGridTypeEnum.ALL_LOANS,
-    allLoansGridQueryModel: {
-      size: 50,
-      page: 0,
-      sort: [],
-      searchCondition: {
-        investors: [],
-        propertyAddress: '',
-        maturityStartDate: '',
-        maturityEndDate: '',
-        repaymentStatusList: [],
+    displayType: PortfolioGridTypeEnum.YOULAND,
+    youlandGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
-    investorGridQueryModel: {
-      size: 50,
-      page: 0,
-      sort: [],
-      searchCondition: {
-        investors: [],
-        propertyAddress: '',
-        maturityStartDate: '',
-        maturityEndDate: '',
-        repaymentStatusList: [],
+    cashFlowGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
-    delinquentGridQueryModel: {
-      size: 50,
-      page: 0,
-      sort: [],
-      searchCondition: {
-        investors: [],
-        propertyAddress: '',
-        maturityStartDate: '',
-        maturityEndDate: '',
-        repaymentStatusList: [],
-        delinquentDays: DelinquentTimeRangeEnum.ALL,
+    alamedaGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
-    maturityGridQueryModel: {
-      size: 50,
-      page: 0,
-      sort: [],
-      searchCondition: {
-        investors: [],
-        propertyAddress: '',
-        maturityStartDate: '',
-        maturityEndDate: '',
-        repaymentStatusList: [],
-        maturityDays: MaturityTimeRangeEnum.ALREADY_END,
+    allLoansGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
       },
-      pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      orderColumnsModel: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
+    },
+    investorGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      },
+      orderColumns: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
+    },
+    delinquentGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+          delinquentDays: DelinquentTimeRangeEnum.ALL,
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      },
+      orderColumns: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
+    },
+    maturityGridModel: {
+      queryModel: {
+        size: 50,
+        page: 0,
+        sort: [],
+        searchCondition: {
+          investors: [],
+          keyword: '',
+          maturityStartDate: '',
+          maturityEndDate: '',
+          repaymentStatusList: [],
+          maturityDays: MaturityTimeRangeEnum.ALREADY_END,
+        },
+        pipelineMode: PipelineMode.INITIAL_APPROVAL,
+      },
+      orderColumns: [],
+      pinLeftColumns: [],
+      expandedColumns: [],
     },
   },
 };

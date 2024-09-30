@@ -5,18 +5,18 @@ import {
   Drawer,
   Fade,
   Icon,
-  Paper,
-  Popper,
+  //Paper,
+  //Popper,
   Stack,
   Typography,
 } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { uniqueId } from 'lodash';
 import {
-  bindHover,
-  bindPopper,
+  //bindHover,
+  //bindPopper,
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 
@@ -29,9 +29,13 @@ import {
 } from '@/constant';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 
-import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
+import {
+  StyledButton,
+  //StyledButton,
+  StyledHeaderAddressInfo,
+} from '@/components/atoms';
 import {
   Layout,
   LoanOverviewCard,
@@ -49,10 +53,11 @@ import {
   CommentTypeEnum,
   LoanProductCategoryEnum,
   LoanPurposeEnum,
-} from '@/types/overview';
+} from '@/types/loan/overview';
 import { PipelineStatusEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import {
+  _addOverviewComment,
   _fetchOverviewComments,
   _fetchOverviewDetails,
 } from '@/request/loan/overview';
@@ -65,7 +70,7 @@ import OVERVIEW_NEXT_DUE_DATE from '@/svg/loan/overview/overview-next-due-date.s
 import OVERVIEW_MATURITY_DATE from '@/svg/loan/overview/overview-maturity-date.svg';
 
 import OVERVIEW_COMMENTS_VIEW from '@/svg/loan/overview/overview-comments-view.svg';
-import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
+//import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
 import OVERVIEW_COMMENTS_NO_RESULT from '@/svg/loan/overview/overview-comments-no-result.svg';
 import OVERVIEW_COMMENTS_ADD from '@/svg/loan/overview/overview-comments-add.svg';
 import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
@@ -78,17 +83,17 @@ const INITIAL: LoanOverviewCardProps = {
   listData: [],
 };
 
-const ACTION_BUTTONS = [
-  {
-    icon: OVERVIEW_COMMENTS_VIEW,
-    label: 'Add comments',
-    type: CommentTypeEnum.text,
-  },
-  //{
-  //  icon: OVERVIEW_COMMENTS_TOUCH_POINT,
-  //  label: 'Touch point',
-  //},
-];
+//const ACTION_BUTTONS = [
+//  {
+//    icon: OVERVIEW_COMMENTS_VIEW,
+//    label: 'Add comments',
+//    type: CommentTypeEnum.text,
+//  },
+//  {
+//    icon: OVERVIEW_COMMENTS_TOUCH_POINT,
+//    label: 'Touch point',
+//  },
+//];
 
 const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
   let result: Array<any> = [
@@ -104,7 +109,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
           ? result.concat([
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanToValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
             ])
           : result.concat([
@@ -114,7 +119,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
             ]);
       break;
@@ -129,11 +134,11 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
               {
                 label: 'Loan to cost',
-                value: `${loanInfo.loanCost}%`,
+                value: utils.formatPercent(loanInfo.loanCost, 2),
               },
             ])
           : result.concat([
@@ -151,11 +156,11 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
               {
                 label: 'Loan to value',
-                value: `${loanInfo.loanValue}%`,
+                value: utils.formatPercent(loanInfo.loanValue, 2),
               },
               {
                 label: 'Loan to cost',
-                value: `${loanInfo.loanCost}%`,
+                value: utils.formatPercent(loanInfo.loanCost, 2),
               },
             ]);
       break;
@@ -165,12 +170,12 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
 };
 
 export const LoanOverview: FC = observer(() => {
-  const {
-    userSetting: { setting },
-  } = useMst();
+  //const {
+  //  userSetting: { setting },
+  //} = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  const router = useRouter();
+  //const router = useRouter();
   const breakpoints = useBreakpoints();
 
   const popupState = usePopupState({
@@ -187,7 +192,7 @@ export const LoanOverview: FC = observer(() => {
       const { data } = await _fetchOverviewDetails(loanId);
       setHeaderAddressInfo({
         address: data.propertyFullAddress,
-        loanNumber: data.loanNumber,
+        loanNumber: data.systemLoanNumber,
         status: data.repaymentStatus as string as PipelineStatusEnum,
       });
 
@@ -202,11 +207,11 @@ export const LoanOverview: FC = observer(() => {
         listData: [
           {
             label: 'Original balance',
-            value: utils.formatDollar(balanceInfo.principalBalance),
+            value: utils.formatDollar(balanceInfo.totalLoanAmount),
           },
           {
             label: 'Note rate',
-            value: `${balanceInfo.interestRate ?? ''}%`,
+            value: utils.formatPercent(balanceInfo.interestRate, 2),
           },
           {
             label: 'Term',
@@ -287,7 +292,7 @@ export const LoanOverview: FC = observer(() => {
       setNextDueDate({
         theme: 'light',
         header: 'Next due date',
-        headerValue: utils.formatDate(balanceInfo.nextDueDate),
+        headerValue: utils.formatDate(balanceInfo.nextPaymentDate),
         headerIcon: OVERVIEW_NEXT_DUE_DATE,
         listData: [
           {
@@ -302,12 +307,12 @@ export const LoanOverview: FC = observer(() => {
             ? 'warning'
             : 'light',
         header: 'Maturity date',
-        headerValue: utils.formatDate(balanceInfo.fciMaturityDate),
+        headerValue: utils.formatDate(balanceInfo.maturityDate),
         headerIcon: OVERVIEW_MATURITY_DATE,
         listData: [
           {
             label: `Origination date: ${utils.formatDate(
-              balanceInfo.originationDate,
+              balanceInfo.estClosingDate,
             )}`,
             value: '',
           },
@@ -344,11 +349,13 @@ export const LoanOverview: FC = observer(() => {
   }, []);
 
   const fetchComments = async (cb?: () => void) => {
+    const { loanId } = utils.getParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
     const {
       data: { content },
-    } = await _fetchOverviewComments(
-      utils.getParamsFromUrl(location.href).loanId,
-    );
+    } = await _fetchOverviewComments(loanId);
     setContent(content || []);
     cb?.();
   };
@@ -378,24 +385,36 @@ export const LoanOverview: FC = observer(() => {
     LoanOverviewTimelineProps['listData'] | undefined
   >();
 
+  const [addCommentLoading, setAddCommentLoading] = useState(false);
   const [content, setContent] = useState<any[]>([]);
 
-  const onClickAddNote = (type: CommentTypeEnum) => {
-    const data = {
-      id: uniqueId(),
+  const onClickAddNote = async (type: CommentTypeEnum) => {
+    if (addCommentLoading) {
+      return;
+    }
+    const postData = {
       loanId: utils.getParamsFromUrl(location.href).loanId,
       messageType: type,
       note: '',
-      firstName: setting?.userInfo?.firstName,
-      lastName: setting?.userInfo?.lastName,
-      avatar: setting?.userInfo?.avatar,
-      backgroundColor: setting?.userInfo?.backgroundColor,
-      createdAt: new Date(),
-      isFake: true,
     };
 
-    setContent((prev) => [...prev, data]);
-    popupState.close();
+    setAddCommentLoading(true);
+
+    try {
+      await _addOverviewComment(postData);
+      await fetchComments();
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setAddCommentLoading(false);
+      popupState.close();
+    }
   };
 
   useEffect(() => {
@@ -427,242 +446,248 @@ export const LoanOverview: FC = observer(() => {
         </Stack>
       ) : (
         <Fade in={!loading}>
-          <Stack gap={3} height={'100%'} pt={6} width={'100%'}>
+          <Stack flexDirection={'row'} height={'100%'} width={'100%'}>
             <Stack
-              alignItems={'flex-end'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              px={6}
-              width={'100%'}
-            >
-              <StyledHeaderAddressInfo {...headerAddressInfo} />
-              {!['xxl'].includes(breakpoints) && (
-                <Stack
-                  alignItems={'center'}
-                  flexDirection={'row'}
-                  gap={0.5}
-                  onClick={open}
-                  sx={{
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Icon
-                    component={OVERVIEW_COMMENTS_VIEW}
-                    sx={{ width: 24, height: 24 }}
-                  />
-                  <Typography variant={'body2'}>View comments</Typography>
-                </Stack>
-              )}
-            </Stack>
-
-            <Stack
-              flexDirection={'row'}
+              flex={1}
               gap={3}
-              height={'calc(100% - 54px)'}
               overflow={'auto'}
-              px={6}
+              pl={6}
+              px={{ xs: 6, xl: 3 }}
+              py={6}
             >
               <Stack
-                gap={3}
-                height={'100%'}
-                ref={leftRef}
-                width={{ xs: 320, xl: 400 }}
+                alignItems={'flex-end'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
               >
-                <LoanOverviewCard {...currentBalance} />
-                <LoanOverviewCard {...loanInfo} />
-                <LoanOverviewCard {...borrowerInfo} />
-                {brokerInfo && <LoanOverviewCard {...brokerInfo} />}
-                <Stack height={24} width={'100%'}>
-                  &nbsp;
-                </Stack>
+                <StyledHeaderAddressInfo {...headerAddressInfo} />
+                {!['xxl'].includes(breakpoints) && (
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    gap={0.5}
+                    onClick={open}
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Icon
+                      component={OVERVIEW_COMMENTS_VIEW}
+                      sx={{ width: 24, height: 24 }}
+                    />
+                    <Typography variant={'body2'}>View comments</Typography>
+                  </Stack>
+                )}
               </Stack>
 
-              <Stack flex={1} flexShrink={0} gap={3} minWidth={682}>
-                <Stack flexDirection={'row'} gap={3} width={'100%'}>
-                  <LoanOverviewCard {...nextDueDate} />
-                  <LoanOverviewCard {...maturityDate} />
-                </Stack>
-
-                <LoanOverviewTimeline listData={timeline} />
-
-                <Stack flexShrink={0} height={270}>
-                  <LoanOverviewPayablesGrid
-                    outstandingPayAbles={loanPayAbles}
-                  />
-                </Stack>
+              <Stack flex={1} flexDirection={'row'} gap={3}>
                 <Stack
-                  bgcolor={'white'}
-                  border={'1px solid #D2D6E1'}
-                  borderRadius={2}
                   flexShrink={0}
-                  maxHeight={480}
-                  minHeight={270}
-                >
-                  <LoanPaymentsGrid maxHeight={478} />
-                </Stack>
-              </Stack>
-
-              {['xxl'].includes(breakpoints) && (
-                <Stack
-                  borderLeft={'1px solid #EDEDED'}
+                  gap={3}
                   height={'100%'}
-                  overflow={'hidden'}
-                  pl={3}
-                  width={320}
+                  ref={leftRef}
+                  width={{ xs: 320, xl: 400 }}
                 >
-                  <Stack flex={1} overflow={'auto'} pr={3} ref={messageBoxPc}>
-                    <Stack
-                      alignItems={'center'}
-                      flexShrink={0}
-                      gap={3}
-                      height={'calc(100% - 32px)'}
-                    >
-                      {content.length > 0 ? (
-                        content.map((item, index) => (
-                          <Fade in={true} key={`comment-${index}-${item.id}`}>
-                            <Box width={'100%'}>
-                              <LoanOverviewComment
-                                {...item}
-                                refresh={fetchComments}
-                              />
-                            </Box>
-                          </Fade>
-                        ))
-                      ) : (
-                        <Stack
-                          alignItems={'center'}
-                          gap={3}
-                          height={'100%'}
-                          justifyContent={'center'}
-                          maxHeight={'calc(100vh - 234px)'}
-                          minWidth={'300px'}
-                          width={'100%'}
-                        >
-                          <Icon
-                            component={OVERVIEW_COMMENTS_NO_RESULT}
-                            sx={{ height: 120, width: 160 }}
-                          />
-                          <Typography
-                            color={'text.secondary'}
-                            variant={'subtitle2'}
-                          >
-                            No comments added yet
-                          </Typography>
-                        </Stack>
-                      )}
-                      <Box flexShrink={0} height={200}>
-                        &nbsp;
-                      </Box>
-                    </Stack>
-
-                    <Stack
-                      alignItems={'center'}
-                      alignSelf={'flex-end'}
-                      bgcolor={'#303D6C'}
-                      borderRadius={3}
-                      flexDirection={'row'}
-                      flexShrink={0}
-                      justifyContent={'center'}
-                      mt={'auto'}
-                      onClick={() => onClickAddNote(CommentTypeEnum.text)}
-                      sx={{
-                        position: 'fixed',
-                        bottom: 24,
-                        right: 24,
-                        cursor: 'pointer',
-                        py: 1.5,
-                        px: 2,
-                        gap: 1,
-                      }}
-                    >
-                      <Icon
-                        component={OVERVIEW_COMMENTS_ADD}
-                        sx={{ height: 16, width: 16 }}
-                      />
-                      <Typography
-                        color={'white'}
-                        fontSize={14}
-                        fontWeight={600}
-                      >
-                        Add comment
-                      </Typography>
-                    </Stack>
-
-                    {/*<Stack*/}
-                    {/*  alignItems={'center'}*/}
-                    {/*  alignSelf={'flex-end'}*/}
-                    {/*  bgcolor={'#303D6C'}*/}
-                    {/*  borderRadius={'50%'}*/}
-                    {/*  flexShrink={0}*/}
-                    {/*  height={40}*/}
-                    {/*  justifyContent={'center'}*/}
-                    {/*  mt={'auto'}*/}
-                    {/*  sx={{*/}
-                    {/*    position: 'fixed',*/}
-                    {/*    bottom: 24,*/}
-                    {/*    right: 24,*/}
-                    {/*  }}*/}
-                    {/*  width={40}*/}
-                    {/*  {...bindHover(popupState)}*/}
-                    {/*>*/}
-                    {/*  <Stack>*/}
-                    {/*    <Icon*/}
-                    {/*      component={OVERVIEW_COMMENTS_ADD}*/}
-                    {/*      sx={{ height: 24, width: 24 }}*/}
-                    {/*    />*/}
-                    {/*  </Stack>*/}
-                    {/*</Stack>*/}
-
-                    {/*<Popper*/}
-                    {/*  placement={'top-end'}*/}
-                    {/*  {...bindPopper(popupState)}*/}
-                    {/*  sx={{ zIndex: 9999 }}*/}
-                    {/*  transition*/}
-                    {/*>*/}
-                    {/*  {({ TransitionProps }) => (*/}
-                    {/*    <Fade*/}
-                    {/*      {...TransitionProps}*/}
-                    {/*      timeout={100}*/}
-                    {/*      unmountOnExit={true}*/}
-                    {/*    >*/}
-                    {/*      <Paper*/}
-                    {/*        sx={{*/}
-                    {/*          mb: 3,*/}
-                    {/*          border: 'none',*/}
-                    {/*          boxShadow: 'none',*/}
-                    {/*          bgcolor: 'transparent',*/}
-                    {/*        }}*/}
-                    {/*      >*/}
-                    {/*        <Stack gap={1.5}>*/}
-                    {/*          {ACTION_BUTTONS.map((item, index) => (*/}
-                    {/*            <StyledButton*/}
-                    {/*              color={'secondary'}*/}
-                    {/*              key={`${item.label}-${index}`}*/}
-                    {/*              onClick={() => onClickAddNote(item.type)}*/}
-                    {/*              size={'small'}*/}
-                    {/*              sx={{*/}
-                    {/*                boxShadow:*/}
-                    {/*                  '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',*/}
-                    {/*                color: 'text.primary',*/}
-                    {/*                alignItems: 'center',*/}
-                    {/*              }}*/}
-                    {/*            >*/}
-                    {/*              <Icon*/}
-                    {/*                component={item.icon}*/}
-                    {/*                sx={{ width: 24, height: 24, mr: 1.25 }}*/}
-                    {/*              />*/}
-                    {/*              {item.label}*/}
-                    {/*            </StyledButton>*/}
-                    {/*          ))}*/}
-                    {/*        </Stack>*/}
-                    {/*      </Paper>*/}
-                    {/*    </Fade>*/}
-                    {/*  )}*/}
-                    {/*</Popper>*/}
+                  <LoanOverviewCard {...currentBalance} />
+                  <LoanOverviewCard {...loanInfo} />
+                  <LoanOverviewCard {...borrowerInfo} />
+                  {brokerInfo && <LoanOverviewCard {...brokerInfo} />}
+                  <Stack height={24} width={'100%'}>
+                    &nbsp;
                   </Stack>
                 </Stack>
-              )}
+
+                <Stack
+                  flex={1}
+                  gap={3}
+                  maxWidth={{
+                    xs: 'calc(100% - 344px)',
+                    xl: 'calc(100% - 424px)',
+                  }}
+                >
+                  <Stack flexDirection={'row'} gap={3}>
+                    <LoanOverviewCard {...nextDueDate} />
+                    <LoanOverviewCard {...maturityDate} />
+                  </Stack>
+
+                  <LoanOverviewTimeline listData={timeline} />
+
+                  <Stack flexShrink={0} height={270}>
+                    <LoanOverviewPayablesGrid
+                      outstandingPayAbles={loanPayAbles}
+                    />
+                  </Stack>
+                  <Stack
+                    bgcolor={'white'}
+                    border={'1px solid #D2D6E1'}
+                    borderRadius={2}
+                    flexShrink={0}
+                    maxHeight={480}
+                    minHeight={270}
+                  >
+                    <LoanPaymentsGrid maxHeight={478} />
+                  </Stack>
+                </Stack>
+              </Stack>
             </Stack>
+
+            {['xxl'].includes(breakpoints) && (
+              <Stack
+                borderLeft={'1px solid #EDEDED'}
+                flexShrink={0}
+                height={'100%'}
+                overflow={'hidden'}
+                pt={6}
+                width={320}
+              >
+                <Stack flex={1} overflow={'auto'} px={3} ref={messageBoxPc}>
+                  <Stack
+                    alignItems={'center'}
+                    flexShrink={0}
+                    gap={3}
+                    height={'calc(100% - 32px)'}
+                  >
+                    {content.length > 0 ? (
+                      content.map((item, index) => (
+                        <Fade in={true} key={`comment-${index}-${item.id}`}>
+                          <Box width={'100%'}>
+                            <LoanOverviewComment
+                              {...item}
+                              disabled={addCommentLoading}
+                              refresh={fetchComments}
+                            />
+                          </Box>
+                        </Fade>
+                      ))
+                    ) : (
+                      <Stack
+                        alignItems={'center'}
+                        gap={3}
+                        height={'100%'}
+                        justifyContent={'center'}
+                        mt={'200px'}
+                        width={'100%'}
+                      >
+                        <Icon
+                          component={OVERVIEW_COMMENTS_NO_RESULT}
+                          sx={{ height: 120, width: 160 }}
+                        />
+                        <Typography
+                          color={'text.secondary'}
+                          variant={'subtitle2'}
+                        >
+                          No comments added yet
+                        </Typography>
+                      </Stack>
+                    )}
+                    <Box flexShrink={0} height={200}>
+                      &nbsp;
+                    </Box>
+                  </Stack>
+
+                  <StyledButton
+                    disabled={addCommentLoading}
+                    loading={addCommentLoading}
+                    onClick={async () =>
+                      await onClickAddNote(CommentTypeEnum.text)
+                    }
+                    size={'small'}
+                    sx={{
+                      flexShrink: 0,
+                      bgcolor: '#303D6C !important',
+                      position: 'fixed',
+                      bottom: 24,
+                      right: 24,
+                      py: 1.5,
+                      width: 156,
+                      '&:hover': {
+                        bgcolor: '#33415B !important',
+                      },
+                    }}
+                  >
+                    <Icon
+                      component={OVERVIEW_COMMENTS_ADD}
+                      sx={{ height: 16, width: 16, mr: 1 }}
+                    />
+                    <Typography color={'white'} fontSize={14} fontWeight={600}>
+                      Add comment
+                    </Typography>
+                  </StyledButton>
+
+                  {/*<Stack*/}
+                  {/*  alignItems={'center'}*/}
+                  {/*  alignSelf={'flex-end'}*/}
+                  {/*  bgcolor={'#303D6C'}*/}
+                  {/*  borderRadius={'50%'}*/}
+                  {/*  flexShrink={0}*/}
+                  {/*  height={40}*/}
+                  {/*  justifyContent={'center'}*/}
+                  {/*  mt={'auto'}*/}
+                  {/*  sx={{*/}
+                  {/*    position: 'fixed',*/}
+                  {/*    bottom: 24,*/}
+                  {/*    right: 24,*/}
+                  {/*  }}*/}
+                  {/*  width={40}*/}
+                  {/*  {...bindHover(popupState)}*/}
+                  {/*>*/}
+                  {/*  <Stack>*/}
+                  {/*    <Icon*/}
+                  {/*      component={OVERVIEW_COMMENTS_ADD}*/}
+                  {/*      sx={{ height: 24, width: 24 }}*/}
+                  {/*    />*/}
+                  {/*  </Stack>*/}
+                  {/*</Stack>*/}
+
+                  {/*<Popper*/}
+                  {/*  placement={'top-end'}*/}
+                  {/*  {...bindPopper(popupState)}*/}
+                  {/*  sx={{ zIndex: 9999 }}*/}
+                  {/*  transition*/}
+                  {/*>*/}
+                  {/*  {({ TransitionProps }) => (*/}
+                  {/*    <Fade*/}
+                  {/*      {...TransitionProps}*/}
+                  {/*      timeout={100}*/}
+                  {/*      unmountOnExit={true}*/}
+                  {/*    >*/}
+                  {/*      <Paper*/}
+                  {/*        sx={{*/}
+                  {/*          mb: 3,*/}
+                  {/*          border: 'none',*/}
+                  {/*          boxShadow: 'none',*/}
+                  {/*          bgcolor: 'transparent',*/}
+                  {/*        }}*/}
+                  {/*      >*/}
+                  {/*        <Stack gap={1.5}>*/}
+                  {/*          {ACTION_BUTTONS.map((item, index) => (*/}
+                  {/*            <StyledButton*/}
+                  {/*              color={'secondary'}*/}
+                  {/*              key={`${item.label}-${index}`}*/}
+                  {/*              onClick={() => onClickAddNote(item.type)}*/}
+                  {/*              size={'small'}*/}
+                  {/*              sx={{*/}
+                  {/*                boxShadow:*/}
+                  {/*                  '0px 5px 10px 0px rgba(75, 107, 182, 0.15) !important',*/}
+                  {/*                color: 'text.primary',*/}
+                  {/*                alignItems: 'center',*/}
+                  {/*              }}*/}
+                  {/*            >*/}
+                  {/*              <Icon*/}
+                  {/*                component={item.icon}*/}
+                  {/*                sx={{ width: 24, height: 24, mr: 1.25 }}*/}
+                  {/*              />*/}
+                  {/*              {item.label}*/}
+                  {/*            </StyledButton>*/}
+                  {/*          ))}*/}
+                  {/*        </Stack>*/}
+                  {/*      </Paper>*/}
+                  {/*    </Fade>*/}
+                  {/*  )}*/}
+                  {/*</Popper>*/}
+                </Stack>
+              </Stack>
+            )}
 
             <Drawer
               anchor={'right'}
@@ -742,34 +767,34 @@ export const LoanOverview: FC = observer(() => {
                   </Box>
                 </Stack>
 
-                <Stack
-                  alignItems={'center'}
-                  alignSelf={'flex-end'}
-                  bgcolor={'#303D6C'}
-                  borderRadius={3}
-                  flexDirection={'row'}
-                  flexShrink={0}
-                  justifyContent={'center'}
-                  mt={'auto'}
-                  onClick={() => onClickAddNote(CommentTypeEnum.text)}
+                <StyledButton
+                  disabled={addCommentLoading}
+                  loading={addCommentLoading}
+                  onClick={async () =>
+                    await onClickAddNote(CommentTypeEnum.text)
+                  }
+                  size={'small'}
                   sx={{
+                    flexShrink: 0,
+                    bgcolor: '#303D6C !important',
                     position: 'fixed',
                     bottom: 24,
                     right: 24,
-                    cursor: 'pointer',
                     py: 1.5,
-                    px: 2,
-                    gap: 1,
+                    width: 156,
+                    '&:hover': {
+                      bgcolor: '#33415B !important',
+                    },
                   }}
                 >
                   <Icon
                     component={OVERVIEW_COMMENTS_ADD}
-                    sx={{ height: 16, width: 16 }}
+                    sx={{ height: 16, width: 16, mr: 1 }}
                   />
                   <Typography color={'white'} fontSize={14} fontWeight={600}>
                     Add comment
                   </Typography>
-                </Stack>
+                </StyledButton>
 
                 {/*<Stack*/}
                 {/*  alignItems={'center'}*/}

@@ -1,5 +1,10 @@
 import { CSSProperties, FC, useState } from 'react';
-import { Icon, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  //Icon,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
@@ -17,9 +22,9 @@ import { LoanPaymentsGridFooter } from '@/components/molecules';
 
 import { HttpError } from '@/types/common';
 import { _fetchPaymentsHistory } from '@/request/loan/payments';
-import { PaymentHistoryItem } from '@/types/payments';
+import { PaymentHistoryItem } from '@/types/loan/payments';
 
-import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
+//import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 export const LoanPaymentsGrid: FC<{
   maxHeight?: CSSProperties['maxHeight'];
@@ -145,7 +150,8 @@ export const LoanPaymentsGrid: FC<{
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
 
-    renderEmptyRowsFallback: ({ table }) => {
+    // If you want to customize the table, parameters are provided here
+    renderEmptyRowsFallback: () => {
       return (
         <Stack
           //alignItems={'center'}
@@ -176,6 +182,8 @@ export const LoanPaymentsGrid: FC<{
         position: 'relative',
         boxShadow: 'none',
         fontWeight: 500,
+        border: 'none',
+        height: 40,
         '&:not(:last-of-type)': {
           '&:after': {
             display: 'block',
@@ -230,11 +238,11 @@ export const LoanPaymentsGrid: FC<{
   });
 
   return (
-    <Stack flexShrink={0} height={'auto'} maxHeight={maxHeight}>
+    <Stack flex={1} height={'auto'} maxHeight={maxHeight} width={'100%'}>
       <Typography pb={1} pl={3} pt={2} variant={'subtitle1'}>
         Payment history
       </Typography>
-      <MRT_TableContainer table={table} />
+      <MRT_TableContainer sx={{ height: '100%' }} table={table} />
       {list.length > 0 && (
         <LoanPaymentsGridFooter
           onPageChange={(page) => onPageChange(page)}
@@ -363,7 +371,7 @@ const LOAN_PAYMENT_GRID_COLUMNS: MRT_ColumnDef<any>[] = [
   },
   {
     accessorKey: 'paymentType',
-    header: 'Payment Type',
+    header: 'Payment type',
     size: 180,
     muiTableBodyCellProps: { align: 'center' },
     muiTableHeadCellProps: { align: 'center' },

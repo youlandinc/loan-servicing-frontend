@@ -2,6 +2,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
+import { Layout, SideMenu } from '@/components/molecules';
 
 const DynamicLoanDetails = dynamic(
   () =>
@@ -9,7 +10,7 @@ const DynamicLoanDetails = dynamic(
       (mod) => mod.LoanDetails,
     ),
   {
-    ssr: true,
+    ssr: false,
   },
 );
 
@@ -20,7 +21,9 @@ const LoanDetailsPage = observer(() => {
         <meta content="YouLand Software Team" name="description" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <DynamicLoanDetails />
+      <Layout isHomepage={false} sideMenu={<SideMenu />}>
+        <DynamicLoanDetails />
+      </Layout>
     </>
   );
 });

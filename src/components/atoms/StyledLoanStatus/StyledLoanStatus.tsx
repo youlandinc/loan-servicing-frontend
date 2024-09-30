@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, Tooltip, Typography, TypographyProps } from '@mui/material';
+import { Box, Typography, TypographyProps } from '@mui/material';
 
 import {
   allLoansStatusBgcolor,
@@ -7,8 +7,9 @@ import {
 } from '@/styles/allLoansGridStyles';
 import { PipelineStatusEnum } from '@/types/enum';
 import { PIPELINE_STATUS } from '@/constant';
+import { utils } from '@/utils';
 interface StyledLoanStatusProps extends TypographyProps {
-  status: PipelineStatusEnum;
+  status: PipelineStatusEnum | string;
 }
 
 export const StyledLoanStatus: FC<StyledLoanStatusProps> = ({
@@ -28,7 +29,7 @@ export const StyledLoanStatus: FC<StyledLoanStatusProps> = ({
         width={120}
         {...rest}
       >
-        {PIPELINE_STATUS.find((item) => item.value === status)?.label}
+        {utils.findLabel(PIPELINE_STATUS, status) || status}
       </Typography>
     </Box>
   );

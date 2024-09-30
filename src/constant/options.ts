@@ -2,7 +2,8 @@ import {
   BorrowerTypeEnum,
   DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
-  // LoanPurposeEnum,
+  ExtensionPaidTypeEnum,
+  LoanDetailsPurposeEnum,
   LoanStatus,
   MaturityDateTypeEnum,
   MaturityTimeRangeEnum,
@@ -10,8 +11,10 @@ import {
   ProductCategoryEnum,
   PropertyTypeEnum,
 } from '@/types/enum';
-import { LoanProductCategoryEnum, LoanPurposeEnum } from '@/types/overview';
-import { TOption } from '@/types';
+import {
+  LoanProductCategoryEnum,
+  LoanPurposeEnum,
+} from '@/types/loan/overview';
 
 export const LOAN_PRODUCT_CATEGORY: Option[] = [
   {
@@ -183,14 +186,14 @@ export const PIPELINE_STATUS: Option[] = [
 
 export const LoanPurposeOpt: Option[] = [
   {
-    key: LoanPurposeEnum.purchase,
+    key: LoanDetailsPurposeEnum.purchase,
     label: 'Purchase',
-    value: LoanPurposeEnum.purchase,
+    value: LoanDetailsPurposeEnum.purchase,
   },
   {
-    key: LoanPurposeEnum.refinance,
+    key: LoanDetailsPurposeEnum.refinance,
     label: 'Refinance',
-    value: LoanPurposeEnum.refinance,
+    value: LoanDetailsPurposeEnum.refinance,
   },
 ];
 export const ProductCategoryOpt: Option[] = [
@@ -356,5 +359,18 @@ export const MaturityTypeOpt: Option[] = [
     key: MaturityTimeRangeEnum.NEXT_MONTH_END,
     label: 'Next month-end',
     value: MaturityTimeRangeEnum.NEXT_MONTH_END,
+  },
+];
+
+export const ExtensionPaidTypeOpt: Option[] = [
+  {
+    label: 'Upfront',
+    key: ExtensionPaidTypeEnum.Upfront,
+    value: ExtensionPaidTypeEnum.Upfront,
+  },
+  {
+    label: 'Deferred',
+    key: ExtensionPaidTypeEnum.Deferred,
+    value: ExtensionPaidTypeEnum.Deferred,
   },
 ];

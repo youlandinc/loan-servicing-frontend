@@ -1,18 +1,23 @@
 import React from 'react';
-import { Tooltip, Typography } from '@mui/material';
-import { MRT_ColumnDef } from 'material-react-table';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
+import { MRT_ColumnDef } from 'material-react-table';
 
 import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 
+import { IOrderColumnsItem } from '@/models/gridModel';
 import { ellipsisStyle } from '@/styles';
-import { MaturityTimeRangeEnum, PipelineStatusEnum } from '@/types/enum';
+import {
+  ColumnPiningDirectionEnum,
+  MaturityTimeRangeEnum,
+  PipelineStatusEnum,
+} from '@/types/enum';
 import { utils } from '@/utils';
 
 export const commonColumns: MRT_ColumnDef<any>[] = [
   {
-    accessorKey: 'loanNumber',
+    accessorKey: 'systemLoanNumber',
     header: 'Loan number',
     size: 150,
     minSize: 100,
@@ -67,17 +72,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue || ''}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue || '—'}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {renderedCellValue || '—'}
+        </Typography>
       );
     },
   },
@@ -94,17 +97,15 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue || ''}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue || '—'}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {renderedCellValue || '—'}
+        </Typography>
       );
     },
   },
@@ -121,22 +122,22 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
     Cell: ({ renderedCellValue }) => {
       return (
-        <Tooltip title={renderedCellValue}>
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue}
-          </Typography>
-        </Tooltip>
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          <Tooltip title={renderedCellValue}>
+            <Box component={'span'}>{renderedCellValue}</Box>
+          </Tooltip>
+        </Typography>
       );
     },
   },
   {
-    accessorKey: 'fciMaturityDate',
+    accessorKey: 'maturityDate',
     header: 'Maturity date',
     size: 140,
     minSize: 110,
@@ -158,7 +159,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'principalBalance',
+    accessorKey: 'totalLoanAmount',
     header: 'Principal balance',
     size: 140,
     minSize: 130,
@@ -177,7 +178,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatDollar(renderedCellValue as number, 0)}
+          {utils.formatDollar(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -202,13 +203,13 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatDollar(renderedCellValue as number, 0)}
+          {utils.formatDollar(renderedCellValue as number)}
         </Typography>
       );
     },
   },
   {
-    accessorKey: 'nextDueDate',
+    accessorKey: 'nextPaymentDate',
     header: 'Next due date',
     size: 140,
     minSize: 110,
@@ -249,7 +250,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatPercent((renderedCellValue as number) / 100)}
+          {utils.formatPercent(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -274,7 +275,7 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatDollar(renderedCellValue as number, 0)}
+          {utils.formatDollar(renderedCellValue as number)}
         </Typography>
       );
     },
@@ -299,13 +300,13 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
             width: '100%',
           }}
         >
-          {utils.formatPercent((renderedCellValue as number) / 100)}
+          {utils.formatPercent(renderedCellValue as number)}
         </Typography>
       );
     },
   },
   {
-    accessorKey: 'originationDate',
+    accessorKey: 'estClosingDate',
     header: 'Origination date',
     size: 140,
     minSize: 110,
@@ -326,436 +327,122 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
       );
     },
   },
-
-  /* {
-    accessorKey: ColumnIdEnum.city,
-    header: ColumnHeaderMap[ColumnIdEnum.city],
-    size: 130,
-    enableHiding: true,
-    Cell: ({ row: { original } }) => (
-      <Tooltip title={original.propertyDetail?.address?.city || ''}>
-        <Typography
-          sx={{
-            fontSize: 14,
-            width: '100%',
-            ...ellipsisStyle,
-          }}
-        >
-          {original.propertyDetail?.address?.city || '—'}
-        </Typography>{' '}
-      </Tooltip>
-    ),
-  },
-  {
-    accessorKey: ColumnIdEnum.postcode,
-    header: ColumnHeaderMap[ColumnIdEnum.postcode],
-    size: 100,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    Cell: ({ row: { original } }) => (
-      <Tooltip title={original.propertyDetail?.address?.postcode || ''}>
-        <>
-          <Typography
-            sx={{
-              ...ellipsisStyle,
-              fontSize: 14,
-              width: '100%',
-            }}
-          >
-            {original.propertyDetail?.address?.postcode || '—'}
-          </Typography>{' '}
-        </>
-      </Tooltip>
-    ),
-  },
-  {
-    accessorKey: ColumnIdEnum.state,
-    header: ColumnHeaderMap[ColumnIdEnum.state],
-    size: 80,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    Cell: ({ row: { original } }) => (
-      <Tooltip title={original.propertyDetail?.address?.state || ''}>
-        <>
-          <Typography
-            sx={{
-              fontSize: 14,
-              width: '100%',
-              ...ellipsisStyle,
-            }}
-          >
-            {original.propertyDetail?.address?.state || '—'}
-          </Typography>{' '}
-        </>
-      </Tooltip>
-    ),
-  },
-  {
-    accessorKey: ColumnIdEnum.productCategory,
-    header: ColumnHeaderMap[ColumnIdEnum.productCategory],
-    size: 200,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(original.productCategory);
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.loanPurpose,
-    header: ColumnHeaderMap[ColumnIdEnum.loanPurpose],
-    size: 120,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanPurpose === LoanPurposeOpt[1].value &&
-          typeof original.cashOutAmount === 'number' &&
-          original.cashOutAmount > 0
-          ? 'Cashout Refi'
-          : original.loanPurpose ?? '—',
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.loanTerm,
-    header: ColumnHeaderMap[ColumnIdEnum.loanTerm],
-    size: 120,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ renderedCellValue }) => renderEmpty(renderedCellValue),
-  },
-  {
-    accessorKey: ColumnIdEnum.interestRate,
-    header: ColumnHeaderMap[ColumnIdEnum.interestRate],
-    size: 80,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.interestRate,
-        formatPercent(original.interestRate, 2),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.purchasePrice,
-    header: ColumnHeaderMap[ColumnIdEnum.purchasePrice],
-    size: 130,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.purchasePrice,
-        formatDollar(original.purchasePrice, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.remainingLoanBalance,
-    header: ColumnHeaderMap[ColumnIdEnum.remainingLoanBalance],
-    size: 130,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanDetail?.loanPurpose === LoanPurposeOpt[0].value
-          ? null
-          : original.remainingLoanBalance,
-        formatDollar(original.remainingLoanBalance, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.totalLoanAmount,
-    header: ColumnHeaderMap[ColumnIdEnum.totalLoanAmount],
-    size: 160,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.totalLoanAmount,
-        formatDollar(original.totalLoanAmount, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.cashOutAmount,
-    header: ColumnHeaderMap[ColumnIdEnum.cashOutAmount],
-    size: 120,
-
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanDetail?.loanPurpose === LoanPurposeOpt[0].value
-          ? null
-          : original.cashOutAmount,
-        formatDollar(original.cashOutAmount, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.rehabAmount,
-    header: ColumnHeaderMap[ColumnIdEnum.rehabAmount],
-    size: 170,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanDetail?.productCategory === ProductCategoryOpt[0].value
-          ? null
-          : original.rehabAmount,
-        formatDollar(original.rehabAmount, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.loanValue,
-    header: ColumnHeaderMap[ColumnIdEnum.loanValue],
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    size: 100,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanValue,
-        formatPercent(original.loanValue, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.loanCost,
-    header: ColumnHeaderMap[ColumnIdEnum.loanCost],
-    size: 110,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanDetail?.productCategory === ProductCategoryOpt[0].value
-          ? null
-          : original.loanCost,
-        formatPercent(original.loanCost, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.arv,
-    header: ColumnHeaderMap[ColumnIdEnum.arv],
-    size: 120,
-
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanDetail?.productCategory === ProductCategoryOpt[0].value
-          ? null
-          : original.arv,
-        formatDollar(original.arv, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.arltv,
-    header: ColumnHeaderMap[ColumnIdEnum.arltv],
-    size: 70,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.loanDetail?.productCategory === ProductCategoryOpt[0].value
-          ? null
-          : original.arltv,
-        formatPercent(original.arltv, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.lenderOriginationFee,
-    header: ColumnHeaderMap[ColumnIdEnum.lenderOriginationFee],
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    size: 180,
-    Cell: ({ row: { original } }) => {
-      const { totalLoanAmount, lenderOriginationFee } = original;
-      return (
-        <Typography
-          sx={{
-            fontSize: 14,
-            width: '100%',
-            pl: 0.5,
-            ...ellipsisStyle,
-          }}
-        >
-          {totalLoanAmount && lenderOriginationFee
-            ? `${formatPercent(lenderOriginationFee, 2)} `
-            : formatPercent(lenderOriginationFee, 2)}
-        </Typography>
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.lenderProcessingFee,
-    header: ColumnHeaderMap[ColumnIdEnum.lenderProcessingFee],
-    size: 150,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.lenderProcessingFee,
-        formatDollar(original.lenderProcessingFee, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.brokerOriginationFee,
-    header: ColumnHeaderMap[ColumnIdEnum.brokerOriginationFee],
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    size: 200,
-    Cell: ({ row: { original } }) => {
-      const { totalLoanAmount, brokerOriginationFee } = original;
-      return (
-        <Typography
-          sx={{
-            fontSize: 14,
-            width: '100%',
-            pl: 0.5,
-          }}
-        >
-          {totalLoanAmount && brokerOriginationFee
-            ? `${formatPercent(brokerOriginationFee, 1)} `
-            : !brokerOriginationFee
-              ? '—'
-              : formatPercent(brokerOriginationFee, 1)}
-        </Typography>
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.brokerProcessingFee,
-    header: ColumnHeaderMap[ColumnIdEnum.brokerProcessingFee],
-    size: 185,
-    Cell: ({ row: { original } }) => {
-      return PaddingWrapper(
-        original.brokerProcessingFee,
-        formatDollar(original.brokerProcessingFee, 0),
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.estClosingDate,
-    header: ColumnHeaderMap[ColumnIdEnum.estClosingDate],
-    size: 180,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ renderedCellValue }) => {
-      return (
-        <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
-          {typeof renderedCellValue === 'string' &&
-          dayjs(new Date(renderedCellValue)).isValid()
-            ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
-            : '—'}
-        </Typography>
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.broker,
-    header: ColumnHeaderMap[ColumnIdEnum.broker],
-    size: 150,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ row: { original } }) => {
-      const [loanOfficerFirstName, loanOfficerLastName] = (
-        original.broker || ''
-      )
-        .trim()
-        .split(' ');
-
-      const { avatarName, avatarUrl } = handleAvatar(
-        loanOfficerFirstName,
-        loanOfficerLastName,
-        original.brokerAvatar,
-      );
-      return (
-        <>
-          {avatarName ? (
-            <Tooltip arrow title={original.broker}>
-              <Avatar
-                // alt={avatarName}
-                src={avatarUrl}
-                sx={{
-                  bgcolor:
-                    original.brokerBackgroundColor ||
-                    DEFAULT_AVATAR_BACKGROUND_COLOR,
-                  width: 24,
-                  height: 24,
-                  fontSize: 12,
-                  fontWeight: 600,
-                }}
-              >
-                {avatarName}
-              </Avatar>
-            </Tooltip>
-          ) : original.source === LoanType.POS ? (
-            'N/A'
-          ) : (
-            '-'
-          )}
-        </>
-      );
-    },
-  },
-  {
-    accessorKey: ColumnIdEnum.channel,
-    header: ColumnHeaderMap[ColumnIdEnum.channel],
-    size: 150,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ renderedCellValue }) => (
-      <Tooltip title={renderedCellValue ?? '—'}>
-        <Typography
-          fontSize={14}
-          fontWeight={renderedCellValue ? 600 : 400}
-          maxWidth={150}
-          sx={{ ...ellipsisStyle }}
-        >
-          {renderedCellValue ?? '—'}
-        </Typography>
-      </Tooltip>
-    ),
-  },
-  {
-    accessorKey: ColumnIdEnum.createdAt,
-    header: ColumnHeaderMap[ColumnIdEnum.createdAt],
-    size: 180,
-    muiTableBodyCellProps: {
-      align: 'center',
-    },
-    muiTableHeadCellProps: {
-      align: 'center',
-    },
-    Cell: ({ renderedCellValue }) => {
-      return (
-        <Typography sx={{ ...ellipsisStyle }} variant={'subtitle1'}>
-          {typeof renderedCellValue === 'string' && renderedCellValue !== ''
-            ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
-            : '—'}
-        </Typography>
-      );
-    },
-  },*/
 ];
 
-const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
+export const transferOrderColumns = (
+  columns: (MRT_ColumnDef<any> & {
+    sort: number;
+    visibility: boolean;
+    size: number;
+  })[],
+) => {
+  return columns.map((item, index) => ({
+    field: item.accessorKey as string,
+    headerName: item.header,
+    columnWidth: item.size,
+    sort: index,
+    visibility: item?.visibility ?? true,
+    pinType: 'CENTER' as ColumnPiningDirectionEnum,
+    leftOrder: null,
+  }));
+};
+
+export const resortColumns = (
+  orderColumns: IOrderColumnsItem[],
+  columns: MRT_ColumnDef<any>[],
+) => {
+  const notInOrderColumns: (MRT_ColumnDef<any> & {
+    visibility: boolean | null;
+    sort: number;
+  })[] = [];
+  const inOrderColumns: (MRT_ColumnDef<any> & {
+    visibility: boolean | null;
+    sort: number;
+  })[] = [];
+  columns.forEach((item, index) => {
+    const target = orderColumns.find(
+      (column) => column.field === item.accessorKey,
+    );
+    if (target) {
+      inOrderColumns.push({
+        ...item,
+        visibility: target.visibility,
+        size: target.columnWidth || item.size,
+        sort: target.sort,
+      });
+    } else {
+      notInOrderColumns.push({ ...item, visibility: true, sort: 100 + index });
+    }
+  });
+
+  return [...notInOrderColumns, ...inOrderColumns]
+    .filter((item) => item.visibility !== false)
+    .sort((a, b) => a.sort - b.sort);
+};
+
+export const transferOrderColumnsKeys = (columns: IOrderColumnsItem[]) => {
+  return columns
+    .filter((item: IOrderColumnsItem) => item.visibility)
+    .map((item: IOrderColumnsItem) => item.field);
+};
+
+export const combineColumns = (
+  defaultColumns: MRT_ColumnDef<any>[],
+  configColumns: IOrderColumnsItem[],
+): IOrderColumnsItem[] => {
+  const result = configColumns?.length
+    ? defaultColumns
+        .map((item, index) => {
+          const target = configColumns?.find(
+            (j) => j.field === item.accessorKey,
+          );
+          return target
+            ? target
+            : {
+                field: item.accessorKey as string,
+                headerName: item.header,
+                columnWidth: item.size as number,
+                sort: index,
+                visibility: true,
+                pinType: 'CENTER' as ColumnPiningDirectionEnum,
+                leftOrder: null,
+              };
+        })
+        .sort((a, b) => {
+          return a.sort - b.sort;
+        })
+    : // .filter((item) => (item as any)?.visibility !== false)
+      defaultColumns.map((item, index) => ({
+        field: item.accessorKey as string,
+        headerName: item.header,
+        columnWidth: item.size as number,
+        sort: index,
+        visibility: true,
+        pinType: 'CENTER' as ColumnPiningDirectionEnum,
+        leftOrder: null,
+      }));
+  return result;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+};
+
+export const defaultColumnPining = (configColumns: IOrderColumnsItem[]) => {
+  return configColumns?.length
+    ? {
+        left: configColumns
+          .filter(
+            (item) =>
+              item.pinType === ColumnPiningDirectionEnum.left &&
+              item.visibility,
+          )
+          .sort((a, b) => (a.leftOrder as number) - (b.leftOrder as number))
+          .map((item) => item.field),
+      }
+    : {
+        left: [],
+      };
+};
+
+export const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
   return columns.map((item: any, index) => {
     return {
       ...item,
@@ -766,8 +453,8 @@ const transferFirstColumn = (columns: MRT_ColumnDef<any>[]) => {
             <Typography
               fontSize={14}
               fontWeight={600}
-              position={'absolute'}
-              sx={{ whiteSpace: 'nowrap' }}
+              // position={'absolute'}
+              sx={{ whiteSpace: 'nowrap', textIndent: 8 }}
               textAlign={'left'}
               width={'100%'}
             >
@@ -788,7 +475,7 @@ export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
   [
     {
       accessorKey: 'diffDays',
-      header: 'Days until maturity',
+      header: 'Days delinquent',
       size: 150,
       minSize: 150,
       muiTableBodyCellProps: {
@@ -831,8 +518,6 @@ export const maturityColumns = (type: MaturityTimeRangeEnum) => {
           );
         },
       } as MRT_ColumnDef<any>,
-    ].concat(
-      commonColumns.filter((item) => item.accessorKey !== 'repaymentStatus'),
-    ),
+    ].concat(commonColumns),
   );
 };

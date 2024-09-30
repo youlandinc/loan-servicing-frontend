@@ -81,7 +81,7 @@ const columns: GridColDef[] = [
   },
   {
     field: 'paymentType',
-    headerName: 'Payment Type',
+    headerName: 'Payment type',
     sortable: false,
     flex: 1,
     align: 'center',

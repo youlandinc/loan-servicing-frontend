@@ -21,3 +21,7 @@ export const _downloadExtensionPdf = (downloadId: number) => {
     responseType: 'blob',
   });
 };
+
+export const _extensionConfirm = (param: IGetExtensionPdfParam) => {
+  return post('/servicing/extension/confirm', param);
+};

@@ -1,2 +1,2 @@
 export * from './portfolio';
-export * from './allLoansGridModel';
+export * from './allLoansModel';

@@ -1,6 +1,9 @@
 import { del, get, post } from '@/request/axios';
 import { RequestBizType } from '@/types/common';
-import { CommentTypeEnum, ResponseOverviewDetails } from '@/types/overview';
+import {
+  CommentTypeEnum,
+  ResponseOverviewDetails,
+} from '@/types/loan/overview';
 
 export const _fetchOverviewDetails = (loanId: string | number) => {
   return get<ResponseOverviewDetails>('/servicing/overview/detail', {

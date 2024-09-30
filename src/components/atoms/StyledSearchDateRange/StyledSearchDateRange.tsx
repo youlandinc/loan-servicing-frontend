@@ -1,10 +1,14 @@
-import { FC, forwardRef, useState } from 'react';
+import { FC, forwardRef, useEffect, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import { StyledButton, StyledDateRange } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledDateRange,
+  StyledDateRangeProps,
+} from '@/components/atoms';
 
 const BtnDefaultStyle = {
   position: 'relative',
@@ -18,13 +22,14 @@ const BtnDefaultStyle = {
   },
 };
 
-interface StyledSearchDateRangeProps {
-  onChange?: (date: [Date | null, Date | null]) => void;
+interface StyledSearchDateRangeProps extends StyledDateRangeProps {
+  // onChange?: (date: [Date | null, Date | null]) => void;
   hanelClear?: () => void;
 }
 
 export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
   onChange,
+  dateRange,
   hanelClear,
 }) => {
   const [closingDate, setClosingDate] = useState<[Date | null, Date | null]>([
@@ -72,6 +77,10 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
       </StyledButton>
     );
   });
+
+  useEffect(() => {
+    setClosingDate(dateRange);
+  }, [dateRange]);
 
   return (
     <StyledDateRange

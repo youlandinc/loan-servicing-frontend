@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { CommentItemData } from '@/types/overview';
+import { CommentItemData } from '@/types/loan/overview';
 import { Avatar, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
@@ -14,7 +14,6 @@ import {
 } from '@/components/atoms';
 
 import {
-  _addOverviewComment,
   _deleteOverviewComment,
   _updateOverviewComment,
 } from '@/request/loan/overview';
@@ -24,21 +23,19 @@ import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-dele
 
 export const LoanOverviewComment: FC<
   CommentItemData & {
-    isFake?: true;
     refresh: (cb?: () => void) => Promise<void>;
+    disabled?: boolean;
   }
 > = ({
-  loanId,
   id,
-  messageType,
   note,
   createdAt,
   avatar,
   firstName,
   lastName,
   backgroundColor,
-  isFake = false,
   refresh,
+  disabled = false,
 }) => {
   const { open, visible, close } = useSwitch(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -56,37 +53,21 @@ export const LoanOverviewComment: FC<
   const onClickToDelete = async () => {
     setIsShow(false);
     setLoading(true);
-    if (isFake) {
-      try {
-        await refresh?.(() => {
-          setLoading(false);
-          close();
-        });
-      } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
-      }
-    } else {
-      try {
-        await _deleteOverviewComment(id);
-        await refresh?.(() => {
-          setLoading(false);
-          close();
-        });
-      } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
-      }
+
+    try {
+      await _deleteOverviewComment(id);
+      await refresh?.(() => {
+        setLoading(false);
+        close();
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
     }
   };
 
@@ -94,35 +75,16 @@ export const LoanOverviewComment: FC<
     if (!value) {
       return;
     }
-    const params = {
-      messageType: messageType,
-      loanId,
-    };
-    if (isFake) {
-      try {
-        await _addOverviewComment(Object.assign(params, { note: value }));
-        await refresh?.();
-      } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
-      }
-    } else {
-      try {
-        await _updateOverviewComment({ id, note: value });
-      } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
-      }
+    try {
+      await _updateOverviewComment({ id, note: value });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
     }
   };
 
@@ -161,14 +123,28 @@ export const LoanOverviewComment: FC<
         {isShow && (
           <Icon
             component={OVERVIEW_COMMENTS_DELETE}
-            onClick={open}
-            sx={{ width: 16, height: 16, ml: 'auto', cursor: 'pointer' }}
+            onClick={() => {
+              if (disabled) {
+                return;
+              }
+              open();
+            }}
+            sx={{
+              width: 16,
+              height: 16,
+              ml: 'auto',
+              cursor: disabled ? 'default' : 'pointer',
+              '& path': {
+                fill: disabled ? '#C4C4C4' : '#9095A3',
+              },
+            }}
           />
         )}
       </Stack>
       <Stack pl={4}>
         <StyledTextFieldInput
           autoFocus={true}
+          disabled={disabled}
           inputProps={{
             maxLength: 255,
           }}

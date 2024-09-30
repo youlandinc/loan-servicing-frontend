@@ -1,23 +1,81 @@
+import { ColumnsHeaderMenus } from '@/components/molecules';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import {
+  MRT_Column,
   MRT_TableContainer,
   MRT_TableOptions,
   useMaterialReactTable,
 } from 'material-react-table';
 import router from 'next/router';
-import React, { CSSProperties, FC } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import React, { CSSProperties, FC, useEffect, useState } from 'react';
+import { useAsyncFn, useDebounce } from 'react-use';
+
+import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
+import { SetColumnWidthParam } from '@/types/common';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
-type GroupLoansProps = MRT_TableOptions<any> & { loading?: boolean };
+type GroupLoansProps = MRT_TableOptions<any> & {
+  loading?: boolean;
+  handleHeaderClick?: (
+    e: React.MouseEvent<HTMLTableCellElement>,
+    column: MRT_Column<any>,
+  ) => void;
+  columnOrder?: string[];
+  gridType: PortfolioGridTypeEnum;
+  expandedData?: Record<string, boolean>;
+  handleSort?: (param: {
+    property: string; //.id as string,
+    label: string;
+  }) => void;
+};
 
 export const GroupLoans: FC<GroupLoansProps> = ({
   columns,
   data,
   rowCount,
   loading,
+  columnOrder,
+  handleHeaderClick,
+  gridType,
+  expandedData = {},
+  handleSort,
   ...rest
 }) => {
+  const [headerColumnId, setHeaderColumnId] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
+  const [, updateGroupExpanded] = useAsyncFn(
+    async (
+      param: { dropDownId: string; collapsed: boolean }[],
+      gridType: PortfolioGridTypeEnum,
+    ) => {
+      await _setGroupExpanded({
+        pageColumn: gridType,
+        dropDowns: param,
+      });
+    },
+    [gridType],
+  );
+
+  const [, setColumnWidth] = useAsyncFn(
+    async (result: SetColumnWidthParam) => {
+      await _setColumnWidth(result).catch(({ message, variant, header }) => {
+        enqueueSnackbar(message, {
+          variant,
+          isSimple: !header,
+          header,
+        });
+      });
+      // await userSetting.fetchUserSetting();
+    },
+    [gridType],
+  );
+
   const table = useMaterialReactTable({
     columns,
     data,
@@ -39,15 +97,15 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     manualPagination: true,
     // getCoreRowModel: getCoreRowModel(),
     state: {
-      // columnOrder: configColumnsOrderKeysArr,
+      columnOrder: columnOrder || [],
       // isLoading: isValidating,
       showSkeletons: loading,
-      // columnPinning: columnPiningState,
+      // expanded: expandeds || {},
     },
     initialState: {
       // showSkeletons: false,
       showProgressBars: false,
-      // expanded: defaultExpanded,
+      expanded: expandedData,
     },
     getRowId: (row) => {
       if (row.servicingLoans?.length) {
@@ -58,13 +116,16 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     getSubRows: (row) => row.servicingLoans,
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
-    muiExpandButtonProps: {
+    muiExpandButtonProps: (props) => ({
       sx: {
         width: 20,
         height: 20,
+        padding: 0,
+        px: 1.5,
+        m: 0,
       },
       title: '',
-    },
+    }),
     icons: {
       KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
         const { style } = props;
@@ -96,42 +157,71 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         );
       },
     },
-    muiTableBodyRowProps: {
-      sx: {
-        '& .MuiTableCell-root:last-child': {
-          borderBottom: 'none',
+    muiTableBodyRowProps: ({ row }) => {
+      return {
+        sx: {
+          '& .MuiTableCell-root:last-child': {
+            borderColor: '#EDF1FF !important',
+            borderBottom:
+              row.original.servicingLoans && !row.getIsExpanded()
+                ? 'none'
+                : '1px solid',
+            borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+          },
+          '& .MuiTableCell-root:first-of-type': {
+            width: 'auto',
+            minWidth: 40,
+            border: 'none',
+          },
+          boxShadow: 'none',
+          '&:hover': {
+            '& td:after': {
+              background: '#F6F6F6',
+            },
+          },
         },
-        '& .MuiTableCell-root:first-of-type': {
-          width: 40,
-          minWidth: 40,
-        },
-      },
+      };
     },
-    muiTableBodyCellProps: ({ row }) => ({
-      sx: {
-        px: 1.5,
-        py: 1.5,
-        borderBottom: 'none',
-        bgcolor: 'transparent',
-        overflow: 'visible',
-        '&:first-of-type button': {
-          visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+    muiTableBodyCellProps: ({ row }) => {
+      return {
+        sx: {
+          px: 1,
+          py: 0,
+          height: '32px',
+          bgcolor: 'transparent',
+          borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
+          borderColor: '#EDF1FF !important',
+          overflow: 'visible',
+          '&:first-of-type': {
+            p: 0,
+            '& button': {
+              px: 1.5,
+              py: 0,
+              visibility: row.original.servicingLoans ? 'visible' : 'hidden',
+              width: 'auto',
+              height: 'auto',
+            },
+          },
+          borderBottom:
+            row.original.servicingLoans && !row.getIsExpanded()
+              ? 'none'
+              : '1px solid',
         },
-      },
-      onClick: async () => {
-        const { original } = row;
-        const { loanId } = original;
-        if (original.servicingLoans) {
-          row.toggleExpanded();
-        }
-        if (!original.servicingLoans) {
-          await router.push({
-            pathname: '/loan/overview',
-            query: { loanId },
-          });
-        }
-      },
-    }),
+        onClick: async () => {
+          const { original } = row;
+          const { loanId } = original;
+          if (original.servicingLoans) {
+            row.toggleExpanded();
+          }
+          if (!original.servicingLoans) {
+            await router.push({
+              pathname: '/loan/overview',
+              query: { loanId },
+            });
+          }
+        },
+      };
+    },
     muiTableHeadProps: {
       sx: {
         opacity: 1,
@@ -151,13 +241,9 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         '& .MuiTableCell-root:last-child': {
           bgcolor: '#F4F6FA',
         },
-        '& .MuiTableCell-root:first-of-type': {
-          width: 40,
-          minWidth: 40,
-        },
       },
     },
-    muiTableHeadCellProps: {
+    muiTableHeadCellProps: (props) => ({
       sx: {
         bgcolor: '#F4F6FA',
         opacity: 1,
@@ -182,165 +268,136 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         '& .Mui-TableHeadCell-ResizeHandle-Wrapper': {
           mr: '-8px',
         },
-        '& .Mui-TableHeadCell-ResizeHandle-Divider': {
-          borderWidth: 1,
-        },
         '&[data-pinned="true"]:before': {
           bgcolor: 'transparent',
         },
-        /* cursor:
-                            pipelineMode === PipelineDisplayMode.LIST_MODE ? 'pointer' : 'unset',
-                        '&:hover': {
-                          bgcolor:
-                              pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
-                        },*/
+        cursor: 'pointer',
+        '&:hover': {
+          bgcolor: '#ececec',
+        },
+        '& .MuiDivider-root': {
+          borderWidth: '1px',
+          height: 16,
+        },
+        '&:first-of-type': {
+          width: 'auto',
+          minWidth: 40,
+          p: 0,
+          '& button': {
+            height: 'auto',
+            px: 1.5,
+            py: 1.25,
+            width: 'auto',
+            minWidth: 'auto',
+            // height
+          },
+        },
       },
-    },
+      onClick: (e) => {
+        e.stopPropagation();
+        if (props.column.id === 'mrt-row-expand') {
+          return;
+        }
+        // handleHeaderClick?.(e, props.column);
+        setAnchorEl(e.currentTarget);
+        setHeaderColumnId(props.column.id);
+        setHeaderTitle(props.column.columnDef.header);
+      },
+    }),
     muiTableContainerProps: {
       style: {
         maxHeight: 'calc(100vh - 212px)',
       },
     },
+    muiExpandAllButtonProps: (props) => {
+      return {
+        sx: {
+          m: 0,
+          p: 0,
+          px: 1.5,
+          width: 'auto',
+        },
+        title: '',
+        onClick: () => {
+          props.table.toggleAllRowsExpanded();
+          //haneleExpandAllClick();
+          // set(props.table.toggleAllRowsExpanded, !props.table.getIsAllRowsExpanded());
+        },
+      };
+    },
     ...rest,
-    /*    muiTablePaperProps: {
-              sx: {
-                boxShadow: 'none',
-                '& .MuiAlert-message span': {
-                  visibility: 'hidden',
-                },
-                borderRadius: 0,
-              },
-            },
-            muiBottomToolbarProps: {
-              sx: {
-                '& .MuiTypography-body2': {
-                  fontSize: 14,
-                },
-                '& .MuiInputLabel-root,& .MuiInput-root': {
-                  fontSize: 14,
-                },
-              },
-            },
-            muiTableBodyProps: {
-              sx: {
-                '& tr .groupingTitle': {
-                  color: 'text.primary',
-                },
-                '& .MuiTableRow-root:last-child .MuiTableCell-root': {
-                  borderBottom: 'none',
-                },
-              },
-            },
-            muiPaginationProps: {
-              SelectProps: {
-                sx: {
-                  '& .MuiInputBase-input:focus': {
-                    bgcolor: 'transparent',
-                  },
-                },
-              },
-            },
-            muiSelectCheckboxProps: {
-              sx: {
-                width: 20,
-                height: 20,
-                m: '0 auto',
-              },
-            },
-            muiSelectAllCheckboxProps: {
-              sx: {
-                display: 'block',
-                m: '0 auto',
-              },
-            },*/
-    /* displayColumnDefOptions: {
-              'mrt-row-expand': {
-                size: 40, //make the expand column wider
-                Cell: ({ row, table }) => {
-                  return (
-                    <>
-                      {row.subRows?.length ? (
-                        <MRT_ExpandButton row={row} table={table} />
-                      ) : null}
-                    </>
-                  );
-                },
-              },
-            },
-            columnResizeMode: 'onChange',
-            muiExpandAllButtonProps: (props) => {
-              return {
-                onClick: () => {
-                  set(
-                    props.table.toggleAllRowsExpanded,
-                    !props.table.getIsAllRowsExpanded(),
-                  );
-                },
-                sx: {
-                  p: 0,
-                  width: 'auto',
-                  height: 'auto',
-                },
-              };
-            },
-            muiExpandButtonProps: {
-              sx: {
-                p: 0,
-                width: 'auto',
-                height: 'auto',
-              },
-            },
-            paginationDisplayMode: 'custom',
-            muiCircularProgressProps: {
-              Component: (
-                <Stack
-                  alignItems={'center'}
-                  direction={'row'}
-                  justifyContent={'center'}
-                  mt={8}
-                >
-                  <CircularProgress sx={{ fontSize: 18 }} />
-                </Stack>
-              ),
-            },
-            memoMode: 'cells',
-            onColumnPinningChange: setColumnPiningState,
-            ...TableDefaultProps(pipelineType),
-            muiTableHeadCellProps: (props) => {
-              return {
-                sx: { ...defaultProps(pipelineType).muiTableHeadCellProps.sx },
-                onClick: (e) => {
-                  if (
-                    pipelineType === PipelineDisplayMode.GROUP_MODE ||
-                    (e.target as HTMLElement).className?.includes(
-                      'Mui-TableHeadCell-ResizeHandle-Wrapper',
-                    ) ||
-                    (e.target as HTMLElement).className?.includes(
-                      'Mui-TableHeadCell-ResizeHandle-Divider',
-                    )
-                  ) {
-                    return;
-                  }
-                  const id = props.column.id;
-                  if (id === 'mrt-row-select') {
-                    return;
-                  }
-                  ColumnIdToSortIdMap[props.column.id]
-                    ? setHeaderSortDisabled(false)
-                    : setHeaderSortDisabled(true);
-
-                  setAnchorElHeader(e.currentTarget);
-                  setTableHeaderIndex(props.column.getIndex());
-                  setHeaderColumn(props.column);
-                },
-              };
-            },*/
   });
 
+  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const expanded = table.getState().expanded;
+
+  useDebounce(
+    async () => {
+      if (Object.keys(columnSizing).length) {
+        //handle column sizing
+        await setColumnWidth({
+          pageColumn: gridType,
+          columnWidths: Object.keys(columnSizing).map((field) => ({
+            field,
+            columnWidth: columnSizing[field],
+          })),
+        });
+      }
+    },
+    500,
+    [
+      Object.keys(columnSizing)
+        .map((item) => item)
+        .join(''),
+      gridType,
+    ],
+  );
+
+  const [, cancelUpdateGroupExpanded] = useDebounce(
+    async () => {
+      if (typeof expanded === 'boolean') {
+        await updateGroupExpanded(
+          data.map((item) => {
+            return {
+              dropDownId: item.groupById,
+              collapsed: true,
+            };
+          }),
+          gridType,
+        );
+      } else {
+        await updateGroupExpanded(
+          Object.keys(expanded).map((id) => ({
+            dropDownId: id,
+            collapsed: true,
+          })),
+          gridType,
+        );
+      }
+    },
+    500,
+    [expanded, gridType],
+  );
+
+  useEffect(() => {
+    cancelUpdateGroupExpanded();
+  }, []);
+
   return (
-    <MRT_TableContainer
-      sx={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-      table={table}
-    />
+    <>
+      <MRT_TableContainer table={table} />
+      <ColumnsHeaderMenus
+        anchorEl={anchorEl}
+        handleSort={() => {
+          handleSort?.({
+            property: headerColumnId, //.id as string,
+            label: headerTitle as string,
+          });
+        }}
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
+        type={'group'}
+      />
+    </>
   );
 };

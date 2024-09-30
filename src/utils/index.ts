@@ -1,32 +1,51 @@
-import { TOption } from '@/types';
 import { format } from 'date-fns';
+import { ReactNode } from 'react';
 
 export * from './Handler';
 export * from './TypeOf';
 
 export const utils = {
-  findLabel: (options: Option[], val: number | string | undefined): string => {
+  findLabel: (
+    options: Option[],
+    val: number | string | undefined | null,
+  ): string | ReactNode => {
     return options.find((item) => item.value === val)?.label || '';
   },
-  formatDollar: (amount: number | undefined | null, digit = 2): string => {
-    if (!amount) {
-      return '$0.00';
+  formatDollar: (
+    amount: string | number | null | undefined,
+    radix = 2,
+  ): string => {
+    if (!utils.notUndefined(amount) || !utils.notNull(amount)) {
+      return '-';
     }
-    return amount.toLocaleString('en-US', {
+    if (!amount) {
+      return '$0';
+    }
+    let target = amount;
+    if (utils.TypeOf(target) === 'String') {
+      target = parseFloat(target as string);
+    }
+    return target.toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: digit,
+      minimumFractionDigits: Number.isInteger(target) ? 0 : radix,
     });
   },
   formatPercent: (
-    percentageValue: number | undefined | string,
-    radix = 3,
+    percentageValue: number | undefined | string | null,
+    radix = getRadix(percentageValue),
   ): string => {
+    if (
+      !utils.notUndefined(percentageValue) ||
+      !utils.notNull(percentageValue)
+    ) {
+      return '-';
+    }
     if (!percentageValue) {
       if (radix === 0) {
         return '0%';
       }
-      return '0.000%';
+      return '0.00%';
     }
     let target = percentageValue;
     //eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -35,11 +54,10 @@ export const utils = {
       target = parseFloat(target as string);
     }
     return (
-      ((Math.floor((target as number) * 1000000) / 1000000) * 100).toFixed(
-        radix,
-      ) + '%'
+      (Math.floor((target as number) * 1000000) / 1000000).toFixed(radix) + '%'
     );
   },
+
   formatDate: (
     date: string | Date | null,
     timeFormat = 'MM/dd/yyyy',
@@ -108,4 +126,15 @@ export const utils = {
   isTestUser: (id: string) => {
     return id === '1000052023032900000107';
   },
+  isNotEmptyOfObject: (obj: Record<any, any>) => {
+    return Object.keys(obj).length > 0;
+  },
+};
+
+const getRadix = (value: number | undefined | string | null): number => {
+  if (!utils.notUndefined(value) || !utils.notNull(value)) {
+    return 2;
+  }
+  const target = value + '';
+  return target.substring(target.indexOf('.') + 1).length >= 3 ? 3 : 2;
 };

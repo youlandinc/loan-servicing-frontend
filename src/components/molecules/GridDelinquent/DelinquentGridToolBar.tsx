@@ -1,4 +1,7 @@
-import { StyledSearchTextFieldInput } from '@/components/atoms';
+import { Stack } from '@mui/material';
+import React, { FC, useEffect, useRef } from 'react';
+
+import { StyledSearchSelectMultiple, StyledSearchTextFieldInput } from '@/components/atoms';
 import {
   combineColumns,
   delinquentColumns,
@@ -8,17 +11,15 @@ import {
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
-import React, { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
+import { _getAllStatus } from '@/request';
+import { enqueueSnackbar } from 'notistack';
+
 
 export const DelinquentGridToolBar: FC = () => {
   const {
     portfolio: { delinquentGridModel },
   } = useMst();
-
-  // const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
-
-  // const { visible, open, close } = useSwitch();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
@@ -26,6 +27,17 @@ export const DelinquentGridToolBar: FC = () => {
     delinquentGridModel.queryModel.updateQueryCondition,
     500,
   );
+
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus().catch(({ message, variant, header }) => {
+      
+      enqueueSnackbar(message ?? 'error!', {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  });
 
   useEffect(() => {
     if (propertyAddressRef.current) {
@@ -48,6 +60,14 @@ export const DelinquentGridToolBar: FC = () => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+      <StyledSearchSelectMultiple
+        label={'Status'}
+        onChange={(e) => {
+          updateQueryDebounce('repaymentStatusList', e);
+        }}
+        options={data?.data || []}
+        value={delinquentGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       {delinquentGridModel.queryModel.sort.length > 0 && (
         <SortButton

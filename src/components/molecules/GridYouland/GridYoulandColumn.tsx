@@ -96,7 +96,6 @@ export const YOULAND_COLUMNS = (
             width={'calc(100% + 48px)'}
           >
             <Typography
-              component={'div'}
               sx={{
                 ...ellipsisStyle,
                 width: '100%',

@@ -15,6 +15,9 @@ export interface IExtensionInfo {
   repaymentStatusEnum: PipelineStatusEnum;
   currentInterestRate: number;
   createdTime: string | null;
+  paidMode: ExtensionPaidTypeEnum | null;
+  extensionFee: number | null;
+  executionData: string | null;
 }
 
 export interface IGetExtensionPdfParam {

@@ -1,8 +1,4 @@
-import { useMst } from '@/models/Root';
-import { MRT_ColumnDef } from 'material-react-table';
-import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { Icon } from '@mui/material';
 
 import BorderLeftIcon from '@/svg/portfolio/freeze_pane.svg';
 import BorderClearIcon from '@/svg/portfolio/unfreeze_pane.svg';
@@ -20,77 +16,75 @@ interface ColumnsHeaderMenusProps extends StyledActionsMenuProps {
   type?: 'group' | 'list';
 }
 
-export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = observer(
-  ({
-    open,
-    anchorEl,
-    onClose,
-    // columns,
-    // selectedHeaderId,
-    // selectedHeaderIndex,
-    handleFreeze,
-    handleUnfreeze,
-    handleSort,
-    type,
-  }) => {
-    const {
-      portfolio: { allLoansGridModel },
-    } = useMst();
-    const [freeze, setFreeze] = useState(false);
-    const DefaultTableHeaderMenu = [
-      {
-        icon: BorderLeftIcon,
-        label: 'Freeze pane',
-        handleClick: () => {
-          setFreeze(true);
-          handleFreeze?.();
-          onClose?.({}, 'backdropClick');
+export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = ({
+  open,
+  anchorEl,
+  onClose,
+  // columns,
+  // selectedHeaderId,
+  // selectedHeaderIndex,
+  handleFreeze,
+  handleUnfreeze,
+  handleSort,
+  type,
+}) => {
+  const [freeze, setFreeze] = useState(false);
+  const DefaultTableHeaderMenu = !freeze
+    ? [
+        {
+          icon: BorderLeftIcon,
+          label: 'Freeze pane',
+          handleClick: () => {
+            setFreeze(true);
+            handleFreeze?.();
+            onClose?.({}, 'backdropClick');
+          },
+          disabled: freeze,
         },
-        disabled: freeze,
-      },
-      {
-        icon: BorderClearIcon,
-        label: 'Unfreeze pane',
-        handleClick: () => {
-          setFreeze(false);
-          handleUnfreeze?.();
-          onClose?.({}, 'backdropClick');
+      ]
+    : [
+        {
+          icon: BorderClearIcon,
+          label: 'Unfreeze pane',
+          handleClick: () => {
+            setFreeze(false);
+            handleUnfreeze?.();
+            onClose?.({}, 'backdropClick');
+          },
         },
+      ];
+
+  const TableHeaderSortMenu = [
+    {
+      icon: ImportExportIcon,
+      label: 'Sort',
+      handleClick: () => {
+        handleSort?.();
+        onClose?.({}, 'backdropClick');
       },
-    ];
+      // disabled: headerSortDisabled,
+    },
+  ];
 
-    const TableHeaderSortMenu = [
-      {
-        icon: ImportExportIcon,
-        label: 'Sort',
-        handleClick: () => {
-          handleSort?.();
-          onClose?.({}, 'backdropClick');
-        },
-        // disabled: headerSortDisabled,
-      },
-    ];
+  const menus =
+    type === 'group'
+      ? TableHeaderSortMenu
+      : DefaultTableHeaderMenu.concat(TableHeaderSortMenu);
 
-    const menus =
-      type === 'group'
-        ? TableHeaderSortMenu
-        : DefaultTableHeaderMenu.concat(TableHeaderSortMenu);
-
-    return (
-      <StyledActionsMenu
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        menus={menus}
-        onClose={onClose}
-        open={open}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      />
-    );
-  },
-);
+  return (
+    <StyledActionsMenu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      menus={menus}
+      onClose={onClose}
+      open={open}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+    />
+  );
+};

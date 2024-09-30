@@ -74,6 +74,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
         onOpen={onOpen}
         open={open}
         value={value}
+        variant={'outlined'}
       >
         {options.map((item) => (
           <MenuItem

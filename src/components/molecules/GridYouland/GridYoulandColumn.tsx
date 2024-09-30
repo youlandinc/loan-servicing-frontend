@@ -596,7 +596,11 @@ export const YOULAND_COLUMNS = (
       Cell: ({ renderedCellValue, row }) => {
         const { enqueueSnackbar } = useSnackbar();
         const { visible, close, open } = useSwitch(false);
-        const [date, setDate] = useState<Date | null>(null);
+        const [date, setDate] = useState<Date | null>(
+          row.original.estSaleDate
+            ? new Date(row.original.estSaleDate as string)
+            : null,
+        );
         const [updating, setUpdating] = useState(false);
 
         return (

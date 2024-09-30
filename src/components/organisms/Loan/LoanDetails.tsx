@@ -1,5 +1,5 @@
 import { StyledHeaderAddressInfo, StyledTabs } from '@/components/atoms';
-import { Layout, LoanDetailsCard, SideMenu } from '@/components/molecules';
+import { LoanDetailsCard } from '@/components/molecules';
 import {
   BorrowerTypeOpt,
   EstFICOScoreOpt,

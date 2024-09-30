@@ -489,7 +489,7 @@ export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
       },
     } as MRT_ColumnDef<any>,
   ].concat(
-    commonColumns.filter((item) => item.accessorKey !== 'repaymentStatus'),
+    commonColumns
   ),
 );
 export const maturityColumns = (type: MaturityTimeRangeEnum) => {

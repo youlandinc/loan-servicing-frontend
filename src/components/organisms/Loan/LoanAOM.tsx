@@ -78,8 +78,14 @@ export const LoanAOM: FC = () => {
       value?.data?.totalLoanAmount || 0,
     ),
     'Monthly P&I Payment': utils.formatDollar(value?.data?.monthlyPayment || 0),
-    'Date of 1st Payment': value?.data?.firstPaymentDate,
-    'Maturity Date': value?.data?.maturityDate,
+    'Date of 1st Payment':
+      typeof value?.data?.firstPaymentDate === 'string'
+        ? format(new Date(value?.data?.firstPaymentDate), 'MM/dd/yyyy')
+        : '',
+    'Maturity Date':
+      typeof value?.data?.maturityDate === 'string'
+        ? format(new Date(value?.data?.maturityDate), 'MM/dd/yyyy')
+        : '',
     'Note Interest Rate': utils.formatPercent(value?.data?.interestRate || 0),
   };
 

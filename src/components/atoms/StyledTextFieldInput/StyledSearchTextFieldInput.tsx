@@ -15,7 +15,6 @@ type StyledTextFieldInputProps = OutlinedTextFieldProps & {
 };
 
 export const StyledSearchTextFieldInput: FC<StyledTextFieldInputProps> = ({
-  sx,
   handleClear,
   ...rest
 }) => {

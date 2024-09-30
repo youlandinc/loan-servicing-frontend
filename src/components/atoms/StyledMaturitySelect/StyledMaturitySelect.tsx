@@ -9,6 +9,7 @@ import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
 import React, { FC, useEffect, useState } from 'react';
 import { useAsyncFn } from 'react-use';
 
@@ -19,7 +20,7 @@ interface StyledMaturitySelectProps {
 }
 
 export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
-  ({ sx, value, onChange }) => {
+  ({ sx, onChange }) => {
     const {
       portfolio: { displayType: portfolioListType, maturityGridModel },
     } = useMst();
@@ -64,7 +65,14 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
     }, []);
 
     useEffect(() => {
-      getMaturityRangeOpt();
+      getMaturityRangeOpt().catch(({ message, variant, header }) => {
+        enqueueSnackbar(message, {
+          variant,
+          isSimple: !header,
+          header,
+        });
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

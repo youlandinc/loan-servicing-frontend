@@ -91,7 +91,10 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
         },
         'Pricing Engine': {
           label: 'Pricing Engine',
-          url: URL_PRICING,
+          url: `${URL_PRICING}/?token=${
+            session?.accessToken?.jwtToken ||
+            localStorage?.getItem('USER_LOGIN_INFORMATION')
+          }`,
           icon: (
             <Icon
               component={LOGO_PRODUCT_PRICE}

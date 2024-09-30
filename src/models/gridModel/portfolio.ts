@@ -159,6 +159,7 @@ export const portfolioModel = types
           config.operaParams.SERVICING_MATURITY.DROPDOWN,
         );
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e);
       }
       self.displayType = config.pageColumn;

@@ -1,7 +1,6 @@
 import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
-import { ExpandMore, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import {
   MRT_ExpandButton,
   MRT_TableContainer,
@@ -30,6 +29,8 @@ import { SetColumnWidthParam } from '@/types/common';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
 import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const GridCashFlow: FC = observer(() => {
   const {
@@ -216,17 +217,13 @@ export const GridCashFlow: FC = observer(() => {
     icons: {
       KeyboardDoubleArrowDownIcon: (props: { style: CSSProperties }) => {
         const { style } = props;
-
         const transformValue =
           style.transform === 'rotate(-180deg)'
             ? 'rotate(0deg)'
             : 'rotate(-90deg)';
         return (
-          <KeyboardDoubleArrowDown
-            style={{
-              ...style,
-              transform: transformValue,
-            }}
+          <KeyboardDoubleArrowDownIcon
+            style={{ ...style, transform: transformValue }}
             sx={{ fontSize: 20 }}
           />
         );
@@ -240,11 +237,8 @@ export const GridCashFlow: FC = observer(() => {
             : 'rotate(-90deg)';
 
         return (
-          <ExpandMore
-            style={{
-              ...style,
-              transform: transformValue,
-            }}
+          <ExpandMoreIcon
+            style={{ ...style, transform: transformValue }}
             sx={{ fontSize: 20 }}
           />
         );
@@ -327,7 +321,7 @@ export const GridCashFlow: FC = observer(() => {
         },
         '&:first-of-type': {
           width: 'auto',
-          minWidth: 40,
+          minWidth: 44,
           p: 0,
           '& button': {
             height: 'auto',
@@ -335,7 +329,6 @@ export const GridCashFlow: FC = observer(() => {
             py: 1.25,
             width: 'auto',
             minWidth: 'auto',
-            // height
           },
         },
       },
@@ -362,7 +355,7 @@ export const GridCashFlow: FC = observer(() => {
           },
           '& .MuiTableCell-root:first-of-type': {
             width: 'auto',
-            minWidth: 40,
+            minWidth: 44,
             border: 'none',
           },
           boxShadow: 'none',

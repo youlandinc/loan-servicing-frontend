@@ -1,27 +1,25 @@
 import { Stack } from '@mui/material';
 import React, { FC, useEffect, useRef } from 'react';
 
-import { StyledSearchTextFieldInput } from '@/components/atoms';
+import { StyledSearchSelectMultiple, StyledSearchTextFieldInput } from '@/components/atoms';
 import {
   combineColumns,
   delinquentColumns,
   GridMoreIconButton,
   SortButton,
-  transferOrderColumns,
 } from '@/components/molecules';
 import { useDebounceFn } from '@/hooks';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { useMst } from '@/models/Root';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import useSWR from 'swr';
+import { _getAllStatus } from '@/request';
+import { enqueueSnackbar } from 'notistack';
+
 
 export const DelinquentGridToolBar: FC = () => {
   const {
     portfolio: { delinquentGridModel },
   } = useMst();
-
-  // const [opts, setOpts] = useState<Option[]>(DelinquentTimeRangeOpt);
-
-  // const { visible, open, close } = useSwitch();
 
   const propertyAddressRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,12 +28,24 @@ export const DelinquentGridToolBar: FC = () => {
     500,
   );
 
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus().catch(({ message, variant, header }) => {
+      
+      enqueueSnackbar(message ?? 'error!', {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  });
+
   useEffect(() => {
     if (propertyAddressRef.current) {
       propertyAddressRef.current.value =
         delinquentGridModel.queryModel.searchCondition.keyword || '';
     }
     // getDelinquentRangeOpt();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -50,6 +60,14 @@ export const DelinquentGridToolBar: FC = () => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+      <StyledSearchSelectMultiple
+        label={'Status'}
+        onChange={(e) => {
+          updateQueryDebounce('repaymentStatusList', e);
+        }}
+        options={data?.data || []}
+        value={delinquentGridModel.queryModel.searchCondition.repaymentStatusList}
       />
       {delinquentGridModel.queryModel.sort.length > 0 && (
         <SortButton

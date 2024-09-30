@@ -34,7 +34,7 @@ export const SignIn: FC = observer(() => {
         userSetting.setAccountId(userProfile.accountId);
         router.push('/portfolio');
       })
-      .catch((err) => {
+      .catch(() => {
         rootStore.logout();
       });
   }, []);

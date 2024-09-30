@@ -1,4 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+import { StyledCheckbox } from '@/components/atoms';
+
+import { useSessionStorageState } from '@/hooks';
+
+import { POSFindLabel, POSTypeOf } from '@/utils';
 import {
   Box,
   FormControl,
@@ -7,13 +11,9 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { FC, useEffect, useState } from 'react';
 
 import { StyledSelectMultipleProps, StyledSelectMultipleStyle } from './index';
-
-import { POSFindLabel, POSTypeOf } from '@/utils';
-import { StyledCheckbox } from '@/components/atoms';
 
 export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
   options = [],
@@ -29,7 +29,6 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
 }) => {
   const [selectValue, setSelectValue] = useState(['']);
   const { saasState } = useSessionStorageState('tenantConfig');
-  const breakpoints = useBreakpoints();
 
   const handledChange = (e: any) => {
     const {

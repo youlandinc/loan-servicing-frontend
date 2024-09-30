@@ -22,6 +22,7 @@ import {
   resortColumns,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
+
 import {
   SetColumnWidthParam,
   UpdateColumnPiningParamType,
@@ -50,9 +51,7 @@ export const GridYouland: FC = observer(() => {
   const [tableHeaderIndex, setTableHeaderIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
-  const [columnPiningState, setColumnPiningState] = useState(
-    defaultColumnPining(orderColumns),
-  );
+  const [, setColumnPiningState] = useState(defaultColumnPining(orderColumns));
 
   const columnPiningConfig = pinLeftColumns;
 

@@ -1,22 +1,9 @@
 import { FC } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, SxProps, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { utils } from '@/utils';
 import { GridRowsProp } from '@mui/x-data-grid/models/gridRows';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
-const mockData = [
-  {
-    id: -11,
-    dataDue: '2024-09-05',
-    dataReceivedTime: '2024-09-05',
-    pmtDayVariance: 0,
-    isAch: true,
-    paymentType: 'string',
-    totalPmt: 0,
-    reference: 'string',
-  },
-];
+import { utils } from '@/utils';
 
 const columns: GridColDef[] = [
   {
@@ -112,9 +99,8 @@ export interface LoanOverviewPaymentsGridProps {
 
 export const LoanOverviewPaymentsGrid: FC<LoanOverviewPaymentsGridProps> = ({
   sx = { minWidth: 682 },
-  histories = mockData,
+  histories = [],
 }) => {
-  const router = useRouter();
   const lastChildIndex = columns.length;
 
   return (

@@ -23,6 +23,7 @@ import {
   SortDirection,
 } from '@/types/enum';
 
+
 export const MaturityGridToolBar: FC = observer(() => {
   const {
     portfolio: { maturityGridModel },
@@ -37,7 +38,7 @@ export const MaturityGridToolBar: FC = observer(() => {
 
   const { data } = useSWR('_getAllStatus', async () => {
     return await _getAllStatus().catch(({ message, variant, header }) => {
-      close();
+     
       enqueueSnackbar(message ?? 'error!', {
         variant,
         isSimple: !header,
@@ -52,6 +53,7 @@ export const MaturityGridToolBar: FC = observer(() => {
         maturityGridModel.queryModel.searchCondition.keyword || '';
     }
     // getMaturityRangeOpt();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

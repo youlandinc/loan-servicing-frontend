@@ -54,10 +54,6 @@ export const DelinquentGrid: FC = observer(() => {
                   ? undefined
                   : delinquentGridModel.queryModel.searchCondition
                       .delinquentDays,
-              repaymentStatusList: [
-                ...delinquentGridModel.queryModel.searchCondition
-                  .repaymentStatusList,
-              ],
             },
           },
           displayType,

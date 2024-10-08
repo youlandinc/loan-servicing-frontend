@@ -36,7 +36,8 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
     null,
   ]);
 
-  const CustomInput = forwardRef((props: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const CustomInput = forwardRef((props: any, ref) => {
     const { onClear, ...rest } = props;
     return (
       <StyledButton

@@ -129,6 +129,7 @@ export const AllLoansGrid: FC = observer(() => {
       sx: {
         '& .MuiTableCell-root:last-child': {
           // borderBottom: 'none',
+          borderColor: '#EDF1FF',
         },
         boxShadow: 'none',
         '& td': {},

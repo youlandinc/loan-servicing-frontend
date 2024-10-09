@@ -158,6 +158,16 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     muiTableBodyRowProps: ({ row }) => {
       return {
         sx: {
+          '&:hover': {
+            '& td': {
+              '&:after': {
+                backgroundColor: '#F6F6F6',
+              },
+              '&:nth-of-type(2)': {
+                zIndex: 1,
+              },
+            },
+          },
           '& .MuiTableCell-root:last-child': {
             borderColor: '#EDF1FF !important',
             borderBottom:
@@ -175,11 +185,6 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             zIndex: 1,
           },
           boxShadow: 'none',
-          '&:hover': {
-            '& td:after': {
-              background: '#F6F6F6',
-            },
-          },
         },
       };
     },
@@ -188,7 +193,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         sx: {
           px: 1,
           py: 0,
-          height: '32px',
+          height: row.original.servicingLoans ? 56 : 32,
           bgcolor: 'transparent',
           borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           borderColor: '#EDF1FF !important',

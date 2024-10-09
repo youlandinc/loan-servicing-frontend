@@ -345,6 +345,16 @@ export const GridCashFlow: FC = observer(() => {
     muiTableBodyRowProps: ({ row }) => {
       return {
         sx: {
+          '&:hover': {
+            '& td': {
+              '&:after': {
+                backgroundColor: '#F6F6F6',
+              },
+              '&:nth-of-type(2)': {
+                zIndex: 1,
+              },
+            },
+          },
           '& .MuiTableCell-root:last-child': {
             borderColor: '#D2D6E1 !important',
             borderBottom:
@@ -367,7 +377,7 @@ export const GridCashFlow: FC = observer(() => {
         sx: {
           px: 1.5,
           py: 0,
-          height: '32px',
+          height: row.original.servicingLoans ? 56 : 32,
           bgcolor: 'transparent',
           borderLeft: row.original.servicingLoans ? 'none' : '1px solid',
           borderColor: '#D2D6E1 !important',

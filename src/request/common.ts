@@ -4,7 +4,7 @@ import {
   SetColumnWidthParam,
   SetExpandedParam,
 } from '@/types/common';
-import { post } from './axios';
+import { del, post } from './axios';
 
 export const _setColumnWidth = (columnWidth: SetColumnWidthParam) => {
   return post('/servicing/page/exe/his/columnWith', columnWidth);
@@ -20,4 +20,8 @@ export const _setColumnPining = (param: SetColumnPiningParam) => {
 
 export const _setGroupExpanded = (param: SetExpandedParam) => {
   return post('/servicing/page/exe/his/dropDown', param);
+};
+
+export const _deleteGridData = (params: { loanId: number | string }) => {
+  return del('/servicing/delete', { params });
 };

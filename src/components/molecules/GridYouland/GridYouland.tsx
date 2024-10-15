@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync, useAsyncFn, useDebounce } from 'react-use';
@@ -142,13 +142,11 @@ export const GridYouland: FC = observer(() => {
     ? transferOrderColumnsKeys(orderColumns)
     : [];
 
+  configColumnsOrderKeysArr.unshift('action');
+
   const configColumns = useMemo(() => {
-    return orderColumns.length
-      ? resortColumns(
-          orderColumns,
-          YOULAND_COLUMNS(async () => await mutate(), investorData),
-        )
-      : YOULAND_COLUMNS(async () => await mutate(), investorData);
+    const target = YOULAND_COLUMNS(async () => await mutate(), investorData);
+    return orderColumns.length ? resortColumns(orderColumns, target) : target;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join(''), loading]);
 

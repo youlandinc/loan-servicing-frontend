@@ -141,13 +141,11 @@ export const GridAlameda: FC = observer(() => {
     ? transferOrderColumnsKeys(orderColumns)
     : [];
 
+  configColumnsOrderKeysArr.unshift('action');
+
   const configColumns = useMemo(() => {
-    return orderColumns.length
-      ? resortColumns(
-          orderColumns,
-          ALAMEDA_COLUMNS(async () => await mutate(), investorData),
-        )
-      : ALAMEDA_COLUMNS(async () => await mutate(), investorData);
+    const target = ALAMEDA_COLUMNS(async () => await mutate(), investorData);
+    return orderColumns.length ? resortColumns(orderColumns, target) : target;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join(''), loading]);
 

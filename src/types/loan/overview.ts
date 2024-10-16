@@ -75,9 +75,9 @@ export interface OverviewOutstandingPayAble {
   principalDue: number | null;
   description: string | null;
   billStatus: LoanTimelineStatusEnum;
-  monthAndYearOfDueDate: string | null;
+  monthAndYearOfDateDue: string | null;
   paymentModeOn: string | null;
-  dueDate: string | null;
+  dateDue: string | null;
   dateReceived: null | string;
 }
 

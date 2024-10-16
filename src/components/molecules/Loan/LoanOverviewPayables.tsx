@@ -18,7 +18,7 @@ const mockData = [
   {
     id: 0,
     loanId: 1520,
-    dueDate: '2024-11-01',
+    dateDue: '2024-11-01',
     dateReceived: null,
     interestDue: 11681.25,
     lateChargesDue: null,
@@ -27,7 +27,7 @@ const mockData = [
     paymentModeOn: null,
     description: null,
     billStatus: 'DELINQUENT',
-    monthAndYearOfDueDate: 'November 2024',
+    monthAndYearOfDateDue: 'November 2024',
   },
 ];
 
@@ -44,7 +44,7 @@ const columns: GridColDef[] = [
   //  ),
   //},
   {
-    field: 'dueDate',
+    field: 'dateDue',
     headerName: 'Date due',
     sortable: false,
     flex: 1,

@@ -158,3 +158,8 @@ export enum ExtensionPaidTypeEnum {
   Upfront = 'UPFRONT',
   Deferred = 'DEFERRED',
 }
+
+export enum LoanAnswerEnum {
+  yes = 'YES',
+  no = 'NO',
+}

@@ -89,7 +89,7 @@ export const utils = {
     }
     return cleaned;
   },
-  getParamsFromUrl(url: string): Record<string, string> {
+  getParamsFromUrl(url: string): Record<string, string | number | undefined> {
     const params: Record<string, string> = {};
     const urlObj = new URL(url);
     urlObj.searchParams.forEach((value, key) => {

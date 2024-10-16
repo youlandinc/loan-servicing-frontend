@@ -8,6 +8,14 @@ interface GridActionsProps {
   options: Array<
     Option & { action: () => Promise<void> | void; icon: ElementType }
   >;
+  anchorOrigin?: {
+    vertical: 'top' | 'center' | 'bottom';
+    horizontal: 'left' | 'center' | 'right';
+  };
+  transformOrigin?: {
+    vertical: 'top' | 'center' | 'bottom';
+    horizontal: 'left' | 'center' | 'right';
+  };
 }
 
 export const GridActions: FC<GridActionsProps> = ({
@@ -15,14 +23,19 @@ export const GridActions: FC<GridActionsProps> = ({
   close,
   open,
   options,
+  anchorOrigin = {
+    vertical: 'center',
+    horizontal: 'right',
+  },
+  transformOrigin = {
+    vertical: 'center',
+    horizontal: 'left',
+  },
 }) => {
   return (
     <Menu
       anchorEl={target}
-      anchorOrigin={{
-        vertical: 'center',
-        horizontal: 'right',
-      }}
+      anchorOrigin={anchorOrigin}
       id={'basic-menu1'}
       MenuListProps={{
         'aria-labelledby': 'basic-div1',
@@ -49,10 +62,7 @@ export const GridActions: FC<GridActionsProps> = ({
           },
         },
       }}
-      transformOrigin={{
-        vertical: 'center',
-        horizontal: 'left',
-      }}
+      transformOrigin={transformOrigin}
       transitionDuration={0}
     >
       {options.map((item, index) => (

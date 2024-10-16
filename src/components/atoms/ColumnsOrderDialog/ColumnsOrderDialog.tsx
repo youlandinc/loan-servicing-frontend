@@ -131,56 +131,59 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
                   ref={provided.innerRef}
                   sx={{ overflowY: 'auto' }}
                 >
-                  {items.map((item, index) => (
-                    <Draggable
-                      draggableId={item.field}
-                      index={index}
-                      key={item.field}
-                    >
-                      {(provided, snapshot) => (
-                        <Stack
-                          bgcolor={snapshot.isDragging ? '#EDEFF2' : 'none'}
-                          borderRadius={snapshot.isDragging ? 2 : 0}
-                          direction={'row'}
-                          justifyContent={'space-between'}
-                          p={1}
-                          ref={provided.innerRef}
-                          spacing={3}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          sx={{
-                            ...provided.draggableProps.style,
-                            '&:hover': {
-                              bgcolor: 'rgba(145, 158, 171, 0.08)',
-                            },
-                            userSelect: 'none',
-                            // some basic styles to make the items look a bit nicer
-                            // change background colour if dragging
-                            // styles we need to apply on draggables
-                          }}
+                  {items.map(
+                    (item, index) =>
+                      item.field !== 'action' && (
+                        <Draggable
+                          draggableId={item.field}
+                          index={index}
+                          key={item.field}
                         >
-                          <Stack
-                            alignItems={'center'}
-                            direction={'row'}
-                            spacing={3}
-                          >
-                            <DragIndicatorIcon
-                              sx={{ fontSize: 24, color: 'info.main' }}
-                            />
-                            <Typography variant={'body2'}>
-                              {item.headerName}
-                            </Typography>
-                          </Stack>
-                          <Switch
-                            checked={item.visibility}
-                            onChange={(e) => {
-                              onSwitch(item, e.target.checked);
-                            }}
-                          />
-                        </Stack>
-                      )}
-                    </Draggable>
-                  ))}
+                          {(provided, snapshot) => (
+                            <Stack
+                              bgcolor={snapshot.isDragging ? '#EDEFF2' : 'none'}
+                              borderRadius={snapshot.isDragging ? 2 : 0}
+                              direction={'row'}
+                              justifyContent={'space-between'}
+                              p={1}
+                              ref={provided.innerRef}
+                              spacing={3}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              sx={{
+                                ...provided.draggableProps.style,
+                                '&:hover': {
+                                  bgcolor: 'rgba(145, 158, 171, 0.08)',
+                                },
+                                userSelect: 'none',
+                                // some basic styles to make the items look a bit nicer
+                                // change background colour if dragging
+                                // styles we need to apply on draggables
+                              }}
+                            >
+                              <Stack
+                                alignItems={'center'}
+                                direction={'row'}
+                                spacing={3}
+                              >
+                                <DragIndicatorIcon
+                                  sx={{ fontSize: 24, color: 'info.main' }}
+                                />
+                                <Typography variant={'body2'}>
+                                  {item.headerName}
+                                </Typography>
+                              </Stack>
+                              <Switch
+                                checked={item.visibility}
+                                onChange={(e) => {
+                                  onSwitch(item, e.target.checked);
+                                }}
+                              />
+                            </Stack>
+                          )}
+                        </Draggable>
+                      ),
+                  )}
                   {provided.placeholder}
                 </Stack>
               )}

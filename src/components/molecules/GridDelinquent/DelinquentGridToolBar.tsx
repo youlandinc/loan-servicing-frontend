@@ -1,4 +1,7 @@
-import { StyledSearchTextFieldInput } from '@/components/atoms';
+import {
+  StyledSearchSelectMultiple,
+  StyledSearchTextFieldInput,
+} from '@/components/atoms';
 import {
   combineColumns,
   delinquentColumns,
@@ -7,9 +10,12 @@ import {
 } from '@/components/molecules';
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
+import { _getAllStatus } from '@/request';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { Stack } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import React, { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
 
 export const DelinquentGridToolBar: FC = () => {
   const {
@@ -22,6 +28,17 @@ export const DelinquentGridToolBar: FC = () => {
     delinquentGridModel.queryModel.updateQueryCondition,
     500,
   );
+
+  const { data } = useSWR('_getAllStatus', async () => {
+    return await _getAllStatus().catch(({ message, variant, header }) => {
+      close();
+      enqueueSnackbar(message ?? 'error!', {
+        variant,
+        isSimple: !header,
+        header,
+      });
+    });
+  });
 
   useEffect(() => {
     if (propertyAddressRef.current) {
@@ -44,6 +61,16 @@ export const DelinquentGridToolBar: FC = () => {
           updateQueryDebounce('keyword', e.target.value);
         }}
         variant={'outlined'}
+      />
+      <StyledSearchSelectMultiple
+        label={'Status'}
+        onChange={(e) => {
+          updateQueryDebounce('repaymentStatusList', e);
+        }}
+        options={data?.data || []}
+        value={
+          delinquentGridModel.queryModel.searchCondition.repaymentStatusList
+        }
       />
       {delinquentGridModel.queryModel.sort.length > 0 && (
         <SortButton

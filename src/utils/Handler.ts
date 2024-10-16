@@ -1,7 +1,9 @@
+import { ReactNode } from 'react';
+
 export const POSFindLabel = (
   options: Option[],
   val: number | string,
-): string => {
+): ReactNode => {
   return options.find((item) => item.value === val)?.label || '';
 };
 

@@ -289,7 +289,7 @@ export const LoanOverview: FC = observer(() => {
           ],
         });
 
-      setNextDueDate({
+      setNextDateDue({
         theme: 'light',
         header: 'Next due date',
         headerValue: utils.formatDate(balanceInfo.nextPaymentDate),
@@ -377,7 +377,7 @@ export const LoanOverview: FC = observer(() => {
   );
   const [maturityDate, setMaturityDate] =
     useState<LoanOverviewCardProps>(INITIAL);
-  const [nextDueDate, setNextDueDate] =
+  const [nextDateDue, setNextDateDue] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [loanPayAbles, setOutstandingPayAbles] =
     useState<LoanOverviewPayablesGridProps['outstandingPayAbles']>();
@@ -506,7 +506,7 @@ export const LoanOverview: FC = observer(() => {
                   }}
                 >
                   <Stack flexDirection={'row'} gap={3}>
-                    <LoanOverviewCard {...nextDueDate} />
+                    <LoanOverviewCard {...nextDateDue} />
                     <LoanOverviewCard {...maturityDate} />
                   </Stack>
 

@@ -104,10 +104,10 @@ export const LoanPaymentsGrid: FC<{
 
         return index === -1
           ? format(
-              new Date(arr[arr.length - 1].dueDate as string),
+              new Date(arr[arr.length - 1].dateDue as string),
               'MM/dd/yyyy',
             )
-          : format(new Date(arr[index].dueDate as string), 'MM/dd/yyyy');
+          : format(new Date(arr[index].dateDue as string), 'MM/dd/yyyy');
       };
       setDateDue(handler(data));
     } catch (err) {

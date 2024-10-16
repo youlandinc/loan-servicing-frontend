@@ -1,5 +1,6 @@
 import { GridTradeStatusEnum } from '@/types/pipeline/youland';
 import { PipelineStatusEnum } from '@/types/enum';
+import { PaymentMethod } from '@/types/loan/payments';
 
 export const TRADE_STATUS_OPTIONS: Option[] = [
   {
@@ -48,3 +49,21 @@ export const TRADE_STATUS_BGCOLOR_PALETTE = {
   [GridTradeStatusEnum.in_progress]: '#96A8D7',
   [GridTradeStatusEnum.confirmed]: '#85CCB6',
 };
+
+export const PAYMENT_METHODS_OPTIONS = [
+  {
+    label: 'ACH',
+    key: PaymentMethod.ach,
+    value: PaymentMethod.ach,
+  },
+  {
+    label: 'Check',
+    key: PaymentMethod.check,
+    value: PaymentMethod.check,
+  },
+  {
+    label: 'Wire transfer',
+    key: PaymentMethod.wire_transfer,
+    value: PaymentMethod.wire_transfer,
+  },
+];

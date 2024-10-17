@@ -52,9 +52,8 @@ import {
 
 export const LoanPaymentsGrid: FC<{
   maxHeight?: CSSProperties['maxHeight'];
-  tableHeight?: CSSProperties['height'];
-  tableMaxHeight?: CSSProperties['maxHeight'];
-}> = ({ maxHeight }) => {
+  cb?: () => Promise<void>;
+}> = ({ maxHeight, cb }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -200,7 +199,7 @@ export const LoanPaymentsGrid: FC<{
   };
 
   const table = useMaterialReactTable({
-    columns: LOAN_PAYMENT_GRID_COLUMNS(open, setFormData, fetchData),
+    columns: LOAN_PAYMENT_GRID_COLUMNS(open, setFormData, fetchData, cb),
     data: list,
     //rowCount: rowsTotal,
     enableExpandAll: false, //hide expand all double arrow in column header
@@ -349,6 +348,7 @@ export const LoanPaymentsGrid: FC<{
       try {
         await _updateOrCreatePaymentData(postData);
         await fetchData(0, 50);
+        await cb?.();
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -519,6 +519,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
   editOpen: () => void,
   setFormData: any,
   cb?: (page: number, size: number) => Promise<void>,
+  refresh?: () => Promise<void>,
 ): MRT_ColumnDef<any>[] => {
   return [
     {
@@ -542,6 +543,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
           };
           try {
             await _deletePaymentData(postData);
+            await refresh?.();
             await cb?.(0, 50);
           } catch (err) {
             const { header, message, variant } = err as HttpError;

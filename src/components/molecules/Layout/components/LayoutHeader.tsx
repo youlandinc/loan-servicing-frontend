@@ -113,7 +113,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
           ),
         },
         'Loan Servicing': {
-          label: 'Loan Servicing',
+          label: 'Servicing center',
           url: '/portfolio',
           icon: (
             <Icon
@@ -134,7 +134,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
         utils.isTestUser(setting?.tenantId)
       ) {
         result.push({
-          label: 'Loan Servicing',
+          label: 'Servicing center',
           url: '/portfolio',
           icon: (
             <Icon

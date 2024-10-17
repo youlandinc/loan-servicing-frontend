@@ -136,22 +136,25 @@ export const GridCashFlow: FC = observer(() => {
     ? transferOrderColumnsKeys(orderColumns)
     : [];
 
+  configColumnsOrderKeysArr.unshift('action');
   configColumnsOrderKeysArr.unshift('mrt-row-expand');
 
   const configColumns = useMemo(() => {
-    return orderColumns.length
-      ? reduceCashFlowColumn(
-          resortColumns(
-            orderColumns,
-            CASH_FLOW_COLUMNS(async () => await mutate(), investorData),
-          ),
+    const target = orderColumns.length
+      ? resortColumns(
+          orderColumns,
+          CASH_FLOW_COLUMNS(async () => await mutate(), investorData),
         )
-      : reduceCashFlowColumn(
-          resortColumns(
-            orderColumns,
-            CASH_FLOW_COLUMNS(async () => await mutate(), investorData),
-          ),
-        );
+      : CASH_FLOW_COLUMNS(async () => await mutate(), investorData);
+
+    target.unshift(
+      ...target.splice(
+        target.findIndex((item) => item.header === ''),
+        1,
+      ),
+    );
+
+    return reduceCashFlowColumn(target);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join(''), loading]);
 

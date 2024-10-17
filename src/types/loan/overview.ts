@@ -75,9 +75,9 @@ export interface OverviewOutstandingPayAble {
   principalDue: number | null;
   description: string | null;
   billStatus: LoanTimelineStatusEnum;
-  monthAndYearOfDueDate: string | null;
+  monthAndYearOfDateDue: string | null;
   paymentModeOn: string | null;
-  dueDate: string | null;
+  dateDue: string | null;
   dateReceived: null | string;
 }
 
@@ -86,7 +86,7 @@ export type OverviewRepaymentTimeLine = OverviewOutstandingPayAble;
 export interface OverviewPaymentHistory {
   loanId: number;
   dataReceivedTime: string;
-  dataDue: string;
+  dateDue: string;
   pmtDayVariance: number | null;
   isAch: boolean;
   paymentType: string | null;

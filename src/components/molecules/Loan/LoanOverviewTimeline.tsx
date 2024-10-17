@@ -48,7 +48,7 @@ const DEFAULT = [
 
 const temp1 = {
   loanId: 1520,
-  dueDate: '2024-07-01',
+  dateDue: '2024-07-01',
   dateReceived: '2024-06-21',
   interestDue: 11681.25,
   lateChargesDue: null,
@@ -57,7 +57,7 @@ const temp1 = {
   paymentModeOn: '2024-06-21',
   description: null,
   billStatus: LoanTimelineStatusEnum.paid,
-  monthAndYearOfDueDate: 'July 2024',
+  monthAndYearOfDateDue: 'July 2024',
 };
 
 export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
@@ -135,7 +135,7 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
                 width={'100%'}
               >
                 <Typography color={'text.primary'} variant={'subtitle2'}>
-                  {item.monthAndYearOfDueDate}
+                  {item.monthAndYearOfDateDue}
                 </Typography>
 
                 <Stack gap={0.5}>

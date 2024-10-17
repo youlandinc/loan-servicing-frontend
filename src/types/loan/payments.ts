@@ -1,4 +1,4 @@
-import { PipelineStatusEnum } from '@/types/enum';
+import { LoanAnswerEnum, PipelineStatusEnum } from '@/types/enum';
 
 export interface ResponsePaymentsDetails {
   nextPaymentDate: string;
@@ -8,6 +8,12 @@ export interface ResponsePaymentsDetails {
   interestReceived: number;
   reserveBalance: number;
   lateChargesReceived: number;
+}
+
+export enum AbutmentSources {
+  fci = 'FCI',
+  youland = 'YOULAND',
+  alameda = 'ALAMEDA',
 }
 
 export interface ResponsePaymentsHistory {
@@ -21,6 +27,7 @@ export interface ResponsePaymentsHistory {
   accumulateWaivedLateCharges: number;
   accumulateReservePmt: number;
   accumulateReserveRestricted: number;
+  abutmentSources: AbutmentSources;
   content: Partial<PaymentHistoryItem>[];
   page: PageProps;
 }
@@ -32,10 +39,17 @@ export interface PageProps {
   totalPages: number;
 }
 
+export enum PaymentMethod {
+  ach = 'ACH',
+  check = 'CHECK',
+  wire_transfer = 'WIRE_TRANSFER',
+}
+
 export interface PaymentHistoryItem {
+  id: number | string;
   loanId: number;
-  dataReceivedTime: string;
-  dataDue: string;
+  dataReceivedTime: string | null | undefined | Date;
+  dateDue: string | null | undefined | Date;
   pmtDayVariance: number;
   isAch: boolean;
   paymentType: string;
@@ -50,5 +64,7 @@ export interface PaymentHistoryItem {
   reservePmt: number;
   reserveRestricted: null | number;
   additionalInformation: null | string;
+  paymentMethod: PaymentMethod;
   reference: string;
+  nsf: LoanAnswerEnum;
 }

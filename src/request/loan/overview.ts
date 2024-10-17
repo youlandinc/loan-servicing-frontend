@@ -22,7 +22,7 @@ export const _fetchOverviewComments = (loanId: string | number) => {
 
 export const _addOverviewComment = (params: {
   messageType: CommentTypeEnum;
-  loanId: string | number;
+  loanId: string | number | undefined;
   note: string;
   noticeWay?: string;
   noticeTime?: string;

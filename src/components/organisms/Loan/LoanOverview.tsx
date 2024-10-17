@@ -183,7 +183,9 @@ export const LoanOverview: FC = observer(() => {
     popupId: 'comments-popover',
   });
 
-  const { loading } = useAsync(async () => {
+  const { loading } = useAsync(async () => await fetchDetail(), []);
+
+  const fetchDetail = async () => {
     const { loanId } = utils.getParamsFromUrl(location.href);
     if (!loanId) {
       return;
@@ -289,7 +291,7 @@ export const LoanOverview: FC = observer(() => {
           ],
         });
 
-      setNextDueDate({
+      setNextDateDue({
         theme: 'light',
         header: 'Next due date',
         headerValue: utils.formatDate(balanceInfo.nextPaymentDate),
@@ -346,7 +348,7 @@ export const LoanOverview: FC = observer(() => {
         header,
       });
     }
-  }, []);
+  };
 
   const fetchComments = async (cb?: () => void) => {
     const { loanId } = utils.getParamsFromUrl(location.href);
@@ -377,7 +379,7 @@ export const LoanOverview: FC = observer(() => {
   );
   const [maturityDate, setMaturityDate] =
     useState<LoanOverviewCardProps>(INITIAL);
-  const [nextDueDate, setNextDueDate] =
+  const [nextDateDue, setNextDateDue] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [loanPayAbles, setOutstandingPayAbles] =
     useState<LoanOverviewPayablesGridProps['outstandingPayAbles']>();
@@ -506,7 +508,7 @@ export const LoanOverview: FC = observer(() => {
                   }}
                 >
                   <Stack flexDirection={'row'} gap={3}>
-                    <LoanOverviewCard {...nextDueDate} />
+                    <LoanOverviewCard {...nextDateDue} />
                     <LoanOverviewCard {...maturityDate} />
                   </Stack>
 
@@ -525,7 +527,7 @@ export const LoanOverview: FC = observer(() => {
                     maxHeight={480}
                     minHeight={270}
                   >
-                    <LoanPaymentsGrid maxHeight={478} />
+                    <LoanPaymentsGrid cb={fetchDetail} maxHeight={478} />
                   </Stack>
                 </Stack>
               </Stack>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { MRT_ColumnDef } from 'material-react-table';
 import { Stack, Tooltip, Typography } from '@mui/material';
 
@@ -16,7 +16,11 @@ import {
   allLoansStatusColor,
 } from '@/styles/allLoansGridStyles';
 
-import { GridDropDown, GridDropDownButton } from '@/components/molecules';
+import {
+  GridActions,
+  GridDropDown,
+  GridDropDownButton,
+} from '@/components/molecules';
 import { useSnackbar } from 'notistack';
 import { useSwitch } from '@/hooks';
 import {
@@ -26,14 +30,126 @@ import {
   StyledTextFieldNumber,
 } from '@/components/atoms';
 import { format } from 'date-fns';
-import { _updateTableData } from '@/request';
+import { _deleteGridData, _updateTableData } from '@/request';
 import { HttpError } from '@/types/common';
+import { MoreHoriz } from '@mui/icons-material';
+import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
 
 export const CASH_FLOW_COLUMNS = (
   cb?: () => Promise<any>,
   investorOptions?: Array<Option & { bgColor: string }>,
 ) => {
   return [
+    {
+      header: '',
+      accessorKey: 'action',
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      size: 60,
+      minSize: 60,
+      sort: -1,
+      Cell: ({ row }) => {
+        const { enqueueSnackbar } = useSnackbar();
+        const { visible, open, close } = useSwitch();
+
+        const [anchorEl, setAnchorEl] = useState<null | Element>();
+        const [loading, setLoading] = useState(false);
+
+        const onClickToDelete = useCallback(async () => {
+          setLoading(true);
+          const postData = {
+            loanId: row.original.loanId,
+          };
+          try {
+            await _deleteGridData(postData);
+            await cb?.();
+          } catch (err) {
+            const { header, message, variant } = err as HttpError;
+            enqueueSnackbar(message, {
+              variant: variant || 'error',
+              autoHideDuration: AUTO_HIDE_DURATION,
+              isSimple: !header,
+              header,
+            });
+          } finally {
+            setLoading(false);
+            setAnchorEl(null);
+            close();
+          }
+        }, [close, enqueueSnackbar, row.original.loanId]);
+
+        return (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+            width={'100%'}
+          >
+            <MoreHoriz
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setAnchorEl(e.currentTarget);
+              }}
+              sx={{ fontSize: 24, cursor: 'pointer', color: '#202939' }}
+            />
+            <GridActions
+              close={() => setAnchorEl(null)}
+              open={Boolean(anchorEl)}
+              options={[
+                {
+                  label: 'Delete',
+                  key: 'Delete',
+                  value: 'Delete',
+                  icon: LOGO_DELETE,
+                  action: () => open(),
+                },
+              ]}
+              target={anchorEl}
+            />
+            <StyledDialog
+              content={
+                <Typography my={1.5} variant={'body2'}>
+                  Please confirm you want to delete this loan from the Servicing
+                  Center.
+                </Typography>
+              }
+              footer={
+                <Stack flexDirection={'row'} gap={3}>
+                  <StyledButton
+                    color={'info'}
+                    onClick={() => {
+                      setAnchorEl(null);
+                      close();
+                    }}
+                    size={'small'}
+                    sx={{ width: 110 }}
+                    variant={'outlined'}
+                  >
+                    No, cancel
+                  </StyledButton>
+                  <StyledButton
+                    color={'error'}
+                    disabled={loading}
+                    loading={loading}
+                    onClick={onClickToDelete}
+                    size={'small'}
+                    sx={{ width: 110 }}
+                  >
+                    Yes, delete
+                  </StyledButton>
+                </Stack>
+              }
+              header={'Are you sure?'}
+              open={visible}
+            />
+          </Stack>
+        );
+      },
+    },
     {
       header: 'Status',
       accessorKey: 'repaymentStatus',
@@ -597,6 +713,7 @@ export const reduceCashFlowColumn = (columns: MRT_ColumnDef<any>[]) => {
     if (!cur) {
       return acc;
     }
+
     const target = {
       ...cur,
       Cell: (props: any) => {

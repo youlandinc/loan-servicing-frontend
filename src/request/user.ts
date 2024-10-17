@@ -2,7 +2,7 @@ import axios from 'axios';
 import { post } from './axios';
 import { User } from '@/types/user';
 
-export const _fetchUserInfoWithToken = (token: string) => {
+export const _fetchUserInfoWithToken = (token: string | number) => {
   return axios({
     method: 'get',
     headers: { Authorization: `Bearer ${token}` },

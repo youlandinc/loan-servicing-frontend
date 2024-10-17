@@ -211,10 +211,10 @@ export const Portfolio: FC = observer(() => {
         label:
           portfolioListType === PortfolioGridTypeEnum.DELINQUENT ? (
             <>
-              Days delinquent <StyledDelinquentSelect />
+              Delinquent <StyledDelinquentSelect />
             </>
           ) : (
-            'Days delinquent'
+            'Delinquent'
           ),
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,

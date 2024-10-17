@@ -183,7 +183,9 @@ export const LoanOverview: FC = observer(() => {
     popupId: 'comments-popover',
   });
 
-  const { loading } = useAsync(async () => {
+  const { loading } = useAsync(async () => await fetchDetail(), []);
+
+  const fetchDetail = async () => {
     const { loanId } = utils.getParamsFromUrl(location.href);
     if (!loanId) {
       return;
@@ -346,7 +348,7 @@ export const LoanOverview: FC = observer(() => {
         header,
       });
     }
-  }, []);
+  };
 
   const fetchComments = async (cb?: () => void) => {
     const { loanId } = utils.getParamsFromUrl(location.href);
@@ -525,7 +527,7 @@ export const LoanOverview: FC = observer(() => {
                     maxHeight={480}
                     minHeight={270}
                   >
-                    <LoanPaymentsGrid maxHeight={478} />
+                    <LoanPaymentsGrid cb={fetchDetail} maxHeight={478} />
                   </Stack>
                 </Stack>
               </Stack>

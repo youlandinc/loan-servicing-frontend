@@ -152,6 +152,8 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             ),
           },
         ]);
+      } else {
+        result = fromServer;
       }
       return result;
     }, [initialized, licensedProduct, session?.accessToken?.jwtToken, setting]);

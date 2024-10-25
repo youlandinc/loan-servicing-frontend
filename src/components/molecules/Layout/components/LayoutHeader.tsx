@@ -15,6 +15,7 @@ import { useMst } from '@/models/Root';
 
 import {
   LAYOUT_HEADER_TAB,
+  URL_CUSTOMER,
   URL_DOC,
   URL_HOME,
   URL_LOS,
@@ -32,6 +33,7 @@ import LOGO_PRODUCT_LOS from '@/svg/layout/logo_product_los.svg';
 import LOGO_PRODUCT_DOC from '@/svg/layout/logo_product_doc.svg';
 import LOGO_PRODUCT_PRICE from '@/svg/layout/logo_product_price.svg';
 import LOGO_PRODUCT_SERVING from '@/svg/layout/logo_product_serving.svg';
+import LOGO_PRODUCT_CUSTOMER from '@/svg/layout/logo_product_customer.svg';
 
 //import LOGO_HEADER_POS from '@/svg/layout/logo_header_pos.svg';
 //import LOGO_HEADER_LOS from '@/svg/layout/logo_header_los.svg';
@@ -112,37 +114,44 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Icon component={LOGO_PRODUCT_DOC} sx={{ width: 32, height: 32 }} />
           ),
         },
-        'Loan Servicing': {
-          label: 'Servicing center',
-          url: '/portfolio',
-          icon: (
-            <Icon
-              component={LOGO_PRODUCT_SERVING}
-              sx={{ width: 32, height: 32 }}
-            />
-          ),
-        },
       };
 
       const productsKeys = Object.keys(productsData);
-      const result = licensedProduct.map(
+      const fromServer = licensedProduct.map(
         (item) => productsKeys.includes(item.name) && productsData[item.name],
       );
       //only youland and test user can see loan servicing
+      let result;
+
       if (
         utils.isYouland(setting?.tenantId) ||
         utils.isTestUser(setting?.tenantId)
       ) {
-        result.push({
-          label: 'Servicing center',
-          url: '/portfolio',
-          icon: (
-            <Icon
-              component={LOGO_PRODUCT_SERVING}
-              sx={{ width: 32, height: 32 }}
-            />
-          ),
-        });
+        result = fromServer.concat([
+          {
+            label: 'Servicing center',
+            url: '/portfolio',
+            icon: (
+              <Icon
+                component={LOGO_PRODUCT_SERVING}
+                sx={{ width: 32, height: 32 }}
+              />
+            ),
+          },
+          {
+            label: 'Customer Center',
+            url: `${URL_CUSTOMER}/?token=${
+              session?.accessToken?.jwtToken ||
+              localStorage?.getItem('USER_LOGIN_INFORMATION')
+            }`,
+            icon: (
+              <Icon
+                component={LOGO_PRODUCT_CUSTOMER}
+                sx={{ width: 32, height: 32 }}
+              />
+            ),
+          },
+        ]);
       }
       return result;
     }, [initialized, licensedProduct, session?.accessToken?.jwtToken, setting]);

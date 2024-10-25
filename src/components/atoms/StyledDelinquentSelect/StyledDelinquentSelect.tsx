@@ -71,23 +71,27 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
       [],
     );
 
-    useEffect(() => {
-      getDelinquentRangeOpt(
-        delinquentGridModel.queryModel.searchCondition
-          .repaymentStatusList as unknown as string[],
-      ).catch(({ message, variant, header }) => {
-        enqueueSnackbar(message, {
-          variant,
-          isSimple: !header,
-          header,
+    useEffect(
+      () => {
+        getDelinquentRangeOpt(
+          delinquentGridModel.queryModel.searchCondition
+            .repaymentStatusList as unknown as string[],
+        ).catch(({ message, variant, header }) => {
+          enqueueSnackbar(message, {
+            variant,
+            isSimple: !header,
+            header,
+          });
         });
-      });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-      delinquentGridModel.queryModel.searchCondition.repaymentStatusList?.join(
-        '',
-      ),
-    ]);
+      },
+      //eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+        delinquentGridModel.queryModel.searchCondition.repaymentStatusList?.join(
+          '',
+        ),
+      ],
+    );
 
     return (
       <StyledButton

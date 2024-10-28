@@ -1,4 +1,4 @@
-import { Box, Fade, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -45,7 +45,7 @@ export const LoanExtensionRequest: FC = () => {
   );
   const [paidType, setPaidType] = useState(ExtensionPaidTypeEnum.Upfront);
   const [downloadId, setDownloadId] = useState<number | null>(null);
-
+  const [init, setInit] = useState(false);
   const { visible, open, close } = useSwitch();
 
   const {
@@ -68,10 +68,14 @@ export const LoanExtensionRequest: FC = () => {
             if (typeof res.data.executionData === 'string') {
               setExtensionDate(new Date(res.data.executionData));
             }
+            setInit(true);
             return res;
           })
           .catch(({ message, variant, header }) => {
             enqueueSnackbar(message, { variant, isSimple: !header, header });
+          })
+          .finally(() => {
+            setInit(true);
           })
       : null;
   }, [loanId]);
@@ -162,8 +166,16 @@ export const LoanExtensionRequest: FC = () => {
         enqueueSnackbar(message, { variant, isSimple: !header, header });
       });
   }, [downloadId]);
-
-  return (
+  return !init ? (
+    <Stack
+      alignItems={'center'}
+      height={'100%'}
+      justifyContent={'center'}
+      width={'100%'}
+    >
+      <CircularProgress sx={{ color: '#E3E3EE' }} />
+    </Stack>
+  ) : (
     <Fade in={!!value?.data}>
       <Box overflow={'auto'}>
         <Stack direction={'row'} justifyContent={'center'} p={6}>

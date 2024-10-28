@@ -16,7 +16,7 @@ import {
 } from '@/types/enum';
 import { IBorrowerInfo } from '@/types/loan/details';
 import { utils } from '@/utils';
-import { Box, Stack } from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useAsync } from 'react-use';
@@ -31,7 +31,7 @@ const wrapper = (val: unknown, formatFn: (val: any) => unknown) => {
 export const LoanDetails: FC = () => {
   const router = useRouter();
   const { loanId } = router.query;
-  const { value } = useAsync(async () => {
+  const { value, loading } = useAsync(async () => {
     return typeof loanId === 'string'
       ? await _getLoanDetails(parseInt(loanId as string) as number)
       : null;
@@ -442,17 +442,28 @@ export const LoanDetails: FC = () => {
     },
   ];
   return (
-    <Box overflow={'auto'}>
-      <Stack direction={'row'} justifyContent={'center'} p={6}>
-        <Stack maxWidth={1276} spacing={3} width={'100%'}>
-          <StyledHeaderAddressInfo
-            address={address}
-            loanNumber={loanNumber}
-            status={status}
-          />
-          <StyledTabs tabsData={tabs} />
+    <Box height={'100%'} overflow={'auto'}>
+      {loading ? (
+        <Stack
+          alignItems={'center'}
+          height={'100%'}
+          justifyContent={'center'}
+          width={'100%'}
+        >
+          <CircularProgress sx={{ color: '#E3E3EE' }} />
         </Stack>
-      </Stack>
+      ) : (
+        <Stack direction={'row'} justifyContent={'center'} p={6}>
+          <Stack maxWidth={1276} spacing={3} width={'100%'}>
+            <StyledHeaderAddressInfo
+              address={address}
+              loanNumber={loanNumber}
+              status={status}
+            />
+            <StyledTabs tabsData={tabs} />
+          </Stack>
+        </Stack>
+      )}
     </Box>
   );
 };

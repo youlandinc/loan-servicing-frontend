@@ -11,7 +11,11 @@ import {
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { _getAllStatus } from '@/request';
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import {
+  PortfolioGridTypeEnum,
+  RepaymentStatusEnum,
+  SortDirection,
+} from '@/types/enum';
 import { Stack } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { FC, useEffect, useRef } from 'react';
@@ -67,7 +71,11 @@ export const DelinquentGridToolBar: FC = () => {
         onChange={(e) => {
           updateQueryDebounce('repaymentStatusList', e);
         }}
-        options={data?.data || []}
+        options={
+          data?.data?.filter(
+            (item) => item.value !== RepaymentStatusEnum.Paid_Off,
+          ) || []
+        }
         value={
           delinquentGridModel.queryModel.searchCondition.repaymentStatusList
         }

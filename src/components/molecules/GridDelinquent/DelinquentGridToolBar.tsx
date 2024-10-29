@@ -12,6 +12,7 @@ import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { _getAllStatus } from '@/request';
 import {
+  PipelineStatusEnum,
   PortfolioGridTypeEnum,
   RepaymentStatusEnum,
   SortDirection,
@@ -73,12 +74,12 @@ export const DelinquentGridToolBar: FC = () => {
         }}
         options={
           data?.data?.filter(
-            (item) => item.value !== RepaymentStatusEnum.Paid_Off,
+            (item) => item.value !== PipelineStatusEnum.PAID_OFF,
           ) || []
         }
-        value={
-          delinquentGridModel.queryModel.searchCondition.repaymentStatusList
-        }
+        value={delinquentGridModel.queryModel.searchCondition.repaymentStatusList?.filter(
+          (item) => item !== PipelineStatusEnum.PAID_OFF,
+        )}
       />
       {delinquentGridModel.queryModel.sort.length > 0 && (
         <SortButton

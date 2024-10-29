@@ -126,6 +126,9 @@ export const utils = {
   isTestUser: (id: string) => {
     return id === '1000052023032900000107';
   },
+  isAlameda: (id: string) => {
+    return id === '1000052022092800000702';
+  },
   isNotEmptyOfObject: (obj: Record<any, any>) => {
     return Object.keys(obj).length > 0;
   },

@@ -152,6 +152,19 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             ),
           },
         ]);
+      } else if (utils.isAlameda(setting?.tenantId)) {
+        result = [
+          {
+            label: 'Servicing center',
+            url: '/portfolio',
+            icon: (
+              <Icon
+                component={LOGO_PRODUCT_SERVING}
+                sx={{ width: 32, height: 32 }}
+              />
+            ),
+          },
+        ];
       } else {
         result = fromServer;
       }

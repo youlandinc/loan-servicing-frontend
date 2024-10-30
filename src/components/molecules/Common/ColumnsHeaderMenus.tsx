@@ -62,14 +62,13 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = ({
         handleSort?.();
         onClose?.({}, 'backdropClick');
       },
-      // disabled: headerSortDisabled,
     },
   ];
 
   const menus =
     type === 'group'
       ? TableHeaderSortMenu
-      : DefaultTableHeaderMenu.concat(TableHeaderSortMenu);
+      : DefaultTableHeaderMenu.concat(TableHeaderSortMenu as any);
 
   return (
     <StyledActionsMenu
@@ -78,6 +77,7 @@ export const ColumnsHeaderMenus: FC<ColumnsHeaderMenusProps> = ({
         vertical: 'bottom',
         horizontal: 'center',
       }}
+      autoFocus={false}
       menus={menus}
       onClose={onClose}
       open={open}

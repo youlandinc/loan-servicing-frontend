@@ -73,7 +73,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
       const productsData: Record<string, any> = {
         'Point of Sale': {
           label: 'Point of Sale',
-          url: `${URL_POS}/?token=${
+          url: `${URL_POS}/${
             session?.accessToken?.jwtToken ||
             localStorage?.getItem('USER_LOGIN_INFORMATION')
           }`,
@@ -418,7 +418,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               component={LOGO_PRODUCT_HOME}
               onClick={() =>
                 router.push(
-                  `${URL_HOME}/${
+                  `${URL_HOME}/auth/sign_in/${
                     session?.accessToken?.jwtToken ||
                     localStorage?.getItem('USER_LOGIN_INFORMATION')
                   }`,

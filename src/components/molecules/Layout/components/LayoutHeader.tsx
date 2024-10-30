@@ -129,7 +129,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
       ) {
         result = fromServer.concat([
           {
-            label: 'Servicing center',
+            label: 'Servicing Center',
             url: '/portfolio',
             icon: (
               <Icon

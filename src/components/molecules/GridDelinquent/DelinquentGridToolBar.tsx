@@ -1,3 +1,9 @@
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import React, { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
+
 import {
   StyledSearchSelectMultiple,
   StyledSearchTextFieldInput,
@@ -17,12 +23,8 @@ import {
   RepaymentStatusEnum,
   SortDirection,
 } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
-import React, { FC, useEffect, useRef } from 'react';
-import useSWR from 'swr';
 
-export const DelinquentGridToolBar: FC = () => {
+export const DelinquentGridToolBar: FC = observer(() => {
   const {
     portfolio: { delinquentGridModel },
   } = useMst();
@@ -114,4 +116,4 @@ export const DelinquentGridToolBar: FC = () => {
       />
     </Stack>
   );
-};
+});

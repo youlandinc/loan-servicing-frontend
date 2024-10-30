@@ -418,7 +418,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               component={LOGO_PRODUCT_HOME}
               onClick={() =>
                 router.push(
-                  `${URL_HOME}/?token=${
+                  `${URL_HOME}/${
                     session?.accessToken?.jwtToken ||
                     localStorage?.getItem('USER_LOGIN_INFORMATION')
                   }`,

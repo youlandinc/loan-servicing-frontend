@@ -59,6 +59,7 @@ export const DelinquentGrid: FC = observer(() => {
                   .repaymentStatusList,
               ],
             },
+            sort: [...delinquentGridModel.queryModel.sort],
           },
           displayType,
         ]

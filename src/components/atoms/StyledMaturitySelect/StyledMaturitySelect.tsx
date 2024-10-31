@@ -37,43 +37,61 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
       setMaturityDays(value);
     }*/
 
-    const [state, getMaturityRangeOpt] = useAsyncFn(async () => {
-      return await _getMaturityRangeOpt().then((res) => {
-        if (res.data) {
-          setOpts(
-            MaturityTypeOpt.map((item) => ({
-              ...item,
-              label: (
-                <Stack alignItems={'center'} direction={'row'} gap={1}>
-                  <Typography variant={'body2'}>{item.label}</Typography>
-                  <Typography
-                    bgcolor={'#95A8D7'}
-                    borderRadius={1}
-                    color={'#fff'}
-                    px={0.5}
-                    variant={'subtitle3'}
-                  >
-                    {res.data[item.value] || 0}
-                  </Typography>
-                </Stack>
-              ),
-            })),
-          );
-        }
-        return res;
-      });
-    }, []);
-
-    useEffect(() => {
-      getMaturityRangeOpt().catch(({ message, variant, header }) => {
-        enqueueSnackbar(message, {
-          variant,
-          isSimple: !header,
-          header,
+    const [state, getMaturityRangeOpt] = useAsyncFn(
+      async (status: string[]) => {
+        return await _getMaturityRangeOpt({
+          searchCondition: {
+            repaymentStatusList: status,
+          },
+        }).then((res) => {
+          if (res.data) {
+            setOpts(
+              MaturityTypeOpt.map((item) => ({
+                ...item,
+                label: (
+                  <Stack alignItems={'center'} direction={'row'} gap={1}>
+                    <Typography variant={'body2'}>{item.label}</Typography>
+                    <Typography
+                      bgcolor={'#95A8D7'}
+                      borderRadius={1}
+                      color={'#fff'}
+                      px={0.5}
+                      variant={'subtitle3'}
+                    >
+                      {res.data[item.value] || 0}
+                    </Typography>
+                  </Stack>
+                ),
+              })),
+            );
+          }
+          return res;
         });
-      });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      },
+      [],
+    );
+
+    useEffect(
+      () => {
+        getMaturityRangeOpt(
+          maturityGridModel.queryModel.searchCondition
+            .repaymentStatusList as unknown as string[],
+        ).catch(({ message, variant, header }) => {
+          enqueueSnackbar(message, {
+            variant,
+            isSimple: !header,
+            header,
+          });
+        });
+      },
+      //eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+        maturityGridModel.queryModel.searchCondition.repaymentStatusList?.join(
+          '',
+        ),
+      ],
+    );
 
     return (
       <StyledButton
@@ -151,7 +169,10 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
           }}
           onOpen={async () => {
             if (portfolioListType === PortfolioGridTypeEnum.MATURITY) {
-              await getMaturityRangeOpt();
+              await getMaturityRangeOpt(
+                maturityGridModel.queryModel.searchCondition
+                  .repaymentStatusList as unknown as string[],
+              );
               open();
             }
           }}

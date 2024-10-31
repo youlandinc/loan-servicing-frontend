@@ -7,6 +7,8 @@ export const _getGroupMaturity = (param: IAllLoansQueryParam) => {
   return post('/servicing/maturity', param);
 };
 
-export const _getMaturityRangeOpt = () => {
-  return get('/servicing/maturity/statistics');
+export const _getMaturityRangeOpt = (param: {
+  searchCondition: { repaymentStatusList: string[] };
+}) => {
+  return post('/servicing/maturity/statistics', param);
 };

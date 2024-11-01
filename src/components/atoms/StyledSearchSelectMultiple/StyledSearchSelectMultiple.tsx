@@ -33,8 +33,13 @@ export const StyledSearchSelectMultiple: FC<
   const [selected, setSelected] = useState<any[]>([]);
 
   useEffect(() => {
-    value && setSelected(value);
-  }, [value]);
+    if (value?.length) {
+      const selectedOptions = value.filter((item: string) =>
+        options.some((option) => option.value === item),
+      );
+      setSelected(selectedOptions);
+    }
+  }, [value, options]);
 
   return (
     <StyledButton

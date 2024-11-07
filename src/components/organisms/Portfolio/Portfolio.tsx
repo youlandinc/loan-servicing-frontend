@@ -408,7 +408,7 @@ export const Portfolio: FC = observer(() => {
             item.key === PortfolioGridTypeEnum.DELINQUENT ||
             item.key === PortfolioGridTypeEnum.MATURITY
               ? {
-                  [PortfolioGridTypeEnum.DELINQUENT]: 'Days delinquent',
+                  [PortfolioGridTypeEnum.DELINQUENT]: 'Delinquent',
                   [PortfolioGridTypeEnum.MATURITY]: 'Maturity',
                 }[item.key]
               : item.label,

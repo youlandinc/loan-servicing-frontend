@@ -4,6 +4,11 @@ import { PaymentMethod } from '@/types/loan/payments';
 
 export const TRADE_STATUS_OPTIONS: Option[] = [
   {
+    label: 'Not in trade',
+    value: GridTradeStatusEnum.not_in_trade,
+    key: GridTradeStatusEnum.not_in_trade,
+  },
+  {
     label: 'In progress',
     value: GridTradeStatusEnum.in_progress,
     key: GridTradeStatusEnum.in_progress,
@@ -12,11 +17,6 @@ export const TRADE_STATUS_OPTIONS: Option[] = [
     label: 'Confirmed',
     value: GridTradeStatusEnum.confirmed,
     key: GridTradeStatusEnum.confirmed,
-  },
-  {
-    label: 'Not in trade',
-    value: GridTradeStatusEnum.not_in_trade,
-    key: GridTradeStatusEnum.not_in_trade,
   },
 ];
 

@@ -310,6 +310,7 @@ export const Portfolio: FC = observer(() => {
               </Stack>
               <StyledButton
                 component={'div'}
+                // endIcon={<Icon component={KeyboardArrowDownIcon} />}
                 onClick={(e) => {
                   e.stopPropagation();
                   setAnchor(e.currentTarget);
@@ -356,16 +357,13 @@ export const Portfolio: FC = observer(() => {
                     {menus.find((item) => item.key === portfolioListType)
                       ?.label || menus[0].label}
                   </Typography>
-                  {portfolioListType !== PortfolioGridTypeEnum.DELINQUENT &&
-                    portfolioListType !== PortfolioGridTypeEnum.MATURITY && (
-                      <Icon
-                        component={KeyboardArrowDownIcon}
-                        sx={{
-                          width: 16,
-                          height: 16,
-                        }}
-                      />
-                    )}
+                  <Icon
+                    component={KeyboardArrowDownIcon}
+                    sx={{
+                      width: 16,
+                      height: 16,
+                    }}
+                  />
                 </Stack>
               </StyledButton>
               {menus.map((item, index) => (

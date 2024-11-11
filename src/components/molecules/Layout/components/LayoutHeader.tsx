@@ -446,7 +446,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 gap={1.5}
                 key={`${item.label}_${index}`}
                 onClick={async () => {
-                  await router.push(item.url);
+                  window.open(item.url, '_blank');
                   setAnchorElProduct(null);
                 }}
                 p={1.5}

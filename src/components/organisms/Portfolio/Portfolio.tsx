@@ -1,3 +1,14 @@
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
+import { KeyboardArrowDown } from '@mui/icons-material';
+import dynamic from 'next/dynamic';
+import { useAsync, useAsyncFn } from 'react-use';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { useDebounceFn } from '@/hooks';
+
 import {
   StyledActionsMenu,
   StyledButton,
@@ -6,8 +17,7 @@ import {
 } from '@/components/atoms';
 import { Layout } from '@/components/molecules';
 
-import { useDebounceFn } from '@/hooks';
-import { useMst } from '@/models/Root';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import { _getAllGridConfig, setDisplayType } from '@/request';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
@@ -17,14 +27,6 @@ import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
 import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
-
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import dynamic from 'next/dynamic';
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { useAsync, useAsyncFn } from 'react-use';
 
 const GridYouland = dynamic(
   () =>
@@ -172,18 +174,18 @@ export const Portfolio: FC = observer(() => {
   const menus = useMemo(
     () => [
       {
-        icon: LOGO_YOULAND,
-        label: 'Youland',
-        key: PortfolioGridTypeEnum.YOULAND,
-        queryComponent: <GridYoulandToolbar />,
-        component: <GridYouland />,
-      },
-      {
         icon: LOGO_CASH_FLOW,
         label: 'Cash flow',
         key: PortfolioGridTypeEnum.CASH_FLOW,
         queryComponent: <GridCashFlowToolbar />,
         component: <GridCashFlow />,
+      },
+      {
+        icon: LOGO_YOULAND,
+        label: 'Youland',
+        key: PortfolioGridTypeEnum.YOULAND,
+        queryComponent: <GridYoulandToolbar />,
+        component: <GridYouland />,
       },
       {
         icon: LOGO_ALAMEDA,
@@ -310,7 +312,7 @@ export const Portfolio: FC = observer(() => {
               </Stack>
               <StyledButton
                 component={'div'}
-                // endIcon={<Icon component={KeyboardArrowDownIcon} />}
+                // endIcon={<Icon component={KeyboardArrowDown} />}
                 onClick={(e) => {
                   e.stopPropagation();
                   setAnchor(e.currentTarget);
@@ -358,7 +360,7 @@ export const Portfolio: FC = observer(() => {
                       ?.label || menus[0].label}
                   </Typography>
                   <Icon
-                    component={KeyboardArrowDownIcon}
+                    component={KeyboardArrowDown}
                     sx={{
                       width: 16,
                       height: 16,

@@ -117,7 +117,7 @@ const initialState = {
   userType: void 0,
   loginType: void 0,
   portfolio: {
-    displayType: PortfolioGridTypeEnum.YOULAND,
+    displayType: PortfolioGridTypeEnum.CASH_FLOW,
     youlandGridModel: {
       queryModel: {
         size: 50,

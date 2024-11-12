@@ -1,5 +1,4 @@
 import { FC, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync, useAsyncFn, useDebounce } from 'react-use';
 import {
@@ -42,8 +41,6 @@ export const GridAlameda: FC = observer(() => {
       },
     },
   } = useMst();
-
-  const router = useRouter();
 
   const [investorData, setInvestorData] = useState<
     Array<Option & { bgColor: string }>
@@ -284,10 +281,10 @@ export const GridAlameda: FC = observer(() => {
           if (isLoading) {
             return;
           }
-          await router.push({
-            pathname: '/loan/overview',
-            query: { loanId: row.original.loanId },
-          });
+          window.open(
+            `/loan/overview/?loanId=${row.original.loanId}`,
+            '_blank',
+          );
         },
       };
     },

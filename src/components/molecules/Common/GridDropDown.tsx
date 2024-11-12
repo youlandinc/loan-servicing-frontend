@@ -67,6 +67,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
           e.preventDefault();
           setTarget(e.currentTarget);
         }}
+        pl={1.5}
         sx={{
           cursor: 'pointer',
         }}
@@ -155,7 +156,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
             selected={loading ? activeIndex === index : item.key === status}
             sx={{
               px: 3,
-              py: 1.5,
+              px: 1.5,
               bgcolor: 'transparent !important',
               '&.Mui-selected': {
                 bgcolor: '#EFF2FB !important',

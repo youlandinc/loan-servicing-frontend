@@ -1,8 +1,12 @@
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
 import React, { FC, useEffect, useRef } from 'react';
+import { Stack } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import useSWR from 'swr';
+
+import { useMst } from '@/models/Root';
+import { observer } from 'mobx-react-lite';
+
+import { useDebounceFn } from '@/hooks';
 
 import {
   StyledSearchSelectMultiple,
@@ -14,13 +18,11 @@ import {
   GridMoreIconButton,
   SortButton,
 } from '@/components/molecules';
-import { useDebounceFn } from '@/hooks';
-import { useMst } from '@/models/Root';
+
 import { _getAllStatus } from '@/request';
 import {
   PipelineStatusEnum,
   PortfolioGridTypeEnum,
-  RepaymentStatusEnum,
   SortDirection,
 } from '@/types/enum';
 

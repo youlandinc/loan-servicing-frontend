@@ -1,5 +1,4 @@
 import React, { FC, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { useAsync, useAsyncFn, useDebounce } from 'react-use';
 import {
@@ -43,8 +42,6 @@ export const GridYouland: FC = observer(() => {
       },
     },
   } = useMst();
-
-  const router = useRouter();
 
   const [headerColumnId, setHeaderColumnId] = useState('');
   const [headerTitle, setHeaderTitle] = useState('');
@@ -284,10 +281,10 @@ export const GridYouland: FC = observer(() => {
           if (isLoading) {
             return;
           }
-          await router.push({
-            pathname: '/loan/overview',
-            query: { loanId: row.original.loanId },
-          });
+          window.open(
+            `/loan/overview/?loanId=${row.original.loanId}`,
+            '_blank',
+          );
         },
       };
     },

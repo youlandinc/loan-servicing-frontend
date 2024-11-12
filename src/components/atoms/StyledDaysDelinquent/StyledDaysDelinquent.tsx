@@ -1,9 +1,14 @@
-import { Box, Typography, TypographyProps } from '@mui/material';
 import { FC } from 'react';
+import { Box, Typography, TypographyProps } from '@mui/material';
 
 interface StyledDaysDelinquentProps extends TypographyProps {
   days: number;
 }
+
+const levelNegative = {
+  color: '#5B76BC',
+  backgroundColor: 'rgba(17, 52, 227, 0.10)',
+};
 
 const level30 = {
   color: '#FB9532',
@@ -25,13 +30,17 @@ export const StyledDaysDelinquent: FC<StyledDaysDelinquentProps> = ({
   ...rest
 }) => {
   let levelProps = null;
-  if (days <= 30) {
+  if (days <= 0) {
+    levelProps = levelNegative;
+  } else if (days <= 30) {
     levelProps = level30;
   } else if (days <= 60) {
     levelProps = level60;
   } else if (days > 60) {
     levelProps = other;
   }
+
+  const label = days <= 0 ? 'Performing' : `${days} days`;
 
   return (
     <Box>
@@ -45,7 +54,7 @@ export const StyledDaysDelinquent: FC<StyledDaysDelinquentProps> = ({
         {...levelProps}
         {...rest}
       >
-        {days} days
+        {label}
       </Typography>
     </Box>
   );

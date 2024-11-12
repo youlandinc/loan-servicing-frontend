@@ -12,7 +12,6 @@ import {
   MRT_TableOptions,
   useMaterialReactTable,
 } from 'material-react-table';
-import router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import React, { CSSProperties, FC, useEffect, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
@@ -220,10 +219,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
             row.toggleExpanded();
           }
           if (!original.servicingLoans) {
-            await router.push({
-              pathname: '/loan/overview',
-              query: { loanId },
-            });
+            window.open(`/loan/overview/?loanId=${loanId}`, '_blank');
           }
         },
       };

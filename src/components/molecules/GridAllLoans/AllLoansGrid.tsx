@@ -22,15 +22,12 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
-import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { FC, useMemo, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
 import useSWR from 'swr';
 
 export const AllLoansGrid: FC = observer(() => {
-  const router = useRouter();
-
   const {
     portfolio: { allLoansGridModel, displayType },
   } = useMst();
@@ -160,10 +157,7 @@ export const AllLoansGrid: FC = observer(() => {
       },
       onClick: async () => {
         const { loanId } = original;
-        await router.push({
-          pathname: '/loan/overview',
-          query: { loanId },
-        });
+        window.open(`/loan/overview/?loanId=${loanId}`, '_blank');
       },
     }),
     muiTableHeadProps: {

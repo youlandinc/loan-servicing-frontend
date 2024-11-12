@@ -1,5 +1,4 @@
 import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import {
   MRT_ExpandButton,
@@ -39,8 +38,6 @@ export const GridCashFlow: FC = observer(() => {
       cashFlowGridModel: { queryModel, orderColumns, expandedColumns },
     },
   } = useMst();
-
-  const router = useRouter();
 
   const [investorData, setInvestorData] = useState<
     Array<Option & { bgColor: string }>
@@ -407,10 +404,7 @@ export const GridCashFlow: FC = observer(() => {
             row.toggleExpanded();
           }
           if (!original.servicingLoans) {
-            await router.push({
-              pathname: '/loan/overview',
-              query: { loanId },
-            });
+            window.open(`/loan/overview/?loanId=${loanId}`, '_blank');
           }
         },
       };

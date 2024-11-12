@@ -156,7 +156,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
             selected={loading ? activeIndex === index : item.key === status}
             sx={{
               px: 3,
-              px: 1.5,
+              py: 1.5,
               bgcolor: 'transparent !important',
               '&.Mui-selected': {
                 bgcolor: '#EFF2FB !important',

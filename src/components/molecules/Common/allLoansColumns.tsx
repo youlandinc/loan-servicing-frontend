@@ -555,7 +555,6 @@ export const maturityColumns = (type: MaturityTimeRangeEnum) => {
             return <StyledDaysDelinquent days={renderedCellValue as number} />;
           },
         },
-        ,
       ] as MRT_ColumnDef<any>[]
     ).concat(commonColumns),
   );

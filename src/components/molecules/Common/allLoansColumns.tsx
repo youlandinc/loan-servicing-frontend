@@ -1,15 +1,17 @@
-import React from 'react';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
+import React from 'react';
 
 import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
+import { StyledMaturityStatus } from '@/components/atoms/StyledMaturityStatus';
 
 import { IOrderColumnsItem } from '@/models/gridModel';
 import { ellipsisStyle } from '@/styles';
 import {
   ColumnPiningDirectionEnum,
+  MaturityStatusInDelinquentEnum,
   MaturityTimeRangeEnum,
   PipelineStatusEnum,
 } from '@/types/enum';
@@ -402,7 +404,7 @@ export const combineColumns = (
                 field: item.accessorKey as string,
                 headerName: item.header,
                 columnWidth: item.size as number,
-                sort: index,
+                sort: index + 50,
                 visibility: true,
                 pinType: 'CENTER' as ColumnPiningDirectionEnum,
                 leftOrder: null,
@@ -472,35 +474,26 @@ export const groupCommonColumns: MRT_ColumnDef<any>[] =
   transferFirstColumn(commonColumns);
 
 export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
-  [
-    {
-      accessorKey: 'diffDays',
-      header: 'Days delinquent',
-      size: 150,
-      minSize: 150,
-      muiTableBodyCellProps: {
-        align: 'center',
-      },
-      muiTableHeadCellProps: {
-        align: 'center',
-      },
-      Cell: ({ renderedCellValue }) => {
-        return <StyledDaysDelinquent days={renderedCellValue as number} />;
-      },
-    } as MRT_ColumnDef<any>,
-  ].concat(
-    commonColumns
-  ),
-);
-export const maturityColumns = (type: MaturityTimeRangeEnum) => {
-  return transferFirstColumn(
+  (
     [
       {
         accessorKey: 'diffDays',
-        header:
-          type === MaturityTimeRangeEnum.ALREADY_END
-            ? 'Days past maturity'
-            : 'Days until maturity',
+        header: 'Days delinquent',
+        size: 150,
+        minSize: 150,
+        muiTableBodyCellProps: {
+          align: 'center',
+        },
+        muiTableHeadCellProps: {
+          align: 'center',
+        },
+        Cell: ({ renderedCellValue }) => {
+          return <StyledDaysDelinquent days={renderedCellValue as number} />;
+        },
+      },
+      {
+        accessorKey: 'maturityStatus',
+        header: 'Maturity status',
         size: 150,
         minSize: 150,
         muiTableBodyCellProps: {
@@ -511,13 +504,59 @@ export const maturityColumns = (type: MaturityTimeRangeEnum) => {
         },
         Cell: ({ renderedCellValue }) => {
           return (
-            <StyledDaysMaturity
-              days={renderedCellValue as number}
-              type={type as MaturityTimeRangeEnum}
+            <StyledMaturityStatus
+              status={renderedCellValue as MaturityStatusInDelinquentEnum}
             />
           );
         },
-      } as MRT_ColumnDef<any>,
-    ].concat(commonColumns),
+      },
+    ] as MRT_ColumnDef<any>[]
+  ).concat(commonColumns),
+);
+export const maturityColumns = (type: MaturityTimeRangeEnum) => {
+  return transferFirstColumn(
+    (
+      [
+        {
+          accessorKey: 'diffDays',
+          header:
+            type === MaturityTimeRangeEnum.ALREADY_END
+              ? 'Days past maturity'
+              : 'Days until maturity',
+          size: 150,
+          minSize: 150,
+          muiTableBodyCellProps: {
+            align: 'center',
+          },
+          muiTableHeadCellProps: {
+            align: 'center',
+          },
+          Cell: ({ renderedCellValue }) => {
+            return (
+              <StyledDaysMaturity
+                days={renderedCellValue as number}
+                type={type as MaturityTimeRangeEnum}
+              />
+            );
+          },
+        },
+        {
+          accessorKey: 'daysDelinquent',
+          header: 'Days delinquent',
+          size: 150,
+          minSize: 150,
+          muiTableBodyCellProps: {
+            align: 'center',
+          },
+          muiTableHeadCellProps: {
+            align: 'center',
+          },
+          Cell: ({ renderedCellValue }) => {
+            return <StyledDaysDelinquent days={renderedCellValue as number} />;
+          },
+        },
+        ,
+      ] as MRT_ColumnDef<any>[]
+    ).concat(commonColumns),
   );
 };

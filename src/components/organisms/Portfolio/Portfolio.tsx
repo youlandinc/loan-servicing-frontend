@@ -179,7 +179,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.CASH_FLOW,
         queryComponent: <GridCashFlowToolbar />,
         component: <GridCashFlow />,
-        maxWidth: '50%',
+        maxWidth: 'calc(100% - 840px)',
       },
       {
         icon: LOGO_YOULAND,
@@ -187,7 +187,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.YOULAND,
         queryComponent: <GridYoulandToolbar />,
         component: <GridYouland />,
-        maxWidth: '35%',
+        maxWidth: 'calc(100% - 840px)',
       },
       {
         icon: LOGO_ALAMEDA,
@@ -195,7 +195,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALAMEDA,
         queryComponent: <GridAlamedaToolbar />,
         component: <GridAlameda />,
-        maxWidth: '50%',
+        maxWidth: 'calc(100% - 840px)',
       },
       {
         icon: ListIcon,
@@ -203,7 +203,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALL_LOANS,
         queryComponent: <AllLoansGridToolBar />,
         component: <AllLoansGrid />,
-        maxWidth: '40%',
+        maxWidth: 'calc(100% - 780px)',
       },
       {
         icon: InvestorIcon,
@@ -211,7 +211,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.BY_INVESTOR,
         queryComponent: <InvestorGridToolBar />,
         component: <InvestorGrid />,
-        maxWidth: '45%',
+        maxWidth: 'calc(100% - 780px)',
       },
       {
         icon: DelinquentIcon,
@@ -226,7 +226,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,
         component: <DelinquentGrid />,
-        maxWidth: '60%',
+        maxWidth: 'calc(100% - 540px)',
       },
       {
         icon: MaturityIcon,
@@ -241,7 +241,7 @@ export const Portfolio: FC = observer(() => {
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
-        maxWidth: '60%',
+        maxWidth: 'calc(100% - 540px)',
       },
     ],
     [portfolioListType],

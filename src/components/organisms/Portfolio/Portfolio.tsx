@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Box, Fade, Icon, Stack, Typography } from '@mui/material';
+import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import dynamic from 'next/dynamic';
 import { useAsync, useAsyncFn } from 'react-use';
@@ -179,6 +179,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.CASH_FLOW,
         queryComponent: <GridCashFlowToolbar />,
         component: <GridCashFlow />,
+        maxWidth: '50%',
       },
       {
         icon: LOGO_YOULAND,
@@ -186,6 +187,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.YOULAND,
         queryComponent: <GridYoulandToolbar />,
         component: <GridYouland />,
+        maxWidth: '35%',
       },
       {
         icon: LOGO_ALAMEDA,
@@ -193,6 +195,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALAMEDA,
         queryComponent: <GridAlamedaToolbar />,
         component: <GridAlameda />,
+        maxWidth: '50%',
       },
       {
         icon: ListIcon,
@@ -200,6 +203,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALL_LOANS,
         queryComponent: <AllLoansGridToolBar />,
         component: <AllLoansGrid />,
+        maxWidth: '40%',
       },
       {
         icon: InvestorIcon,
@@ -207,6 +211,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.BY_INVESTOR,
         queryComponent: <InvestorGridToolBar />,
         component: <InvestorGrid />,
+        maxWidth: '45%',
       },
       {
         icon: DelinquentIcon,
@@ -221,6 +226,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,
         component: <DelinquentGrid />,
+        maxWidth: '60%',
       },
       {
         icon: MaturityIcon,
@@ -235,6 +241,7 @@ export const Portfolio: FC = observer(() => {
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
+        maxWidth: '60%',
       },
     ],
     [portfolioListType],
@@ -250,65 +257,94 @@ export const Portfolio: FC = observer(() => {
         <Fade in={!loading}>
           <Stack height={'100%'} pb={3} pt={3} px={6}>
             <Stack
-              alignItems={'flex-start'}
+              alignItems={'center'}
               direction={'row'}
               justifyContent={'space-between'}
             >
               <Stack
-                direction={'row'}
-                display={{
-                  xs: 'none',
-                  xxl: 'flex',
-                }}
+                flex={1}
+                flexDirection={'row'}
+                maxWidth={
+                  menus.find((item) => item.key === portfolioListType)
+                    ?.maxWidth || '30%'
+                }
               >
-                {menus.map((item, index) => (
-                  <StyledButton
-                    component={'div'}
-                    key={index}
-                    onClick={() => {
-                      if (item.key !== portfolioListType) {
-                        setPortfolioListType(item.key);
-                        set(item.key);
+                <Tabs
+                  scrollButtons
+                  selectionFollowsFocus
+                  sx={{
+                    minHeight: 44,
+                    // ml:
+                    //   portfolioListType === PortfolioGridTypeEnum.CASH_FLOW
+                    //     ? '-40px'
+                    //     : 'auto',
+                  }}
+                  TabIndicatorProps={{
+                    sx: {
+                      display: 'none',
+                    },
+                  }}
+                  value={portfolioListType}
+                  variant="scrollable"
+                >
+                  {menus.map((item, index) => (
+                    <Tab
+                      key={index}
+                      label={
+                        <Stack
+                          alignItems={'center'}
+                          direction={'row'}
+                          gap={0.5}
+                        >
+                          <Icon
+                            component={item.icon}
+                            sx={{
+                              width: 20,
+                              height: 20,
+                              '& path': {
+                                fill: '#636A7C',
+                              },
+                            }}
+                          />
+                          <Typography
+                            color={'action.active'}
+                            component={'div'}
+                            variant={'body2'}
+                          >
+                            {item.label}
+                          </Typography>
+                        </Stack>
                       }
-                    }}
-                    size={'small'}
-                    sx={{
-                      backgroundColor:
-                        item.key === portfolioListType
-                          ? '#F4F6FA !important'
-                          : 'transparent !important',
-                      fontWeight: '400 !important',
-                      border:
-                        item.key === portfolioListType ? '1px solid' : 'none',
-                      borderColor: 'border.normal',
-                      borderRadius: '16px 16px 0px 0px !important',
-                      borderBottom: 'none !important',
-                      px: '24px !important',
-                      py: '12px !important',
-                    }}
-                    variant={'text'}
-                  >
-                    <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-                      <Icon
-                        component={item.icon}
-                        sx={{
-                          width: 20,
-                          height: 20,
-                          '& path': {
-                            fill: '#636A7C',
-                          },
-                        }}
-                      />
-                      <Typography
-                        color={'action.active'}
-                        component={'div'}
-                        variant={'body2'}
-                      >
-                        {item.label}
-                      </Typography>
-                    </Stack>
-                  </StyledButton>
-                ))}
+                      onClick={() => {
+                        if (item.key !== portfolioListType) {
+                          setPortfolioListType(item.key);
+                          set(item.key);
+                        }
+                      }}
+                      sx={{
+                        flexDirection: 'row',
+                        backgroundColor:
+                          item.key === portfolioListType
+                            ? '#F4F6FA !important'
+                            : 'transparent !important',
+                        fontWeight: '400 !important',
+                        border:
+                          item.key === portfolioListType ? '1px solid' : 'none',
+                        borderColor: 'border.normal',
+                        borderRadius: '16px 16px 0px 0px !important',
+                        borderBottom: 'none !important',
+                        px: '12px !important',
+                        py: '12px !important',
+                        flexShrink: 0,
+                        textTransform: 'none',
+                        fontSize: 14,
+                        minHeight: 44,
+                        alignItems: 'center',
+                      }}
+                      value={item.key}
+                    />
+                  ))}
+                </Tabs>
               </Stack>
               <StyledButton
                 component={'div'}
@@ -334,8 +370,8 @@ export const Portfolio: FC = observer(() => {
                   py: '6px',
                   height: 'auto !important',
                   display: {
-                    xs: 'flex',
-                    xxl: 'none',
+                    xs: 'none',
+                    // xxl: 'none',
                   },
                   mb: '6px',
                 }}
@@ -386,8 +422,8 @@ export const Portfolio: FC = observer(() => {
                     key={index}
                     sx={{
                       borderTopLeftRadius: {
-                        xs: 16,
-                        xxl: index === 0 ? 0 : 16,
+                        xs: index === 0 ? 0 : 16,
+                        // xxl: index === 0 ? 0 : 16,
                       },
                       overflow: 'hidden',
                     }}

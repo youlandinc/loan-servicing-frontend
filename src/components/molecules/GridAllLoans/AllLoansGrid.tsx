@@ -323,6 +323,7 @@ export const AllLoansGrid: FC = observer(() => {
           rowsPerPage={50}
           sx={{ borderTop: '1px solid #EDF1FF' }}
           totalLoanAmount={totalLoanAmount}
+          updateTime={data?.data?.dataUpdateTime}
         />
       </Stack>
       <ColumnsHeaderMenus

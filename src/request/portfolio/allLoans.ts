@@ -8,6 +8,7 @@ import { IAllGridConfig } from '@/types/pipeline';
 interface _getAllLoansListReturn extends ListPaginationReturn {
   totalItems: number;
   totalLoanAmount: number;
+  dataUpdateTime: string;
 }
 export const _getAllLoansList = (param: IAllLoansQueryParam) => {
   return post<_getAllLoansListReturn>('/servicing/list/all', param);

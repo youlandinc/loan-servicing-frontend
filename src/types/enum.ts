@@ -163,3 +163,10 @@ export enum LoanAnswerEnum {
   yes = 'YES',
   no = 'NO',
 }
+
+export enum MaturityStatusInDelinquentEnum {
+  in_default = 'IN_DEFAULT',
+  month_end = 'MONTH_END',
+  next_month_end = 'NEXT_MONTH_END',
+  not_near_maturity = 'NOT_NEAR_MATURITY',
+}

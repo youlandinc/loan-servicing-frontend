@@ -1,3 +1,4 @@
+import { format, isValid } from 'date-fns';
 import React, { FC } from 'react';
 import {
   Pagination,
@@ -20,6 +21,7 @@ type PipelinePaginationProps = {
   totalLoanAmount?: number;
   totalLoanAmountShow?: boolean;
   showPage?: boolean;
+  updateTime?: string;
 } & Pick<TablePaginationProps, 'onRowsPerPageChange' | 'rowsPerPage'>;
 
 export const AllLoansPagination: FC<PipelinePaginationProps> = ({
@@ -33,6 +35,7 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
   totalLoanAmount = 0,
   totalLoanAmountShow = true,
   showPage = true,
+  updateTime,
 }) => {
   return (
     <Stack
@@ -51,10 +54,16 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
           <Typography fontWeight={600} variant={'subtitle2'}>
             Total amount: {utils.formatDollar(totalLoanAmount, 0)}
           </Typography>
-        )}{' '}
+        )}
         <Typography fontWeight={600} variant={'subtitle2'}>
           Number of loans: {rowCount.toLocaleString()}
         </Typography>
+        {typeof updateTime === 'string' && isValid(new Date(updateTime)) && (
+          <Typography color={'info.main'} variant={'body3'}>
+            Last updated:{' '}
+            {format(new Date(updateTime), "MMMM dd, yyyy 'at' h:mm aa")}
+          </Typography>
+        )}
       </Stack>
       {showPage && (
         <Stack alignItems={'center'} direction={'row'} spacing={6}>

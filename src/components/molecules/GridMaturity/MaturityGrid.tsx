@@ -48,6 +48,7 @@ export const MaturityGrid: FC = observer(() => {
                 ...maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList,
               ],
+              sort: [...maturityGridModel.queryModel.sort],
             },
           },
           displayType,
@@ -113,6 +114,7 @@ export const MaturityGrid: FC = observer(() => {
         showPage={false}
         sx={{ borderTop: '1px solid #EDF1FF' }}
         totalLoanAmount={totalLoanAmount}
+        updateTime={data?.data?.dataUpdateTime}
       />
     </Stack>
   );

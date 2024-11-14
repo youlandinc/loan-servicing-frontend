@@ -1,13 +1,9 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
-import dynamic from 'next/dynamic';
-import { useAsync, useAsyncFn } from 'react-use';
-
+import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
-
-import { useDebounceFn } from '@/hooks';
+import dynamic from 'next/dynamic';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { useAsync, useAsyncFn } from 'react-use';
 
 import {
   StyledActionsMenu,
@@ -17,7 +13,8 @@ import {
 } from '@/components/atoms';
 import { Layout } from '@/components/molecules';
 
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { useDebounceFn } from '@/hooks';
+import { useMst } from '@/models/Root';
 import { _getAllGridConfig, setDisplayType } from '@/request';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
@@ -27,6 +24,8 @@ import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
 import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
+
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 const GridYouland = dynamic(
   () =>
@@ -187,7 +186,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.YOULAND,
         queryComponent: <GridYoulandToolbar />,
         component: <GridYouland />,
-        maxWidth: 'calc(100% - 840px)',
+        maxWidth: 'calc(100% - 940px)',
       },
       {
         icon: LOGO_ALAMEDA,
@@ -195,7 +194,7 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALAMEDA,
         queryComponent: <GridAlamedaToolbar />,
         component: <GridAlameda />,
-        maxWidth: 'calc(100% - 840px)',
+        maxWidth: 'calc(100% - 940px)',
       },
       {
         icon: ListIcon,
@@ -251,15 +250,50 @@ export const Portfolio: FC = observer(() => {
     // getAllGridConfig();
   }, []);
 
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current !== null) {
+      const observer = new MutationObserver((mutationsList) => {
+        mutationsList.forEach((mutation) => {
+          if (
+            mutation.type === 'attributes' &&
+            mutation.attributeName === 'class'
+          ) {
+            const opacity = window.getComputedStyle(
+              (ref.current as any).children?.[0],
+            ).opacity;
+            if (opacity === '0') {
+              (ref.current as any).style.marginLeft = '-40px';
+            } else {
+              (ref.current as any).style.marginLeft = '0px';
+            }
+          }
+        });
+      });
+      observer.observe((ref.current as any).children?.[0], {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+      const opacity = window.getComputedStyle(
+        (ref.current as any).children?.[0],
+      ).opacity;
+      if (opacity === '0') {
+        (ref.current as any).style.marginLeft = '-40px';
+      }
+    }
+  }, [loading]);
+
   return (
     <Layout isHomepage={false}>
       {!loading && (
         <Fade in={!loading}>
-          <Stack height={'100%'} pb={3} pt={3} px={6}>
+          <Stack gap={1.5} height={'100%'} pb={3} pt={3} px={6}>
             <Stack
               alignItems={'center'}
               direction={'row'}
               justifyContent={'space-between'}
+              position={'relative'}
             >
               <Stack
                 flex={1}
@@ -270,14 +304,11 @@ export const Portfolio: FC = observer(() => {
                 }
               >
                 <Tabs
+                  ref={ref}
                   scrollButtons
                   selectionFollowsFocus
                   sx={{
                     minHeight: 44,
-                    // ml:
-                    //   portfolioListType === PortfolioGridTypeEnum.CASH_FLOW
-                    //     ? '-40px'
-                    //     : 'auto',
                   }}
                   TabIndicatorProps={{
                     sx: {
@@ -289,6 +320,7 @@ export const Portfolio: FC = observer(() => {
                 >
                   {menus.map((item, index) => (
                     <Tab
+                      component={'div'}
                       key={index}
                       label={
                         <Stack
@@ -331,10 +363,11 @@ export const Portfolio: FC = observer(() => {
                         border:
                           item.key === portfolioListType ? '1px solid' : 'none',
                         borderColor: 'border.normal',
-                        borderRadius: '16px 16px 0px 0px !important',
-                        borderBottom: 'none !important',
+                        // borderRadius: '16px 16px 0px 0px !important',
+                        borderRadius: '8px',
+                        // borderBottom: 'none !important',
                         px: '12px !important',
-                        py: '12px !important',
+                        py: '6px !important',
                         flexShrink: 0,
                         textTransform: 'none',
                         fontSize: 14,
@@ -346,9 +379,8 @@ export const Portfolio: FC = observer(() => {
                   ))}
                 </Tabs>
               </Stack>
-              <StyledButton
+              {/*      <StyledButton
                 component={'div'}
-                // endIcon={<Icon component={KeyboardArrowDown} />}
                 onClick={(e) => {
                   e.stopPropagation();
                   setAnchor(e.currentTarget);
@@ -403,9 +435,14 @@ export const Portfolio: FC = observer(() => {
                     }}
                   />
                 </Stack>
-              </StyledButton>
+              </StyledButton>*/}
               {menus.map((item, index) => (
-                <Box hidden={item.key !== portfolioListType} key={index}>
+                <Box
+                  hidden={item.key !== portfolioListType}
+                  key={index}
+                  position={'absolute'}
+                  right={0}
+                >
                   {item.key === portfolioListType && item.queryComponent}
                 </Box>
               ))}
@@ -421,10 +458,10 @@ export const Portfolio: FC = observer(() => {
                     hidden={item.key !== portfolioListType}
                     key={index}
                     sx={{
-                      borderTopLeftRadius: {
+                      /*  borderTopLeftRadius: {
                         xs: index === 0 ? 0 : 16,
                         // xxl: index === 0 ? 0 : 16,
-                      },
+                      },*/
                       overflow: 'hidden',
                     }}
                   >

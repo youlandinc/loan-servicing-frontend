@@ -197,7 +197,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         customInput={<CustomInput inputRef={inputRef} label={label} />}
         endDate={dateRange[1]}
         isClearable
-        popperPlacement="bottom"
+        popperPlacement={'bottom'}
         renderCustomHeader={CustomHeader}
         selectsRange={true}
         startDate={dateRange[0]}

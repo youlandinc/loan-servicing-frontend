@@ -111,6 +111,7 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
           display: 'flex',
           alignItems: 'center',
         },
+        flexShrink: 0,
       }}
     />
   );

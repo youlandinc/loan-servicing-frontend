@@ -98,6 +98,7 @@ export const InvestorGrid: FC = observer(() => {
           showPage={false}
           sx={{ borderTop: '1px solid #EDF1FF' }}
           totalLoanAmount={totalLoanAmount}
+          updateTime={data?.data?.dataUpdateTime}
         />
       </Stack>
       {/*<ColumnsHeaderMenus*/}

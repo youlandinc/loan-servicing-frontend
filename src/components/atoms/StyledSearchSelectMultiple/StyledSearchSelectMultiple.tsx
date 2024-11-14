@@ -47,7 +47,7 @@ export const StyledSearchSelectMultiple: FC<
       endIcon={
         <Icon
           component={KeyboardArrowDownIcon}
-          sx={{ width: 20, height: 20 }}
+          sx={{ minWidth: 20, height: 20 }}
         />
       }
       sx={
@@ -88,10 +88,10 @@ export const StyledSearchSelectMultiple: FC<
           fontWeight={600}
           height={18}
           lineHeight={'18px'}
+          minWidth={18}
           ml={1}
           px={0.5}
           variant={'body2'}
-          width={18}
         >
           {selected.length}
         </Typography>

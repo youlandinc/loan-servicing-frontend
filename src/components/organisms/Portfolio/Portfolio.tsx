@@ -1,4 +1,3 @@
-import { KeyboardArrowDown } from '@mui/icons-material';
 import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
@@ -7,7 +6,6 @@ import { useAsync, useAsyncFn } from 'react-use';
 
 import {
   StyledActionsMenu,
-  StyledButton,
   StyledDelinquentSelect,
   StyledMaturitySelect,
 } from '@/components/atoms';

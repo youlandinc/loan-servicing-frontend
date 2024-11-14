@@ -1,3 +1,4 @@
+import { useBreakpoints } from '@/hooks';
 import { format, isValid } from 'date-fns';
 import React, { FC } from 'react';
 import {
@@ -37,6 +38,7 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
   showPage = true,
   updateTime,
 }) => {
+  const breakpoint = useBreakpoints();
   return (
     <Stack
       direction={'row'}
@@ -51,11 +53,21 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
     >
       <Stack alignItems={'center'} direction={'row'} spacing={3}>
         {totalLoanAmountShow && (
-          <Typography fontWeight={600} variant={'subtitle2'}>
+          <Typography
+            fontWeight={600}
+            variant={
+              ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+            }
+          >
             Total amount: {utils.formatDollar(totalLoanAmount, 0)}
           </Typography>
         )}
-        <Typography fontWeight={600} variant={'subtitle2'}>
+        <Typography
+          fontWeight={600}
+          variant={
+            ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+          }
+        >
           Number of loans: {rowCount.toLocaleString()}
         </Typography>
         {typeof updateTime === 'string' && isValid(new Date(updateTime)) && (
@@ -66,7 +78,7 @@ export const AllLoansPagination: FC<PipelinePaginationProps> = ({
         )}
       </Stack>
       {showPage && (
-        <Stack alignItems={'center'} direction={'row'} spacing={6}>
+        <Stack alignItems={'center'} direction={'row'}>
           <TablePagination
             component={'div'}
             count={rowCount}

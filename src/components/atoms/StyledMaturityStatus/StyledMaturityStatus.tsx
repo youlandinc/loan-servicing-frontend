@@ -14,7 +14,7 @@ const statusMap = {
   [MaturityStatusInDelinquentEnum.next_month_end]: 'Next month end',
 };
 const statusFontColor = {
-  [MaturityStatusInDelinquentEnum.in_default]: '##DE6449',
+  [MaturityStatusInDelinquentEnum.in_default]: '#DE6449',
   [MaturityStatusInDelinquentEnum.not_near_maturity]: '#9095A3',
   [MaturityStatusInDelinquentEnum.month_end]: '#9095A3',
   [MaturityStatusInDelinquentEnum.next_month_end]: '#9095A3',

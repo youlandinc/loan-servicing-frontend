@@ -48,6 +48,7 @@ export const MaturityGrid: FC = observer(() => {
                 ...maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList,
               ],
+              sort: [...maturityGridModel.queryModel.sort],
             },
           },
           displayType,

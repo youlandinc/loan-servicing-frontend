@@ -29,6 +29,7 @@ export const SortButton: FC<SortButtonProps> = ({
           py: '4px !important',
           px: '8px !important',
           height: 'auto !important',
+          flexShrink: 0,
         }}
         variant={'text'}
       >

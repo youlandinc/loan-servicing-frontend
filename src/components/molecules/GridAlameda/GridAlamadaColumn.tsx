@@ -228,7 +228,6 @@ export const ALAMEDA_COLUMNS = (
                   <StyledDatePicker
                     disableFuture={false}
                     label={'Submit date'}
-                    maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
                     }}
@@ -378,7 +377,6 @@ export const ALAMEDA_COLUMNS = (
                   <StyledDatePicker
                     disableFuture={false}
                     label={'Est. sale date'}
-                    maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
                     }}
@@ -764,7 +762,6 @@ export const ALAMEDA_COLUMNS = (
                   <StyledDatePicker
                     disableFuture={false}
                     label={'Sale date'}
-                    maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
                     }}

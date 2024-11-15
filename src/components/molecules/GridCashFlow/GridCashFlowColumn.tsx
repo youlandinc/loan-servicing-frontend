@@ -224,7 +224,7 @@ export const CASH_FLOW_COLUMNS = (
                     mark the trade as completed.
                   </Typography>
                   <StyledDatePicker
-                    disableFuture
+                    disableFuture={false}
                     label={'Submit date'}
                     maxDate={new Date()}
                     onChange={(value) => {
@@ -378,7 +378,7 @@ export const CASH_FLOW_COLUMNS = (
                     mark the trade as completed.
                   </Typography>
                   <StyledDatePicker
-                    disableFuture
+                    disableFuture={false}
                     label={'Sale date'}
                     maxDate={new Date()}
                     onChange={(value) => {

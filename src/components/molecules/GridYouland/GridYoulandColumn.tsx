@@ -225,7 +225,7 @@ export const YOULAND_COLUMNS = (
               content={
                 <Stack gap={3} py={3}>
                   <StyledDatePicker
-                    disableFuture
+                    disableFuture={false}
                     label={'Submit date'}
                     maxDate={new Date()}
                     onChange={(value) => {
@@ -375,7 +375,7 @@ export const YOULAND_COLUMNS = (
               content={
                 <Stack gap={3} py={3}>
                   <StyledDatePicker
-                    disableFuture
+                    disableFuture={false}
                     label={'Est. sale date'}
                     maxDate={new Date()}
                     onChange={(value) => {
@@ -703,7 +703,7 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
-      header: '',
+      header: 'Actions',
       accessorKey: 'tradeConfirm',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
@@ -761,7 +761,7 @@ export const YOULAND_COLUMNS = (
                     mark the trade as completed.
                   </Typography>
                   <StyledDatePicker
-                    disableFuture
+                    disableFuture={false}
                     label={'Sale date'}
                     maxDate={new Date()}
                     onChange={(value) => {

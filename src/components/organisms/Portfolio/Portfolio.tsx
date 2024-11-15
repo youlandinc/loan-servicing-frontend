@@ -180,7 +180,6 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.CASH_FLOW,
         queryComponent: <GridCashFlowToolbar />,
         component: <GridCashFlow />,
-        maxWidth: 'calc(100% - 840px)',
       },
       {
         icon: LOGO_YOULAND,
@@ -188,7 +187,6 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.YOULAND,
         queryComponent: <GridYoulandToolbar />,
         component: <GridYouland />,
-        maxWidth: 'calc(100% - 940px)',
       },
       {
         icon: LOGO_ALAMEDA,
@@ -196,7 +194,6 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALAMEDA,
         queryComponent: <GridAlamedaToolbar />,
         component: <GridAlameda />,
-        maxWidth: 'calc(100% - 940px)',
       },
       {
         icon: ListIcon,
@@ -204,7 +201,6 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.ALL_LOANS,
         queryComponent: <AllLoansGridToolBar />,
         component: <AllLoansGrid />,
-        maxWidth: 'calc(100% - 780px)',
       },
       {
         icon: InvestorIcon,
@@ -212,7 +208,6 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.BY_INVESTOR,
         queryComponent: <InvestorGridToolBar />,
         component: <InvestorGrid />,
-        maxWidth: 'calc(100% - 780px)',
       },
       {
         icon: DelinquentIcon,
@@ -227,7 +222,6 @@ export const Portfolio: FC = observer(() => {
         key: PortfolioGridTypeEnum.DELINQUENT,
         queryComponent: <DelinquentGridToolBar />,
         component: <DelinquentGrid />,
-        maxWidth: 'calc(100% - 540px)',
       },
       {
         icon: MaturityIcon,
@@ -242,7 +236,6 @@ export const Portfolio: FC = observer(() => {
         queryComponent: <MaturityGridToolBar />,
         key: PortfolioGridTypeEnum.MATURITY,
         component: <MaturityGrid />,
-        maxWidth: 'calc(100% - 540px)',
       },
     ],
     [portfolioListType],
@@ -283,7 +276,7 @@ export const Portfolio: FC = observer(() => {
       if (toolbarRef.current !== null) {
         const resizeObserver = new ResizeObserver((entries) => {
           for (const entry of entries) {
-            setTabMaxWidth(`calc(100% - ${entry.contentRect.width + 100}px)`);
+            setTabMaxWidth(`calc(100% - ${entry.contentRect.width}px)`);
           }
         });
         resizeObserver.observe(toolbarRef.current);
@@ -302,21 +295,16 @@ export const Portfolio: FC = observer(() => {
               justifyContent={'space-between'}
               position={'relative'}
             >
-              <Stack
-                flex={1}
-                flexDirection={'row'}
-                maxWidth={
-                  tabMaxWidth
-                  /*menus.find((item) => item.key === portfolioListType)
-                    ?.maxWidth || '30%'*/
-                }
-              >
+              <Box maxWidth={tabMaxWidth}>
                 <Tabs
                   ref={ref}
                   scrollButtons
                   selectionFollowsFocus
                   sx={{
                     minHeight: 44,
+                    '& .MuiTabs-flexContainer': {
+                      px: 1.5,
+                    },
                   }}
                   TabIndicatorProps={{
                     sx: {
@@ -386,7 +374,7 @@ export const Portfolio: FC = observer(() => {
                     />
                   ))}
                 </Tabs>
-              </Stack>
+              </Box>
               <Stack
                 flexDirection={'row'}
                 position={'absolute'}

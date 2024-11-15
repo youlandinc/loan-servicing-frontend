@@ -1,8 +1,8 @@
 import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { enqueueSnackbar } from 'notistack';
-import React, { FC, useEffect, useState } from 'react';
-import { useAsyncFn } from 'react-use';
+import React, { FC, useState } from 'react';
+import useSWR from 'swr';
 
 import { StyledButton, StyledSelect } from '@/components/atoms';
 import { DelinquentTimeRangeOpt } from '@/constant';
@@ -37,7 +37,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
     //   setDelinquentDays(value);
     // }
 
-    const [state, getDelinquentRangeOpt] = useAsyncFn(
+    /* const [state, getDelinquentRangeOpt] = useAsyncFn(
       async (status: string[]) => {
         return await _getDelinquentRangeOpt({
           searchCondition: {
@@ -69,9 +69,58 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
         });
       },
       [],
+    );*/
+
+    const { data, isLoading } = useSWR(
+      portfolioListType === PortfolioGridTypeEnum.DELINQUENT
+        ? [
+            {
+              searchCondition: {
+                repaymentStatusList: [
+                  ...delinquentGridModel.queryModel.searchCondition
+                    .repaymentStatusList,
+                ] as unknown as string[],
+              },
+            },
+          ]
+        : null,
+      async ([p]) => {
+        return await _getDelinquentRangeOpt(p)
+          .then((res) => {
+            if (res.data) {
+              setOpts(
+                DelinquentTimeRangeOpt.map((item) => ({
+                  ...item,
+                  label: (
+                    <Stack alignItems={'center'} direction={'row'} gap={1}>
+                      <Typography variant={'body2'}>{item.label}</Typography>
+                      <Typography
+                        bgcolor={'#95A8D7'}
+                        borderRadius={1}
+                        color={'#fff'}
+                        px={0.5}
+                        variant={'subtitle3'}
+                      >
+                        {res.data[item.value] || 0}
+                      </Typography>
+                    </Stack>
+                  ),
+                })),
+              );
+            }
+            return res;
+          })
+          .catch(({ message, variant, header }) => {
+            enqueueSnackbar(message, {
+              variant,
+              isSimple: !header,
+              header,
+            });
+          });
+      },
     );
 
-    useEffect(
+    /*    useEffect(
       () => {
         getDelinquentRangeOpt(
           delinquentGridModel.queryModel.searchCondition
@@ -91,7 +140,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
           '',
         ),
       ],
-    );
+    );*/
 
     return (
       <StyledButton
@@ -138,13 +187,13 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
             px={0.5}
             variant={'subtitle3'}
           >
-            {state.value?.data?.[
+            {data?.data?.[
               (delinquentGridModel.queryModel.searchCondition
                 .delinquentDays as DelinquentTimeRangeEnum) ||
                 DelinquentTimeRangeEnum.ALL
             ] || 0}
           </Typography>
-          {state.loading ? (
+          {isLoading ? (
             <CircularProgress color="inherit" size={12} />
           ) : (
             <KeyboardArrowDownIcon
@@ -169,10 +218,10 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
           onOpen={async (e) => {
             e.stopPropagation();
             if (portfolioListType === PortfolioGridTypeEnum.DELINQUENT) {
-              await getDelinquentRangeOpt(
+              /*await getDelinquentRangeOpt(
                 delinquentGridModel.queryModel.searchCondition
                   .repaymentStatusList as unknown as string[],
-              );
+              );*/
               open();
             }
           }}

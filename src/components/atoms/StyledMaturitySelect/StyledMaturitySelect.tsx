@@ -6,12 +6,12 @@ import { useMst } from '@/models/Root';
 import { _getMaturityRangeOpt } from '@/request/portfolio/maturity';
 import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
-import React, { FC, useEffect, useState } from 'react';
-import { useAsyncFn } from 'react-use';
+import React, { FC, useState } from 'react';
+import useSWR from 'swr';
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface StyledMaturitySelectProps {
   sx?: SxProps;
@@ -37,7 +37,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
       setMaturityDays(value);
     }*/
 
-    const [state, getMaturityRangeOpt] = useAsyncFn(
+    /* const [state, getMaturityRangeOpt] = useAsyncFn(
       async (status: string[]) => {
         return await _getMaturityRangeOpt({
           searchCondition: {
@@ -69,8 +69,49 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
         });
       },
       [],
+    );*/
+
+    const { data, isLoading } = useSWR(
+      portfolioListType === PortfolioGridTypeEnum.MATURITY
+        ? [
+            {
+              searchCondition: {
+                repaymentStatusList:
+                  maturityGridModel.queryModel.searchCondition
+                    .repaymentStatusList,
+              },
+            },
+          ]
+        : null,
+      async ([p]) => {
+        return await _getMaturityRangeOpt(p).then((res) => {
+          if (res.data) {
+            setOpts(
+              MaturityTypeOpt.map((item) => ({
+                ...item,
+                label: (
+                  <Stack alignItems={'center'} direction={'row'} gap={1}>
+                    <Typography variant={'body2'}>{item.label}</Typography>
+                    <Typography
+                      bgcolor={'#95A8D7'}
+                      borderRadius={1}
+                      color={'#fff'}
+                      px={0.5}
+                      variant={'subtitle3'}
+                    >
+                      {res.data[item.value] || 0}
+                    </Typography>
+                  </Stack>
+                ),
+              })),
+            );
+          }
+          return res;
+        });
+      },
     );
 
+    /*
     useEffect(
       () => {
         getMaturityRangeOpt(
@@ -92,6 +133,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
         ),
       ],
     );
+*/
 
     return (
       <StyledButton
@@ -140,12 +182,12 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
             px={0.5}
             variant={'subtitle3'}
           >
-            {state.value?.data?.[
+            {data?.data?.[
               maturityGridModel.queryModel.searchCondition
                 .maturityDays as MaturityTimeRangeEnum
             ] || 0}
           </Typography>
-          {state.loading ? (
+          {isLoading ? (
             <CircularProgress color="inherit" size={12} />
           ) : (
             <KeyboardArrowDownIcon
@@ -169,10 +211,10 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
           }}
           onOpen={async () => {
             if (portfolioListType === PortfolioGridTypeEnum.MATURITY) {
-              await getMaturityRangeOpt(
+              /*await getMaturityRangeOpt(
                 maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList as unknown as string[],
-              );
+              );*/
               open();
             }
           }}

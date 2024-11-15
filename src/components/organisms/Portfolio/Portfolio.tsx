@@ -142,7 +142,11 @@ export const Portfolio: FC = observer(() => {
     },
   } = useMst();
 
+  const toolbarRef = useRef(null);
+
   const [anchor, setAnchor] = useState<null | HTMLElement>();
+
+  const [tabMaxWidth, setTabMaxWidth] = useState<string>('calc(100% - 940px)');
 
   useDebounceFn(allLoansGridModel.queryModel.updateQueryCondition, 500);
 
@@ -244,10 +248,6 @@ export const Portfolio: FC = observer(() => {
     [portfolioListType],
   );
 
-  useEffect(() => {
-    // getAllGridConfig();
-  }, []);
-
   const ref = useRef(null);
 
   useEffect(() => {
@@ -279,6 +279,15 @@ export const Portfolio: FC = observer(() => {
       if (opacity === '0') {
         (ref.current as any).style.marginLeft = '-40px';
       }
+
+      if (toolbarRef.current !== null) {
+        const resizeObserver = new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            setTabMaxWidth(`calc(100% - ${entry.contentRect.width + 100}px)`);
+          }
+        });
+        resizeObserver.observe(toolbarRef.current);
+      }
     }
   }, [loading]);
 
@@ -297,8 +306,9 @@ export const Portfolio: FC = observer(() => {
                 flex={1}
                 flexDirection={'row'}
                 maxWidth={
-                  menus.find((item) => item.key === portfolioListType)
-                    ?.maxWidth || '30%'
+                  tabMaxWidth
+                  /*menus.find((item) => item.key === portfolioListType)
+                    ?.maxWidth || '30%'*/
                 }
               >
                 <Tabs
@@ -377,73 +387,18 @@ export const Portfolio: FC = observer(() => {
                   ))}
                 </Tabs>
               </Stack>
-              {/*      <StyledButton
-                component={'div'}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAnchor(e.currentTarget);
-                }}
-                size={'small'}
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 400,
-                  lineHeight: '20px',
-                  borderRadius: 2,
-                  bgcolor: 'rgba(91, 118, 188, 0.10) !important',
-                  '&:hover': {
-                    bgcolor: 'rgba(91, 118, 188, 0.15) !important',
-                  },
-                  '& .MuiButton-endIcon': {
-                    ml: 0.5,
-                  },
-                  px: 1.5,
-                  py: '6px',
-                  height: 'auto !important',
-                  display: {
-                    xs: 'none',
-                    // xxl: 'none',
-                  },
-                  mb: '6px',
-                }}
-                variant={'text'}
+              <Stack
+                flexDirection={'row'}
+                position={'absolute'}
+                ref={toolbarRef}
+                right={0}
               >
-                <Stack alignItems={'center'} direction={'row'} gap={0.5}>
-                  <Icon
-                    component={
-                      menus.find((item) => item.key === portfolioListType)
-                        ?.icon || menus[0].icon
-                    }
-                    sx={{
-                      width: 16,
-                      height: 16,
-                      '& path': {
-                        fill: '#5B76BC',
-                      },
-                    }}
-                  />
-                  <Typography color={'primary'} variant={'body2'}>
-                    {menus.find((item) => item.key === portfolioListType)
-                      ?.label || menus[0].label}
-                  </Typography>
-                  <Icon
-                    component={KeyboardArrowDown}
-                    sx={{
-                      width: 16,
-                      height: 16,
-                    }}
-                  />
-                </Stack>
-              </StyledButton>*/}
-              {menus.map((item, index) => (
-                <Box
-                  hidden={item.key !== portfolioListType}
-                  key={index}
-                  position={'absolute'}
-                  right={0}
-                >
-                  {item.key === portfolioListType && item.queryComponent}
-                </Box>
-              ))}
+                {menus.map((item, index) => (
+                  <Box hidden={item.key !== portfolioListType} key={index}>
+                    {item.key === portfolioListType && item.queryComponent}
+                  </Box>
+                ))}
+              </Stack>
             </Stack>
             <Box flex={1} mt={'-1px'}>
               {menus.map((item, index) => {

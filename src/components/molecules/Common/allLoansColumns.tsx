@@ -399,7 +399,7 @@ export const combineColumns = (
             (j) => j.field === item.accessorKey,
           );
           return target
-            ? target
+            ? { ...target, headerName: item.header }
             : {
                 field: item.accessorKey as string,
                 headerName: item.header,

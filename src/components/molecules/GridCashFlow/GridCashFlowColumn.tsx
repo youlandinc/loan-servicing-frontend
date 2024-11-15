@@ -226,7 +226,6 @@ export const CASH_FLOW_COLUMNS = (
                   <StyledDatePicker
                     disableFuture={false}
                     label={'Submit date'}
-                    maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
                     }}
@@ -380,7 +379,6 @@ export const CASH_FLOW_COLUMNS = (
                   <StyledDatePicker
                     disableFuture={false}
                     label={'Sale date'}
-                    maxDate={new Date()}
                     onChange={(value) => {
                       setDate(value);
                     }}

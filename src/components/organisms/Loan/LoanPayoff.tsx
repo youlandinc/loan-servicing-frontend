@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { Layout, SideMenu } from '@/components/molecules';
+import { ServicingSide, StyledLayout } from '@/components/molecules';
 
 export const LoanPayoff: FC = () => {
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+    <StyledLayout isHomepage={false} sideMenu={<ServicingSide />}>
       LoanPayoff
-    </Layout>
+    </StyledLayout>
   );
 };

@@ -6,15 +6,15 @@ import { observer } from 'mobx-react-lite';
 
 import { StyledButton } from '@/components/atoms';
 
-import BACK from './back.svg';
+import BACK from './assets/back.svg';
 
-import MENU_LOGO_01 from './menu-01.svg';
-import MENU_LOGO_02 from './menu-02.svg';
+import MENU_LOGO_01 from './assets/menu-01.svg';
+import MENU_LOGO_02 from './assets/menu-02.svg';
 //import MENU_LOGO_03 from './menu-03.svg';
-import MENU_LOGO_04 from './menu-04.svg';
+import MENU_LOGO_04 from './assets/menu-04.svg';
 //import MENU_LOGO_05 from './menu-05.svg';
-import MENU_LOGO_06 from './menu-06.svg';
-import MENU_LOGO_07 from './menu-07.svg';
+import MENU_LOGO_06 from './assets/menu-06.svg';
+import MENU_LOGO_07 from './assets/menu-07.svg';
 
 const MENU_LIST = [
   {
@@ -63,7 +63,7 @@ const MENU_LIST = [
   },
 ];
 
-export const SideMenu: FC = observer(() => {
+export const ServicingSide: FC = observer(() => {
   const router = useRouter();
 
   return (

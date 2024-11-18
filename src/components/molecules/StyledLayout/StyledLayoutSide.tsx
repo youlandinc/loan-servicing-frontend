@@ -4,10 +4,9 @@ import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 
-import { LAYOUT_SIDE_MENU } from '@/constant';
-import { ServiceType } from '@/types/layout';
+import { LAYOUT_SIDE_MENU, ServiceType } from './index';
 
-export const LayoutSide: FC = observer(() => {
+export const StyledLayoutSide: FC = observer(() => {
   const router = useRouter();
 
   const menuList = useMemo(() => {

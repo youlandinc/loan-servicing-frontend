@@ -9,7 +9,7 @@ import {
   PortfolioGridTypeEnum,
 } from '@/types/enum';
 
-import { URL_LOGOUT_REDIRECTION } from '@/constant';
+import { URL_LOGOUT_REDIRECTION } from '@/components/molecules';
 
 import { User } from '@/types/user';
 
@@ -43,7 +43,9 @@ const RootStore = types.model(RootModel).actions((self) => {
     logout() {
       self.userSetting.initState();
       localStorage.clear();
-      window.location.href = URL_LOGOUT_REDIRECTION;
+      window.location.href = URL_LOGOUT_REDIRECTION(
+        location.href.includes('alamedacapital') ? 'alamedacapital' : 'youland',
+      );
     },
   };
 });
@@ -113,6 +115,7 @@ const initialState = {
         custom: null,
       },
     },
+    domain: '',
   },
   userType: void 0,
   loginType: void 0,

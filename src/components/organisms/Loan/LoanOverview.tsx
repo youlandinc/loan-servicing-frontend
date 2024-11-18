@@ -31,13 +31,8 @@ import {
 import { observer } from 'mobx-react-lite';
 //import { useMst } from '@/models/Root';
 
+import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
 import {
-  StyledButton,
-  //StyledButton,
-  StyledHeaderAddressInfo,
-} from '@/components/atoms';
-import {
-  Layout,
   LoanOverviewCard,
   LoanOverviewCardProps,
   LoanOverviewComment,
@@ -46,7 +41,8 @@ import {
   LoanOverviewTimeline,
   LoanOverviewTimelineProps,
   LoanPaymentsGrid,
-  SideMenu,
+  ServicingSide,
+  StyledLayout,
 } from '@/components/molecules';
 
 import {
@@ -436,7 +432,7 @@ export const LoanOverview: FC = observer(() => {
   const messageBoxPc = useRef<HTMLDivElement>(null);
 
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+    <StyledLayout isHomepage={false} sideMenu={<ServicingSide />}>
       {loading ? (
         <Stack
           alignItems={'center'}
@@ -877,6 +873,6 @@ export const LoanOverview: FC = observer(() => {
           </Stack>
         </Fade>
       )}
-    </Layout>
+    </StyledLayout>
   );
 });

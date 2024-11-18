@@ -2,7 +2,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
-import { Layout, SideMenu } from '@/components/molecules';
+import { SideMenu, StyledLayout } from '@/components/molecules';
 
 const DynamicLoanExtensionRequest = dynamic(
   () =>
@@ -21,9 +21,9 @@ const LoanExtensionRequestPage = observer(() => {
         <meta content="YouLand Software Team" name="description" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <Layout isHomepage={false} sideMenu={<SideMenu />}>
+      <StyledLayout isHomepage={false} sideMenu={<SideMenu />}>
         <DynamicLoanExtensionRequest />
-      </Layout>
+      </StyledLayout>
     </>
   );
 });

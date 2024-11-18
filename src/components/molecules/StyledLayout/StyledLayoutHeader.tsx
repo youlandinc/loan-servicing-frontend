@@ -1,4 +1,3 @@
-import { utils } from '@/utils';
 import { FC, ReactNode, useMemo, useState } from 'react';
 import {
   Avatar,
@@ -15,46 +14,48 @@ import { useMst } from '@/models/Root';
 
 import {
   LAYOUT_HEADER_TAB,
+  LayoutProductTypeEnums,
   URL_CUSTOMER,
   URL_DOC,
   URL_HOME,
   URL_LOS,
   URL_POS,
   URL_PRICING,
-} from '@/constant';
+} from './index';
 import { useSwitch } from '@/hooks';
 
 import { StyledButton, StyledDialog } from '@/components/atoms';
 
-import LOGO_PRODUCT_BOX from '@/svg/layout/logo_product_box.svg';
-import LOGO_PRODUCT_HOME from '@/svg/layout/logo_product_home.svg';
-import LOGO_PRODUCT_POS from '@/svg/layout/logo_product_pos.svg';
-import LOGO_PRODUCT_LOS from '@/svg/layout/logo_product_los.svg';
-import LOGO_PRODUCT_DOC from '@/svg/layout/logo_product_doc.svg';
-import LOGO_PRODUCT_PRICE from '@/svg/layout/logo_product_price.svg';
-import LOGO_PRODUCT_SERVING from '@/svg/layout/logo_product_serving.svg';
-import LOGO_PRODUCT_CUSTOMER from '@/svg/layout/logo_product_customer.svg';
+import LOGO_PRODUCT_BOX from './assets/logo_product_box.svg';
+import LOGO_PRODUCT_HOME from './assets/logo_product_home.svg';
+import LOGO_PRODUCT_POS from './assets/logo_product_pos.svg';
+import LOGO_PRODUCT_LOS from './assets/logo_product_los.svg';
+import LOGO_PRODUCT_DOC from './assets/logo_product_doc.svg';
+import LOGO_PRODUCT_PRICE from './assets/logo_product_price.svg';
+import LOGO_PRODUCT_SERVING from './assets/logo_product_serving.svg';
+import LOGO_PRODUCT_CUSTOMER from './assets/logo_product_customer.svg';
 
-//import LOGO_HEADER_POS from '@/svg/layout/logo_header_pos.svg';
-//import LOGO_HEADER_LOS from '@/svg/layout/logo_header_los.svg';
-//import LOGO_HEADER_DOC from '@/svg/layout/logo_header_doc.svg';
-//import LOGO_HEADER_PRICE from '@/svg/layout/logo_header_price.svg';
-import LOGO_HEADER_SERVING from '@/svg/layout/logo_header_serving.svg';
-import LOGO_HEADER_SETTING from '@/svg/layout/logo_header_setting.svg';
+//import LOGO_HEADER_POS from './assets/logo_header_pos.svg';
+//import LOGO_HEADER_LOS from './assets/logo_header_los.svg';
+//import LOGO_HEADER_DOC from './assets/logo_header_doc.svg';
+//import LOGO_HEADER_PRICE from './assets/logo_header_price.svg';
+import LOGO_HEADER_SERVING from './assets/logo_header_serving.svg';
+import LOGO_HEADER_SETTING from './assets/logo_header_setting.svg';
 
-import LOGO_SETTING from '@/svg/layout/logo_auth_setting.svg';
-import LOGO_SIGN_OUT from '@/svg/layout/logo_auth_out.svg';
+import LOGO_SETTING from './assets/logo_auth_setting.svg';
+import LOGO_SIGN_OUT from './assets/logo_auth_out.svg';
 
 export interface LayoutHeaderProps {
   isHomepage: boolean;
   actions?: ReactNode;
 }
 
-export const LayoutHeader: FC<LayoutHeaderProps> = observer(
+export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
   ({ isHomepage = false, actions }) => {
     const store = useMst();
     const { userSetting, session } = store;
-    const { initialized, setting, licensedProduct } = userSetting;
+    const { initialized, setting, licensedProduct, domain, loading } =
+      userSetting;
 
     const router = useRouter();
 
@@ -71,9 +72,9 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
       }
 
       const productsData: Record<string, any> = {
-        'Point of Sale': {
+        [LayoutProductTypeEnums.pos]: {
           label: 'Point of Sale',
-          url: `${URL_POS}/${
+          url: `${URL_POS(domain)}/${
             session?.accessToken?.jwtToken ||
             localStorage?.getItem('USER_LOGIN_INFORMATION')
           }`,
@@ -81,9 +82,9 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Icon component={LOGO_PRODUCT_POS} sx={{ width: 32, height: 32 }} />
           ),
         },
-        'Loan Origination System': {
+        [LayoutProductTypeEnums.los]: {
           label: 'Loan Origination System',
-          url: `${URL_LOS}/?token=${
+          url: `${URL_LOS(domain)}/?token=${
             session?.accessToken?.jwtToken ||
             localStorage?.getItem('USER_LOGIN_INFORMATION')
           }`,
@@ -91,9 +92,9 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Icon component={LOGO_PRODUCT_LOS} sx={{ width: 32, height: 32 }} />
           ),
         },
-        'Pricing Engine': {
+        [LayoutProductTypeEnums.pricing]: {
           label: 'Pricing Engine',
-          url: `${URL_PRICING}/?token=${
+          url: `${URL_PRICING(domain)}/?token=${
             session?.accessToken?.jwtToken ||
             localStorage?.getItem('USER_LOGIN_INFORMATION')
           }`,
@@ -104,9 +105,9 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             />
           ),
         },
-        'Document Engine': {
+        [LayoutProductTypeEnums.doc]: {
           label: 'Document Engine',
-          url: `${URL_DOC}/?token=${
+          url: `${URL_DOC(domain)}/?token=${
             session?.accessToken?.jwtToken ||
             localStorage?.getItem('USER_LOGIN_INFORMATION')
           }`,
@@ -114,49 +115,38 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Icon component={LOGO_PRODUCT_DOC} sx={{ width: 32, height: 32 }} />
           ),
         },
+        [LayoutProductTypeEnums.servicing]: {
+          label: 'Servicing Center',
+          url: '/portfolio',
+          icon: (
+            <Icon
+              component={LOGO_PRODUCT_SERVING}
+              sx={{ width: 32, height: 32 }}
+            />
+          ),
+        },
+        [LayoutProductTypeEnums.customer]: {
+          label: 'Customer Center',
+          url: `${URL_CUSTOMER(domain)}/?token=${
+            session?.accessToken?.jwtToken ||
+            localStorage?.getItem('USER_LOGIN_INFORMATION')
+          }`,
+          icon: (
+            <Icon
+              component={LOGO_PRODUCT_CUSTOMER}
+              sx={{ width: 32, height: 32 }}
+            />
+          ),
+        },
       };
 
       const productsKeys = Object.keys(productsData);
-      const fromServer = licensedProduct.map(
-        (item) => productsKeys.includes(item.name) && productsData[item.name],
+      return licensedProduct.map(
+        (item) =>
+          productsKeys.includes(item.productType) &&
+          productsData[item.productType],
       );
-      //only youland and test user can see loan servicing
-      let result;
-
-      if (
-        utils.isYouland(setting?.tenantId) ||
-        utils.isTestUser(setting?.tenantId)
-      ) {
-        result = fromServer.concat([
-          {
-            label: 'Servicing Center',
-            url: '/portfolio',
-            icon: (
-              <Icon
-                component={LOGO_PRODUCT_SERVING}
-                sx={{ width: 32, height: 32 }}
-              />
-            ),
-          },
-          {
-            label: 'Customer Center',
-            url: `${URL_CUSTOMER}/?token=${
-              session?.accessToken?.jwtToken ||
-              localStorage?.getItem('USER_LOGIN_INFORMATION')
-            }`,
-            icon: (
-              <Icon
-                component={LOGO_PRODUCT_CUSTOMER}
-                sx={{ width: 32, height: 32 }}
-              />
-            ),
-          },
-        ]);
-      } else {
-        result = fromServer;
-      }
-      return result;
-    }, [initialized, licensedProduct, session?.accessToken?.jwtToken, setting]);
+    }, [domain, initialized, licensedProduct, session?.accessToken?.jwtToken]);
 
     const avatarName = useMemo(() => {
       const target =
@@ -211,6 +201,9 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
             <Icon
               component={LOGO_PRODUCT_BOX}
               onClick={(e: any) => {
+                if (!initialized || loading) {
+                  return;
+                }
                 setAnchorElProduct(anchorElProduct ? null : e.currentTarget);
                 setAnchorElUser(null);
               }}
@@ -219,8 +212,11 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
                 height: 32,
                 maxHeight: 32,
                 maxWidth: 32,
-                cursor: 'pointer',
+                cursor: !initialized || loading ? 'not-allowed' : 'pointer',
                 transition: 'all .3s',
+                '& path': {
+                  fill: !initialized || loading ? '#BABCBE' : '#202939',
+                },
               }}
             />
             {/*according to different product replace counterpart icon*/}
@@ -418,7 +414,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = observer(
               component={LOGO_PRODUCT_HOME}
               onClick={() =>
                 router.push(
-                  `${URL_HOME}/auth/sign_in/${
+                  `${URL_HOME(domain)}/auth/sign_in/${
                     session?.accessToken?.jwtToken ||
                     localStorage?.getItem('USER_LOGIN_INFORMATION')
                   }`,

@@ -1,5 +1,5 @@
-export * from './Layout';
-export * from './SideMenu';
+export * from './StyledLayout';
+export * from './ServicingSide';
 
 export * from './Auth';
 

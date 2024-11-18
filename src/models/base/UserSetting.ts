@@ -20,8 +20,17 @@ export const UserSetting = types
     licensedProduct: types.array(
       types.model({
         name: types.string,
+        productType: types.union(
+          types.literal('POS'),
+          types.literal('LOS'),
+          types.literal('DOC_ENGINE'),
+          types.literal('PRICING_ENGINE'),
+          types.literal('SERVICING_CENTER'),
+          types.literal('CUSTOMER_CENTER'),
+        ),
       }),
     ),
+    domain: types.string,
   })
   .actions((self) => ({
     setUserSetting(setting: User.UserDetail) {
@@ -45,6 +54,7 @@ export const UserSetting = types
         const { data } = yield _fetchUserDetailByAccountId({ accountId });
         self.setUserSetting(data);
         self.loading = false;
+        self.domain = data?.tenantConfig?.domain;
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {

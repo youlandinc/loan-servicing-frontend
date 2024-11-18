@@ -4,17 +4,17 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { LayoutHeader, LayoutSide } from './components';
+import { StyledLayoutHeader, StyledLayoutSide } from './index';
 
 interface LayoutProps {
-  isHomepage: boolean;
+  isHomepage?: boolean;
   sideMenu?: ReactNode;
   actions?: ReactNode;
   children?: ReactNode;
 }
 
-export const Layout: FC<LayoutProps> = observer(
-  ({ isHomepage, actions, sideMenu, children }) => {
+export const StyledLayout: FC<LayoutProps> = observer(
+  ({ isHomepage = false, actions, sideMenu, children }) => {
     const store = useMst();
     const { userSetting, session } = store;
     const { fetchUserSetting, fetchUserLicensedProduct, initialized } =
@@ -44,7 +44,7 @@ export const Layout: FC<LayoutProps> = observer(
         minWidth={1367}
         width={'100%'}
       >
-        <LayoutHeader actions={actions} isHomepage={isHomepage} />
+        <StyledLayoutHeader actions={actions} isHomepage={isHomepage} />
         <Stack
           flex={1}
           flexDirection={'row'}
@@ -52,7 +52,7 @@ export const Layout: FC<LayoutProps> = observer(
           overflow={'hidden'}
           width={'100%'}
         >
-          {isHomepage ? <LayoutSide /> : sideMenu}
+          {isHomepage ? <StyledLayoutSide /> : sideMenu}
           <Stack
             bgcolor={'primary.lighter'}
             height={'100%'}

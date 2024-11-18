@@ -9,10 +9,10 @@ import { utils } from '@/utils';
 
 import { StyledHeaderAddressInfo } from '@/components/atoms';
 import {
-  Layout,
   LoanPaymentsCard,
   LoanPaymentsGrid,
-  SideMenu,
+  ServicingSide,
+  StyledLayout,
 } from '@/components/molecules';
 
 import { PipelineStatusEnum } from '@/types/enum';
@@ -73,7 +73,7 @@ export const LoanPayments: FC = observer(() => {
   >([]);
 
   return (
-    <Layout isHomepage={false} sideMenu={<SideMenu />}>
+    <StyledLayout isHomepage={false} sideMenu={<ServicingSide />}>
       {loading ? (
         <Stack
           alignItems={'center'}
@@ -124,6 +124,6 @@ export const LoanPayments: FC = observer(() => {
           </Stack>
         </Fade>
       )}
-    </Layout>
+    </StyledLayout>
   );
 });

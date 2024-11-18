@@ -9,7 +9,6 @@ import {
   StyledDelinquentSelect,
   StyledMaturitySelect,
 } from '@/components/atoms';
-import { Layout } from '@/components/molecules';
 
 import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
@@ -24,6 +23,7 @@ import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 
 import { PortfolioGridTypeEnum } from '@/types/enum';
+import { StyledLayout } from '@/components/molecules/StyledLayout';
 
 const GridYouland = dynamic(
   () =>
@@ -285,7 +285,7 @@ export const Portfolio: FC = observer(() => {
   }, [loading]);
 
   return (
-    <Layout isHomepage={false}>
+    <StyledLayout isHomepage={false}>
       {!loading && (
         <Fade in={!loading}>
           <Stack gap={1.5} height={'100%'} pb={3} pt={3} px={6}>
@@ -447,6 +447,6 @@ export const Portfolio: FC = observer(() => {
           },
         }}
       />
-    </Layout>
+    </StyledLayout>
   );
 });

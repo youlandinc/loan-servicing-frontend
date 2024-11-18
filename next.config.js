@@ -3,6 +3,7 @@
 module.exports = {
   env: {
     PREFIX_URL: process.env.PREFIX_URL,
+    PREFIX_ALAMEDA_URL: process.env.PREFIX_ALAMEDA_URL,
   },
   reactStrictMode: false,
   trailingSlash: true,

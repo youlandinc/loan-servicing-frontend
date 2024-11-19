@@ -64,10 +64,10 @@ export const MaturityGrid: FC = observer(() => {
                 ...maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList,
               ],
-              sort: maturityGridModel.queryModel.sort.length
-                ? [...maturityGridModel.queryModel.sort]
-                : DEFAULT_SORT,
             },
+            sort: maturityGridModel.queryModel.sort.length
+              ? [...maturityGridModel.queryModel.sort]
+              : DEFAULT_SORT,
           },
           displayType,
         ]

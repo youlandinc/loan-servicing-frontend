@@ -27,6 +27,21 @@ import { FC, useMemo, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
 import useSWR from 'swr';
 
+const DEFAULT_SORT = [
+  {
+    property: 'repaymentStatus',
+    direction: SortDirection.DESC,
+    ignoreCase: true,
+    label: 'Status',
+  },
+  {
+    property: 'maturityDate',
+    direction: SortDirection.ASC,
+    ignoreCase: true,
+    label: 'Maturity date',
+  },
+];
+
 export const AllLoansGrid: FC = observer(() => {
   const {
     portfolio: { allLoansGridModel, displayType },
@@ -63,7 +78,9 @@ export const AllLoansGrid: FC = observer(() => {
                   .repaymentStatusList,
               ],
             },
-            sort: [...allLoansGridModel.queryModel.sort],
+            sort: allLoansGridModel.queryModel.sort.length
+              ? [...allLoansGridModel.queryModel.sort]
+              : DEFAULT_SORT,
           },
           displayType,
         ]

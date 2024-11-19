@@ -1,17 +1,21 @@
-import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import dynamic from 'next/dynamic';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useAsync, useAsyncFn } from 'react-use';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { useDebounceFn } from '@/hooks';
 
 import {
   StyledActionsMenu,
   StyledDelinquentSelect,
   StyledMaturitySelect,
 } from '@/components/atoms';
+import { StyledLayout } from '@/components/molecules';
 
-import { useDebounceFn } from '@/hooks';
-import { useMst } from '@/models/Root';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import { _getAllGridConfig, setDisplayType } from '@/request';
 
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
@@ -21,9 +25,6 @@ import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
 import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
-
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { StyledLayout } from '@/components/molecules/StyledLayout';
 
 const GridYouland = dynamic(
   () =>

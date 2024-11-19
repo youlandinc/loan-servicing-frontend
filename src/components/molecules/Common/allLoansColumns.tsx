@@ -477,7 +477,7 @@ export const delinquentColumns: MRT_ColumnDef<any>[] = transferFirstColumn(
   (
     [
       {
-        accessorKey: 'diffDays',
+        accessorKey: 'daysDelinquent',
         header: 'Days delinquent',
         size: 150,
         minSize: 150,
@@ -518,7 +518,7 @@ export const maturityColumns = (type: MaturityTimeRangeEnum) => {
     (
       [
         {
-          accessorKey: 'diffDays',
+          accessorKey: 'daysMaturity',
           header:
             type === MaturityTimeRangeEnum.ALREADY_END
               ? 'Days past maturity'

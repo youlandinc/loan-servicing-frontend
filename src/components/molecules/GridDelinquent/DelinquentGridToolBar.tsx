@@ -85,7 +85,7 @@ export const DelinquentGridToolBar: FC = observer(() => {
           (item) => item !== PipelineStatusEnum.PAID_OFF,
         )}
       />
-      {delinquentGridModel.queryModel.sort.length > 0 && (
+      {delinquentGridModel.queryModel.sort.length === 1 && (
         <SortButton
           handleClear={(e) => {
             e.stopPropagation();

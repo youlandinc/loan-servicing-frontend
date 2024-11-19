@@ -9,8 +9,6 @@ import {
   PortfolioGridTypeEnum,
 } from '@/types/enum';
 
-import { URL_LOGOUT_REDIRECTION } from '@/components/molecules';
-
 import { User } from '@/types/user';
 
 import { UserSetting } from './base';
@@ -43,9 +41,10 @@ const RootStore = types.model(RootModel).actions((self) => {
     logout() {
       self.userSetting.initState();
       localStorage.clear();
-      window.location.href = URL_LOGOUT_REDIRECTION(
-        location.href.includes('alamedacapital') ? 'alamedacapital' : 'youland',
-      );
+      window.location.href =
+        window.location.href === 'alamedacapital'
+          ? `https://${process.env.PREFIX_ALAMEDA_URL}.alamedacapital.com/`
+          : `https://${process.env.PREFIX_URL}software.youland.com/auth/login/?reload=true&origin=servicing`;
     },
   };
 });

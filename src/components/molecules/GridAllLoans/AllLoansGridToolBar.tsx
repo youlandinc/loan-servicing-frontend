@@ -128,7 +128,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
         }}
         value={allLoansGridModel.queryModel.searchCondition.investors[0]}
       />
-      {allLoansGridModel.queryModel.sort.length > 0 && (
+      {allLoansGridModel.queryModel.sort.length === 1 && (
         <SortButton
           handleClear={(e) => {
             e.stopPropagation();

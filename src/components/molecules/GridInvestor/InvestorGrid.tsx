@@ -15,6 +15,21 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useMemo } from 'react';
 import useSWR from 'swr';
 
+const DEFAULT_SORT = [
+  {
+    property: 'repaymentStatus',
+    direction: SortDirection.DESC,
+    ignoreCase: true,
+    label: 'Status',
+  },
+  {
+    property: 'maturityDate',
+    direction: SortDirection.ASC,
+    ignoreCase: true,
+    label: 'Maturity date',
+  },
+];
+
 export const InvestorGrid: FC = observer(() => {
   const {
     portfolio: { investorGridModel, displayType },
@@ -48,7 +63,9 @@ export const InvestorGrid: FC = observer(() => {
                   .repaymentStatusList,
               ],
             },
-            sort: [...investorGridModel.queryModel.sort],
+            sort: investorGridModel.queryModel.sort.length
+              ? [...investorGridModel.queryModel.sort]
+              : DEFAULT_SORT,
           },
           displayType,
         ]

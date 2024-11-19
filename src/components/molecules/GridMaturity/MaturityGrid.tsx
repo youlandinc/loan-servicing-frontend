@@ -1,3 +1,8 @@
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useMemo } from 'react';
+import useSWR from 'swr';
+
 import {
   AllLoansPagination,
   GroupLoans,
@@ -14,10 +19,21 @@ import {
   PortfolioGridTypeEnum,
   SortDirection,
 } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
-import useSWR from 'swr';
+
+const DEFAULT_SORT = [
+  {
+    property: 'daysMaturity',
+    direction: SortDirection.ASC,
+    ignoreCase: true,
+    label: 'Days Maturity',
+  },
+  {
+    property: 'repaymentStatus',
+    direction: SortDirection.DESC,
+    ignoreCase: true,
+    label: 'Status',
+  },
+];
 
 export const MaturityGrid: FC = observer(() => {
   const {
@@ -48,8 +64,10 @@ export const MaturityGrid: FC = observer(() => {
                 ...maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList,
               ],
-              sort: [...maturityGridModel.queryModel.sort],
             },
+            sort: maturityGridModel.queryModel.sort.length
+              ? [...maturityGridModel.queryModel.sort]
+              : DEFAULT_SORT,
           },
           displayType,
         ]

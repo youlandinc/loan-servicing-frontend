@@ -295,7 +295,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                   height={24}
                   onClick={() =>
                     router.push(
-                      `${URL_HOME}/settings/organization/general/${
+                      `${URL_HOME(domain)}/settings/organization/general/${
                         session?.accessToken?.jwtToken ||
                         localStorage?.getItem('USER_LOGIN_INFORMATION')
                       }`,

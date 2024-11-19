@@ -29,6 +29,21 @@ import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
 import { _setColumnPining, _setColumnWidth } from '@/request/common';
 import { TableTypeEnum } from '@/types/pipeline/youland';
 
+const defaultSort = [
+  {
+    direction: 'DESC',
+    ignoreCase: true,
+    label: 'Est. sale date',
+    property: 'estSaleDate',
+  },
+  {
+    direction: 'ASC',
+    ignoreCase: true,
+    label: 'Investor',
+    property: 'investor',
+  },
+];
+
 export const GridAlameda: FC = observer(() => {
   const {
     portfolio: {
@@ -107,7 +122,8 @@ export const GridAlameda: FC = observer(() => {
                 ...queryModel.searchCondition.prospectiveBuyers,
               ],
             },
-            sort: [...queryModel.sort],
+            sort:
+              queryModel.sort.length === 1 ? [...queryModel.sort] : defaultSort,
           },
           displayType,
         ]

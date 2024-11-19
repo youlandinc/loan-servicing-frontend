@@ -30,6 +30,21 @@ import { _setColumnPining, _setColumnWidth } from '@/request/common';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { TableTypeEnum } from '@/types/pipeline/youland';
 
+const defaultSort = [
+  {
+    direction: 'DESC',
+    ignoreCase: true,
+    label: 'Est. sale date',
+    property: 'estSaleDate',
+  },
+  {
+    direction: 'ASC',
+    ignoreCase: true,
+    label: 'Investor',
+    property: 'investor',
+  },
+];
+
 export const GridYouland: FC = observer(() => {
   const {
     portfolio: {
@@ -108,7 +123,8 @@ export const GridYouland: FC = observer(() => {
                 ...queryModel.searchCondition.prospectiveBuyers,
               ],
             },
-            sort: [...queryModel.sort],
+            sort:
+              queryModel.sort.length === 1 ? [...queryModel.sort] : defaultSort,
           },
           displayType,
         ]

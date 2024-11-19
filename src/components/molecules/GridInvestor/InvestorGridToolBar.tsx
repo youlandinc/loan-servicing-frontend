@@ -131,7 +131,7 @@ export const InvestorGridToolBar: FC = observer(() => {
           updateQueryDebounce('investors', []);
         }}
       />
-      {investorGridModel.queryModel.sort.length > 0 && (
+      {investorGridModel.queryModel.sort.length === 1 && (
         <SortButton
           handleClear={(e) => {
             e.stopPropagation();

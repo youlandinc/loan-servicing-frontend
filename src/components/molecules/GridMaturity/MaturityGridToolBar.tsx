@@ -23,7 +23,6 @@ import {
   SortDirection,
 } from '@/types/enum';
 
-
 export const MaturityGridToolBar: FC = observer(() => {
   const {
     portfolio: { maturityGridModel },
@@ -38,7 +37,6 @@ export const MaturityGridToolBar: FC = observer(() => {
 
   const { data } = useSWR('_getAllStatus', async () => {
     return await _getAllStatus().catch(({ message, variant, header }) => {
-     
       enqueueSnackbar(message ?? 'error!', {
         variant,
         isSimple: !header,
@@ -77,7 +75,7 @@ export const MaturityGridToolBar: FC = observer(() => {
         options={data?.data || []}
         value={maturityGridModel.queryModel.searchCondition.repaymentStatusList}
       />
-      {maturityGridModel.queryModel.sort.length > 0 && (
+      {maturityGridModel.queryModel.sort.length === 1 && (
         <SortButton
           handleClear={(e) => {
             e.stopPropagation();

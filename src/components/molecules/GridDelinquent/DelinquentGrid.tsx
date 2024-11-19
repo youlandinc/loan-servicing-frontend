@@ -20,6 +20,21 @@ import {
   SortDirection,
 } from '@/types/enum';
 
+const DEFAULT_SORT = [
+  {
+    property: 'daysDelinquent',
+    direction: SortDirection.ASC,
+    ignoreCase: true,
+    label: 'Days delinquent',
+  },
+  {
+    property: 'repaymentStatus',
+    direction: SortDirection.DESC,
+    ignoreCase: true,
+    label: 'Status',
+  },
+];
+
 export const DelinquentGrid: FC = observer(() => {
   const {
     portfolio: { delinquentGridModel, displayType },
@@ -59,7 +74,9 @@ export const DelinquentGrid: FC = observer(() => {
                   .repaymentStatusList,
               ],
             },
-            sort: [...delinquentGridModel.queryModel.sort],
+            sort: delinquentGridModel.queryModel.sort.length
+              ? [...delinquentGridModel.queryModel.sort]
+              : DEFAULT_SORT,
           },
           displayType,
         ]

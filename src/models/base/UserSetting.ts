@@ -10,6 +10,7 @@ import {
   _fetchUserDetailByAccountId,
   _fetchUserLicensedProduct,
 } from '@/request/user';
+import { RoleTypeEnum } from '@/types/enum';
 
 export const UserSetting = types
   .model({
@@ -31,6 +32,13 @@ export const UserSetting = types
       }),
     ),
     domain: types.string,
+    role: types.maybe(
+      types.union(
+        types.literal(RoleTypeEnum.admin),
+        types.literal(RoleTypeEnum.loan_officer),
+        types.literal(RoleTypeEnum.executive),
+      ),
+    ),
   })
   .actions((self) => ({
     setUserSetting(setting: User.UserDetail) {
@@ -55,6 +63,7 @@ export const UserSetting = types
         self.setUserSetting(data);
         self.loading = false;
         self.domain = data?.tenantConfig?.domain;
+        self.role = data?.tenantConfig?.role;
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {

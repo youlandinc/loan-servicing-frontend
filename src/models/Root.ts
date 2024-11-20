@@ -115,6 +115,7 @@ const initialState = {
       },
     },
     domain: '',
+    role: void 0,
   },
   userType: void 0,
   loginType: void 0,

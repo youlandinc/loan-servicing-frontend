@@ -21,6 +21,7 @@ import {
   URL_LOS,
   URL_POS,
   URL_PRICING,
+  URL_SETTINGS,
 } from './index';
 import { useSwitch } from '@/hooks';
 
@@ -54,7 +55,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
   ({ isHomepage = false, actions }) => {
     const store = useMst();
     const { userSetting, session } = store;
-    const { initialized, setting, licensedProduct, domain, loading } =
+    const { initialized, setting, licensedProduct, domain, loading, role } =
       userSetting;
 
     const router = useRouter();
@@ -295,7 +296,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                   height={24}
                   onClick={() =>
                     router.push(
-                      `${URL_HOME(domain)}/settings/organization/general/${
+                      `${URL_SETTINGS(domain, role)}/?token=${
                         session?.accessToken?.jwtToken ||
                         localStorage?.getItem('USER_LOGIN_INFORMATION')
                       }`,

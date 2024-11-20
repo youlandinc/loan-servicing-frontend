@@ -534,7 +534,11 @@ export const LoanOverview: FC = observer(() => {
                     maxHeight={480}
                     minHeight={270}
                   >
-                    <LoanPaymentsGrid cb={fetchDetail} maxHeight={478} />
+                    <LoanPaymentsGrid
+                      cb={fetchDetail}
+                      maxHeight={478}
+                      showPagination={false}
+                    />
                   </Stack>
                 </Stack>
               </Stack>

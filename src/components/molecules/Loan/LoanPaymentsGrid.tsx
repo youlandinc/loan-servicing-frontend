@@ -8,6 +8,7 @@ import {
 } from 'material-react-table';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 import { format, isValid } from 'date-fns';
 
 import { utils } from '@/utils';
@@ -45,6 +46,8 @@ import { useSwitch } from '@/hooks';
 import LOGO_CLOSE from '@/svg/loan/payments/logo-close.svg';
 import LOGO_EDIT from '@/svg/loan/payments/logo-edit.svg';
 import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import LOGO_VIEW_ALL from '@/svg/loan/payments/logo-view-all.svg';
+
 import {
   LoanTimelineStatusEnum,
   OverviewRepaymentTimeLine,
@@ -53,7 +56,9 @@ import {
 export const LoanPaymentsGrid: FC<{
   maxHeight?: CSSProperties['maxHeight'];
   cb?: () => Promise<void>;
-}> = ({ maxHeight, cb }) => {
+  showPagination?: boolean;
+}> = ({ maxHeight, cb, showPagination = true }) => {
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -80,7 +85,7 @@ export const LoanPaymentsGrid: FC<{
   const { open, close, visible } = useSwitch(false);
 
   const { loading } = useAsync(async () => {
-    await fetchData(0, 50);
+    await fetchData(0, showPagination ? 50 : 1000);
   }, []);
 
   const [dateDue, setDateDue] = useState('');
@@ -201,6 +206,7 @@ export const LoanPaymentsGrid: FC<{
   const table = useMaterialReactTable({
     columns: LOAN_PAYMENT_GRID_COLUMNS(open, setFormData, fetchData, cb),
     data: list,
+    //data: temp,
     //rowCount: rowsTotal,
     enableExpandAll: false, //hide expand all double arrow in column header
     enableExpanding: false,
@@ -220,6 +226,10 @@ export const LoanPaymentsGrid: FC<{
 
     enableRowPinning: true,
     rowPinningDisplayMode: 'select-bottom',
+
+    defaultColumn: {
+      grow: true,
+    },
 
     manualPagination: true,
     state: {
@@ -252,8 +262,7 @@ export const LoanPaymentsGrid: FC<{
     muiTableHeadCellProps: () => {
       return {
         sx: {
-          width: 'fit-content',
-          px: 1.5,
+          px: 0,
           position: 'relative',
           boxShadow: 'none',
           fontWeight: 500,
@@ -278,31 +287,32 @@ export const LoanPaymentsGrid: FC<{
     muiTableBodyRowProps: () => {
       return {
         sx: {
-          width: 'fit-content',
           boxShadow: 'none',
           '& td': {
             borderBottom: 'none !important',
           },
           '& .MuiTableCell-body': {
-            p: 1.5,
+            p: 0.75,
             position: 'relative',
-            '&:before': {
-              display: 'block',
-              content: "''",
-              position: 'absolute',
-              right: '1px',
-              top: '50%',
-              width: '1px',
-              height: '18px',
-              bgcolor: '#D2D6E1',
-              transform: 'translateY(-50%)',
+            '&:not(:last-of-type)': {
+              '&:before': {
+                display: 'block',
+                content: "''",
+                position: 'absolute',
+                right: '1px',
+                top: '50%',
+                width: '1px',
+                height: '18px',
+                bgcolor: '#D2D6E1',
+                transform: 'translateY(-50%)',
+              },
             },
           },
           '&[data-pinned="true"]': {
             bgcolor: 'white !important',
             '& td': {
               fontWeight: '600 !important',
-              '&:after': {
+              '&:after,&:before': {
                 bgcolor: 'transparent !important',
               },
               '&:before': {
@@ -385,7 +395,29 @@ export const LoanPaymentsGrid: FC<{
       width={'100%'}
     >
       <Stack alignItems={'center'} flexDirection={'row'} pt={3} px={3}>
-        <Typography variant={'subtitle1'}>Payment history</Typography>
+        <Typography variant={'subtitle1'}>Payments</Typography>
+        {!showPagination && (
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            fontSize={14}
+            gap={1}
+            ml={'auto'}
+            onClick={() => {
+              router.push({
+                pathname: '/loan/payments',
+                query: { loanId: router.query.loanId },
+              });
+            }}
+            sx={{ cursor: 'pointer' }}
+          >
+            View all
+            <Icon
+              component={LOGO_VIEW_ALL}
+              sx={{ width: 16, height: 16, mt: -0.25 }}
+            />
+          </Stack>
+        )}
         {isEditable && (
           <StyledButton
             color={'info'}
@@ -401,8 +433,15 @@ export const LoanPaymentsGrid: FC<{
         )}
       </Stack>
 
-      <MRT_TableContainer sx={{ height: '100%' }} table={table} />
-      {list.length > 0 && (
+      <MRT_TableContainer
+        sx={{
+          height: '100%',
+          borderBottomLeftRadius: !showPagination ? 16 : 0,
+          borderBottomRightRadius: !showPagination ? 16 : 0,
+        }}
+        table={table}
+      />
+      {list.length > 0 && showPagination && (
         <LoanPaymentsGridFooter
           onPageChange={(page) => onPageChange(page)}
           onPageSizeChange={(pageSize) => onPageSizeChange(pageSize)}
@@ -527,8 +566,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
       accessorKey: 'action',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
-      size: 60,
-      minSize: 60,
+      size: 40,
       Cell: ({ row }) => {
         const { enqueueSnackbar } = useSnackbar();
         const { visible, open, close } = useSwitch();
@@ -671,6 +709,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
       header: 'Date received',
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
+      size: 140,
       Cell: ({ renderedCellValue, row }) => {
         return (
           <Tooltip
@@ -708,7 +747,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
     {
       accessorKey: 'dateDue',
       header: 'Date due',
-      size: 120,
+      size: 110,
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       Cell: ({ renderedCellValue, row }) => {
@@ -743,127 +782,9 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
       },
     },
     {
-      accessorKey: 'pmtDayVariance',
-      header: 'Pmt day variance',
-      size: 200,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          !row.getIsPinned() && (
-            <Tooltip title={renderedCellValue}>
-              <Typography
-                color={
-                  row.original.nsf === LoanAnswerEnum.yes
-                    ? '#DE6449'
-                    : 'text.primary'
-                }
-                sx={{
-                  ...ellipsisStyle,
-                  width: '100%',
-                }}
-                variant={'body2'}
-              >
-                {renderedCellValue}
-              </Typography>
-            </Tooltip>
-          )
-        );
-      },
-    },
-    {
-      accessorKey: 'isAch',
-      header: 'ACH',
-      size: 100,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          !row.getIsPinned() && (
-            <Tooltip title={renderedCellValue ? 'ACH' : '-'}>
-              <Typography
-                color={
-                  row.original.nsf === LoanAnswerEnum.no
-                    ? '#DE6449'
-                    : 'text.primary'
-                }
-                sx={{
-                  ...ellipsisStyle,
-                  width: '100%',
-                }}
-                variant={'body2'}
-              >
-                {renderedCellValue ? 'ACH' : '-'}
-              </Typography>
-            </Tooltip>
-          )
-        );
-      },
-    },
-    {
-      accessorKey: 'paymentType',
-      header: 'Payment type',
-      size: 180,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          !row.getIsPinned() && (
-            <Tooltip title={renderedCellValue}>
-              <Typography
-                color={
-                  row.original.nsf === LoanAnswerEnum.yes
-                    ? '#DE6449'
-                    : 'text.primary'
-                }
-                sx={{
-                  ...ellipsisStyle,
-                  width: '100%',
-                }}
-                variant={'body2'}
-              >
-                {/*todo:enum?*/}
-                {renderedCellValue}
-              </Typography>
-            </Tooltip>
-          )
-        );
-      },
-    },
-    {
-      accessorKey: 'paymentMethod',
-      header: 'Payment method',
-      size: 180,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          !row.getIsPinned() && (
-            <Tooltip title={renderedCellValue}>
-              <Typography
-                color={
-                  row.original.nsf === LoanAnswerEnum.yes
-                    ? '#DE6449'
-                    : 'text.primary'
-                }
-                sx={{
-                  ...ellipsisStyle,
-                  width: '100%',
-                }}
-                variant={'body2'}
-              >
-                {/*todo:enum?*/}
-                {renderedCellValue}
-              </Typography>
-            </Tooltip>
-          )
-        );
-      },
-    },
-    {
       accessorKey: 'totalPmt',
       header: 'Total pmt',
-      size: 120,
+      size: 110,
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       Cell: ({ renderedCellValue, row }) => {
@@ -899,7 +820,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
     {
       accessorKey: 'totalInterestReceived',
       header: 'Total interest received',
-      size: 210,
+      size: 170,
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },
       Cell: ({ renderedCellValue, row }) => {
@@ -927,6 +848,331 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
               {utils.notNull(renderedCellValue)
                 ? utils.formatDollar(renderedCellValue as number)
                 : '-'}
+            </Typography>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessorKey: 'principalReceived',
+      header: 'Principal received',
+      size: 140,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <Tooltip
+            title={
+              utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'
+            }
+          >
+            <Typography
+              color={
+                row.original.nsf === LoanAnswerEnum.yes
+                  ? '#DE6449'
+                  : 'text.primary'
+              }
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+                fontWeight: row.getIsPinned() ? 600 : 400,
+              }}
+              variant={'body2'}
+            >
+              {utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'}
+            </Typography>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessorKey: 'accruedLateCharges',
+      header: 'Accrued late charges',
+      size: 170,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <Tooltip
+            title={
+              utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'
+            }
+          >
+            <Typography
+              color={
+                row.original.nsf === LoanAnswerEnum.yes
+                  ? '#DE6449'
+                  : 'text.primary'
+              }
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+                fontWeight: row.getIsPinned() ? 600 : 400,
+              }}
+              variant={'body2'}
+            >
+              {utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'}
+            </Typography>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessorKey: 'waivedLateCharges',
+      header: 'Waive late charges',
+      size: 160,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <Tooltip
+            title={
+              utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'
+            }
+          >
+            <Typography
+              color={
+                row.original.nsf === LoanAnswerEnum.yes
+                  ? '#DE6449'
+                  : 'text.primary'
+              }
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+                fontWeight: row.getIsPinned() ? 600 : 400,
+              }}
+              variant={'body2'}
+            >
+              {utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'}
+            </Typography>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessorKey: 'reservePmt',
+      header: 'Reserve pmt',
+      size: 120,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <Tooltip
+            title={
+              utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'
+            }
+          >
+            <Typography
+              color={
+                row.original.nsf === LoanAnswerEnum.yes
+                  ? '#DE6449'
+                  : 'text.primary'
+              }
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+                fontWeight: row.getIsPinned() ? 600 : 400,
+              }}
+              variant={'body2'}
+            >
+              {utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'}
+            </Typography>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessorKey: 'reserveRestricted',
+      header: 'Reserve restricted',
+      size: 140,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <Tooltip
+            title={
+              utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'
+            }
+          >
+            <Typography
+              color={
+                row.original.nsf === LoanAnswerEnum.yes
+                  ? '#DE6449'
+                  : 'text.primary'
+              }
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+                fontWeight: row.getIsPinned() ? 600 : 400,
+              }}
+              variant={'body2'}
+            >
+              {utils.notNull(renderedCellValue)
+                ? utils.formatDollar(renderedCellValue as number)
+                : '-'}
+            </Typography>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessorKey: 'pmtDayVariance',
+      header: 'Pmt day variance',
+      size: 150,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          !row.getIsPinned() && (
+            <Tooltip title={renderedCellValue}>
+              <Typography
+                color={
+                  row.original.nsf === LoanAnswerEnum.yes
+                    ? '#DE6449'
+                    : 'text.primary'
+                }
+                sx={{
+                  ...ellipsisStyle,
+                  width: '100%',
+                }}
+                variant={'body2'}
+              >
+                {renderedCellValue}
+              </Typography>
+            </Tooltip>
+          )
+        );
+      },
+    },
+    {
+      accessorKey: 'isAch',
+      header: 'ACH',
+      size: 60,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          !row.getIsPinned() && (
+            <Tooltip title={renderedCellValue ? 'ACH' : '-'}>
+              <Typography
+                color={
+                  row.original.nsf === LoanAnswerEnum.no
+                    ? '#DE6449'
+                    : 'text.primary'
+                }
+                sx={{
+                  ...ellipsisStyle,
+                  width: '100%',
+                }}
+                variant={'body2'}
+              >
+                {renderedCellValue ? 'ACH' : '-'}
+              </Typography>
+            </Tooltip>
+          )
+        );
+      },
+    },
+    {
+      accessorKey: 'paymentType',
+      header: 'Payment type',
+      size: 130,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          !row.getIsPinned() && (
+            <Tooltip title={renderedCellValue}>
+              <Typography
+                color={
+                  row.original.nsf === LoanAnswerEnum.yes
+                    ? '#DE6449'
+                    : 'text.primary'
+                }
+                sx={{
+                  ...ellipsisStyle,
+                  width: '100%',
+                }}
+                variant={'body2'}
+              >
+                {/*todo:enum?*/}
+                {renderedCellValue}
+              </Typography>
+            </Tooltip>
+          )
+        );
+      },
+    },
+    {
+      accessorKey: 'paymentMethod',
+      header: 'Payment method',
+      size: 150,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          !row.getIsPinned() && (
+            <Tooltip title={renderedCellValue}>
+              <Typography
+                color={
+                  row.original.nsf === LoanAnswerEnum.yes
+                    ? '#DE6449'
+                    : 'text.primary'
+                }
+                sx={{
+                  ...ellipsisStyle,
+                  width: '100%',
+                }}
+                variant={'body2'}
+              >
+                {/*todo:enum?*/}
+                {renderedCellValue}
+              </Typography>
+            </Tooltip>
+          )
+        );
+      },
+    },
+    {
+      accessorKey: 'additionalInformation',
+      header: 'Additional information',
+      size: 160,
+      muiTableBodyCellProps: { align: 'center' },
+      muiTableHeadCellProps: { align: 'center' },
+      Cell: ({ renderedCellValue, row }) => {
+        return (
+          <Tooltip title={renderedCellValue ?? '-'}>
+            <Typography
+              color={
+                row.original.nsf === LoanAnswerEnum.yes
+                  ? '#DE6449'
+                  : 'text.primary'
+              }
+              sx={{
+                ...ellipsisStyle,
+                width: '100%',
+              }}
+              variant={'body2'}
+            >
+              {renderedCellValue ?? '-'}
             </Typography>
           </Tooltip>
         );
@@ -982,212 +1228,5 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
     //    );
     //  },
     //},
-    {
-      accessorKey: 'principalReceived',
-      header: 'Principal received',
-      size: 200,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          <Tooltip
-            title={
-              utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'
-            }
-          >
-            <Typography
-              color={
-                row.original.nsf === LoanAnswerEnum.yes
-                  ? '#DE6449'
-                  : 'text.primary'
-              }
-              sx={{
-                ...ellipsisStyle,
-                width: '100%',
-                fontWeight: row.getIsPinned() ? 600 : 400,
-              }}
-              variant={'body2'}
-            >
-              {utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'}
-            </Typography>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      accessorKey: 'accruedLateCharges',
-      header: 'Accrued late charges',
-      size: 210,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          <Tooltip
-            title={
-              utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'
-            }
-          >
-            <Typography
-              color={
-                row.original.nsf === LoanAnswerEnum.yes
-                  ? '#DE6449'
-                  : 'text.primary'
-              }
-              sx={{
-                ...ellipsisStyle,
-                width: '100%',
-                fontWeight: row.getIsPinned() ? 600 : 400,
-              }}
-              variant={'body2'}
-            >
-              {utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'}
-            </Typography>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      accessorKey: 'waivedLateCharges',
-      header: 'Waive late charges',
-      size: 190,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          <Tooltip
-            title={
-              utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'
-            }
-          >
-            <Typography
-              color={
-                row.original.nsf === LoanAnswerEnum.yes
-                  ? '#DE6449'
-                  : 'text.primary'
-              }
-              sx={{
-                ...ellipsisStyle,
-                width: '100%',
-                fontWeight: row.getIsPinned() ? 600 : 400,
-              }}
-              variant={'body2'}
-            >
-              {utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'}
-            </Typography>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      accessorKey: 'reservePmt',
-      header: 'Reserve pmt',
-      size: 190,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          <Tooltip
-            title={
-              utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'
-            }
-          >
-            <Typography
-              color={
-                row.original.nsf === LoanAnswerEnum.yes
-                  ? '#DE6449'
-                  : 'text.primary'
-              }
-              sx={{
-                ...ellipsisStyle,
-                width: '100%',
-                fontWeight: row.getIsPinned() ? 600 : 400,
-              }}
-              variant={'body2'}
-            >
-              {utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'}
-            </Typography>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      accessorKey: 'reserveRestricted',
-      header: 'Reserve restricted',
-      size: 190,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          <Tooltip
-            title={
-              utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'
-            }
-          >
-            <Typography
-              color={
-                row.original.nsf === LoanAnswerEnum.yes
-                  ? '#DE6449'
-                  : 'text.primary'
-              }
-              sx={{
-                ...ellipsisStyle,
-                width: '100%',
-                fontWeight: row.getIsPinned() ? 600 : 400,
-              }}
-              variant={'body2'}
-            >
-              {utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'}
-            </Typography>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      accessorKey: 'additionalInformation',
-      header: 'Additional information',
-      size: 190,
-      muiTableBodyCellProps: { align: 'center' },
-      muiTableHeadCellProps: { align: 'center' },
-      Cell: ({ renderedCellValue, row }) => {
-        return (
-          <Tooltip title={renderedCellValue ?? '-'}>
-            <Typography
-              color={
-                row.original.nsf === LoanAnswerEnum.yes
-                  ? '#DE6449'
-                  : 'text.primary'
-              }
-              sx={{
-                ...ellipsisStyle,
-                width: '100%',
-              }}
-              variant={'body2'}
-            >
-              {renderedCellValue ?? '-'}
-            </Typography>
-          </Tooltip>
-        );
-      },
-    },
   ] as MRT_ColumnDef<any>[];
 };

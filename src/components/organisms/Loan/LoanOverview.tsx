@@ -239,6 +239,21 @@ export const LoanOverview: FC = observer(() => {
         ],
       });
       const { borrowerInfo } = data;
+      const borrowerInfoPhone = (string: string) => {
+        if (!string) {
+          return '-';
+        }
+        const array = string.split(';');
+        return array.reduce((acc, phone, index) => {
+          if (phone) {
+            if (index === array.length - 1) {
+              return acc + utils.formatUSPhoneToText(phone);
+            }
+            return acc + utils.formatUSPhoneToText(phone) + ', ';
+          }
+          return acc;
+        }, '');
+      };
       setBorrowerInfo({
         theme: 'light',
         header: 'Borrower information',
@@ -248,15 +263,11 @@ export const LoanOverview: FC = observer(() => {
         headerIcon: OVERVIEW_BORROWER_INFORMATION,
         listData: [
           {
-            label: `Phone: ${
-              borrowerInfo.borrowerPhone
-                ? utils.formatUSPhoneToText(borrowerInfo.borrowerPhone)
-                : '-'
-            }`,
+            label: `Email: ${borrowerInfo.borrowerEmail ?? '-'}`,
             value: '',
           },
           {
-            label: `Email: ${borrowerInfo.borrowerEmail ?? '-'}`,
+            label: `Phone: ${borrowerInfoPhone(borrowerInfo.borrowerPhones)}`,
             value: '',
           },
         ],
@@ -273,15 +284,15 @@ export const LoanOverview: FC = observer(() => {
           headerIcon: OVERVIEW_BROKER_INFORMATION,
           listData: [
             {
+              label: `Email: ${brokerDetail?.email ?? '-'}`,
+              value: '',
+            },
+            {
               label: `Phone: ${
                 brokerDetail?.phone
                   ? utils.formatUSPhoneToText(brokerDetail?.phone)
                   : '-'
               }`,
-              value: '',
-            },
-            {
-              label: `Email: ${brokerDetail?.email ?? '-'}`,
               value: '',
             },
           ],
@@ -523,7 +534,11 @@ export const LoanOverview: FC = observer(() => {
                     maxHeight={480}
                     minHeight={270}
                   >
-                    <LoanPaymentsGrid cb={fetchDetail} maxHeight={478} />
+                    <LoanPaymentsGrid
+                      cb={fetchDetail}
+                      maxHeight={478}
+                      showPagination={false}
+                    />
                   </Stack>
                 </Stack>
               </Stack>

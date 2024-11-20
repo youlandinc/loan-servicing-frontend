@@ -64,7 +64,7 @@ export interface OverviewBorrowerInfo {
   borrowerLastName: string;
   borrowerName: string;
   borrowerEmail: string;
-  borrowerPhone: string;
+  borrowerPhones: string;
 }
 
 export interface OverviewOutstandingPayAble {

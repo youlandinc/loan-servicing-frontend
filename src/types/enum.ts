@@ -170,3 +170,18 @@ export enum MaturityStatusInDelinquentEnum {
   next_month_end = 'NEXT_MONTH_END',
   not_near_maturity = 'NOT_NEAR_MATURITY',
 }
+
+export enum RoleTypeEnum {
+  admin = 'ADMIN',
+  loan_officer = 'LOAN_OFFICER',
+  executive = 'EXECUTIVE',
+}
+
+export enum LayoutProductTypeEnum {
+  pos = 'POS',
+  los = 'LOS',
+  doc = 'DOC_ENGINE',
+  pricing = 'PRICING_ENGINE',
+  servicing = 'SERVICING_CENTER',
+  customer = 'CUSTOMER_CENTER',
+}

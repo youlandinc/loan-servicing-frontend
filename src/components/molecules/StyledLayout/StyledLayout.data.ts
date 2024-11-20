@@ -1,4 +1,5 @@
 import { LayoutSideMenuItem, ServiceType } from './index';
+import { RoleTypeEnum } from '@/types/enum';
 
 export const LAYOUT_SIDE_MENU: { [key in ServiceType]: LayoutSideMenuItem[] } =
   {
@@ -80,6 +81,15 @@ export const LAYOUT_HEADER_TAB = [
 //export const LAYOUT_HEADER_USER = {};
 export const URL_HOME = (domain: string) =>
   `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/`;
+
+export const URL_SETTINGS = (
+  domain: string,
+  role: RoleTypeEnum | undefined,
+) => {
+  return role === RoleTypeEnum.admin
+    ? `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/settings/organization/general`
+    : `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/settings/account_settings`;
+};
 
 export const URL_POS = (domain: string) =>
   `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/pos/customers`;

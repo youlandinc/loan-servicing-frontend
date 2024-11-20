@@ -6,6 +6,7 @@ import { HttpError } from '@/types/common';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
 
+import { LayoutProductTypeEnum, RoleTypeEnum } from '@/types/enum';
 import {
   _fetchUserDetailByAccountId,
   _fetchUserLicensedProduct,
@@ -21,16 +22,23 @@ export const UserSetting = types
       types.model({
         name: types.string,
         productType: types.union(
-          types.literal('POS'),
-          types.literal('LOS'),
-          types.literal('DOC_ENGINE'),
-          types.literal('PRICING_ENGINE'),
-          types.literal('SERVICING_CENTER'),
-          types.literal('CUSTOMER_CENTER'),
+          types.literal(LayoutProductTypeEnum.pos),
+          types.literal(LayoutProductTypeEnum.los),
+          types.literal(LayoutProductTypeEnum.doc),
+          types.literal(LayoutProductTypeEnum.pricing),
+          types.literal(LayoutProductTypeEnum.servicing),
+          types.literal(LayoutProductTypeEnum.customer),
         ),
       }),
     ),
     domain: types.string,
+    role: types.maybe(
+      types.union(
+        types.literal(RoleTypeEnum.admin),
+        types.literal(RoleTypeEnum.loan_officer),
+        types.literal(RoleTypeEnum.executive),
+      ),
+    ),
   })
   .actions((self) => ({
     setUserSetting(setting: User.UserDetail) {
@@ -55,6 +63,7 @@ export const UserSetting = types
         self.setUserSetting(data);
         self.loading = false;
         self.domain = data?.tenantConfig?.domain;
+        self.role = data?.tenantConfig?.role;
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {

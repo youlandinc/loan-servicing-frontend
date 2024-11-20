@@ -176,3 +176,12 @@ export enum RoleTypeEnum {
   loan_officer = 'LOAN_OFFICER',
   executive = 'EXECUTIVE',
 }
+
+export enum LayoutProductTypeEnum {
+  pos = 'POS',
+  los = 'LOS',
+  doc = 'DOC_ENGINE',
+  pricing = 'PRICING_ENGINE',
+  servicing = 'SERVICING_CENTER',
+  customer = 'CUSTOMER_CENTER',
+}

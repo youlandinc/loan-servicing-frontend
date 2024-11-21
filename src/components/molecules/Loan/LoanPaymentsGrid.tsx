@@ -396,29 +396,7 @@ export const LoanPaymentsGrid: FC<{
     >
       <Stack alignItems={'center'} flexDirection={'row'} pt={3} px={3}>
         <Typography variant={'subtitle1'}>Payments</Typography>
-        {!showPagination && (
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            fontSize={14}
-            gap={1}
-            ml={'auto'}
-            onClick={() => {
-              router.push({
-                pathname: '/loan/payments',
-                query: { loanId: router.query.loanId },
-              });
-            }}
-            sx={{ cursor: 'pointer' }}
-          >
-            View all
-            <Icon
-              component={LOGO_VIEW_ALL}
-              sx={{ width: 16, height: 16, mt: -0.25 }}
-            />
-          </Stack>
-        )}
-        {isEditable && (
+        {isEditable ? (
           <StyledButton
             color={'info'}
             onClick={open}
@@ -430,6 +408,29 @@ export const LoanPaymentsGrid: FC<{
           >
             Add payment
           </StyledButton>
+        ) : (
+          showPagination && (
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              fontSize={14}
+              gap={1}
+              ml={'auto'}
+              onClick={() => {
+                router.push({
+                  pathname: '/loan/payments',
+                  query: { loanId: router.query.loanId },
+                });
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
+              View all
+              <Icon
+                component={LOGO_VIEW_ALL}
+                sx={{ width: 16, height: 16, mt: -0.25 }}
+              />
+            </Stack>
+          )
         )}
       </Stack>
 

@@ -396,40 +396,37 @@ export const LoanPaymentsGrid: FC<{
     >
       <Stack alignItems={'center'} flexDirection={'row'} pt={3} px={3}>
         <Typography variant={'subtitle1'}>Payments</Typography>
-        {isEditable ? (
-          <StyledButton
-            color={'info'}
-            onClick={open}
-            size={'small'}
-            sx={{
-              ml: 'auto',
+        {!showPagination ? (
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            fontSize={14}
+            gap={1}
+            ml={'auto'}
+            onClick={() => {
+              router.push({
+                pathname: '/loan/payments',
+                query: { loanId: router.query.loanId },
+              });
             }}
-            variant={'outlined'}
+            sx={{ cursor: 'pointer' }}
           >
-            Add payment
-          </StyledButton>
+            View all
+            <Icon
+              component={LOGO_VIEW_ALL}
+              sx={{ width: 16, height: 16, mt: -0.25 }}
+            />
+          </Stack>
         ) : (
-          showPagination && (
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
+          isEditable && (
+            <Typography
               fontSize={14}
-              gap={1}
               ml={'auto'}
-              onClick={() => {
-                router.push({
-                  pathname: '/loan/payments',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
+              onClick={open}
               sx={{ cursor: 'pointer' }}
             >
-              View all
-              <Icon
-                component={LOGO_VIEW_ALL}
-                sx={{ width: 16, height: 16, mt: -0.25 }}
-              />
-            </Stack>
+              + Add payment
+            </Typography>
           )
         )}
       </Stack>

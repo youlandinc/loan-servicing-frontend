@@ -523,7 +523,7 @@ export const LoanOverview: FC = observer(() => {
 
                   <LoanOverviewTimeline listData={timeline} />
 
-                  <Stack flexShrink={0} height={270}>
+                  <Stack flexShrink={0} height={256}>
                     <LoanOverviewPayablesGrid
                       outstandingPayAbles={loanPayAbles}
                     />

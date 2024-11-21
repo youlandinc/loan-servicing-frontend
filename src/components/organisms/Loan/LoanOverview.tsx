@@ -470,7 +470,7 @@ export const LoanOverview: FC = observer(() => {
                 justifyContent={'space-between'}
               >
                 <StyledHeaderAddressInfo {...headerAddressInfo} />
-                {!['xxl'].includes(breakpoints) && (
+                {!['xl', 'xxl'].includes(breakpoints) && (
                   <Stack
                     alignItems={'center'}
                     flexDirection={'row'}
@@ -484,7 +484,9 @@ export const LoanOverview: FC = observer(() => {
                       component={OVERVIEW_COMMENTS_VIEW}
                       sx={{ width: 24, height: 24 }}
                     />
-                    <Typography variant={'body2'}>View comments</Typography>
+                    <Typography variant={'body2'}>
+                      {`${content.length} ${content.length > 1 ? 'comments' : 'comment'}`}{' '}
+                    </Typography>
                   </Stack>
                 )}
               </Stack>
@@ -495,7 +497,7 @@ export const LoanOverview: FC = observer(() => {
                   gap={3}
                   height={'100%'}
                   ref={leftRef}
-                  width={{ xs: 320, xl: 400 }}
+                  width={{ xs: 320, xxl: 400 }}
                 >
                   <LoanOverviewCard {...currentBalance} />
                   <LoanOverviewCard {...loanInfo} />
@@ -511,7 +513,7 @@ export const LoanOverview: FC = observer(() => {
                   gap={3}
                   maxWidth={{
                     xs: 'calc(100% - 344px)',
-                    xl: 'calc(100% - 424px)',
+                    xxl: 'calc(100% - 424px)',
                   }}
                 >
                   <Stack flexDirection={'row'} gap={3}>
@@ -544,7 +546,7 @@ export const LoanOverview: FC = observer(() => {
               </Stack>
             </Stack>
 
-            {['xxl'].includes(breakpoints) && (
+            {['xl', 'xxl'].includes(breakpoints) && (
               <Stack
                 borderLeft={'1px solid #EDEDED'}
                 flexShrink={0}

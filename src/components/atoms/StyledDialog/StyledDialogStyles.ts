@@ -28,10 +28,7 @@ export const StyledDialogStyles = {
     },
     '& .MuiPaper-root': {
       borderRadius: 2,
-      maxWidth: {
-        xl: 600,
-        xs: '100%',
-      },
+      maxWidth: 600,
       boxShadow:
         'box-shadow: 0px 10px 10px 0px rgba(17, 52, 227, 0.10), 0px 0px 2px 0px rgba(17, 52, 227, 0.10)',
     },

@@ -114,7 +114,7 @@ const customBreakpoints = createTheme({
       sm: 431,
       md: 768,
       lg: 1367,
-      xl: 1440,
+      xl: 1680,
       xxl: 1920,
     },
   },

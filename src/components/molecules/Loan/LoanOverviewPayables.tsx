@@ -142,7 +142,7 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
       rows={outstandingPayAbles}
       slots={{
         toolbar: () => (
-          <Stack pb={1} pl={3} pt={2}>
+          <Stack pb={1.5} pl={3} pt={3}>
             <Typography variant={'subtitle1'}>Outstanding payables</Typography>
           </Stack>
         ),

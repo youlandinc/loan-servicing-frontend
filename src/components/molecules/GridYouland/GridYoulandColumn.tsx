@@ -725,31 +725,51 @@ export const YOULAND_COLUMNS = (
             }}
             width={'100%'}
           >
-            <Button
-              color={'primary'}
-              disabled={
-                !row.original.prospectiveBuyer ||
-                row.original.prospectiveBuyer === 'None' ||
-                renderedCellValue === GridTradeConfirmEnum.completed ||
-                row.original.tradeStatus !== GridTradeStatusEnum.confirmed
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                open();
-              }}
-              sx={{
-                fontSize: 12,
-                width: 120,
-                height: 26,
-                p: '0 !important',
-                textTransform: 'none',
-                boxShadow: 'none',
-              }}
-              variant={'contained'}
-            >
-              Complete trade
-            </Button>
+            {!row.original.prospectiveBuyer ||
+            row.original.prospectiveBuyer === 'None' ||
+            renderedCellValue === GridTradeConfirmEnum.completed ||
+            row.original.tradeStatus !== GridTradeStatusEnum.confirmed ? (
+              <Tooltip
+                arrow
+                title={
+                  'There must be a prospective investor and trade status has to be either "In Progress" or "Confirmed" in order to complete the trade.'
+                }
+              >
+                <Stack
+                  alignItems={'center'}
+                  bgcolor={'rgba(0, 0, 0, 0.12)'}
+                  borderRadius={1}
+                  color={'rgba(0, 0, 0, 0.26)'}
+                  fontSize={12}
+                  height={26}
+                  justifyContent={'center'}
+                  width={120}
+                >
+                  Complete trade
+                </Stack>
+              </Tooltip>
+            ) : (
+              <Button
+                color={'primary'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  open();
+                }}
+                sx={{
+                  fontSize: 12,
+                  width: 120,
+                  height: 26,
+                  p: '0 !important',
+                  textTransform: 'none',
+                  boxShadow: 'none',
+                }}
+                variant={'contained'}
+              >
+                Complete trade
+              </Button>
+            )}
+
             <StyledDialog
               aria-hidden="true"
               content={

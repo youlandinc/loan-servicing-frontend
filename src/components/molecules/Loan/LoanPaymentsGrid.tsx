@@ -49,8 +49,8 @@ import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
 import LOGO_VIEW_ALL from '@/svg/loan/payments/logo-view-all.svg';
 
 import {
-  LoanTimelineStatusEnum,
   OverviewRepaymentTimeLine,
+  PaidStatusEnum,
 } from '@/types/loan/overview';
 
 export const LoanPaymentsGrid: FC<{
@@ -99,11 +99,7 @@ export const LoanPaymentsGrid: FC<{
       const { data } = await _fetchCurrentBill({ loanId });
       const handler = (arr: OverviewRepaymentTimeLine[]) => {
         const index = arr.findIndex(
-          (item) =>
-            ![
-              LoanTimelineStatusEnum.paid,
-              LoanTimelineStatusEnum.paid_late,
-            ].includes(item.billStatus),
+          (item) => item.paidStatus === PaidStatusEnum.unpaid,
         );
 
         return index === -1
@@ -389,45 +385,83 @@ export const LoanPaymentsGrid: FC<{
   return (
     <Stack
       flex={1}
-      gap={1.5}
+      gap={isEditable ? 2 : 1.5}
       height={'auto'}
       maxHeight={maxHeight}
       width={'100%'}
     >
-      <Stack alignItems={'center'} flexDirection={'row'} pt={3} px={3}>
+      <Stack
+        alignItems={'flex-end'}
+        flexDirection={'row'}
+        pt={isEditable ? 2 : 3}
+        px={3}
+      >
         <Typography variant={'subtitle1'}>Payments</Typography>
-        {!showPagination ? (
+        {!showPagination && (
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
-            fontSize={14}
-            gap={1}
-            ml={'auto'}
+            height={24}
+            justifyContent={'center'}
             onClick={() => {
               router.push({
                 pathname: '/loan/payments',
                 query: { loanId: router.query.loanId },
               });
             }}
-            sx={{ cursor: 'pointer' }}
+            sx={{
+              color: 'text.secondary',
+              cursor: 'pointer',
+              fontSize: 14,
+              px: 1.5,
+              gap: 0.5,
+              ml: 3,
+              '& path': {
+                fill: 'rgba(0,0,0,.38)',
+              },
+              '&:hover': {
+                color: 'text.primary',
+                '& path': {
+                  fill: 'rgba(0,0,0,.87)',
+                },
+              },
+            }}
           >
             View all
             <Icon
               component={LOGO_VIEW_ALL}
-              sx={{ width: 16, height: 16, mt: -0.25 }}
+              sx={{ width: 12, height: 12, mt: -0.25 }}
             />
           </Stack>
-        ) : (
-          isEditable && (
-            <Typography
-              fontSize={14}
-              ml={'auto'}
-              onClick={open}
-              sx={{ cursor: 'pointer' }}
-            >
-              + Add payment
-            </Typography>
-          )
+        )}
+        {isEditable && (
+          <Stack
+            alignItems={'center'}
+            border={'1px solid'}
+            borderColor={'#D2D6E1'}
+            borderRadius={1}
+            fontSize={14}
+            justifyContent={'center'}
+            mb={-1}
+            ml={'auto'}
+            onClick={open}
+            px={2}
+            py={1}
+            sx={{
+              border: '1px solid #D2D6E1',
+              borderRadius: 2,
+              cursor: 'pointer',
+              fontSize: 14,
+              gap: 1,
+              '&:hover': {
+                borderColor: '#5B76BC',
+                color: '#5B76BC',
+                bgcolor: '#F0F4FF',
+              },
+            }}
+          >
+            + Add payment
+          </Stack>
         )}
       </Stack>
 

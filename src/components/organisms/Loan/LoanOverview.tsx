@@ -23,6 +23,7 @@ import {
 import { useBreakpoints, useSwitch } from '@/hooks';
 import { utils } from '@/utils';
 import {
+  APPLICATION_FICO_SCORE,
   AUTO_HIDE_DURATION,
   LOAN_PRODUCT_CATEGORY,
   LOAN_PURPOSE,
@@ -268,6 +269,10 @@ export const LoanOverview: FC = observer(() => {
           },
           {
             label: `Phone: ${borrowerInfoPhone(borrowerInfo.borrowerPhones)}`,
+            value: '',
+          },
+          {
+            label: `Est. FICO score: ${utils.findLabel(APPLICATION_FICO_SCORE, loanInfo.ficoScore)}`,
             value: '',
           },
         ],

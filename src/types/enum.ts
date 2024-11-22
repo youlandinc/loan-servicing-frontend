@@ -185,3 +185,15 @@ export enum LayoutProductTypeEnum {
   servicing = 'SERVICING_CENTER',
   customer = 'CUSTOMER_CENTER',
 }
+
+export enum LoanFicoScoreEnum {
+  default = '',
+  no_fico = 'NO_FICO',
+  fico_not_available = 'FICO_NOT_AVAILABLE',
+  below_600 = 'BELOW_600',
+  between_600_649 = 'BETWEEN_600_649',
+  between_650_699 = 'BETWEEN_650_699',
+  between_700_749 = 'BETWEEN_700_749',
+  between_750_799 = 'BETWEEN_750_799',
+  above_800 = 'ABOVE_800',
+}

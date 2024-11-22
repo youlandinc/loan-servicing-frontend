@@ -13,17 +13,21 @@ export interface LoanOverviewTimelineProps {
 const COLOR: {
   [key in LoanTimelineStatusEnum]: { bgcolor: string; outline: string };
 } = {
-  [LoanTimelineStatusEnum.paid]: {
+  [LoanTimelineStatusEnum.normal]: {
     bgcolor: 'rgba(9, 157, 153, 0.25)',
     outline: '#73D2D0',
   },
-  [LoanTimelineStatusEnum.paid_late]: {
-    bgcolor: 'rgba(9, 157, 153, 0.25)',
-    outline: '#73D2D0',
+  [LoanTimelineStatusEnum.dq_30]: {
+    bgcolor: 'rgba(251, 149, 50, 0.25)',
+    outline: 'rgba(251, 149, 50, 1)',
   },
-  [LoanTimelineStatusEnum.delinquent]: {
-    bgcolor: 'rgba(222, 125, 73, 0.5)',
-    outline: '#F1996A',
+  [LoanTimelineStatusEnum.dq_60]: {
+    bgcolor: 'rgba(229, 103, 49, 0.5)',
+    outline: 'rgba(229, 103, 49, 1)',
+  },
+  [LoanTimelineStatusEnum.dq_60_plus]: {
+    bgcolor: 'rgba(115, 0, 0, 0.5)',
+    outline: 'rgba(115, 0, 0, 1)',
   },
   [LoanTimelineStatusEnum.future]: {
     bgcolor: 'rgba(217, 217, 217, 1)',
@@ -33,12 +37,20 @@ const COLOR: {
 
 const DEFAULT = [
   {
-    billStatus: LoanTimelineStatusEnum.paid,
+    billStatus: LoanTimelineStatusEnum.normal,
     label: 'Paid',
   },
   {
-    billStatus: LoanTimelineStatusEnum.delinquent,
-    label: 'Delinquent',
+    billStatus: LoanTimelineStatusEnum.dq_30,
+    label: 'DQ 1-30',
+  },
+  {
+    billStatus: LoanTimelineStatusEnum.dq_60,
+    label: 'DQ 31-60',
+  },
+  {
+    billStatus: LoanTimelineStatusEnum.dq_60_plus,
+    label: 'DQ 61+',
   },
   {
     billStatus: LoanTimelineStatusEnum.future,
@@ -56,7 +68,7 @@ const temp1 = {
   principalDue: null,
   paymentModeOn: '2024-06-21',
   description: null,
-  billStatus: LoanTimelineStatusEnum.paid,
+  repaymentStatus: LoanTimelineStatusEnum.normal,
   monthAndYearOfDateDue: 'July 2024',
 };
 
@@ -188,11 +200,11 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
             }
           >
             <Stack
-              bgcolor={COLOR[item.billStatus]?.bgcolor}
+              bgcolor={COLOR[item.repaymentStatus]?.bgcolor}
               height={10}
               sx={{
                 '&:hover': {
-                  outline: `2px solid ${COLOR[item.billStatus]?.outline}`,
+                  outline: `2px solid ${COLOR[item.repaymentStatus]?.outline}`,
                 },
               }}
               width={`calc(100% / ${

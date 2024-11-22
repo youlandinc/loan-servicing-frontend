@@ -1,4 +1,4 @@
-import { PipelineStatusEnum } from '@/types/enum';
+import { LoanFicoScoreEnum, PipelineStatusEnum } from '@/types/enum';
 
 export enum LoanProductCategoryEnum {
   default = '',
@@ -14,10 +14,16 @@ export enum LoanPurposeEnum {
 }
 
 export enum LoanTimelineStatusEnum {
-  delinquent = 'DELINQUENT',
+  normal = 'NORMAL',
+  dq_30 = 'OVERDUE_THIRTY',
+  dq_60 = 'OVERDUE_SIXTY',
+  dq_60_plus = 'OVERDUE_SIXTY_ADD',
   future = 'FUTURE',
+}
+
+export enum PaidStatusEnum {
   paid = 'PAID',
-  paid_late = 'PAID_LATE',
+  unpaid = 'UNPAID',
 }
 
 export enum CommentTypeEnum {
@@ -57,6 +63,7 @@ export interface OverviewLoanInfo {
   loanValue: number;
   loanCost: number;
   investor: string;
+  ficoScore: LoanFicoScoreEnum;
 }
 
 export interface OverviewBorrowerInfo {
@@ -74,7 +81,8 @@ export interface OverviewOutstandingPayAble {
   paymentAmount: number | null;
   principalDue: number | null;
   description: string | null;
-  billStatus: LoanTimelineStatusEnum;
+  repaymentStatus: LoanTimelineStatusEnum;
+  paidStatus: PaidStatusEnum;
   monthAndYearOfDateDue: string | null;
   paymentModeOn: string | null;
   dateDue: string | null;

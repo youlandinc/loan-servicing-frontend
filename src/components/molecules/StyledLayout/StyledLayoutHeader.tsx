@@ -443,7 +443,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                 gap={1.5}
                 key={`${item.label}_${index}`}
                 onClick={async () => {
-                  window.open(item.url, '_blank');
+                  await router.push(item.url);
                   setAnchorElProduct(null);
                 }}
                 p={1.5}

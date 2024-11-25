@@ -99,7 +99,7 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
               key={`timeline-header-${item.label}-${index}`}
             >
               <Stack
-                bgcolor={COLOR[item.billStatus].outline}
+                bgcolor={COLOR[item.billStatus].bgcolor}
                 borderRadius={'50%'}
                 height={8}
                 width={8}

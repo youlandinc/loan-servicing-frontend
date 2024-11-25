@@ -58,7 +58,7 @@ export const LoanPayments: FC = observer(() => {
       {
         label: 'Next due date',
         icon: LOAN_CARD_04,
-        content: utils.formatDate(data.nextPaymentDate, 'dd/MM/yyyy'),
+        content: utils.formatDate(data.nextPaymentDate),
       },
     ]);
   }, []);

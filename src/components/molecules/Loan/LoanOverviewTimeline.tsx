@@ -11,26 +11,35 @@ export interface LoanOverviewTimelineProps {
 }
 
 const COLOR: {
-  [key in LoanTimelineStatusEnum]: { bgcolor: string; outline: string };
+  [key in LoanTimelineStatusEnum]: {
+    bgcolor: string;
+    outline: string;
+    dotColor: string;
+  };
 } = {
   [LoanTimelineStatusEnum.normal]: {
     bgcolor: 'rgba(9, 157, 153, 0.25)',
+    dotColor: 'rgba(9, 157, 153, 0.4)',
     outline: '#73D2D0',
   },
   [LoanTimelineStatusEnum.dq_30]: {
     bgcolor: 'rgba(251, 149, 50, 0.25)',
+    dotColor: 'rgba(251, 149, 50, 0.4)',
     outline: 'rgba(251, 149, 50, 1)',
   },
   [LoanTimelineStatusEnum.dq_60]: {
     bgcolor: 'rgba(229, 103, 49, 0.5)',
+    dotColor: 'rgba(229, 103, 49, 0.65)',
     outline: 'rgba(229, 103, 49, 1)',
   },
   [LoanTimelineStatusEnum.dq_60_plus]: {
     bgcolor: 'rgba(115, 0, 0, 0.5)',
+    dotColor: 'rgba(115, 0, 0, 0.65)',
     outline: 'rgba(115, 0, 0, 1)',
   },
   [LoanTimelineStatusEnum.future]: {
     bgcolor: 'rgba(217, 217, 217, 1)',
+    dotColor: 'rgba(200, 200, 200, 1)',
     outline: '#9095A3',
   },
 };
@@ -99,7 +108,7 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
               key={`timeline-header-${item.label}-${index}`}
             >
               <Stack
-                bgcolor={COLOR[item.billStatus].bgcolor}
+                bgcolor={COLOR[item.billStatus].dotColor}
                 borderRadius={'50%'}
                 height={8}
                 width={8}

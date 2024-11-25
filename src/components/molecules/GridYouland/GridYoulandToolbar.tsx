@@ -125,7 +125,7 @@ export const GridYoulandToolbar: FC = observer(() => {
         value={[...queryModel.searchCondition.prospectiveBuyers]}
       />
 
-      {queryModel.sort.length > 0 && (
+      {queryModel.sort.length === 1 && (
         <SortButton
           handleClear={(e) => {
             e.stopPropagation();

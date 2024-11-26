@@ -57,7 +57,35 @@ export const utils = {
       (Math.floor((target as number) * 1000000) / 1000000).toFixed(radix) + '%'
     );
   },
-
+  formatPercentHundred: (
+    percentageValue: number | undefined | string | null,
+    radix = getRadix(
+      (Math.floor(percentageValue as number) * 100000000) / 1000000,
+    ),
+  ): string => {
+    if (
+      !utils.notUndefined(percentageValue) ||
+      !utils.notNull(percentageValue)
+    ) {
+      return '';
+    }
+    if (!percentageValue) {
+      if (radix === 0) {
+        return '0%';
+      }
+      return '0.00%';
+    }
+    let target = percentageValue;
+    //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    if (this?.TypeOf(target) === 'String') {
+      target = parseFloat(target as string);
+    }
+    return (
+      (Math.floor((target as number) * 100000000) / 1000000).toFixed(radix) +
+      '%'
+    );
+  },
   formatDate: (
     date: string | Date | null,
     timeFormat = 'MM/dd/yyyy',

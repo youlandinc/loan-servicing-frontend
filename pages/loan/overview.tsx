@@ -19,7 +19,7 @@ const LoanOverviewPage = observer(() => {
     <>
       <Head>
         <meta content="YouLand Software Team" name="description" />
-        <meta content="YouLand Point Of Sales System" name="keywords" />
+        <meta content="YouLand Loan Servicing System" name="keywords" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
       <LoginWithToken>

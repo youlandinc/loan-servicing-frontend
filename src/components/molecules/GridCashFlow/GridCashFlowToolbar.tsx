@@ -52,7 +52,7 @@ export const GridCashFlowToolbar: FC = observer(() => {
   );
 
   const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
+    Array<Option & { bgColor: string; color: string }>
   >([]);
 
   useAsync(async () => {
@@ -67,16 +67,18 @@ export const GridCashFlowToolbar: FC = observer(() => {
           value: cur.investorName,
           key: cur.id,
           bgColor: '',
+          color: '',
         });
         return acc;
       },
-      [] as Array<Option & { bgColor: string }>,
+      [] as Array<Option & { bgColor: string; color: string }>,
     );
     temp.unshift({
       label: 'None',
       value: 'None',
       key: NaN,
-      bgColor: '',
+      bgColor: 'transparent',
+      color: '#2B52B6',
     });
     setInvestorData(temp);
   }, [displayType]);

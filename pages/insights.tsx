@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 
 import Head from 'next/head';
 
-const DynamicPortfolio = dynamic(
-  () => import('@/components/organisms/Portfolio').then((mod) => mod.Portfolio),
+const DynamicInsights = dynamic(
+  () => import('@/components/organisms/Insights').then((mod) => mod.Insights),
   {
     ssr: false,
   },
@@ -18,7 +18,7 @@ const PortfolioPage = observer(() => {
         <meta content="YouLand Loan Servicing System" name="keywords" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <DynamicPortfolio />
+      <DynamicInsights />
     </>
   );
 });

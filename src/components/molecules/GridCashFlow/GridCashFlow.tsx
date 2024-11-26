@@ -40,7 +40,7 @@ export const GridCashFlow: FC = observer(() => {
   } = useMst();
 
   const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
+    Array<Option & { bgColor: string; color: string }>
   >([]);
 
   const [headerColumnId, setHeaderColumnId] = useState('');
@@ -85,7 +85,7 @@ export const GridCashFlow: FC = observer(() => {
         });
         return acc;
       },
-      [] as Array<Option & { bgColor: string }>,
+      [] as Array<Option & { bgColor: string; color: string }>,
     );
     temp.unshift({
       label: 'None',

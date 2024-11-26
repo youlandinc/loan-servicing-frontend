@@ -76,6 +76,11 @@ export const LAYOUT_HEADER_TAB = [
     key: 'Portfolio',
     url: '/portfolio',
   },
+  {
+    label: 'Insights',
+    key: 'Insights',
+    url: '/insights',
+  },
 ];
 
 //export const LAYOUT_HEADER_USER = {};

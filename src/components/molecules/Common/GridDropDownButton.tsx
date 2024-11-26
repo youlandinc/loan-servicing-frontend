@@ -18,7 +18,7 @@ import { _updateTableData } from '@/request';
 import LOGO_EXPEND_MORE from '@/components/molecules/GridYouland/logo-expend-more.svg';
 
 interface GridDropDownButtonProps {
-  options?: Array<Option & { bgColor: string }>;
+  options?: Array<Option & { bgColor: string; color: string }>;
   status?: string | null | number;
   cb?: () => Promise<void>;
   paramsKey: string;
@@ -215,7 +215,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
                 <Typography
                   bgcolor={item.bgColor || 'hsla(223, 45%, 72%, .2)'}
                   borderRadius={1}
-                  color={'hsla(223, 45%, 72%, 1)' || '#ffffff'}
+                  color={item.color || 'hsla(223, 45%, 72%, 1)'}
                   height={24}
                   justifyContent={'center'}
                   lineHeight={'24px'}

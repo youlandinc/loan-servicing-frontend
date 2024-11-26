@@ -39,7 +39,7 @@ export const GridYoulandToolbar: FC = observer(() => {
   );
 
   const [investorData, setInvestorData] = useState<
-    Array<Option & { bgColor: string }>
+    Array<Option & { bgColor: string; color: string }>
   >([]);
 
   useAsync(async () => {
@@ -56,16 +56,18 @@ export const GridYoulandToolbar: FC = observer(() => {
           value: cur.investorName,
           key: cur.id,
           bgColor: '',
+          color: '',
         });
         return acc;
       },
-      [] as Array<Option & { bgColor: string }>,
+      [] as Array<Option & { bgColor: string; color: string }>,
     );
     temp.unshift({
       label: 'None',
       value: 'None',
       key: NaN,
-      bgColor: '',
+      bgColor: 'transparent',
+      color: 'rgba(0,0,0,.87)',
     });
     setInvestorData(temp);
   }, [displayType]);

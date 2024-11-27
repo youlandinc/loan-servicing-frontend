@@ -22,7 +22,7 @@ import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
 import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
-import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
+//import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
 
@@ -42,20 +42,20 @@ const GridYoulandToolbar = dynamic(
   { ssr: false },
 );
 
-const GridCashFlow = dynamic(
-  () =>
-    import('@/components/molecules/GridCashFlow').then(
-      (mode) => mode.GridCashFlow,
-    ),
-  { ssr: false },
-);
-const GridCashFlowToolbar = dynamic(
-  () =>
-    import('@/components/molecules/GridCashFlow').then(
-      (mode) => mode.GridCashFlowToolbar,
-    ),
-  { ssr: false },
-);
+//const GridCashFlow = dynamic(
+//  () =>
+//    import('@/components/molecules/GridCashFlow').then(
+//      (mode) => mode.GridCashFlow,
+//    ),
+//  { ssr: false },
+//);
+//const GridCashFlowToolbar = dynamic(
+//  () =>
+//    import('@/components/molecules/GridCashFlow').then(
+//      (mode) => mode.GridCashFlowToolbar,
+//    ),
+//  { ssr: false },
+//);
 
 const GridAlameda = dynamic(
   () =>
@@ -175,13 +175,13 @@ export const Portfolio: FC = observer(() => {
 
   const menus = useMemo(
     () => [
-      {
-        icon: LOGO_CASH_FLOW,
-        label: 'Cash flow',
-        key: PortfolioGridTypeEnum.CASH_FLOW,
-        queryComponent: <GridCashFlowToolbar />,
-        component: <GridCashFlow />,
-      },
+      //{
+      //  icon: LOGO_CASH_FLOW,
+      //  label: 'Cash flow',
+      //  key: PortfolioGridTypeEnum.CASH_FLOW,
+      //  queryComponent: <GridCashFlowToolbar />,
+      //  component: <GridCashFlow />,
+      //},
       {
         icon: LOGO_YOULAND,
         label: 'Youland',

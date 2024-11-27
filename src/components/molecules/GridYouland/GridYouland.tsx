@@ -92,8 +92,8 @@ export const GridYouland: FC = observer(() => {
           label: cur.investorName,
           value: cur.investorName,
           key: cur.id,
-          bgColor: '',
-          color: '',
+          bgColor: cur.bgColor,
+          color: cur.color,
         });
         return acc;
       },

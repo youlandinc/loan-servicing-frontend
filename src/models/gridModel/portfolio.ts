@@ -162,7 +162,10 @@ export const portfolioModel = types
         // eslint-disable-next-line no-console
         console.log(e);
       }
-      self.displayType = config.pageColumn;
+      self.displayType =
+        config.pageColumn === PortfolioGridTypeEnum.CASH_FLOW
+          ? PortfolioGridTypeEnum.YOULAND
+          : config.pageColumn;
     },
   }));
 // .actions((self) => {

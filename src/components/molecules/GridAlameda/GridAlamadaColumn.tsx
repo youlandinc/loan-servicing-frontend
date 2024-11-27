@@ -44,7 +44,7 @@ import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
 
 export const ALAMEDA_COLUMNS = (
   cb?: () => Promise<any>,
-  investorOptions?: Array<Option & { bgColor: string }>,
+  investorOptions?: Array<Option & { bgColor: string; color: string }>,
 ) => {
   return [
     {
@@ -197,7 +197,7 @@ export const ALAMEDA_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -346,7 +346,7 @@ export const ALAMEDA_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();

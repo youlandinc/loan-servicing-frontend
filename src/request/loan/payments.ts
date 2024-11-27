@@ -26,7 +26,9 @@ export const _updateOrCreatePaymentData = (params: {
   dataReceivedTime: string;
   dateDue: string;
   paymentMethod: PaymentMethod | undefined;
-  totalPmt: number | undefined;
+  defaultInterestReceived: number | undefined;
+  lateChargesPaid: number | undefined;
+  waivedLateCharges: number | undefined;
   nsf: LoanAnswerEnum | undefined;
   loanId: string;
 }) => {

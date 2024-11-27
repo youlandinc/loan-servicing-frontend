@@ -71,13 +71,17 @@ export const LoanPaymentsGrid: FC<{
     dataReceivedTime: string | null | Date;
     dateDue: string;
     paymentMethod: PaymentMethod | undefined;
-    totalPmt: number | undefined;
+    defaultInterestReceived: number | undefined;
+    lateChargesPaid: number | undefined;
+    waivedLateCharges: number | undefined;
     nsf: LoanAnswerEnum;
   }>({
     dataReceivedTime: null,
     dateDue: '',
     paymentMethod: PaymentMethod.ach,
-    totalPmt: undefined,
+    defaultInterestReceived: undefined,
+    lateChargesPaid: undefined,
+    waivedLateCharges: undefined,
     nsf: LoanAnswerEnum.no,
     id: undefined,
   });
@@ -327,7 +331,9 @@ export const LoanPaymentsGrid: FC<{
       dataReceivedTime: null,
       dateDue: '',
       paymentMethod: PaymentMethod.ach,
-      totalPmt: undefined,
+      defaultInterestReceived: undefined,
+      lateChargesPaid: undefined,
+      waivedLateCharges: undefined,
       nsf: LoanAnswerEnum.no,
       id: undefined,
     });
@@ -346,7 +352,9 @@ export const LoanPaymentsGrid: FC<{
           'yyyy-MM-dd',
         ),
         paymentMethod: formData.paymentMethod,
-        totalPmt: formData.totalPmt,
+        defaultInterestReceived: formData.defaultInterestReceived,
+        lateChargesPaid: formData.lateChargesPaid,
+        waivedLateCharges: formData.waivedLateCharges,
         nsf: formData.nsf,
         loanId: utils.getParamsFromUrl(location.href).loanId as string,
       };
@@ -375,7 +383,9 @@ export const LoanPaymentsGrid: FC<{
       formData.dataReceivedTime,
       formData.dateDue,
       formData.paymentMethod,
-      formData.totalPmt,
+      formData.defaultInterestReceived,
+      formData.lateChargesPaid,
+      formData.waivedLateCharges,
       formData.nsf,
       enqueueSnackbar,
       onClickToClose,
@@ -498,6 +508,16 @@ export const LoanPaymentsGrid: FC<{
             />
           </Stack>
           <Stack gap={3}>
+            <StyledTextFieldInput
+              disabled
+              label={'Date due'}
+              onChange={() => {
+                return;
+              }}
+              value={formData.dateDue ? formData.dateDue : dateDue}
+              variant={'outlined'}
+            />
+
             <StyledDatePicker
               disableFuture
               label={'Date received'}
@@ -508,16 +528,6 @@ export const LoanPaymentsGrid: FC<{
                 });
               }}
               value={formData.dataReceivedTime as Date | null}
-            />
-
-            <StyledTextFieldInput
-              disabled
-              label={'Date due'}
-              onChange={() => {
-                return;
-              }}
-              value={formData.dateDue ? formData.dateDue : dateDue}
-              variant={'outlined'}
             />
 
             <StyledSelect
@@ -533,15 +543,39 @@ export const LoanPaymentsGrid: FC<{
             />
 
             <StyledTextFieldNumber
-              label={'Payment amount'}
+              label={'Interest received'}
               onValueChange={({ floatValue }) => {
                 setFormData({
                   ...formData,
-                  totalPmt: floatValue,
+                  defaultInterestReceived: floatValue,
                 });
               }}
               prefix={'$'}
-              value={formData.totalPmt}
+              value={formData.defaultInterestReceived}
+            />
+
+            <StyledTextFieldNumber
+              label={'Late charges received'}
+              onValueChange={({ floatValue }) => {
+                setFormData({
+                  ...formData,
+                  lateChargesPaid: floatValue,
+                });
+              }}
+              prefix={'$'}
+              value={formData.lateChargesPaid}
+            />
+
+            <StyledTextFieldNumber
+              label={'Waived late charges'}
+              onValueChange={({ floatValue }) => {
+                setFormData({
+                  ...formData,
+                  waivedLateCharges: floatValue,
+                });
+              }}
+              prefix={'$'}
+              value={formData.waivedLateCharges}
             />
 
             <StyledCheckbox
@@ -568,7 +602,7 @@ export const LoanPaymentsGrid: FC<{
                 disabled={
                   !isValid(formData.dataReceivedTime) ||
                   !formData.paymentMethod ||
-                  !formData.totalPmt ||
+                  !formData.defaultInterestReceived ||
                   editLoading
                 }
                 loading={editLoading}

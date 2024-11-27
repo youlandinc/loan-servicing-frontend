@@ -238,7 +238,8 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                   <Stack
                     className={
                       router.pathname === item.url ||
-                      router.pathname.includes('loan')
+                      (router.pathname.includes('loan') &&
+                        item.key === 'Portfolio')
                         ? 'active'
                         : ''
                     }
@@ -249,7 +250,6 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                     height={'100%'}
                     justifyContent={'center'}
                     key={`${item.label}_${index}`}
-                    mx={3}
                     onClick={() => router.push(item.url)}
                     position={'relative'}
                     sx={{

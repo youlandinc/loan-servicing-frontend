@@ -37,7 +37,7 @@ import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
 
 export const CASH_FLOW_COLUMNS = (
   cb?: () => Promise<any>,
-  investorOptions?: Array<Option & { bgColor: string }>,
+  investorOptions?: Array<Option & { bgColor: string; color: string }>,
 ) => {
   return [
     {

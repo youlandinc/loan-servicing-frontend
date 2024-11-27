@@ -94,7 +94,9 @@ export const LoanPaymentsGrid: FC<{
 
   const [dateDue, setDateDue] = useState('');
 
-  useAsync(async () => {
+  useAsync(async () => await fetchDueDate(), []);
+
+  const fetchDueDate = async () => {
     const { loanId } = utils.getParamsFromUrl(location.href);
     if (!loanId) {
       return;
@@ -123,7 +125,7 @@ export const LoanPaymentsGrid: FC<{
         header,
       });
     }
-  }, []);
+  };
 
   const fetchData = async (page: number, size: number) => {
     const { loanId } = utils.getParamsFromUrl(location.href);
@@ -160,12 +162,15 @@ export const LoanPaymentsGrid: FC<{
         ),
       );
       const list = data?.content || [];
+
       if (list.length > 0) {
         list.push(last);
-        setList(list);
         table.setRowSelection({ '-1': true });
         table.setRowPinning({ bottom: ['-1'] });
       }
+
+      setList(list);
+
       setPage({
         number: data.page.number + 1,
         size: data.page.size,
@@ -361,7 +366,6 @@ export const LoanPaymentsGrid: FC<{
       setEditLoading(true);
       try {
         await _updateOrCreatePaymentData(postData);
-        await fetchData(0, 50);
         await cb?.();
       } catch (err) {
         const { header, message, variant } = err as HttpError;
@@ -374,6 +378,8 @@ export const LoanPaymentsGrid: FC<{
       } finally {
         setEditLoading(false);
         onClickToClose();
+        await fetchDueDate();
+        await fetchData(0, 50);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -707,7 +713,10 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                         'MM/dd/yyyy',
                       ),
                       paymentMethod: row.original.paymentMethod,
-                      totalPmt: row.original.totalPmt,
+                      defaultInterestReceived:
+                        row.original.defaultInterestReceived,
+                      lateChargesPaid: row.original.lateChargesPaid,
+                      waivedLateCharges: row.original.waivedLateCharges,
                       nsf: row.original.nsf,
                       id: row.original.id,
                     });

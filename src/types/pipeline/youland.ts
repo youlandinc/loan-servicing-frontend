@@ -42,6 +42,8 @@ export type GridCashFlowItem = GridItemProps;
 export interface GridInvestorItem {
   id: number;
   investorName: string;
+  color: string;
+  bgColor: string;
 }
 
 interface GridSummaryProps {

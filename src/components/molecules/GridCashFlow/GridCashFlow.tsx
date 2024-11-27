@@ -81,7 +81,8 @@ export const GridCashFlow: FC = observer(() => {
           label: cur.investorName,
           value: cur.investorName,
           key: cur.id,
-          bgColor: '',
+          bgColor: cur.bgColor,
+          color: cur.color,
         });
         return acc;
       },
@@ -91,7 +92,8 @@ export const GridCashFlow: FC = observer(() => {
       label: 'None',
       value: 'None',
       key: NaN,
-      bgColor: '',
+      bgColor: 'transparent',
+      color: 'rgba(0,0,0,.87)',
     });
     setInvestorData(temp);
   }, [displayType]);

@@ -247,7 +247,7 @@ export const LoanExtensionRequest: FC = () => {
                   />
                   <StyledTextFieldNumber
                     decimalScale={3}
-                    label={'Change the interest rate to:'}
+                    label={'Change the interest to'}
                     onValueChange={(values) => {
                       setChangeRate(values.floatValue ?? 0);
                     }}

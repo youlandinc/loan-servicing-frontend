@@ -68,7 +68,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
               'hsla(223, 45%, 72%, .2)'
             : 'transparent',
           color: condition
-            ? options.find((item) => item.label === status)?.bgColor ||
+            ? options.find((item) => item.label === status)?.color ||
               'hsla(223, 45%, 72%, 1)'
             : '#2B52B6',
           textDecoration: condition ? 'none' : 'underline',
@@ -80,7 +80,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
         <Typography
           color={
             condition
-              ? options.find((item) => item.label === status)?.bgColor ||
+              ? options.find((item) => item.label === status)?.color ||
                 'hsla(223, 45%, 72%, 1)'
               : '#2B52B6'
           }

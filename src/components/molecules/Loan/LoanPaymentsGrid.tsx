@@ -93,6 +93,7 @@ export const LoanPaymentsGrid: FC<{
   }, []);
 
   const [dateDue, setDateDue] = useState('');
+  const [dateDueOpts, setDateDueOpts] = useState<Option[]>([]);
 
   useAsync(async () => await fetchDueDate(), []);
 
@@ -107,7 +108,6 @@ export const LoanPaymentsGrid: FC<{
         const index = arr.findIndex(
           (item) => item.paidStatus === PaidStatusEnum.unpaid,
         );
-
         return index === -1
           ? format(
               new Date(arr[arr.length - 1].dateDue as string),
@@ -115,6 +115,16 @@ export const LoanPaymentsGrid: FC<{
             )
           : format(new Date(arr[index].dateDue as string), 'MM/dd/yyyy');
       };
+
+      setDateDueOpts(
+        (data as OverviewRepaymentTimeLine[])
+          .filter((item) => item.paidStatus === PaidStatusEnum.unpaid)
+          .map((item) => ({
+            label: item.formatterDateDue,
+            value: item.formatterDateDue,
+            key: item.formatterDateDue,
+          })),
+      );
       setDateDue(handler(data));
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -126,7 +136,6 @@ export const LoanPaymentsGrid: FC<{
       });
     }
   };
-
   const fetchData = async (page: number, size: number) => {
     const { loanId } = utils.getParamsFromUrl(location.href);
     if (!loanId) {
@@ -514,12 +523,15 @@ export const LoanPaymentsGrid: FC<{
             />
           </Stack>
           <Stack gap={3}>
-            <StyledTextFieldInput
-              disabled
+            <StyledSelect
               label={'Date due'}
-              onChange={() => {
-                return;
+              onChange={(value) => {
+                setFormData({
+                  ...formData,
+                  dateDue: value.target.value as string,
+                });
               }}
+              options={dateDueOpts}
               value={formData.dateDue ? formData.dateDue : dateDue}
               variant={'outlined'}
             />
@@ -708,10 +720,10 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                       dataReceivedTime: row.original.dataReceivedTime
                         ? new Date(row.original.dataReceivedTime)
                         : null,
-                      dateDue: format(
-                        new Date(row.original.dateDue as string),
-                        'MM/dd/yyyy',
-                      ),
+                      // dateDue: format(
+                      //   new Date(row.original.dateDue as string),
+                      //   'MM/dd/yyyy',
+                      // ),
                       paymentMethod: row.original.paymentMethod,
                       defaultInterestReceived:
                         row.original.defaultInterestReceived,

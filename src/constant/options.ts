@@ -365,12 +365,12 @@ export const MaturityTypeOpt: Option[] = [
 
 export const ExtensionPaidTypeOpt: Option[] = [
   {
-    label: 'Upfront',
+    label: 'At time of signing',
     key: ExtensionPaidTypeEnum.Upfront,
     value: ExtensionPaidTypeEnum.Upfront,
   },
   {
-    label: 'Deferred',
+    label: 'At payoff',
     key: ExtensionPaidTypeEnum.Deferred,
     value: ExtensionPaidTypeEnum.Deferred,
   },

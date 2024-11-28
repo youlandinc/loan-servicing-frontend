@@ -87,6 +87,7 @@ export interface OverviewOutstandingPayAble {
   paymentModeOn: string | null;
   dateDue: string | null;
   dateReceived: null | string;
+  formatterDateDue: string;
 }
 
 export type OverviewRepaymentTimeLine = OverviewOutstandingPayAble;

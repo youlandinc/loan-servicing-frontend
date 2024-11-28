@@ -45,7 +45,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   const [text, setText] = useState(value ?? 0);
 
   useEffect(() => {
-    if (utils.notUndefined(value) && value) {
+    if (typeof value === 'number' || typeof value === 'string') {
       if (thousandSeparator) {
         setText(
           percentage

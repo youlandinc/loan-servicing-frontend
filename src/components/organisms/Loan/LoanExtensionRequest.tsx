@@ -1,4 +1,18 @@
-import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Fade,
+  Icon,
+  IconButton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -20,6 +34,7 @@ import { useRenderPdf, useSwitch } from '@/hooks';
 
 import {
   _createExtensionPdf,
+  _deleteExtensionFile,
   _downloadExtensionPdf,
   _extensionConfirm,
   _getExtensionInfo,
@@ -29,6 +44,9 @@ import { ExtensionPaidTypeEnum, MaturityDateTypeEnum } from '@/types/enum';
 
 import { IGetExtensionPdfParam } from '@/types/loan/extension';
 import { createFile, utils } from '@/utils';
+
+import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
+import ICON_DELETE from '@/svg/loan/extension/extension_delete.svg';
 
 export const LoanExtensionRequest: FC = () => {
   const router = useRouter();
@@ -47,6 +65,7 @@ export const LoanExtensionRequest: FC = () => {
   const [downloadId, setDownloadId] = useState<number | null>(null);
   const [init, setInit] = useState(false);
   const { visible, open, close } = useSwitch();
+  const [index, setIndex] = useState(0);
 
   const {
     visible: confirmShow,
@@ -58,7 +77,9 @@ export const LoanExtensionRequest: FC = () => {
     return typeof loanId === 'string'
       ? await _getExtensionInfo(parseInt(loanId as string))
           .then((res) => {
-            setDownloadId(res.data.downloadId);
+            if (typeof res.data.genAgreement?.id === 'number') {
+              setDownloadId(res.data.genAgreement.id);
+            }
             if (res.data.paidMode) {
               setPaidType(res.data.paidMode);
             }
@@ -114,7 +135,7 @@ export const LoanExtensionRequest: FC = () => {
   );
 
   const [confirmState, extensionConfirm] = useAsyncFn(
-    async (param: IGetExtensionPdfParam) => {
+    async (param: IGetExtensionPdfParam & { id: number }) => {
       if (!formRef.current?.reportValidity()) {
         return;
       }
@@ -137,6 +158,7 @@ export const LoanExtensionRequest: FC = () => {
     if (typeof downloadId !== 'number') {
       return;
     }
+    open();
     return await _viewExtensionPdf(downloadId)
       .then((res) => {
         setTimeout(() => {
@@ -148,34 +170,50 @@ export const LoanExtensionRequest: FC = () => {
       });
   }, [downloadId]);
 
-  const [downloadState, downloadExtensionPdf] = useAsyncFn(async () => {
-    if (typeof downloadId !== 'number') {
-      return;
-    }
-    await _downloadExtensionPdf(downloadId)
-      .then((res) => {
-        const fileName = res.headers['content-disposition']
-          .split(';')[1]
-          .split('filename=')[1];
-        const blob = new Blob([res.data], {
-          type: 'application/octet-stream',
+  const [downloadState, downloadExtensionPdf] = useAsyncFn(
+    async (downloadId: number) => {
+      await _downloadExtensionPdf(downloadId)
+        .then((res) => {
+          const fileName = res.headers['content-disposition']
+            .split(';')[1]
+            .split('filename=')[1];
+          const blob = new Blob([res.data], {
+            type: 'application/octet-stream',
+          });
+          createFile(blob, fileName);
+        })
+        .catch(({ message, variant, header }) => {
+          enqueueSnackbar(message, { variant, isSimple: !header, header });
         });
-        createFile(blob, fileName);
-      })
-      .catch(({ message, variant, header }) => {
-        enqueueSnackbar(message, { variant, isSimple: !header, header });
-      });
-  }, [downloadId]);
-  return !init ? (
-    <Stack
-      alignItems={'center'}
-      height={'100%'}
-      justifyContent={'center'}
-      width={'100%'}
-    >
-      <CircularProgress sx={{ color: '#E3E3EE' }} />
-    </Stack>
-  ) : (
+    },
+    [],
+  );
+
+  const [deleteExtensionFileState, deleteExtensionFile] = useAsyncFn(
+    async (downloadId: number) => {
+      await _deleteExtensionFile(downloadId).catch(
+        ({ message, variant, header }) => {
+          enqueueSnackbar(message, { variant, isSimple: !header, header });
+        },
+      );
+    },
+    [],
+  );
+
+  if (!init) {
+    return (
+      <Stack
+        alignItems={'center'}
+        height={'100%'}
+        justifyContent={'center'}
+        width={'100%'}
+      >
+        <CircularProgress sx={{ color: '#E3E3EE' }} />
+      </Stack>
+    );
+  }
+
+  return (
     <Fade in={!!value?.data}>
       <Box overflow={'auto'}>
         <Stack direction={'row'} justifyContent={'center'} p={6}>
@@ -295,59 +333,192 @@ export const LoanExtensionRequest: FC = () => {
               >
                 Generate agreement
               </StyledButton>
-              <Fade
-                in={
-                  typeof value?.data?.createdTime === 'string' &&
-                  typeof downloadId === 'number'
-                }
-              >
-                <Box
-                  color={'primary.main'}
-                  component={'a'}
-                  fontSize={18}
-                  onClick={async () => {
-                    open();
-                    await viewExtensionPdf();
-                  }}
-                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  width={'fit-content'}
-                >
-                  Extension agreement -{' '}
-                  {utils.formatDate(value?.data?.createdTime, 'MM/d/yyyy')}
-                </Box>
-              </Fade>
-              <Fade
-                in={
-                  typeof value?.data?.createdTime === 'string' &&
-                  typeof downloadId === 'number'
-                }
-              >
-                <Box>
-                  <StyledButton
-                    color={'error'}
-                    loading={confirmState.loading}
+              {!!value?.data?.genAgreement?.executionDate && (
+                <Fade in={!!value?.data?.genAgreement?.executionDate}>
+                  <Box
+                    color={'primary.main'}
+                    component={'a'}
+                    fontSize={18}
                     onClick={async () => {
-                      if (executionDate !== null) {
-                        await extensionConfirm({
-                          loanId: parseInt(loanId as string),
-                          extendMonth: maturityDate,
-                          extensionFee,
-                          changeInterestRate: changeRate,
-                          executionDate: format(executionDate, 'yyyy-MM-dd'),
-                          maturityDate: value.data.maturityDate,
-                          extensionFeeAmount: 0,
-                          paidMode: paidType,
-                        });
-                      }
+                      await viewExtensionPdf();
                     }}
-                    size={'small'}
-                    sx={{ alignSelf: 'flex-start', width: 193 }}
-                    variant={'contained'}
+                    sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                    width={'fit-content'}
                   >
-                    Confirm loan extension
-                  </StyledButton>
-                </Box>
-              </Fade>
+                    Extension agreement -{' '}
+                    {utils.formatDate(
+                      value?.data?.genAgreement?.executionDate,
+                      'MM/d/yyyy',
+                    )}
+                  </Box>
+                </Fade>
+              )}
+              {Array.isArray(value?.data?.confirmAgreements) &&
+                !!value.data.confirmAgreements.length && (
+                  <Fade
+                    in={
+                      Array.isArray(value?.data?.confirmAgreements) &&
+                      !!value.data.confirmAgreements.length
+                    }
+                  >
+                    <TableContainer
+                      component={Box}
+                      style={{ borderRadius: 8, border: '1px solid #E4E7EF' }}
+                    >
+                      <Table>
+                        <TableHead
+                          sx={{
+                            bgcolor: '#F4F6FA',
+                            '& .MuiTableCell-root': {
+                              border: 'none',
+                            },
+                          }}
+                        >
+                          <TableRow
+                            sx={{
+                              '& .MuiTableCell-root': {
+                                py: 1.5,
+                              },
+                            }}
+                          >
+                            <TableCell
+                              align="left"
+                              style={{ paddingLeft: 24, paddingRight: 0 }}
+                            >
+                              <Typography
+                                color={'info.main'}
+                                variant={'subtitle2'}
+                              >
+                                Description
+                              </Typography>
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              style={{ paddingLeft: 0, paddingRight: 24 }}
+                              width={120}
+                            >
+                              <Typography
+                                borderLeft={'1px solid #D2D6E1'}
+                                color={'info.main'}
+                                variant={'subtitle2'}
+                              >
+                                Actions
+                              </Typography>
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody
+                          sx={{
+                            '& .MuiTableCell-root': {
+                              border: 'none',
+                            },
+                          }}
+                        >
+                          {value?.data?.confirmAgreements.map((row, i) => (
+                            <TableRow key={row.id}>
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                style={{ paddingLeft: 24, paddingRight: 0 }}
+                              >
+                                Extension agreement -{' '}
+                                {utils.formatDate(
+                                  row.executionDate,
+                                  'MM/d/yyyy',
+                                )}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                style={{ paddingLeft: 0, paddingRight: 24 }}
+                              >
+                                <Stack
+                                  borderLeft={'1px solid #D2D6E1'}
+                                  flexDirection={'row'}
+                                  gap={1.25}
+                                  justifyContent={'center'}
+                                >
+                                  <IconButton
+                                    onClick={async () => {
+                                      setIndex(i);
+                                      await downloadExtensionPdf(row.id);
+                                    }}
+                                    sx={{ p: 0 }}
+                                  >
+                                    {downloadState.loading && index === i ? (
+                                      <CircularProgress
+                                        style={{ width: 20, height: 20 }}
+                                        sx={{ color: '#E3E3EE' }}
+                                      />
+                                    ) : (
+                                      <Icon
+                                        component={ICON_DOWNLOAD}
+                                        sx={{ width: 20, height: 20 }}
+                                      />
+                                    )}
+                                  </IconButton>
+                                  <IconButton
+                                    onClick={async () => {
+                                      setIndex(i);
+                                      await deleteExtensionFile(row.id);
+                                      retry();
+                                    }}
+                                    sx={{ p: 0 }}
+                                  >
+                                    {deleteExtensionFileState.loading &&
+                                    index === i ? (
+                                      <CircularProgress
+                                        style={{ width: 20, height: 20 }}
+                                        sx={{ color: '#E3E3EE' }}
+                                      />
+                                    ) : (
+                                      <Icon
+                                        component={ICON_DELETE}
+                                        sx={{ width: 20, height: 20 }}
+                                      />
+                                    )}
+                                  </IconButton>
+                                </Stack>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Fade>
+                )}
+              {!!value?.data?.genAgreement?.executionDate && (
+                <Fade in={!!value?.data?.genAgreement?.executionDate}>
+                  <Box>
+                    <StyledButton
+                      color={'error'}
+                      loading={confirmState.loading}
+                      onClick={async () => {
+                        if (
+                          executionDate !== null &&
+                          typeof value?.data?.genAgreement?.id === 'number'
+                        ) {
+                          await extensionConfirm({
+                            loanId: parseInt(loanId as string),
+                            extendMonth: maturityDate,
+                            extensionFee,
+                            changeInterestRate: changeRate,
+                            executionDate: format(executionDate, 'yyyy-MM-dd'),
+                            maturityDate: value.data.maturityDate,
+                            extensionFeeAmount: 0,
+                            paidMode: paidType,
+                            id: value.data.genAgreement.id,
+                          });
+                        }
+                      }}
+                      size={'small'}
+                      sx={{ alignSelf: 'flex-start', width: 193 }}
+                      variant={'contained'}
+                    >
+                      Confirm loan extension
+                    </StyledButton>
+                  </Box>
+                </Fade>
+              )}
             </Stack>
           )}
         </Stack>
@@ -381,7 +552,11 @@ export const LoanExtensionRequest: FC = () => {
               <StyledButton
                 color={'primary'}
                 loading={downloadState.loading}
-                onClick={downloadExtensionPdf}
+                onClick={async () => {
+                  if (typeof downloadId === 'number') {
+                    await downloadExtensionPdf(downloadId);
+                  }
+                }}
                 size={'small'}
                 sx={{ width: 110 }}
               >
@@ -420,7 +595,11 @@ export const LoanExtensionRequest: FC = () => {
               <StyledButton
                 color={'error'}
                 loading={downloadState.loading}
-                onClick={downloadExtensionPdf}
+                onClick={async () => {
+                  if (typeof downloadId === 'number') {
+                    await downloadExtensionPdf(downloadId);
+                  }
+                }}
                 size={'small'}
                 sx={{ width: 110 }}
               >

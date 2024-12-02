@@ -34,7 +34,7 @@ export interface IExtensionInfo {
   createdTime: string | null;
   paidMode: ExtensionPaidTypeEnum | null;
   extensionFee: number | null;
-  executionData: string | null;
+  executionDate: string | null;
   confirmAgreements: ExtensionDocItem[];
   genAgreement: ExtensionDocItem;
 }

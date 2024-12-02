@@ -294,6 +294,7 @@ export const LoanExtensionRequest: FC = () => {
                     value={changeRate}
                   />
                   <StyledDatePicker
+                    disableFuture={false}
                     label={'Execution date'}
                     onChange={(value) => {
                       setExtensionDate(value);

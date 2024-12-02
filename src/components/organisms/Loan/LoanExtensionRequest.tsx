@@ -86,8 +86,8 @@ export const LoanExtensionRequest: FC = () => {
             if (typeof res.data.extensionFee === 'number') {
               setExtensionFee(res.data.extensionFee);
             }
-            if (typeof res.data.executionData === 'string') {
-              setExtensionDate(new Date(res.data.executionData));
+            if (typeof res.data.executionDate === 'string') {
+              setExtensionDate(new Date(res.data.executionDate));
             }
             setInit(true);
             return res;

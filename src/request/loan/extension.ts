@@ -1,5 +1,5 @@
 import { IExtensionInfo, IGetExtensionPdfParam } from '@/types/loan/extension';
-import { get, post } from '../axios';
+import { del, get, post } from '../axios';
 
 export const _getExtensionInfo = (loanId: number) => {
   return get<IExtensionInfo>('/servicing/extension/base', {
@@ -24,4 +24,8 @@ export const _downloadExtensionPdf = (downloadId: number) => {
 
 export const _extensionConfirm = (param: IGetExtensionPdfParam) => {
   return post('/servicing/extension/confirm', param);
+};
+
+export const _deleteExtensionFile = (id: number) => {
+  return del(`/servicing/extension/${id}`);
 };

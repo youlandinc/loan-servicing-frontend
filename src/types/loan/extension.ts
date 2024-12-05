@@ -4,6 +4,23 @@ import {
   PipelineStatusEnum,
 } from '@/types/enum';
 
+export type ExtensionDocItem = {
+  id: number;
+  loanId: number;
+  // "extendMonth": "EXTEND_THREE",
+  currentInterestRate: number;
+  totalLoanAmount: number;
+  defaultRate: number;
+  extensionFee: number;
+  extensionFeeAmount: number;
+  changeInterestRate: number;
+  executionDate: string;
+  maturityDate: string;
+  // "paidMode": "UPFRONT",
+  createdTime: string;
+  createdBy: string;
+};
+
 export interface IExtensionInfo {
   downloadId: number | null;
   loanId: number;
@@ -17,7 +34,9 @@ export interface IExtensionInfo {
   createdTime: string | null;
   paidMode: ExtensionPaidTypeEnum | null;
   extensionFee: number | null;
-  executionData: string | null;
+  executionDate: string | null;
+  confirmAgreements: ExtensionDocItem[];
+  genAgreement: ExtensionDocItem;
 }
 
 export interface IGetExtensionPdfParam {

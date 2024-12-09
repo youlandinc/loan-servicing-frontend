@@ -115,7 +115,7 @@ export const Insights: FC = observer(() => {
       const { data: tableData } = await _getAllGridConfig();
       store.portfolio.injectConfig(tableData);
       const result = data.reduce((acc, cur) => {
-        if (cur) {
+        if (cur && cur.insightsStatus !== InsightsEnum.dq_1_30) {
           acc.push({
             ...cur,
             id: MAP[cur.insightsStatus].label,
@@ -299,7 +299,11 @@ export const Insights: FC = observer(() => {
               )}
             </Stack>
 
-            <Stack width={'calc(100% - 396px)'}>
+            <Stack
+              alignSelf={'center'}
+              height={300}
+              width={'calc(100% - 396px)'}
+            >
               <InsightsTable
                 insightsTableData={insightsData}
                 loading={loading}

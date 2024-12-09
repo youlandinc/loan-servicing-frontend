@@ -1,9 +1,23 @@
-import { FC, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import React, { FC, useState } from 'react';
+import {
+  Box,
+  Icon,
+  LinearProgress,
+  Skeleton,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 import { useAsync } from 'react-use';
-import { ResponsivePie } from '@nivo/pie';
+import { PieTooltipProps, ResponsivePie } from '@nivo/pie';
 import { PieCustomLayerProps } from '@nivo/pie/dist/types/types';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColDef,
+  gridColumnPositionsSelector,
+  gridColumnsTotalWidthSelector,
+  useGridApiContext,
+} from '@mui/x-data-grid';
 import { utils } from '@/utils';
 import Router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -25,6 +39,8 @@ import { PortfolioGridTypeEnum } from '@/types/enum';
 import { HttpError } from '@/types/common';
 import { _getAllGridConfig, setDisplayType } from '@/request';
 import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
+
+import ICON_PIE from './assets/icon_pie.svg';
 
 const LegendProps = {
   translateX: 8,
@@ -156,118 +172,138 @@ export const Insights: FC = observer(() => {
 
           <Stack flexDirection={'row'} gap={12}>
             <Stack height={350} width={300}>
-              <ResponsivePie
-                activeId={activeId}
-                activeOuterRadiusOffset={12}
-                borderColor={{
-                  from: 'color',
-                  modifiers: [['darker', 0.2]],
-                }}
-                borderWidth={1}
-                colors={SeriesColors}
-                cornerRadius={3}
-                data={insightsData}
-                enableArcLabels={false}
-                enableArcLinkLabels={false}
-                innerRadius={0.7}
-                layers={[
-                  'arcs',
-                  'arcLabels',
-                  'arcLinkLabels',
-                  'legends',
-                  CustomerPie(activeId),
-                ]}
-                legends={[
-                  insightsData.length <= 3
-                    ? {
-                        ...LegendProps,
-                        anchor: 'bottom',
-                        direction: 'row',
-                        itemDirection: 'left-to-right',
-                        symbolShape: 'circle',
-                        translateY: 40,
-                        onClick: (data) => {
-                          if (activeId === data.id) {
-                            return setActiveId('');
-                          }
-                          setActiveId(data.id);
-                        },
-                        effects: [
-                          {
-                            on: 'hover',
-                            style: {
-                              itemTextColor: 'rgba(0,0,0,.34)',
-                            },
+              {loading ? (
+                <Stack height={'100%'} width={'100%'}>
+                  <Icon
+                    component={ICON_PIE}
+                    sx={{
+                      width: 252,
+                      height: 252,
+                      mx: 'auto',
+                      mt: 2.45,
+                    }}
+                  />
+                  <Skeleton sx={{ mt: 2.5 }} />
+                  <Skeleton />
+                </Stack>
+              ) : (
+                <ResponsivePie
+                  activeId={activeId}
+                  activeOuterRadiusOffset={12}
+                  borderColor={{
+                    from: 'color',
+                    modifiers: [['darker', 0.2]],
+                  }}
+                  borderWidth={1}
+                  colors={SeriesColors}
+                  cornerRadius={3}
+                  data={insightsData}
+                  enableArcLabels={false}
+                  enableArcLinkLabels={false}
+                  innerRadius={0.7}
+                  layers={[
+                    'arcs',
+                    'arcLabels',
+                    'arcLinkLabels',
+                    'legends',
+                    CustomerPie(activeId),
+                  ]}
+                  legends={[
+                    insightsData.length <= 3
+                      ? {
+                          ...LegendProps,
+                          anchor: 'bottom',
+                          direction: 'row',
+                          itemDirection: 'left-to-right',
+                          symbolShape: 'circle',
+                          translateY: 40,
+                          onClick: (data) => {
+                            if (activeId === data.id) {
+                              return setActiveId('');
+                            }
+                            setActiveId(data.id);
                           },
-                        ],
-                      }
-                    : {
-                        ...LegendProps,
-                        anchor: 'bottom',
-                        direction: 'row',
-                        itemDirection: 'left-to-right',
-                        symbolShape: 'circle',
-                        translateY: 40,
-                        onClick: (data) => {
-                          if (activeId === data.id) {
-                            return setActiveId('');
-                          }
-                          setActiveId(data.id);
-                        },
+                          effects: [
+                            {
+                              on: 'hover',
+                              style: {
+                                itemTextColor: 'rgba(0,0,0,.34)',
+                              },
+                            },
+                          ],
+                        }
+                      : {
+                          ...LegendProps,
+                          anchor: 'bottom',
+                          direction: 'row',
+                          itemDirection: 'left-to-right',
+                          symbolShape: 'circle',
+                          translateY: 40,
+                          onClick: (data) => {
+                            if (activeId === data.id) {
+                              return setActiveId('');
+                            }
+                            setActiveId(data.id);
+                          },
 
-                        data: insightsData
-                          .slice(0, Math.floor(insightsData.length / 2))
-                          .map((cur, index) => ({
-                            id: cur.id,
-                            label: cur.id,
-                            color: SeriesColors.slice(
-                              0,
-                              Math.floor(insightsData.length / 2),
-                            )[index],
-                          })),
-                      },
-                  {
-                    ...LegendProps,
-                    anchor: 'bottom',
-                    direction: 'row',
-                    itemDirection: 'left-to-right',
-                    symbolShape: 'circle',
-                    translateY: 64,
-                    onClick: (data) => {
-                      if (activeId === data.id) {
-                        return setActiveId('');
-                      }
-                      setActiveId(data.id);
-                    },
-                    effects: [
-                      {
-                        on: 'hover',
-                        style: {
-                          itemTextColor: 'rgba(0,0,0,.34)',
+                          data: insightsData
+                            .slice(0, Math.floor(insightsData.length / 2))
+                            .map((cur, index) => ({
+                              id: cur.id,
+                              label: cur.id,
+                              color: SeriesColors.slice(
+                                0,
+                                Math.floor(insightsData.length / 2),
+                              )[index],
+                            })),
                         },
+                    {
+                      ...LegendProps,
+                      anchor: 'bottom',
+                      direction: 'row',
+                      itemDirection: 'left-to-right',
+                      symbolShape: 'circle',
+                      translateY: 64,
+                      onClick: (data) => {
+                        if (activeId === data.id) {
+                          return setActiveId('');
+                        }
+                        setActiveId(data.id);
                       },
-                    ],
-                    data: insightsData
-                      .slice(Math.floor(insightsData.length / 2))
-                      .map((cur, index) => ({
-                        id: cur.id,
-                        label: cur.id,
-                        color: SeriesColors.slice(
-                          Math.floor(insightsData.length / 2),
-                        )[index],
-                      })),
-                  },
-                ]}
-                margin={{ top: 24, bottom: 72, left: 24, right: 24 }}
-                onClick={(data) => {
-                  setActiveId(data.id);
-                }}
-                padAngle={1}
-              />
+                      effects: [
+                        {
+                          on: 'hover',
+                          style: {
+                            itemTextColor: 'rgba(0,0,0,.34)',
+                          },
+                        },
+                      ],
+                      data: insightsData
+                        .slice(Math.floor(insightsData.length / 2))
+                        .map((cur, index) => ({
+                          id: cur.id,
+                          label: cur.id,
+                          color: SeriesColors.slice(
+                            Math.floor(insightsData.length / 2),
+                          )[index],
+                        })),
+                    },
+                  ]}
+                  margin={{ top: 24, bottom: 72, left: 24, right: 24 }}
+                  onClick={(data) => {
+                    setActiveId(data.id);
+                  }}
+                  padAngle={1}
+                  tooltip={(props) => CustomerTooltip(props)}
+                />
+              )}
             </Stack>
 
             <Stack width={'calc(100% - 396px)'}>
-              <InsightsTable insightsTableData={insightsData} />
+              <InsightsTable
+                insightsTableData={insightsData}
+                loading={loading}
+              />
             </Stack>
           </Stack>
         </Stack>
@@ -275,6 +311,39 @@ export const Insights: FC = observer(() => {
     </StyledLayout>
   );
 });
+
+const CustomerTooltip: FC<
+  PieTooltipProps<{
+    insightsStatus: string;
+    numberOfDays: number;
+    totalPercentage: number;
+    upb: number;
+    upbPercentage: number;
+    id: string;
+    value: number;
+    color: string;
+    label: string;
+  }>
+> = ({ datum }) => {
+  return (
+    <Stack
+      alignItems={'center'}
+      bgcolor={'#ffffff'}
+      borderRadius={1}
+      boxShadow={'0px 4px 8px rgba(0, 0, 0, 0.3)'}
+      flexDirection={'row'}
+      gap={1}
+      px={1.5}
+      py={1}
+    >
+      <Stack bgcolor={datum.color} borderRadius={1} height={16} width={16} />
+      <Typography variant={'body1'}>{datum.label}:</Typography>
+      <Typography fontWeight={500} variant={'body1'}>
+        {datum.value}
+      </Typography>
+    </Stack>
+  );
+};
 
 const CustomerPie =
   (activeId: string | number) =>
@@ -407,9 +476,91 @@ const TEMP = [
   },
 ];
 
+function mulberry32(a: number): () => number {
+  return () => {
+    /* eslint-disable */
+    let t = (a += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    /* eslint-enable */
+  };
+}
+
+function randomBetween(seed: number, min: number, max: number): () => number {
+  const random = mulberry32(seed);
+  return () => min + (max - min) * random();
+}
+
+const SkeletonCell = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderBottom: '1px solid #D2D6E1',
+}));
+
+function SkeletonLoadingOverlay() {
+  const apiRef = useGridApiContext();
+
+  const dimensions = apiRef.current?.getRootDimensions();
+  const viewportHeight = dimensions?.viewportInnerSize.height ?? 0;
+
+  const rowHeight = 40;
+  const skeletonRowsCount = Math.ceil(viewportHeight / rowHeight);
+
+  const totalWidth = gridColumnsTotalWidthSelector(apiRef);
+  const positions = gridColumnPositionsSelector(apiRef);
+  const inViewportCount = React.useMemo(
+    () => positions.filter((value) => value <= totalWidth).length,
+    [totalWidth, positions],
+  );
+  const columns = apiRef.current.getVisibleColumns().slice(0, inViewportCount);
+
+  const children = React.useMemo(() => {
+    // reseed random number generator to create stable lines betwen renders
+    const random = randomBetween(12345, 25, 75);
+    const array: React.ReactNode[] = [];
+
+    for (let i = 0; i < skeletonRowsCount; i += 1) {
+      for (const column of columns) {
+        const width = Math.round(random());
+        array.push(
+          <SkeletonCell
+            key={`col-${column.field}-${i}`}
+            sx={{ justifyContent: column.align }}
+          >
+            <Skeleton sx={{ mx: 1 }} width={`${width}%`} />
+          </SkeletonCell>,
+        );
+      }
+      array.push(<SkeletonCell key={`fill-${i}`} />);
+    }
+    return array;
+  }, [skeletonRowsCount, columns]);
+
+  const rowsCount = apiRef.current.getRowsCount();
+
+  return rowsCount > 0 ? (
+    <LinearProgress />
+  ) : (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `${columns
+          .map(({ computedWidth }) => `${computedWidth}px`)
+          .join(' ')} 1fr`,
+        gridAutoRows: `${rowHeight}px`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 const InsightsTable: FC<{
+  loading: boolean;
   insightsTableData?: InsightsData[];
-}> = ({ insightsTableData = TEMP }) => {
+}> = ({ loading, insightsTableData = TEMP }) => {
   const lastChildIndex = columns.length;
 
   return (
@@ -423,6 +574,7 @@ const InsightsTable: FC<{
       disableRowSelectionOnClick
       getRowId={(row) => row.insightsStatus}
       hideFooter={true}
+      loading={loading}
       pagination
       rows={insightsTableData}
       showCellVerticalBorder
@@ -434,6 +586,7 @@ const InsightsTable: FC<{
             </Typography>
           </Stack>
         ),
+        loadingOverlay: SkeletonLoadingOverlay,
       }}
       sx={{
         width: '100%',

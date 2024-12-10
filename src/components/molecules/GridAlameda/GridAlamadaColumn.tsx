@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Stack, Tooltip, Typography } from '@mui/material';
 import { MoreHoriz } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { useSnackbar } from 'notistack';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -174,6 +174,28 @@ export const ALAMEDA_COLUMNS = (
             paramsKey={'repaymentStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />
+        );
+      },
+    },
+    {
+      accessorKey: 'maturityDate',
+      header: 'Maturity date',
+      size: 140,
+      minSize: 110,
+      muiTableBodyCellProps: {
+        align: 'center',
+      },
+      muiTableHeadCellProps: {
+        align: 'center',
+      },
+      Cell: ({ renderedCellValue }) => {
+        return (
+          <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
+            {typeof renderedCellValue === 'string' &&
+            isValid(new Date(renderedCellValue))
+              ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
+              : '—'}
+          </Typography>
         );
       },
     },

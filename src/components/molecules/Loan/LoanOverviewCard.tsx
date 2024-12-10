@@ -130,7 +130,7 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
         ))}
       </Stack>
       {tailData.length > 0 && (
-        <Stack borderTop={'1px solid #D2D6E1'} pt={1}>
+        <Stack borderTop={'1px solid #D2D6E1'} gap={1} pt={1}>
           {tailData.map((item, index) => (
             <Stack
               alignItems={'center'}

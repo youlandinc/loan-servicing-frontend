@@ -64,6 +64,7 @@ export interface OverviewLoanInfo {
   loanCost: number;
   investor: string;
   ficoScore: LoanFicoScoreEnum;
+  fciLoanNumber: null | string;
 }
 
 export interface OverviewBorrowerInfo {

@@ -320,7 +320,7 @@ export const LoanExtensionRequest: FC = () => {
                       extendMonth: maturityDate,
                       extensionFee,
                       changeInterestRate: changeRate,
-                      executionDate: formatISO(executionDate),
+                      executionDate: executionDate.toISOString(),
                       maturityDate: value.data.maturityDate,
                       extensionFeeAmount: 0,
                       paidMode: paidType,

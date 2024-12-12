@@ -86,7 +86,7 @@ export interface OverviewOutstandingPayAble {
   paidStatus: PaidStatusEnum;
   monthAndYearOfDateDue: string | null;
   paymentModeOn: string | null;
-  dateDue: string | null;
+  dateDue: string;
   dateReceived: null | string;
   formatterDateDue: string;
 }

@@ -165,10 +165,18 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
                 loanId,
               };
               if (paramsKey === 'prospectiveBuyer') {
-                Object.assign(postData, {
-                  prospectiveBuyer: item.value,
-                  prospectiveBuyerId: item.key,
-                });
+                if (item.value === 'None' || item.key === null) {
+                  Object.assign(postData, {
+                    prospectiveBuyer: item.value,
+                    prospectiveBuyerId: item.key,
+                    estSaleDate: null,
+                  });
+                } else {
+                  Object.assign(postData, {
+                    prospectiveBuyer: item.value,
+                    prospectiveBuyerId: item.key,
+                  });
+                }
               }
               setActiveIndex(index);
               setLoading(true);

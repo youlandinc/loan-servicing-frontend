@@ -280,6 +280,7 @@ export const YOULAND_COLUMNS = (
                       e.stopPropagation();
                       e.preventDefault();
                       const postData = {
+                        ...row.original,
                         loanId: row.original.loanId,
                         submitDate: isValid(date)
                           ? formatISO(new Date(date as Date))
@@ -428,6 +429,7 @@ export const YOULAND_COLUMNS = (
                       e.stopPropagation();
                       e.preventDefault();
                       const postData = {
+                        ...row.original,
                         loanId: row.original.loanId,
                         estSaleDate: isValid(date)
                           ? formatISO(new Date(date as Date))
@@ -504,6 +506,7 @@ export const YOULAND_COLUMNS = (
             cb={cb}
             loanId={row.original.loanId}
             options={investorOptions}
+            originalData={row.original}
             paramsKey={'prospectiveBuyer'}
             status={renderedCellValue as string | null}
           />
@@ -651,6 +654,7 @@ export const YOULAND_COLUMNS = (
                       e.stopPropagation();
                       e.preventDefault();
                       const postData = {
+                        ...row.original,
                         loanId: row.original.loanId,
                         buyRate: typeof value === 'number' ? value : null,
                       };
@@ -821,6 +825,7 @@ export const YOULAND_COLUMNS = (
                     loading={updating}
                     onClick={async () => {
                       const postData = {
+                        ...row.original,
                         loanId: row.original.loanId,
                         estSaleDate: isValid(date)
                           ? formatISO(new Date(date as Date))

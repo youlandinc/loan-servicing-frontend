@@ -9,7 +9,7 @@ import {
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
-import { format, isValid } from 'date-fns';
+import { formatISO, isValid } from 'date-fns';
 
 import { utils } from '@/utils';
 import { AUTO_HIDE_DURATION, PAYMENT_METHODS_OPTIONS } from '@/constant';
@@ -104,15 +104,10 @@ export const LoanPaymentsGrid: FC<{
     try {
       const { data } = await _fetchCurrentBill({ loanId });
       const handler = (arr: OverviewRepaymentTimeLine[]) => {
-        const index = arr.findIndex(
+        const unpaidItem = arr.find(
           (item) => item.paidStatus === PaidStatusEnum.unpaid,
         );
-        return index === -1
-          ? format(
-              new Date(arr[arr.length - 1].dateDue as string),
-              'MM/dd/yyyy',
-            )
-          : format(new Date(arr[index].dateDue as string), 'MM/dd/yyyy');
+        return unpaidItem ? unpaidItem.dateDue : arr[arr.length - 1].dateDue;
       };
 
       setDateDueOpts(
@@ -120,8 +115,8 @@ export const LoanPaymentsGrid: FC<{
           .filter((item) => item.paidStatus === PaidStatusEnum.unpaid)
           .map((item) => ({
             label: item.formatterDateDue,
-            value: item.formatterDateDue,
-            key: item.formatterDateDue,
+            value: item.dateDue,
+            key: item.dateDue,
           })),
       );
       setDateDue(handler(data));
@@ -356,14 +351,10 @@ export const LoanPaymentsGrid: FC<{
     async () => {
       const postData = {
         id: formData.id,
-        dataReceivedTime: format(
-          formData.dataReceivedTime as Date,
-          'yyyy-MM-dd',
+        dataReceivedTime: formatISO(
+          new Date(formData.dataReceivedTime as Date),
         ),
-        dateDue: format(
-          new Date(formData?.dateDue ? formData.dateDue : dateDue),
-          'yyyy-MM-dd',
-        ),
+        dateDue: formData?.dateDue ? formData.dateDue : dateDue,
         paymentMethod: formData.paymentMethod,
         defaultInterestReceived: formData.defaultInterestReceived,
         lateChargesPaid: formData.lateChargesPaid,

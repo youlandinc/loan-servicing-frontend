@@ -23,6 +23,7 @@ interface GridDropDownButtonProps {
   cb?: () => Promise<void>;
   paramsKey: string;
   loanId: number | string;
+  originalData?: any;
 }
 
 export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
@@ -31,6 +32,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
   cb,
   paramsKey,
   loanId,
+  originalData,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -167,12 +169,14 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
               if (paramsKey === 'prospectiveBuyer') {
                 if (item.value === 'None' || item.key === null) {
                   Object.assign(postData, {
+                    ...originalData,
                     prospectiveBuyer: item.value,
                     prospectiveBuyerId: item.key,
                     estSaleDate: null,
                   });
                 } else {
                   Object.assign(postData, {
+                    ...originalData,
                     prospectiveBuyer: item.value,
                     prospectiveBuyerId: item.key,
                   });

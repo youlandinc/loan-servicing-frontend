@@ -13,7 +13,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { format, isValid } from 'date-fns';
+import { format, formatISO, isValid } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { FC, useRef, useState } from 'react';
@@ -320,7 +320,7 @@ export const LoanExtensionRequest: FC = () => {
                       extendMonth: maturityDate,
                       extensionFee,
                       changeInterestRate: changeRate,
-                      executionDate: format(executionDate, 'yyyy-MM-dd'),
+                      executionDate: formatISO(executionDate),
                       maturityDate: value.data.maturityDate,
                       extensionFeeAmount: 0,
                       paidMode: paidType,

@@ -26,6 +26,7 @@ interface GridDropDownProps {
   cb?: () => Promise<any>;
   paramsKey: string;
   loanId: number | string;
+  originalData?: any;
 }
 
 export const GridDropDown: FC<GridDropDownProps> = ({

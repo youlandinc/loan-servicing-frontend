@@ -197,7 +197,7 @@ export const LoanAOM: FC = () => {
                 onClick={async () => {
                   await createPdf({
                     loanId: parseInt(loanId as string),
-                    recordedDate: formatISO(executionDate as Date),
+                    recordedDate: (executionDate as Date).toISOString(),
                     instrumentNumber: instrumentNumber || '',
                     investorId: parseInt(buyer),
                     investorName: buyersOpts.find(

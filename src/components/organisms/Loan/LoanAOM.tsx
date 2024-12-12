@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
-import { format } from 'date-fns';
+import { format, formatISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { FC, useRef, useState } from 'react';
@@ -197,7 +197,7 @@ export const LoanAOM: FC = () => {
                 onClick={async () => {
                   await createPdf({
                     loanId: parseInt(loanId as string),
-                    recordedDate: format(executionDate as Date, 'yyyy-MM-dd'),
+                    recordedDate: formatISO(executionDate as Date),
                     instrumentNumber: instrumentNumber || '',
                     investorId: parseInt(buyer),
                     investorName: buyersOpts.find(

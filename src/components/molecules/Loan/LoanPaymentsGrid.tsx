@@ -9,7 +9,7 @@ import {
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
-import { formatISO, isValid } from 'date-fns';
+import { isValid } from 'date-fns';
 
 import { utils } from '@/utils';
 import { AUTO_HIDE_DURATION, PAYMENT_METHODS_OPTIONS } from '@/constant';
@@ -351,9 +351,7 @@ export const LoanPaymentsGrid: FC<{
     async () => {
       const postData = {
         id: formData.id,
-        dataReceivedTime: formatISO(
-          new Date(formData.dataReceivedTime as Date),
-        ),
+        dataReceivedTime: (formData.dataReceivedTime as Date).toISOString(),
         dateDue: formData?.dateDue ? formData.dateDue : dateDue,
         paymentMethod: formData.paymentMethod,
         defaultInterestReceived: formData.defaultInterestReceived,

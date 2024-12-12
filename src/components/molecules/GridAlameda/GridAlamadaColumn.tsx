@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Stack, Tooltip, Typography } from '@mui/material';
 import { MoreHoriz } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { format, formatISO, isValid } from 'date-fns';
 import { useSnackbar } from 'notistack';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -178,6 +178,28 @@ export const ALAMEDA_COLUMNS = (
       },
     },
     {
+      accessorKey: 'maturityDate',
+      header: 'Maturity date',
+      size: 140,
+      minSize: 110,
+      muiTableBodyCellProps: {
+        align: 'center',
+      },
+      muiTableHeadCellProps: {
+        align: 'center',
+      },
+      Cell: ({ renderedCellValue }) => {
+        return (
+          <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
+            {typeof renderedCellValue === 'string' &&
+            isValid(new Date(renderedCellValue))
+              ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
+              : '—'}
+          </Typography>
+        );
+      },
+    },
+    {
       header: 'Submit date',
       accessorKey: 'submitDate',
       muiTableBodyCellProps: { align: 'center' },
@@ -253,17 +275,16 @@ export const ALAMEDA_COLUMNS = (
                     Cancel
                   </StyledButton>
                   <StyledButton
-                    disabled={!date || updating}
+                    disabled={updating}
                     loading={updating}
                     onClick={async (e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      if (!date) {
-                        return;
-                      }
                       const postData = {
                         loanId: row.original.loanId,
-                        submitDate: format(date, 'yyyy-MM-dd'),
+                        submitDate: isValid(date)
+                          ? formatISO(new Date(date as Date))
+                          : null,
                       };
                       setUpdating(true);
                       try {
@@ -402,17 +423,16 @@ export const ALAMEDA_COLUMNS = (
                     Cancel
                   </StyledButton>
                   <StyledButton
-                    disabled={!date || updating}
+                    disabled={updating}
                     loading={updating}
                     onClick={async (e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      if (!date) {
-                        return;
-                      }
                       const postData = {
                         loanId: row.original.loanId,
-                        estSaleDate: format(date, 'yyyy-MM-dd'),
+                        estSaleDate: isValid(date)
+                          ? formatISO(new Date(date as Date))
+                          : null,
                       };
                       setUpdating(true);
                       try {
@@ -572,7 +592,7 @@ export const ALAMEDA_COLUMNS = (
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
-            mx={-2}
+            mx={-1.5}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -626,21 +646,14 @@ export const ALAMEDA_COLUMNS = (
                     Cancel
                   </StyledButton>
                   <StyledButton
-                    disabled={
-                      !utils.notNull(value) ||
-                      !utils.notUndefined(value) ||
-                      updating
-                    }
+                    disabled={updating}
                     loading={updating}
                     onClick={async (e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      if (!utils.notNull(value)) {
-                        return;
-                      }
                       const postData = {
                         loanId: row.original.loanId,
-                        buyRate: value,
+                        buyRate: typeof value === 'number' ? value : null,
                       };
                       setUpdating(true);
                       try {
@@ -805,15 +818,14 @@ export const ALAMEDA_COLUMNS = (
                     Cancel
                   </StyledButton>
                   <StyledButton
-                    disabled={!date || updating}
+                    disabled={updating}
                     loading={updating}
                     onClick={async () => {
-                      if (!date) {
-                        return;
-                      }
                       const postData = {
                         loanId: row.original.loanId,
-                        estSaleDate: format(date, 'yyyy-MM-dd'),
+                        estSaleDate: isValid(date)
+                          ? formatISO(new Date(date as Date))
+                          : null,
                         tradeConfirm: GridTradeConfirmEnum.completed,
                       };
                       setUpdating(true);

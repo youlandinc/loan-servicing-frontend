@@ -232,12 +232,23 @@ export const LoanOverview: FC = observer(() => {
           : 'Missing loan type',
         headerIcon: OVERVIEW_LOAN_INFORMATION,
         listData: loanListData(loanInfo),
-        tailData: [
-          {
-            label: 'Investor',
-            value: loanInfo.investor,
-          },
-        ],
+        tailData: loanInfo.fciLoanNumber
+          ? [
+              {
+                label: 'Investor',
+                value: loanInfo.investor,
+              },
+              {
+                label: 'FCI loan number',
+                value: loanInfo.fciLoanNumber,
+              },
+            ]
+          : [
+              {
+                label: 'Investor',
+                value: loanInfo.investor,
+              },
+            ],
       });
       const { borrowerInfo } = data;
       const borrowerInfoPhone = (string: string) => {

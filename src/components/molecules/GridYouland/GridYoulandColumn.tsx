@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Stack, Tooltip, Typography } from '@mui/material';
 import { MoreHoriz } from '@mui/icons-material';
-import { format, formatISO, isValid } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { useSnackbar } from 'notistack';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -283,7 +283,7 @@ export const YOULAND_COLUMNS = (
                         ...row.original,
                         loanId: row.original.loanId,
                         submitDate: isValid(date)
-                          ? formatISO(new Date(date as Date))
+                          ? (date as Date).toISOString()
                           : null,
                       };
                       setUpdating(true);
@@ -432,7 +432,7 @@ export const YOULAND_COLUMNS = (
                         ...row.original,
                         loanId: row.original.loanId,
                         estSaleDate: isValid(date)
-                          ? formatISO(new Date(date as Date))
+                          ? (date as Date).toISOString()
                           : null,
                       };
                       setUpdating(true);
@@ -828,7 +828,7 @@ export const YOULAND_COLUMNS = (
                         ...row.original,
                         loanId: row.original.loanId,
                         estSaleDate: isValid(date)
-                          ? formatISO(new Date(date as Date))
+                          ? (date as Date).toISOString()
                           : null,
                         tradeConfirm: GridTradeConfirmEnum.completed,
                       };

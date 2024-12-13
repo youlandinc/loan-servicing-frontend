@@ -1,3 +1,9 @@
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
+
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -14,12 +20,6 @@ import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { _getAllStatus } from '@/request';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
-import { FC, useEffect, useRef } from 'react';
-import useSWR from 'swr';
 
 export const InvestorGridToolBar: FC = observer(() => {
   const {
@@ -74,41 +74,29 @@ export const InvestorGridToolBar: FC = observer(() => {
         variant={'outlined'}
       />
       <StyledSearchDateRange
-        dateRange={[
-          isValid(
-            new Date(
-              investorGridModel.queryModel.searchCondition.maturityStartDate ||
-                '',
-            ),
-          )
+        date={
+          investorGridModel.queryModel.searchCondition.maturityStartDate
             ? new Date(
-                investorGridModel.queryModel.searchCondition
-                  .maturityStartDate || '',
+                investorGridModel.queryModel.searchCondition.maturityStartDate,
               )
-            : null,
-          isValid(
-            new Date(
-              investorGridModel.queryModel.searchCondition.maturityEndDate ||
-                '',
-            ),
-          )
-            ? new Date(
-                investorGridModel.queryModel.searchCondition.maturityEndDate ||
-                  '',
-              )
-            : null,
-        ]}
-        hanelClear={() => {
+            : null
+        }
+        handleClear={() => {
           updateQueryDateRangeDebounce({
             startDate: '',
             endDate: '',
           });
         }}
-        onChange={(date) => {
-          updateQueryDateRangeDebounce({
-            startDate: isValid(date[0]) ? date[0]?.toISOString() : '',
-            endDate: isValid(date[1]) ? date[1]?.toISOString() : '',
-          });
+        onChange={() => {
+          return;
+        }}
+        onSelect={(date) => {
+          if (date) {
+            updateQueryDateRangeDebounce({
+              startDate: date.toISOString(),
+              endDate: '',
+            });
+          }
         }}
       />
 

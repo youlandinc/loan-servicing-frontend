@@ -3,7 +3,8 @@ import { ReactDatePickerProps } from 'react-datepicker';
 
 export interface StyledDateRangeProps
   extends Omit<ReactDatePickerProps, 'onChange'> {
-  dateRange: [Date | null, Date | null];
+  dateRange?: [Date | null, Date | null];
+  date?: Date | null;
   label?: string;
   onChange: (
     date: [Date | null, Date | null],

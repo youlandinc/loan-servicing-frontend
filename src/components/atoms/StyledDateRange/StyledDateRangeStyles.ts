@@ -22,6 +22,7 @@ export const StyledDateRangeStyles = {
     whiteSpace: 'nowrap',
   },
   '& .react-datepicker': {
+    minWidth: 320,
     border: 'none',
     bgcolor: 'background.white',
     boxShadow:
@@ -83,6 +84,7 @@ export const StyledDateRangeStyles = {
         // p: 0,
       },
     },
+    '& .react-datepicker__month-container': { width: '100%' },
     '& .years-box': {
       maxHeight: 300,
       width: 300,
@@ -90,6 +92,7 @@ export const StyledDateRangeStyles = {
       display: 'flex',
       flexWrap: 'wrap',
       px: 0,
+      pb: 3,
       '& li': {
         py: 0.5,
         px: 2,
@@ -109,6 +112,20 @@ export const StyledDateRangeStyles = {
           },
         },
       },
+    },
+    '& .react-datepicker__month': { px: 3, m: 0, pb: 3 },
+    '& .react-datepicker__month-text': {
+      width: 75,
+      py: 1,
+      borderRadius: '23px',
+      fontSize: 16,
+      fontWeight: 600,
+      fontFamily: 'Poppins',
+      m: '4px',
+    },
+    '& .react-datepicker__month-text--keyboard-selected': {
+      bgcolor: 'primary.dark',
+      color: '#FFF',
     },
   },
 } as const;

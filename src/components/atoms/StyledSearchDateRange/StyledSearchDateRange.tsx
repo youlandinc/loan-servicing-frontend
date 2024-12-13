@@ -1,3 +1,6 @@
+import { Stack, Typography } from '@mui/material';
+import { FC, forwardRef, useEffect, useState } from 'react';
+
 import {
   StyledButton,
   StyledDateRange,
@@ -6,8 +9,6 @@ import {
 
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Stack, Typography } from '@mui/material';
-import { FC, forwardRef, useEffect, useState } from 'react';
 
 const BtnDefaultStyle = {
   position: 'relative',
@@ -22,22 +23,18 @@ const BtnDefaultStyle = {
 };
 
 interface StyledSearchDateRangeProps extends StyledDateRangeProps {
-  // onChange?: (date: [Date | null, Date | null]) => void;
-  hanelClear?: () => void;
+  handleClear?: () => void;
 }
 
 export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
-  onChange,
-  dateRange,
-  hanelClear,
+  date,
+  onSelect,
+  handleClear,
 }) => {
-  const [closingDate, setClosingDate] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
+  const [closingDate, setClosingDate] = useState<Date | null>();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const CustomInput = forwardRef((props: any, ref) => {
+  const CustomInput = forwardRef((props: any, _ref) => {
     const { onClear, ...rest } = props;
     return (
       <StyledButton
@@ -58,9 +55,7 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
       >
         <Stack alignItems={'center'} direction={'row'} spacing={0.5}>
           <Typography variant={'body2'}>
-            {props.value && props.value !== ''
-              ? props.value
-              : 'Est. closing date'}
+            {props.value && props.value !== '' ? props.value : 'Maturity date'}
           </Typography>
           {props.value && props.value !== '' ? (
             <ClearIcon
@@ -79,30 +74,32 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
   });
 
   useEffect(() => {
-    setClosingDate(dateRange);
-  }, [dateRange]);
+    setClosingDate(date);
+  }, [date]);
 
   return (
     <StyledDateRange
       customInput={
         <CustomInput
           onClear={() => {
-            setClosingDate([null, null]);
-            hanelClear?.();
+            setClosingDate(null);
+            handleClear?.();
           }}
         />
       }
-      dateRange={closingDate}
-      label={'Est. closing date'}
-      onCalendarClose={() => {
-        // setBtnSelected({ ...btnSelected, timeRange: false });
+      label={'Maturity date'}
+      onChange={() => {
+        return;
       }}
-      onChange={(date: [Date | null, Date | null]) => {
+      onSelect={(date, event) => {
         setClosingDate(date);
-        onChange?.(date);
+        onSelect?.(date, event);
       }}
-      placeholderText={'Est. closing date'}
+      placeholderText={'Maturity date'}
       popperPlacement={'bottom-start'}
+      selected={closingDate}
+      selectsRange={false as any}
+      showMonthYearPicker
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -110,6 +107,9 @@ export const StyledSearchDateRange: FC<StyledSearchDateRangeProps> = ({
           height: '100%',
           display: 'flex',
           alignItems: 'center',
+        },
+        '& .react-datepicker__close-icon': {
+          zIndex: -100,
         },
         flexShrink: 0,
       }}

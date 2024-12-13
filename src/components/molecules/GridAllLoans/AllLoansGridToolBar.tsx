@@ -1,3 +1,9 @@
+import { Stack } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { enqueueSnackbar } from 'notistack';
+import { FC, useEffect, useRef } from 'react';
+import useSWR from 'swr';
+
 import {
   StyledSearchDateRange,
   StyledSearchLoanOfficer,
@@ -15,12 +21,6 @@ import { useDebounceFn } from '@/hooks';
 import { useMst } from '@/models/Root';
 import { _getAllStatus } from '@/request';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
-import { isValid } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
-import { FC, useEffect, useRef } from 'react';
-import useSWR from 'swr';
 
 export const AllLoansGridToolBar: FC = observer(() => {
   const {
@@ -72,44 +72,31 @@ export const AllLoansGridToolBar: FC = observer(() => {
         variant={'outlined'}
       />
       <StyledSearchDateRange
-        dateRange={[
-          isValid(
-            new Date(
-              allLoansGridModel.queryModel.searchCondition.maturityStartDate ||
-                '',
-            ),
-          )
+        date={
+          allLoansGridModel.queryModel.searchCondition.maturityStartDate
             ? new Date(
-                allLoansGridModel.queryModel.searchCondition
-                  .maturityStartDate || '',
+                allLoansGridModel.queryModel.searchCondition.maturityStartDate,
               )
-            : null,
-          isValid(
-            new Date(
-              allLoansGridModel.queryModel.searchCondition.maturityEndDate ||
-                '',
-            ),
-          )
-            ? new Date(
-                allLoansGridModel.queryModel.searchCondition.maturityEndDate ||
-                  '',
-              )
-            : null,
-        ]}
-        hanelClear={() => {
+            : null
+        }
+        handleClear={() => {
           updateQueryDateRangeDebounce({
             startDate: '',
             endDate: '',
           });
         }}
-        onChange={(date) => {
-          updateQueryDateRangeDebounce({
-            startDate: isValid(date[0]) ? date[0]?.toISOString() : '',
-            endDate: isValid(date[1]) ? date[1]?.toISOString() : '',
-          });
+        onChange={() => {
+          return;
+        }}
+        onSelect={(date) => {
+          if (date) {
+            updateQueryDateRangeDebounce({
+              startDate: date.toISOString(),
+              endDate: '',
+            });
+          }
         }}
       />
-
       <StyledSearchSelectMultiple
         label={'Status'}
         onChange={(e) => {

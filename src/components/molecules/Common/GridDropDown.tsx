@@ -37,6 +37,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
   cb,
   paramsKey,
   loanId,
+  originalData,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -132,6 +133,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
                 return;
               }
               const postData = {
+                ...originalData,
                 loanId,
                 [paramsKey]: item.key,
               };
@@ -178,9 +180,13 @@ export const GridDropDown: FC<GridDropDownProps> = ({
             ) : (
               //<Tooltip title={item.label}>
               <Typography
-                bgcolor={bgPalette[item.key]}
+                bgcolor={bgPalette[item.key as number | string]}
                 borderRadius={1}
-                color={colorPalette ? colorPalette[item.key] : '#ffffff'}
+                color={
+                  colorPalette
+                    ? colorPalette[item.key as number | string]
+                    : '#ffffff'
+                }
                 height={24}
                 justifyContent={'center'}
                 lineHeight={'24px'}

@@ -171,6 +171,7 @@ export const ALAMEDA_COLUMNS = (
             colorPalette={allLoansStatusColor}
             loanId={row.original.loanId}
             options={REPAYMENT_STATUS_OPTIONS}
+            originalData={row.original}
             paramsKey={'repaymentStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />
@@ -431,7 +432,6 @@ export const ALAMEDA_COLUMNS = (
                       e.preventDefault();
                       const postData = {
                         ...row.original,
-
                         loanId: row.original.loanId,
                         estSaleDate: isValid(date)
                           ? (date as Date).toISOString()
@@ -529,6 +529,7 @@ export const ALAMEDA_COLUMNS = (
             cb={cb}
             loanId={row.original.loanId}
             options={TRADE_STATUS_OPTIONS}
+            originalData={row.original}
             paramsKey={'tradeStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />
@@ -657,7 +658,6 @@ export const ALAMEDA_COLUMNS = (
                       e.preventDefault();
                       const postData = {
                         ...row.original,
-
                         loanId: row.original.loanId,
                         buyRate: typeof value === 'number' ? value : null,
                       };
@@ -829,7 +829,6 @@ export const ALAMEDA_COLUMNS = (
                     onClick={async () => {
                       const postData = {
                         ...row.original,
-
                         loanId: row.original.loanId,
                         estSaleDate: isValid(date)
                           ? (date as Date).toISOString()

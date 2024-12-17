@@ -160,25 +160,19 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
             onClick={async (e) => {
               e.stopPropagation();
               e.preventDefault();
-              if (status === item.key) {
+              if (status === item.value) {
                 return;
               }
               const postData = {
+                ...originalData,
                 loanId,
+                prospectiveBuyer: item.value,
+                prospectiveBuyerId: item.key,
               };
               if (paramsKey === 'prospectiveBuyer') {
                 if (item.value === 'None' || item.key === null) {
                   Object.assign(postData, {
-                    ...originalData,
-                    prospectiveBuyer: item.value,
-                    prospectiveBuyerId: item.key,
                     estSaleDate: null,
-                  });
-                } else {
-                  Object.assign(postData, {
-                    ...originalData,
-                    prospectiveBuyer: item.value,
-                    prospectiveBuyerId: item.key,
                   });
                 }
               }
@@ -201,7 +195,7 @@ export const GridDropDownButton: FC<GridDropDownButtonProps> = ({
                 setActiveIndex(-1);
               }
             }}
-            selected={loading ? activeIndex === index : item.key === status}
+            selected={loading ? activeIndex === index : item.value === status}
             sx={{
               px: 3,
               py: 1.5,

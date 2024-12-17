@@ -170,6 +170,7 @@ export const YOULAND_COLUMNS = (
             colorPalette={allLoansStatusColor}
             loanId={row.original.loanId}
             options={REPAYMENT_STATUS_OPTIONS}
+            originalData={row.original}
             paramsKey={'repaymentStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />
@@ -527,6 +528,7 @@ export const YOULAND_COLUMNS = (
             cb={cb}
             loanId={row.original.loanId}
             options={TRADE_STATUS_OPTIONS}
+            originalData={row.original}
             paramsKey={'tradeStatus'}
             status={renderedCellValue ? (renderedCellValue as string) : '-'}
           />

@@ -1,5 +1,5 @@
 interface Option {
-  key: string | number;
+  key: string | number | null;
   value: string | number;
   label: string | React.ReactNode;
   subComponent?: React.ReactNode;

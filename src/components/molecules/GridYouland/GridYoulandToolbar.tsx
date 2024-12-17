@@ -65,7 +65,7 @@ export const GridYoulandToolbar: FC = observer(() => {
     temp.unshift({
       label: 'None',
       value: 'None',
-      key: NaN,
+      key: null,
       bgColor: 'transparent',
       color: 'rgba(0,0,0,.87)',
     });

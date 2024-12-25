@@ -93,6 +93,8 @@ export const LoanPaymentsGrid: FC<{
 
   const [dateDue, setDateDue] = useState('');
   const [dateDueOpts, setDateDueOpts] = useState<Option[]>([]);
+  const [originalDateDueOpts, setOriginalDateDueOpts] = useState<Option[]>([]);
+  const [action, setAction] = useState<'edit' | 'add'>('add');
 
   useAsync(async () => await fetchDueDate(), []);
 
@@ -103,6 +105,13 @@ export const LoanPaymentsGrid: FC<{
     }
     try {
       const { data } = await _fetchCurrentBill({ loanId });
+      setOriginalDateDueOpts(
+        (data as OverviewRepaymentTimeLine[]).map((item) => ({
+          label: item.formatterDateDue,
+          value: item.dateDue,
+          key: item.dateDue,
+        })),
+      );
       const handler = (arr: OverviewRepaymentTimeLine[]) => {
         const unpaidItem = arr.find(
           (item) => item.paidStatus === PaidStatusEnum.unpaid,
@@ -212,7 +221,13 @@ export const LoanPaymentsGrid: FC<{
   };
 
   const table = useMaterialReactTable({
-    columns: LOAN_PAYMENT_GRID_COLUMNS(open, setFormData, fetchData, cb),
+    columns: LOAN_PAYMENT_GRID_COLUMNS(
+      open,
+      setFormData,
+      fetchData,
+      cb,
+      setAction,
+    ),
     data: list,
     //data: temp,
     //rowCount: rowsTotal,
@@ -457,7 +472,10 @@ export const LoanPaymentsGrid: FC<{
             justifyContent={'center'}
             mb={-1}
             ml={'auto'}
-            onClick={open}
+            onClick={() => {
+              setAction('add');
+              open();
+            }}
             px={2}
             py={1}
             sx={{
@@ -519,7 +537,7 @@ export const LoanPaymentsGrid: FC<{
                   dateDue: value.target.value as string,
                 });
               }}
-              options={dateDueOpts}
+              options={action === 'add' ? dateDueOpts : originalDateDueOpts}
               value={formData.dateDue ? formData.dateDue : dateDue}
               variant={'outlined'}
             />
@@ -631,6 +649,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
   setFormData: any,
   cb?: (page: number, size: number) => Promise<void>,
   refresh?: () => Promise<void>,
+  setAction: any,
 ): MRT_ColumnDef<any>[] => {
   return [
     {
@@ -704,14 +723,12 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                   action: () => {
                     editOpen();
                     setAnchorEl(null);
+                    setAction('edit');
                     setFormData({
                       dataReceivedTime: row.original.dataReceivedTime
                         ? new Date(row.original.dataReceivedTime)
                         : null,
-                      // dateDue: format(
-                      //   new Date(row.original.dateDue as string),
-                      //   'MM/dd/yyyy',
-                      // ),
+                      dateDue: row.original.dateDue as string,
                       paymentMethod: row.original.paymentMethod,
                       defaultInterestReceived:
                         row.original.defaultInterestReceived,

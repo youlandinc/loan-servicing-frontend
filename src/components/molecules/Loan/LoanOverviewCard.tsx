@@ -1,5 +1,6 @@
 import { FC, ReactNode, useMemo } from 'react';
 import { Icon, Stack, Tooltip, Typography } from '@mui/material';
+import { utils } from '@/utils';
 
 export interface LoanOverviewCardProps {
   header: string;
@@ -7,7 +8,7 @@ export interface LoanOverviewCardProps {
   headerIcon: any | ReactNode;
   theme?: 'light' | 'dark' | 'warning';
   listData: Array<{ label: ReactNode; value: ReactNode }>;
-  tailData?: Array<{ label: ReactNode; value: ReactNode }>;
+  tailData?: Array<{ label: ReactNode; value: ReactNode; tooltip?: boolean }>;
 }
 
 export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
@@ -144,7 +145,23 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
               >
                 {item.label}
               </Typography>
-              <Tooltip arrow title={item.value}>
+              {!utils.notUndefined(item.tooltip) ? (
+                <Tooltip arrow title={item.value}>
+                  <Typography
+                    color={computedColor.listData.value}
+                    maxWidth={'40%'}
+                    sx={{
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                    }}
+                    textAlign={'right'}
+                    variant={'subtitle2'}
+                  >
+                    {item.value}
+                  </Typography>
+                </Tooltip>
+              ) : (
                 <Typography
                   color={computedColor.listData.value}
                   maxWidth={'40%'}
@@ -158,7 +175,7 @@ export const LoanOverviewCard: FC<LoanOverviewCardProps> = ({
                 >
                   {item.value}
                 </Typography>
-              </Tooltip>
+              )}
             </Stack>
           ))}
         </Stack>

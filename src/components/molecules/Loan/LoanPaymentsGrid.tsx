@@ -224,9 +224,9 @@ export const LoanPaymentsGrid: FC<{
     columns: LOAN_PAYMENT_GRID_COLUMNS(
       open,
       setFormData,
+      setAction,
       fetchData,
       cb,
-      setAction,
     ),
     data: list,
     //data: temp,
@@ -647,9 +647,9 @@ export const LoanPaymentsGrid: FC<{
 const LOAN_PAYMENT_GRID_COLUMNS = (
   editOpen: () => void,
   setFormData: any,
+  setAction: any,
   cb?: (page: number, size: number) => Promise<void>,
   refresh?: () => Promise<void>,
-  setAction: any,
 ): MRT_ColumnDef<any>[] => {
   return [
     {

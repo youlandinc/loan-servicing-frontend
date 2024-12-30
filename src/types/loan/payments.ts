@@ -27,6 +27,7 @@ export interface ResponsePaymentsHistory {
   accumulateWaivedLateCharges: number;
   accumulateReservePmt: number;
   accumulateReserveRestricted: number;
+  accumulateDrawNumber: number;
   abutmentSources: AbutmentSources;
   content: Partial<PaymentHistoryItem>[];
   page: PageProps;
@@ -52,13 +53,11 @@ export interface PaymentHistoryItem {
   dateDue: string | null | undefined | Date;
   pmtDayVariance: number;
   isAch: boolean;
-  paymentType: string;
   totalPmt: number;
   lateChargesPaid: number;
   totalInterestReceived: number;
   defaultInterestReceived: null | number;
   interestRateReceived: null | number;
-  principalReceived: number;
   accruedLateCharges: number;
   waivedLateCharges: null | number;
   reservePmt: number;
@@ -67,4 +66,19 @@ export interface PaymentHistoryItem {
   paymentMethod: PaymentMethod;
   reference: string;
   nsf: LoanAnswerEnum;
+  // updated
+  paymentType: string;
+  principalReceived: number;
+  // draw
+  drawNumber: number | null;
+  fundingDate: string | null | undefined | Date;
+  recommendedDraw: number | null;
+  inspectionFee: number | null;
+  wireFee: number | null;
+  netFunding: number | null;
+}
+
+export enum PaymentTypeEnum {
+  reg_pmt = 'REG_PMT',
+  funding = 'FUNDING',
 }

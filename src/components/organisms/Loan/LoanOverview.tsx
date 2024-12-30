@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-//import { useRouter } from 'next/router';
 import { uniqueId } from 'lodash';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 
@@ -451,7 +450,9 @@ export const LoanOverview: FC = observer(() => {
   const [brokerInfo, setBrokerInfo] = useState<LoanOverviewCardProps | null>(
     null,
   );
-  const [payOffCard, setPayOffCard] = useState<LoanOverviewCardProps>(INITIAL);
+  const [payOffCard, setPayOffCard] = useState<LoanOverviewCardProps | null>(
+    null,
+  );
 
   const [maturityDate, setMaturityDate] =
     useState<LoanOverviewCardProps>(INITIAL);

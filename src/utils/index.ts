@@ -45,7 +45,7 @@ export const utils = {
       if (radix === 0) {
         return '0%';
       }
-      return '0.00%';
+      return '0.000%';
     }
     let target = percentageValue;
     //eslint-disable-next-line @typescript-eslint/ban-ts-comment

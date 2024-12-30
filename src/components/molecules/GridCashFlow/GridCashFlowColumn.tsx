@@ -569,18 +569,23 @@ export const CASH_FLOW_COLUMNS = (
         );
         const [updating, setUpdating] = useState(false);
 
+        const onClickClose = useCallback(
+          (e: any) => {
+            e.stopPropagation();
+            e.preventDefault();
+            close();
+            setValue(undefined);
+          },
+          [close],
+        );
+
         return (
           <Stack
             className={'edit-cell'}
             height={'100%'}
             justifyContent={'center'}
             mx={-1.5}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              open();
-              return;
-            }}
+            onClick={onClickClose}
             sx={{
               '&:hover': {
                 border: '1px solid rgba(144, 149, 163, 0.3)',
@@ -603,9 +608,12 @@ export const CASH_FLOW_COLUMNS = (
               content={
                 <Stack gap={3} py={3}>
                   <StyledTextFieldNumber
+                    decimalScale={3}
                     label={'Buy rate'}
                     onValueChange={({ floatValue }) => setValue(floatValue)}
+                    percentage={true}
                     suffix={'%'}
+                    thousandSeparator={false}
                     value={value}
                   />
                 </Stack>
@@ -618,6 +626,7 @@ export const CASH_FLOW_COLUMNS = (
                       e.stopPropagation();
                       e.preventDefault();
                       close();
+                      setValue(undefined);
                     }}
                     size={'small'}
                     sx={{
@@ -671,11 +680,7 @@ export const CASH_FLOW_COLUMNS = (
                 </Stack>
               }
               header={'Buy rate'}
-              onClose={(e: MouseEvent) => {
-                e.preventDefault();
-                e.stopPropagation();
-                close();
-              }}
+              onClose={onClickClose}
               open={visible}
               scroll={'body'}
             />

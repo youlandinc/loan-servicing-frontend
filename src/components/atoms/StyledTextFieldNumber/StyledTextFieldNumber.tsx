@@ -36,7 +36,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   suffix,
   value,
   sx,
-  decimalScale = 2,
+  decimalScale = 3,
   thousandSeparator = true,
   percentage = false,
   id,

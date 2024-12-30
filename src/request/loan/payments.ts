@@ -1,6 +1,7 @@
 import { del, get, post } from '@/request/axios';
 import {
   PaymentMethod,
+  PaymentTypeEnum,
   ResponsePaymentsDetails,
   ResponsePaymentsHistory,
 } from '@/types/loan/payments';
@@ -21,17 +22,25 @@ export const _fetchPaymentsHistory = (params: {
   return post<ResponsePaymentsHistory>('/servicing/payment/history', params);
 };
 
-export const _updateOrCreatePaymentData = (params: {
-  id: string | number | undefined;
-  dataReceivedTime: string;
-  dateDue: string;
-  paymentMethod: PaymentMethod | undefined;
-  defaultInterestReceived: number | undefined;
-  lateChargesPaid: number | undefined;
-  waivedLateCharges: number | undefined;
-  nsf: LoanAnswerEnum | undefined;
-  loanId: string;
-}) => {
+export const _updateOrCreatePaymentData = (
+  params: Partial<{
+    id: string | number | undefined;
+    dataReceivedTime: string;
+    dateDue: string;
+    paymentMethod: PaymentMethod | undefined;
+    defaultInterestReceived: number | undefined;
+    lateChargesPaid: number | undefined;
+    waivedLateCharges: number | undefined;
+    nsf: LoanAnswerEnum | undefined;
+    loanId: string;
+    fundingDate: string | null | Date;
+    recommendedDraw: number | undefined;
+    inspectionFee: number | undefined;
+    wireFee: number | undefined;
+    drawNumber: number | undefined;
+    paymentType: PaymentTypeEnum;
+  }>,
+) => {
   return post('/servicing/payment/create', params);
 };
 
@@ -42,5 +51,11 @@ export const _deletePaymentData = (params: { id: string | number }) => {
 export const _fetchCurrentBill = (params: { loanId: string | number }) => {
   return get<OverviewRepaymentTimeLine[]>('/servicing/bill/findByLoanId', {
     params,
+  });
+};
+
+export const _fetchNumberOfDraw = (loanId: string | number) => {
+  return get('/servicing/payment/draw/number', {
+    params: { loanId },
   });
 };

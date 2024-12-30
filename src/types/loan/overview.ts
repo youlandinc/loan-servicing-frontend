@@ -55,6 +55,12 @@ export interface OverviewBalanceInformation {
   totalLoanAmount: number;
 }
 
+export enum AchEnum {
+  disabled = 'DISABLED',
+  enabled = 'ENABLED',
+  nsf = 'NSF',
+}
+
 export interface OverviewLoanInfo {
   productCategory: LoanProductCategoryEnum;
   loanPurpose: LoanPurposeEnum;
@@ -65,6 +71,8 @@ export interface OverviewLoanInfo {
   investor: string;
   ficoScore: LoanFicoScoreEnum;
   fciLoanNumber: null | string;
+  autoAch: AchEnum | null;
+  autoAchPaymentDate: string | null;
 }
 
 export interface OverviewBorrowerInfo {
@@ -113,6 +121,10 @@ export interface OverviewPaymentHistory {
   additionalInformation: string | null;
   reference: string | null;
 }
+export interface OverviewEstimatedPayoff {
+  complianceDate: string | null;
+  forwardToLender: string | null;
+}
 
 export interface ResponseOverviewDetails {
   loanId: number | string;
@@ -123,6 +135,7 @@ export interface ResponseOverviewDetails {
   loanInfo: OverviewLoanInfo;
   borrowerInfo: OverviewBorrowerInfo;
   outstandingPayAbles: OverviewOutstandingPayAble[];
+  estimatedPayOff: OverviewEstimatedPayoff;
   paymentHistory: {
     totalItem: number | null;
     accumulateTotalPmt: number | null;

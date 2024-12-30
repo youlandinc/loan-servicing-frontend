@@ -13,6 +13,7 @@ import {
   PropertyTypeEnum,
 } from '@/types/enum';
 import {
+  AchEnum,
   LoanProductCategoryEnum,
   LoanPurposeEnum,
 } from '@/types/loan/overview';
@@ -45,6 +46,19 @@ export const LOAN_PURPOSE: Option[] = [
     label: 'Refinance',
     key: LoanPurposeEnum.refinance,
     value: LoanPurposeEnum.refinance,
+  },
+];
+
+export const LOAN_ACH: Option[] = [
+  {
+    label: 'Enabled',
+    key: AchEnum.enabled,
+    value: AchEnum.enabled,
+  },
+  {
+    label: 'Disabled',
+    key: AchEnum.disabled,
+    value: AchEnum.disabled,
   },
 ];
 

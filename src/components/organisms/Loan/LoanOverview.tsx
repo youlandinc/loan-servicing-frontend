@@ -5,33 +5,26 @@ import {
   Drawer,
   Fade,
   Icon,
-  //Paper,
-  //Popper,
   Stack,
   Typography,
 } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-//import { useRouter } from 'next/router';
 import { uniqueId } from 'lodash';
-import {
-  //bindHover,
-  //bindPopper,
-  usePopupState,
-} from 'material-ui-popup-state/hooks';
+import { usePopupState } from 'material-ui-popup-state/hooks';
 
 import { useBreakpoints, useSwitch } from '@/hooks';
 import { utils } from '@/utils';
 import {
   APPLICATION_FICO_SCORE,
   AUTO_HIDE_DURATION,
+  LOAN_ACH,
   LOAN_PRODUCT_CATEGORY,
   LOAN_PURPOSE,
 } from '@/constant';
 
 import { observer } from 'mobx-react-lite';
 //import { useMst } from '@/models/Root';
-
 import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
 import {
   LoanOverviewCard,
@@ -47,6 +40,7 @@ import {
 } from '@/components/molecules';
 
 import {
+  AchEnum,
   CommentTypeEnum,
   LoanProductCategoryEnum,
   LoanPurposeEnum,
@@ -63,6 +57,8 @@ import OVERVIEW_CURRENT_BALANCE from '@/svg/loan/overview/overview-current-balan
 import OVERVIEW_LOAN_INFORMATION from '@/svg/loan/overview/overview-loan-information.svg';
 import OVERVIEW_BORROWER_INFORMATION from '@/svg/loan/overview/overview-borrower-information.svg';
 import OVERVIEW_BROKER_INFORMATION from '@/svg/loan/overview/overview-broker-information.svg';
+import OVERVIEW_PAYOFF_DATE from '@/svg/loan/overview/overview-payoff-date.svg';
+
 import OVERVIEW_NEXT_DUE_DATE from '@/svg/loan/overview/overview-next-due-date.svg';
 import OVERVIEW_MATURITY_DATE from '@/svg/loan/overview/overview-maturity-date.svg';
 
@@ -242,6 +238,39 @@ export const LoanOverview: FC = observer(() => {
                 label: 'FCI loan number',
                 value: loanInfo.fciLoanNumber,
               },
+              {
+                label: 'Auto ACH',
+                tooltip: false,
+                value: (
+                  <Typography
+                    bgcolor={
+                      loanInfo.autoAch === AchEnum.enabled
+                        ? '#69C0A5'
+                        : '#BABCBE'
+                    }
+                    borderRadius={1}
+                    color={
+                      loanInfo.autoAch === AchEnum.enabled
+                        ? 'rgba(105, 192, 165, 0.10)'
+                        : '#F4F4F6'
+                    }
+                    fontSize={12}
+                    fontWeight={600}
+                    py={'1px'}
+                    textAlign={'center'}
+                    width={120}
+                  >
+                    {utils.findLabel(LOAN_ACH, loanInfo.autoAch) || 'Disabled'}
+                  </Typography>
+                ),
+              },
+              {
+                label: 'Auto ACH payment date',
+                value: utils.formatDate(
+                  loanInfo.autoAchPaymentDate,
+                  'MM/dd/yyyy',
+                ),
+              },
             ]
           : [
               {
@@ -309,6 +338,27 @@ export const LoanOverview: FC = observer(() => {
                   ? utils.formatUSPhoneToText(brokerDetail?.phone)
                   : '-'
               }`,
+              value: '',
+            },
+          ],
+        });
+
+      const { estimatedPayOff } = data;
+      estimatedPayOff &&
+        setPayOffCard({
+          theme: 'light',
+          header: 'Estimated payoff date',
+          headerValue: utils.formatDate(
+            estimatedPayOff.complianceDate,
+            'MM/dd/yyyy',
+          ),
+          headerIcon: OVERVIEW_PAYOFF_DATE,
+          listData: [
+            {
+              label: `Requested on: ${utils.formatDate(
+                estimatedPayOff.forwardToLender,
+                'MM/dd/yyyy h:mma',
+              )}`,
               value: '',
             },
           ],
@@ -400,6 +450,10 @@ export const LoanOverview: FC = observer(() => {
   const [brokerInfo, setBrokerInfo] = useState<LoanOverviewCardProps | null>(
     null,
   );
+  const [payOffCard, setPayOffCard] = useState<LoanOverviewCardProps | null>(
+    null,
+  );
+
   const [maturityDate, setMaturityDate] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [nextDateDue, setNextDateDue] =
@@ -519,6 +573,7 @@ export const LoanOverview: FC = observer(() => {
                   <LoanOverviewCard {...loanInfo} />
                   <LoanOverviewCard {...borrowerInfo} />
                   {brokerInfo && <LoanOverviewCard {...brokerInfo} />}
+                  {payOffCard && <LoanOverviewCard {...payOffCard} />}
                   <Stack height={24} width={'100%'}>
                     &nbsp;
                   </Stack>

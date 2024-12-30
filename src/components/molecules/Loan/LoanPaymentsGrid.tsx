@@ -310,7 +310,7 @@ export const LoanPaymentsGrid: FC<{
     async () => {
       const postData = {
         id: drawFormData.id,
-        fundingDate: drawFormData.fundingDate,
+        fundingDate: (drawFormData.fundingDate as Date).toISOString(),
         recommendedDraw: drawFormData.recommendedDraw,
         inspectionFee: drawFormData.inspectionFee,
         wireFee: drawFormData.wireFee,
@@ -1034,6 +1034,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                     inspectionFee: row.original.inspectionFee,
                     wireFee: row.original.wireFee,
                     drawNumber: row.original.drawNumber,
+                    id: row.original.id,
                   });
                 },
               }
@@ -1405,11 +1406,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
       Cell: ({ renderedCellValue, row }) => {
         return (
           <Tooltip
-            title={
-              utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'
-            }
+            title={utils.notNull(renderedCellValue) ? renderedCellValue : '-'}
           >
             <Typography
               color={
@@ -1424,9 +1421,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
               }}
               variant={'body2'}
             >
-              {utils.notNull(renderedCellValue)
-                ? utils.formatDollar(renderedCellValue as number)
-                : '-'}
+              {utils.notNull(renderedCellValue) ? renderedCellValue : '-'}
             </Typography>
           </Tooltip>
         );

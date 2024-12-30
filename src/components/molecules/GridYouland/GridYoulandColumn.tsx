@@ -200,6 +200,25 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
+      accessorKey: 'daysDelinquent',
+      header: 'Days delinquent',
+      size: 140,
+      minSize: 110,
+      muiTableBodyCellProps: {
+        align: 'center',
+      },
+      muiTableHeadCellProps: {
+        align: 'center',
+      },
+      Cell: ({ renderedCellValue }) => {
+        return (
+          <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
+            {renderedCellValue ? renderedCellValue : '—'}
+          </Typography>
+        );
+      },
+    },
+    {
       header: 'Submit date',
       accessorKey: 'submitDate',
       muiTableBodyCellProps: { align: 'center' },

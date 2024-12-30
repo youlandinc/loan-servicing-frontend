@@ -591,6 +591,16 @@ export const YOULAND_COLUMNS = (
         );
         const [updating, setUpdating] = useState(false);
 
+        const onClickClose = useCallback(
+          (e: any) => {
+            e.stopPropagation();
+            e.preventDefault();
+            close();
+            setValue(undefined);
+          },
+          [close],
+        );
+
         return (
           <Stack
             className={'edit-cell'}
@@ -625,9 +635,12 @@ export const YOULAND_COLUMNS = (
               content={
                 <Stack gap={3} py={3}>
                   <StyledTextFieldNumber
+                    decimalScale={3}
                     label={'Buy rate'}
                     onValueChange={({ floatValue }) => setValue(floatValue)}
+                    percentage={true}
                     suffix={'%'}
+                    thousandSeparator={false}
                     value={value}
                   />
                 </Stack>
@@ -636,11 +649,7 @@ export const YOULAND_COLUMNS = (
                 <Stack flexDirection={'row'} gap={1.5}>
                   <StyledButton
                     color={'info'}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      close();
-                    }}
+                    onClick={onClickClose}
                     size={'small'}
                     sx={{
                       width: 82,
@@ -687,11 +696,7 @@ export const YOULAND_COLUMNS = (
                 </Stack>
               }
               header={'Buy rate'}
-              onClose={(e: MouseEvent) => {
-                e.preventDefault();
-                e.stopPropagation();
-                close();
-              }}
+              onClose={onClickClose}
               open={visible}
               scroll={'body'}
             />

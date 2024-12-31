@@ -63,6 +63,7 @@ interface PaymentFormDataProps {
   lateChargesPaid: number | undefined;
   waivedLateCharges: number | undefined;
   nsf: LoanAnswerEnum;
+  principalReceived: number | undefined;
 }
 
 const PAYMENT_FORM_DATA = {
@@ -74,6 +75,7 @@ const PAYMENT_FORM_DATA = {
   waivedLateCharges: undefined,
   nsf: LoanAnswerEnum.no,
   id: undefined,
+  principalReceived: undefined,
 };
 
 interface DrawFormDataProps {
@@ -260,6 +262,7 @@ export const LoanPaymentsGrid: FC<{
         nsf: paymentFormData.nsf,
         loanId: utils.getParamsFromUrl(location.href).loanId as string,
         paymentType: PaymentTypeEnum.reg_pmt,
+        principalReceived: paymentFormData.principalReceived,
       };
       setEditLoading(true);
       try {
@@ -282,7 +285,6 @@ export const LoanPaymentsGrid: FC<{
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      dateDue,
       paymentFormData.id,
       paymentFormData.dataReceivedTime,
       paymentFormData.dateDue,
@@ -291,6 +293,8 @@ export const LoanPaymentsGrid: FC<{
       paymentFormData.lateChargesPaid,
       paymentFormData.waivedLateCharges,
       paymentFormData.nsf,
+      paymentFormData.principalReceived,
+      dateDue,
       enqueueSnackbar,
       onClickToClosePayment,
     ],
@@ -751,6 +755,18 @@ export const LoanPaymentsGrid: FC<{
               value={paymentFormData.waivedLateCharges}
             />
 
+            <StyledTextFieldNumber
+              label={'Principal received'}
+              onValueChange={({ floatValue }) => {
+                setPaymentFormData({
+                  ...paymentFormData,
+                  principalReceived: floatValue,
+                });
+              }}
+              prefix={'$'}
+              value={paymentFormData.principalReceived}
+            />
+
             <StyledCheckbox
               checked={paymentFormData.nsf === LoanAnswerEnum.yes}
               label={'Non-sufficient funds (NSF)'}
@@ -1057,6 +1073,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                       row.original.defaultInterestReceived,
                     lateChargesPaid: row.original.lateChargesPaid,
                     waivedLateCharges: row.original.waivedLateCharges,
+                    principalReceived: row.original.principalReceived,
                     nsf: row.original.nsf,
                     id: row.original.id,
                   });

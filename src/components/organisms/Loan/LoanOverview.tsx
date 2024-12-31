@@ -245,14 +245,14 @@ export const LoanOverview: FC = observer(() => {
                   <Typography
                     bgcolor={
                       loanInfo.autoAch === AchEnum.enabled
-                        ? '#69C0A5'
-                        : '#BABCBE'
+                        ? 'rgba(105, 192, 165, 0.10)'
+                        : '#F4F4F6'
                     }
                     borderRadius={1}
                     color={
                       loanInfo.autoAch === AchEnum.enabled
-                        ? 'rgba(105, 192, 165, 0.10)'
-                        : '#F4F4F6'
+                        ? '#69C0A5'
+                        : '#BABCBE'
                     }
                     fontSize={12}
                     fontWeight={600}

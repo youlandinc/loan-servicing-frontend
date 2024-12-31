@@ -28,6 +28,7 @@ import {
 import {
   StyledButton,
   StyledDatePicker,
+  StyledDaysDelinquent,
   StyledDialog,
   StyledTextFieldNumber,
 } from '@/components/atoms';
@@ -211,11 +212,7 @@ export const YOULAND_COLUMNS = (
         align: 'center',
       },
       Cell: ({ renderedCellValue }) => {
-        return (
-          <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
-            {renderedCellValue ? renderedCellValue : '—'}
-          </Typography>
-        );
+        return <StyledDaysDelinquent days={renderedCellValue as number} />;
       },
     },
     {

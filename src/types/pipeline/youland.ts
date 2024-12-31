@@ -33,6 +33,7 @@ interface GridItemProps {
   buyRate: number | string | null;
   originatorSpread: number | string | null;
   tradeConfirm: GridTradeConfirmEnum | null;
+  daysDelinquent: number | string | null;
 }
 
 export type GridYoulandItem = GridItemProps;

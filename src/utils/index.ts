@@ -33,8 +33,9 @@ export const utils = {
   },
   formatPercent: (
     percentageValue: number | undefined | string | null,
-    radix = getRadix(percentageValue),
+    radix = getRadix(percentageValue) > 2 ? 3 : 2,
   ): string => {
+    console.log(getRadix(percentageValue));
     if (
       !utils.notUndefined(percentageValue) ||
       !utils.notNull(percentageValue)
@@ -163,7 +164,11 @@ export const utils = {
 };
 
 const getRadix = (value: number | undefined | string | null): number => {
-  if (!utils.notUndefined(value) || !utils.notNull(value)) {
+  if (
+    !utils.notUndefined(value) ||
+    !utils.notNull(value) ||
+    Number.isInteger(value)
+  ) {
     return 2;
   }
   const target = value + '';

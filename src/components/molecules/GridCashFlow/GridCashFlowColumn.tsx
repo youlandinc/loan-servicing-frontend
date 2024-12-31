@@ -703,7 +703,7 @@ export const CASH_FLOW_COLUMNS = (
             }}
             variant={'body3'}
           >
-            {utils.formatPercent(renderedCellValue as number, 2)}
+            {utils.formatPercent(renderedCellValue as number)}
           </Typography>
         );
       },

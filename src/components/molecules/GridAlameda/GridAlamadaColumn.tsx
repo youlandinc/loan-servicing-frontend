@@ -739,7 +739,7 @@ export const ALAMEDA_COLUMNS = (
             }}
             variant={'body3'}
           >
-            {utils.formatPercent(renderedCellValue as number, 2)}
+            {utils.formatPercent(renderedCellValue as number)}
           </Typography>
         );
       },

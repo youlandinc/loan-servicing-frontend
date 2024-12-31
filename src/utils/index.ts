@@ -35,7 +35,6 @@ export const utils = {
     percentageValue: number | undefined | string | null,
     radix = getRadix(percentageValue) > 2 ? 3 : 2,
   ): string => {
-    console.log(getRadix(percentageValue));
     if (
       !utils.notUndefined(percentageValue) ||
       !utils.notNull(percentageValue)

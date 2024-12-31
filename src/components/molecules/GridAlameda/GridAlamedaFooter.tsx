@@ -60,7 +60,7 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
           }
         >
           Weighted average margin:{' '}
-          {utils.formatPercent(footerData.weightedAverageMargin, 2)}
+          {utils.formatPercent(footerData.weightedAverageMargin)}
         </Typography>
       </Stack>
       <Stack

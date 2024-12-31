@@ -28,11 +28,11 @@ import {
 import {
   StyledButton,
   StyledDatePicker,
-  StyledDaysDelinquent,
   StyledDialog,
   StyledTextFieldNumber,
 } from '@/components/atoms';
 import {
+  DaysDelinquentContent,
   GridActions,
   GridDropDown,
   GridDropDownButton,
@@ -212,7 +212,7 @@ export const YOULAND_COLUMNS = (
         align: 'center',
       },
       Cell: ({ renderedCellValue }) => {
-        return <StyledDaysDelinquent days={renderedCellValue as number} />;
+        return <DaysDelinquentContent days={renderedCellValue as number} />;
       },
     },
     {

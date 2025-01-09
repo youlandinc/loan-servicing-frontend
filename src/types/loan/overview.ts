@@ -53,6 +53,7 @@ export interface OverviewBalanceInformation {
   monthlyPayment: number;
   loanTerm: number;
   totalLoanAmount: number;
+  remainingReserveBalance: number;
 }
 
 export enum AchEnum {
@@ -97,6 +98,7 @@ export interface OverviewOutstandingPayAble {
   dateDue: string;
   dateReceived: null | string;
   formatterDateDue: string;
+  reserveApplied: number | null;
 }
 
 export type OverviewRepaymentTimeLine = OverviewOutstandingPayAble;

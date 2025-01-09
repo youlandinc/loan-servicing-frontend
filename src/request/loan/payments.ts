@@ -39,6 +39,7 @@ export const _updateOrCreatePaymentData = (
     wireFee: number | undefined;
     drawNumber: number | undefined;
     paymentType: PaymentTypeEnum;
+    reservePmt: number | undefined;
   }>,
 ) => {
   return post('/servicing/payment/create', params);

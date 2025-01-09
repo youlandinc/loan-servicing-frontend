@@ -3,6 +3,7 @@ import { Stack, Tooltip, Typography } from '@mui/material';
 import {
   LoanTimelineStatusEnum,
   OverviewRepaymentTimeLine,
+  PaidStatusEnum,
 } from '@/types/loan/overview';
 import { utils } from '@/utils';
 
@@ -79,6 +80,8 @@ const temp1 = {
   description: null,
   repaymentStatus: LoanTimelineStatusEnum.normal,
   monthAndYearOfDateDue: 'July 2024',
+  paidStatus: PaidStatusEnum.unpaid,
+  reserveApplied: null,
 };
 
 export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
@@ -133,7 +136,8 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
                   boxShadow: '0px 0px 15px 0px rgba(75, 107, 182, 0.30)',
                   borderRadius: 2,
                   p: 3,
-                  width: 240,
+                  width: item.paidStatus === PaidStatusEnum.paid ? 800 : 240,
+                  maxWidth: '450px !important',
                 },
               },
               arrow: {
@@ -158,53 +162,108 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
                 <Typography color={'text.primary'} variant={'subtitle2'}>
                   {item.monthAndYearOfDateDue}
                 </Typography>
-
-                <Stack gap={0.5}>
-                  {utils.TypeOf(item.interestDue) !== 'Null' && (
-                    <Typography variant={'body3'}>
-                      Interest due:{' '}
+                {item.paidStatus === PaidStatusEnum.paid ? (
+                  <Stack flexDirection={'row'} gap={1.25}>
+                    <Stack gap={0.5}>
                       <Typography fontWeight={600} variant={'body3'}>
-                        {utils.formatDollar(item.interestDue!)}
+                        Amounts due
                       </Typography>
-                    </Typography>
-                  )}
+                      {utils.TypeOf(item.interestDue) !== 'Null' && (
+                        <Typography variant={'body3'}>
+                          Interest due:{' '}
+                          <Typography fontWeight={600} variant={'body3'}>
+                            {utils.formatDollar(item.interestDue!)}
+                          </Typography>
+                        </Typography>
+                      )}
 
-                  {utils.TypeOf(item.lateChargesDue) !== 'Null' && (
-                    <Typography variant={'body3'}>
-                      Late charges due:{' '}
+                      {utils.TypeOf(item.lateChargesDue) !== 'Null' && (
+                        <Typography variant={'body3'}>
+                          Late charges due:{' '}
+                          <Typography fontWeight={600} variant={'body3'}>
+                            {utils.formatDollar(item?.lateChargesDue)}
+                          </Typography>
+                        </Typography>
+                      )}
+                    </Stack>
+                    <Stack gap={0.5}>
                       <Typography fontWeight={600} variant={'body3'}>
-                        {utils.formatDollar(item?.lateChargesDue)}
+                        Payment info
                       </Typography>
-                    </Typography>
-                  )}
+                      {utils.TypeOf(item.paymentAmount) !== 'Null' && (
+                        <Typography variant={'body3'}>
+                          Reserve applied:{' '}
+                          <Typography fontWeight={600} variant={'body3'}>
+                            {utils.formatDollar(item?.reserveApplied)}
+                          </Typography>
+                        </Typography>
+                      )}
+                      {utils.TypeOf(item.paymentAmount) !== 'Null' && (
+                        <Typography variant={'body3'}>
+                          Payment amount:{' '}
+                          <Typography fontWeight={600} variant={'body3'}>
+                            {utils.formatDollar(item?.paymentAmount)}
+                          </Typography>
+                        </Typography>
+                      )}
+                      {utils.TypeOf(item.paymentModeOn) !== 'Null' && (
+                        <Typography variant={'body3'}>
+                          Payment made on{' '}
+                          <Typography fontWeight={600} variant={'body3'}>
+                            {utils.formatDate(item?.paymentModeOn)}
+                          </Typography>
+                        </Typography>
+                      )}
+                    </Stack>
+                  </Stack>
+                ) : (
+                  <Stack gap={0.5}>
+                    {utils.TypeOf(item.interestDue) !== 'Null' && (
+                      <Typography variant={'body3'}>
+                        Interest due:{' '}
+                        <Typography fontWeight={600} variant={'body3'}>
+                          {utils.formatDollar(item.interestDue!)}
+                        </Typography>
+                      </Typography>
+                    )}
 
-                  {utils.TypeOf(item.paymentAmount) !== 'Null' && (
-                    <Typography variant={'body3'}>
-                      Payment amount:{' '}
-                      <Typography fontWeight={600} variant={'body3'}>
-                        {utils.formatDollar(item?.paymentAmount)}
+                    {utils.TypeOf(item.lateChargesDue) !== 'Null' && (
+                      <Typography variant={'body3'}>
+                        Late charges due:{' '}
+                        <Typography fontWeight={600} variant={'body3'}>
+                          {utils.formatDollar(item?.lateChargesDue)}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                  )}
+                    )}
 
-                  {utils.TypeOf(item.principalDue) !== 'Null' && (
-                    <Typography variant={'body3'}>
-                      Principal due:{' '}
-                      <Typography fontWeight={600} variant={'body3'}>
-                        {utils.formatDollar(item?.principalDue)}
+                    {utils.TypeOf(item.paymentAmount) !== 'Null' && (
+                      <Typography variant={'body3'}>
+                        Payment amount:{' '}
+                        <Typography fontWeight={600} variant={'body3'}>
+                          {utils.formatDollar(item?.paymentAmount)}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                  )}
+                    )}
 
-                  {utils.TypeOf(item.paymentModeOn) !== 'Null' && (
-                    <Typography variant={'body3'}>
-                      Payment made on{' '}
-                      <Typography fontWeight={600} variant={'body3'}>
-                        {utils.formatDate(item?.paymentModeOn)}
+                    {utils.TypeOf(item.principalDue) !== 'Null' && (
+                      <Typography variant={'body3'}>
+                        Principal due:{' '}
+                        <Typography fontWeight={600} variant={'body3'}>
+                          {utils.formatDollar(item?.principalDue)}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                  )}
-                </Stack>
+                    )}
+
+                    {utils.TypeOf(item.paymentModeOn) !== 'Null' && (
+                      <Typography variant={'body3'}>
+                        Payment made on{' '}
+                        <Typography fontWeight={600} variant={'body3'}>
+                          {utils.formatDate(item?.paymentModeOn)}
+                        </Typography>
+                      </Typography>
+                    )}
+                  </Stack>
+                )}
               </Stack>
             }
           >

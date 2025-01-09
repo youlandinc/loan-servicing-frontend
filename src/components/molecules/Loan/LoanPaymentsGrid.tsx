@@ -64,6 +64,7 @@ interface PaymentFormDataProps {
   waivedLateCharges: number | undefined;
   nsf: LoanAnswerEnum;
   principalReceived: number | undefined;
+  reservePmt: number | undefined;
 }
 
 const PAYMENT_FORM_DATA = {
@@ -76,6 +77,7 @@ const PAYMENT_FORM_DATA = {
   nsf: LoanAnswerEnum.no,
   id: undefined,
   principalReceived: undefined,
+  reservePmt: undefined,
 };
 
 interface DrawFormDataProps {
@@ -263,6 +265,7 @@ export const LoanPaymentsGrid: FC<{
         loanId: utils.getParamsFromUrl(location.href).loanId as string,
         paymentType: PaymentTypeEnum.reg_pmt,
         principalReceived: paymentFormData.principalReceived,
+        reservePmt: paymentFormData.reservePmt,
       };
       setEditLoading(true);
       try {
@@ -294,6 +297,7 @@ export const LoanPaymentsGrid: FC<{
       paymentFormData.waivedLateCharges,
       paymentFormData.nsf,
       paymentFormData.principalReceived,
+      paymentFormData.reservePmt,
       dateDue,
       enqueueSnackbar,
       onClickToClosePayment,
@@ -730,6 +734,17 @@ export const LoanPaymentsGrid: FC<{
               prefix={'$'}
               value={paymentFormData.defaultInterestReceived}
             />
+            <StyledTextFieldNumber
+              label={'Reserve received'}
+              onValueChange={({ floatValue }) => {
+                setPaymentFormData({
+                  ...paymentFormData,
+                  reservePmt: floatValue,
+                });
+              }}
+              prefix={'$'}
+              value={paymentFormData.reservePmt}
+            />
 
             <StyledTextFieldNumber
               label={'Late charges received'}
@@ -1076,6 +1091,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                     principalReceived: row.original.principalReceived,
                     nsf: row.original.nsf,
                     id: row.original.id,
+                    reservePmt: row.original.reservePmt,
                   });
                 },
               },

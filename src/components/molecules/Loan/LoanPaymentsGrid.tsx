@@ -791,7 +791,6 @@ export const LoanPaymentsGrid: FC<{
                 disabled={
                   !isValid(paymentFormData.dataReceivedTime) ||
                   !paymentFormData.paymentMethod ||
-                  !paymentFormData.defaultInterestReceived ||
                   editLoading
                 }
                 loading={editLoading}

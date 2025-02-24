@@ -42,6 +42,11 @@ export const REPAYMENT_STATUS_OPTIONS: Option[] = [
     key: PipelineStatusEnum.PAID_OFF,
     value: PipelineStatusEnum.PAID_OFF,
   },
+  {
+    label: 'REO',
+    key: PipelineStatusEnum.REO,
+    value: PipelineStatusEnum.REO,
+  },
 ];
 
 export const TRADE_STATUS_BGCOLOR_PALETTE = {

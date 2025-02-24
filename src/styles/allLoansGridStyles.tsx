@@ -226,6 +226,7 @@ export const allLoansStatusColor: Record<string, any> = {
   [PipelineStatusEnum.DELINQUENCY]: '#E38515',
   [PipelineStatusEnum.FORECLOSURE]: '#A10000',
   [PipelineStatusEnum.PAID_OFF]: '#69C0A5',
+  [PipelineStatusEnum.REO]: 'rgba(137, 69, 174, 1)',
 };
 
 export const allLoansStatusBgcolor: Record<string, any> = {
@@ -233,4 +234,5 @@ export const allLoansStatusBgcolor: Record<string, any> = {
   [PipelineStatusEnum.DELINQUENCY]: 'rgba(225, 132, 65, 0.20)',
   [PipelineStatusEnum.FORECLOSURE]: 'rgba(235, 10, 10, 0.15)',
   [PipelineStatusEnum.PAID_OFF]: 'rgba(105, 192, 165, 0.20)',
+  [PipelineStatusEnum.REO]: 'rgba(137, 69, 174, 0.20)',
 };

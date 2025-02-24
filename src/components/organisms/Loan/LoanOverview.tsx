@@ -61,6 +61,7 @@ import OVERVIEW_PAYOFF_DATE from '@/svg/loan/overview/overview-payoff-date.svg';
 
 import OVERVIEW_NEXT_DUE_DATE from '@/svg/loan/overview/overview-next-due-date.svg';
 import OVERVIEW_MATURITY_DATE from '@/svg/loan/overview/overview-maturity-date.svg';
+import OVERVIEW_RESERVE_BALANCE from '@/svg/loan/overview/overview-reserve-balance.svg';
 
 import OVERVIEW_COMMENTS_VIEW from '@/svg/loan/overview/overview-comments-view.svg';
 //import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
@@ -393,6 +394,16 @@ export const LoanOverview: FC = observer(() => {
           },
         ],
       });
+      setReserveBalance({
+        theme:
+          data.repaymentStatus === PipelineStatusEnum.FORECLOSURE
+            ? 'warning'
+            : 'light',
+        header: 'Reserve balance',
+        headerValue: utils.formatDollar(balanceInfo.remainingReserveBalance),
+        headerIcon: OVERVIEW_RESERVE_BALANCE,
+        listData: [],
+      });
 
       const { outstandingPayAbles } = data;
       const reducedOutstandingPayAbles = outstandingPayAbles.map((item) => ({
@@ -457,6 +468,8 @@ export const LoanOverview: FC = observer(() => {
   const [maturityDate, setMaturityDate] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [nextDateDue, setNextDateDue] =
+    useState<LoanOverviewCardProps>(INITIAL);
+  const [reserveBalance, setReserveBalance] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [loanPayAbles, setOutstandingPayAbles] =
     useState<LoanOverviewPayablesGridProps['outstandingPayAbles']>();
@@ -590,6 +603,7 @@ export const LoanOverview: FC = observer(() => {
                   <Stack flexDirection={'row'} gap={3}>
                     <LoanOverviewCard {...nextDateDue} />
                     <LoanOverviewCard {...maturityDate} />
+                    <LoanOverviewCard {...reserveBalance} />
                   </Stack>
 
                   <LoanOverviewTimeline listData={timeline} />

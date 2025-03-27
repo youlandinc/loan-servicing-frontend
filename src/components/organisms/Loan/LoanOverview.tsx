@@ -265,14 +265,19 @@ export const LoanOverview: FC = observer(() => {
                   </Typography>
                 ),
               },
-              {
-                label: 'Auto ACH payment date',
-                value: utils.formatDate(
-                  loanInfo.autoAchPaymentDate,
-                  'MM/dd/yyyy',
-                ),
-              },
-            ]
+            ].concat(
+              loanInfo.autoAch == AchEnum.enabled
+                ? [
+                    {
+                      label: 'Auto ACH payment date',
+                      value: utils.formatDate(
+                        loanInfo.autoAchPaymentDate,
+                        'MM/dd/yyyy',
+                      ),
+                    },
+                  ]
+                : [],
+            )
           : [
               {
                 label: 'Investor',

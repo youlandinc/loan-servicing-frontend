@@ -112,6 +112,32 @@ export const commonColumns: MRT_ColumnDef<any>[] = [
     },
   },
   {
+    header: 'Prospective buyer',
+    accessorKey: 'prospectiveBuyer',
+    size: 140,
+    minSize: 80,
+    muiTableBodyCellProps: {
+      align: 'left',
+    },
+    muiTableHeadCellProps: {
+      align: 'center',
+    },
+    Cell: ({ renderedCellValue }) => {
+      return (
+        <Typography
+          fontSize={12}
+          sx={{
+            ...ellipsisStyle,
+            width: '100%',
+          }}
+        >
+          {renderedCellValue || '—'}
+        </Typography>
+      );
+    },
+  },
+
+  {
     accessorKey: 'propertyFullAddress',
     header: 'Property address',
     size: 300,

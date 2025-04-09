@@ -78,24 +78,23 @@ export const StyledSearchSelectMultiple: FC<
         >
           {label}
         </Typography>
-        {/* {activeStatus ||
-                allStatus ||
-                propertyAddressRef.current?.value !== '' ? null : (*/}
-        <Typography
-          bgcolor={'#95A8D7'}
-          borderRadius={1}
-          color={'text.white'}
-          fontWeight={600}
-          height={18}
-          lineHeight={'18px'}
-          minWidth={18}
-          ml={1}
-          px={0.5}
-          variant={'body2'}
-        >
-          {selected.length}
-        </Typography>
-        {/*   )}*/}
+
+        {selected.length > 0 && selected.length < options.length && (
+          <Typography
+            bgcolor={'#95A8D7'}
+            borderRadius={1}
+            color={'text.white'}
+            fontWeight={600}
+            height={18}
+            lineHeight={'18px'}
+            minWidth={18}
+            ml={1}
+            px={0.5}
+            variant={'body2'}
+          >
+            {selected.length}
+          </Typography>
+        )}
       </Stack>
 
       <StyledSelectMultiple

@@ -201,7 +201,7 @@ const defaultOptions: ThemeOptions = {
     },
   },
   typography: {
-    fontFamily: 'Poppins, "pingfang sc", sans-serif',
+    fontFamily: 'Inter, "pingfang sc", sans-serif',
     h1: {
       fontSize: 56,
       fontWeight: 600,

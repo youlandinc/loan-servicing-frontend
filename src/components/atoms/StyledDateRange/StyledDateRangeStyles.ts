@@ -120,7 +120,7 @@ export const StyledDateRangeStyles = {
       borderRadius: '23px',
       fontSize: 16,
       fontWeight: 600,
-      fontFamily: 'Poppins',
+      fontFamily: 'Inter',
       m: '4px',
     },
     '& .react-datepicker__month-text--keyboard-selected': {

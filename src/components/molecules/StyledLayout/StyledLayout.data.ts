@@ -83,33 +83,35 @@ export const LAYOUT_HEADER_TAB = [
   },
 ];
 
+const DOMAIN = 'corepass';
+
 //export const LAYOUT_HEADER_USER = {};
 export const URL_HOME = (domain: string) =>
-  `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/`;
+  `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/`;
 
 export const URL_SETTINGS = (
   domain: string,
   role: RoleTypeEnum | undefined,
 ) => {
   return role === RoleTypeEnum.admin
-    ? `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/settings/organization/general`
-    : `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/settings/account_settings`;
+    ? `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/settings/organization/general`
+    : `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/settings/account_settings`;
 };
 
 export const URL_POS = (domain: string) =>
-  `https://${process.env.PREFIX_URL}dashboard.${domain || 'youland'}.com/pos/customers`;
+  `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/pos/customers`;
 export const URL_LOS = (domain: string) =>
-  `https://${process.env.PREFIX_URL}los.${domain || 'youland'}.com/auth/sign_in`;
+  `https://${process.env.PREFIX_URL}los.${domain || DOMAIN}.com/auth/sign_in`;
 export const URL_DOC = (domain: string) =>
-  `https://${process.env.PREFIX_URL}doc.${domain || 'youland'}.com/auth/sign_in`;
+  `https://${process.env.PREFIX_URL}doc.${domain || DOMAIN}.com/auth/sign_in`;
 export const URL_PRICING = (domain: string) =>
-  `https://${process.env.PREFIX_URL}pricing.${domain || 'youland'}.com`;
+  `https://${process.env.PREFIX_URL}pricing.${domain || DOMAIN}.com`;
 export const URL_SERVICING = (domain: string) =>
-  `https://${process.env.PREFIX_URL}servicing.${domain || 'youland'}.com`;
+  `https://${process.env.PREFIX_URL}servicing.${domain || DOMAIN}.com`;
 export const URL_CUSTOMER = (domain: string) =>
-  `https://${process.env.PREFIX_URL}customers.${domain || 'youland'}.com`;
+  `https://${process.env.PREFIX_URL}customers.${domain || DOMAIN}.com`;
 
 export const URL_LOGOUT_REDIRECTION = (domain: string) =>
   domain === 'alamedacapital'
     ? `https://${process.env.PREFIX_ALAMEDA_URL}alamedacapital.com/`
-    : `https://${process.env.PREFIX_URL}software.${domain || 'youland'}.com/auth/login/?reload=true&origin=servicing`;
+    : `https://${process.env.PREFIX_URL}software.${domain || DOMAIN}.com/auth/login/?reload=true&origin=servicing`;

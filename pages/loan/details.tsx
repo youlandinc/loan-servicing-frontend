@@ -19,7 +19,7 @@ const LoanDetailsPage = observer(() => {
   return (
     <>
       <Head>
-        <meta content="YouLand Software Team" name="description" />
+        <meta content="Corepass Software Team" name="description" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
       <StyledLayout isHomepage={false} sideMenu={<ServicingSide />}>

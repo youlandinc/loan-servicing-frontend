@@ -87,19 +87,19 @@ const DOMAIN = 'corepass';
 
 //export const LAYOUT_HEADER_USER = {};
 export const URL_HOME = (domain: string) =>
-  `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/`;
+  `https://${process.env.PREFIX_URL}app.${domain || DOMAIN}.com/`;
 
 export const URL_SETTINGS = (
   domain: string,
   role: RoleTypeEnum | undefined,
 ) => {
   return role === RoleTypeEnum.admin
-    ? `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/settings/organization/general`
-    : `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/settings/account_settings`;
+    ? `https://${process.env.PREFIX_URL}app.${domain || DOMAIN}.com/settings/organization/general`
+    : `https://${process.env.PREFIX_URL}app.${domain || DOMAIN}.com/settings/account_settings`;
 };
 
 export const URL_POS = (domain: string) =>
-  `https://${process.env.PREFIX_URL}dashboard.${domain || DOMAIN}.com/pos/customers`;
+  `https://${process.env.PREFIX_URL}app.${domain || DOMAIN}.com/pos/customers`;
 export const URL_LOS = (domain: string) =>
   `https://${process.env.PREFIX_URL}los.${domain || DOMAIN}.com/auth/sign_in`;
 export const URL_DOC = (domain: string) =>
@@ -114,4 +114,4 @@ export const URL_CUSTOMER = (domain: string) =>
 export const URL_LOGOUT_REDIRECTION = (domain: string) =>
   domain === 'alamedacapital'
     ? `https://${process.env.PREFIX_ALAMEDA_URL}alamedacapital.com/`
-    : `https://${process.env.PREFIX_URL}software.${domain || DOMAIN}.com/auth/login/?reload=true&origin=servicing`;
+    : `https://${process.env.PREFIX_URL}app.${domain || DOMAIN}.com/auth/login/?reload=true&origin=servicing`;

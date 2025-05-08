@@ -1,20 +1,3 @@
-import {
-  AllLoansPagination,
-  ColumnsHeaderMenus,
-  commonColumns,
-  defaultColumnPining,
-  resortColumns,
-  transferOrderColumnsKeys,
-} from '@/components/molecules';
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { useMst } from '@/models/Root';
-import { _setColumnPining, _setColumnWidth } from '@/request/common';
-import { _getAllLoansList } from '@/request/portfolio/allLoans';
-import {
-  SetColumnWidthParam,
-  UpdateColumnPiningParamType,
-} from '@/types/common';
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { Stack } from '@mui/material';
 import {
   MRT_ColumnDef,
@@ -26,6 +9,25 @@ import { enqueueSnackbar } from 'notistack';
 import { FC, useMemo, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
 import useSWR from 'swr';
+
+import {
+  AllLoansPagination,
+  ColumnsHeaderMenus,
+  commonColumns,
+  defaultColumnPining,
+  resortColumns,
+  transferOrderColumnsKeys,
+} from '@/components/molecules';
+import { ExportLoanType } from '@/components/molecules/GridAllLoans/ExportLoanType';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { useMst } from '@/models/Root';
+import { _setColumnPining, _setColumnWidth } from '@/request/common';
+import { _getAllLoansList } from '@/request/portfolio/allLoans';
+import {
+  SetColumnWidthParam,
+  UpdateColumnPiningParamType,
+} from '@/types/common';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 const DEFAULT_SORT = [
   {
@@ -60,7 +62,10 @@ export const AllLoansGrid: FC = observer(() => {
   const columnPiningConfig = allLoansGridModel.pinLeftColumns;
 
   const configColumnsOrderKeysArr = allLoansGridModel.orderColumns?.length
-    ? transferOrderColumnsKeys(allLoansGridModel.orderColumns)
+    ? [
+        'mrt-row-select',
+        ...transferOrderColumnsKeys(allLoansGridModel.orderColumns),
+      ]
     : [];
 
   const { data, isLoading } = useSWR(
@@ -104,6 +109,14 @@ export const AllLoansGrid: FC = observer(() => {
   const totalPages = data?.data?.page?.totalPages ?? 0;
   const totalLoanAmount = data?.data?.totalLoanAmount ?? 0;
   const currentPage = data?.data?.page?.number ?? 0;
+  const rowSelectConfig = allLoansGridModel.isExported;
+
+  const rowSelectConfigs = {
+    enableRowSelection: rowSelectConfig,
+    enableMultiRowSelection: rowSelectConfig,
+    enableBatchRowSelection: rowSelectConfig,
+    enableSelectAll: rowSelectConfig,
+  };
 
   const table = useMaterialReactTable({
     columns: configColumns as MRT_ColumnDef<any>[],
@@ -124,17 +137,13 @@ export const AllLoansGrid: FC = observer(() => {
     enableColumnVirtualization: true,
     enableColumnPinning: true,
     manualPagination: true,
-    // getCoreRowModel: getCoreRowModel(),
     state: {
       columnOrder: configColumnsOrderKeysArr,
-      // isLoading: isValidating,
       showSkeletons: isLoading,
       columnPinning: { left: columnPiningConfig },
     },
     initialState: {
-      // showSkeletons: false,
       showProgressBars: false,
-      // expanded: defaultExpanded,
     },
     getRowId: (row) => row.loanId, //default
     rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
@@ -257,10 +266,27 @@ export const AllLoansGrid: FC = observer(() => {
         maxHeight: 'calc(100vh - 212px)',
       },
     },
+    muiSelectAllCheckboxProps: {
+      title: '',
+      sx: {
+        m: '0 auto',
+        transform: 'translateX(calc(50% - 18px))',
+      },
+    },
+    muiSelectCheckboxProps: {
+      title: '',
+      sx: {
+        m: '0 auto',
+      },
+    },
+    ...rowSelectConfigs,
   });
 
   const columnSizing: Record<string, number> = table.getState().columnSizing;
   const columnPining = table.getState().columnPinning;
+  const rowSelection = Object.keys(table.getState().rowSelection).length
+    ? Object.keys(table.getState().rowSelection).map((item) => Number(item))
+    : [];
 
   const [, setColumnWidth] = useAsyncFn(
     async (result: SetColumnWidthParam) => {
@@ -377,6 +403,15 @@ export const AllLoansGrid: FC = observer(() => {
         }}
         onClose={() => setAnchorEl(null)}
         open={Boolean(anchorEl)}
+      />
+      <ExportLoanType
+        disabled={rowSelection.length === 0}
+        loanIds={rowSelection}
+        onClose={() => {
+          allLoansGridModel.updateIsExported(false);
+          table.setRowSelection({});
+        }}
+        open={allLoansGridModel.isExported}
       />
     </>
   );

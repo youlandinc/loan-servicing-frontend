@@ -16,7 +16,6 @@ export const SignIn: FC = observer(() => {
   const store = useMst();
 
   const { userSetting } = store;
-
   const { loading } = useAsync(async () => {
     const { token } = utils.getParamsFromUrl(location.href);
     if (!token) {

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import React, { FC, ReactNode } from 'react';
 
-interface ActionMenuProps {
+export interface ActionMenuProps {
   label: ReactNode;
   icon?: React.ElementType;
   path?: string;

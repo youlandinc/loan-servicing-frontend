@@ -197,3 +197,9 @@ export enum LoanFicoScoreEnum {
   between_750_799 = 'BETWEEN_750_799',
   above_800 = 'ABOVE_800',
 }
+
+export enum PipelineExportTypeEnum {
+  LOAN_PIPELINE = 'LOAN_PIPELINE',
+  LOAN_TAPE = 'LOAN_TAPE',
+  MASTER_LOAN_TAPE = 'MASTER_LOAN_TAPE',
+}

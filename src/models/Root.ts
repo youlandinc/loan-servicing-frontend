@@ -138,6 +138,7 @@ const initialState = {
       orderColumnsModel: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
     cashFlowGridModel: {
       queryModel: {
@@ -156,6 +157,7 @@ const initialState = {
       orderColumnsModel: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
     alamedaGridModel: {
       queryModel: {
@@ -174,6 +176,7 @@ const initialState = {
       orderColumnsModel: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
     allLoansGridModel: {
       queryModel: {
@@ -192,6 +195,7 @@ const initialState = {
       orderColumnsModel: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
     investorGridModel: {
       queryModel: {
@@ -210,6 +214,7 @@ const initialState = {
       orderColumns: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
     delinquentGridModel: {
       queryModel: {
@@ -229,6 +234,7 @@ const initialState = {
       orderColumns: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
     maturityGridModel: {
       queryModel: {
@@ -248,6 +254,7 @@ const initialState = {
       orderColumns: [],
       pinLeftColumns: [],
       expandedColumns: [],
+      isExported: false,
     },
   },
 };

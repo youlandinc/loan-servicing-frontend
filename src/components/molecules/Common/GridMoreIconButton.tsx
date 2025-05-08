@@ -1,4 +1,11 @@
-import { ColumnsOrderDialog, StyledActionsMenu } from '@/components/atoms';
+import { IconButton } from '@mui/material';
+import React, { FC, ReactNode, useState } from 'react';
+
+import {
+  ActionMenuProps,
+  ColumnsOrderDialog,
+  StyledActionsMenu,
+} from '@/components/atoms';
 
 import { useSwitch } from '@/hooks';
 import { IOrderColumnsItem } from '@/models/gridModel';
@@ -6,19 +13,19 @@ import { PortfolioGridTypeEnum } from '@/types/enum';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
-import { IconButton } from '@mui/material';
-import React, { FC, useState } from 'react';
 
 interface GridMoreIconButtonProps {
   columns: IOrderColumnsItem[];
   handleSave?: (param: IOrderColumnsItem[]) => void;
   gridType: PortfolioGridTypeEnum;
+  menus?: ActionMenuProps[];
 }
 
 export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
   columns,
   handleSave,
   gridType,
+  menus,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 
@@ -38,13 +45,23 @@ export const GridMoreIconButton: FC<GridMoreIconButtonProps> = ({
       </IconButton>
       <StyledActionsMenu
         anchorEl={anchorEl}
-        menus={[
-          {
-            label: 'Edit columns',
-            icon: VerticalSplitIcon,
-            handleClick: open,
-          },
-        ]}
+        menus={(
+          [
+            {
+              label: 'Edit columns',
+              icon: VerticalSplitIcon,
+              handleClick: open,
+            },
+          ] as ActionMenuProps[]
+        )
+          .concat(menus ?? [])
+          .map((item) => ({
+            ...item,
+            handleClick: () => {
+              item?.handleClick?.();
+              setAnchorEl(null);
+            },
+          }))}
         onClose={() => setAnchorEl(null)}
         open={Boolean(anchorEl)}
       />

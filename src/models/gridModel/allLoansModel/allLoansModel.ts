@@ -32,6 +32,7 @@ export const allLoansModel = types
     orderColumns: types.array(orderColumnsItem),
     pinLeftColumns: types.array(types.string),
     expandedColumns: types.array(expandedItem),
+    isExported: types.boolean,
   })
   .actions((self) => ({
     updateOrderColumns(columns: IOrderColumnsItem[]) {
@@ -40,5 +41,8 @@ export const allLoansModel = types
     },
     updatePinLeftColumns(columns: string[]) {
       self.pinLeftColumns = cast(columns);
+    },
+    updateIsExported(isExported: boolean) {
+      self.isExported = isExported;
     },
   }));

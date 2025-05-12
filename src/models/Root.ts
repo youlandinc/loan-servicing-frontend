@@ -41,10 +41,9 @@ const RootStore = types.model(RootModel).actions((self) => {
     logout() {
       self.userSetting.initState();
       localStorage.clear();
-      window.location.href =
-        window.location.href === 'alamedacapital'
-          ? `https://${process.env.PREFIX_ALAMEDA_URL}.alamedacapital.com/`
-          : `https://${process.env.PREFIX_URL}software.youland.com/auth/login/?reload=true&origin=servicing`;
+      window.location.href = window.location.href?.includes('alamedacapital')
+        ? `https://${process.env.PREFIX_ALAMEDA_URL}.alamedacapital.com/`
+        : `https://${process.env.PREFIX_URL}app.corepass.com/auth/login/?reload=true&origin=servicing`;
     },
   };
 });

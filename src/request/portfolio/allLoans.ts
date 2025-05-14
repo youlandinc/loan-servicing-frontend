@@ -29,3 +29,13 @@ export const setDisplayType = (type: PortfolioGridTypeEnum) => {
 export const _getAllStatus = () => {
   return get<Option[]>('/servicing/repayment/status');
 };
+
+export const _exportLoans = (loanIds: number[]) => {
+  return post(
+    '/servicing/list/all/export',
+    { loanIds },
+    {
+      responseType: 'blob',
+    },
+  );
+};

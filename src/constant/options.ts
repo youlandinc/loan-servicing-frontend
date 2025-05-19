@@ -8,6 +8,7 @@ import {
   LoanStatus,
   MaturityDateTypeEnum,
   MaturityTimeRangeEnum,
+  PipelineExportTypeEnum,
   PipelineStatusEnum,
   ProductCategoryEnum,
   PropertyTypeEnum,
@@ -426,4 +427,22 @@ export const APPLICATION_FICO_SCORE: Option[] = [
     key: LoanFicoScoreEnum.above_800,
     value: LoanFicoScoreEnum.above_800,
   },
+];
+
+export const PipelineExportType = [
+  {
+    label: 'Pipeline format',
+    key: PipelineExportTypeEnum.LOAN_PIPELINE,
+    value: PipelineExportTypeEnum.LOAN_PIPELINE,
+  },
+  // {
+  //   label: 'Loan tape for sales',
+  //   key: PipelineExportTypeEnum.LOAN_TAPE,
+  //   value: PipelineExportTypeEnum.LOAN_TAPE,
+  // },
+  // {
+  //   label: 'Master loan tape',
+  //   key: PipelineExportTypeEnum.MASTER_LOAN_TAPE,
+  //   value: PipelineExportTypeEnum.MASTER_LOAN_TAPE,
+  // },
 ];

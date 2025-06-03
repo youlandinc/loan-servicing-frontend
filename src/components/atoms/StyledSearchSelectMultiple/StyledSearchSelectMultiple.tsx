@@ -66,17 +66,10 @@ export const StyledSearchSelectMultiple: FC<
     >
       <Stack alignItems={'center'} direction={'row'}>
         <Typography
-          color={
-            /*     propertyAddressRef.current?.value !== ''
-                            ? 'text.disabled'
-                            : btnSelected.stageList
-                                ? 'primary'
-                                : 'text.primary'*/
-            selected.length > 0 ? 'primary' : '#636A7C !important'
-          }
+          color={selected.length > 0 ? 'primary' : '#636A7C !important'}
           variant={'body2'}
         >
-          {label}
+          {selected.length === options.length ? 'All loans' : label}
         </Typography>
 
         {selected.length > 0 && selected.length < options.length && (

@@ -336,8 +336,11 @@ export const Portfolio: FC = observer(() => {
                             }}
                           />
                           <Typography
+                            alignItems={'center'}
                             color={'action.active'}
                             component={'div'}
+                            display={'flex'}
+                            gap={0.5}
                             variant={'body2'}
                           >
                             {item.label}

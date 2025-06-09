@@ -168,6 +168,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
                 ? '#5B76BC'
                 : '#636A7C'
             }
+            lineHeight={1.42}
             variant={'body2'}
           >
             {
@@ -185,6 +186,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
             borderRadius={1}
             color={'#fff'}
             px={0.5}
+            py={'1px'}
             variant={'subtitle3'}
           >
             {data?.data?.[

@@ -1,4 +1,6 @@
-import { Stack } from '@mui/material';
+import { ellipsisStyle } from '@/styles';
+import { utils } from '@/utils';
+import { Stack, Typography } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
@@ -99,9 +101,36 @@ export const AllLoansGrid: FC = observer(() => {
   );
 
   const configColumns = useMemo(() => {
+    const allLoansColumns = commonColumns.concat({
+      accessorKey: 'investorRate',
+      header: 'Investor rate',
+      size: 140,
+      minSize: 110,
+      muiTableBodyCellProps: {
+        align: 'center',
+      },
+      muiTableHeadCellProps: {
+        align: 'center',
+      },
+      Cell: ({ renderedCellValue }) => {
+        return (
+          <Typography
+            fontSize={12}
+            sx={{
+              ...ellipsisStyle,
+              width: '100%',
+            }}
+          >
+            {renderedCellValue === 0
+              ? '0%'
+              : utils.formatPercent(renderedCellValue as number)}
+          </Typography>
+        );
+      },
+    });
     return allLoansGridModel.orderColumns.length
-      ? resortColumns(allLoansGridModel.orderColumns, commonColumns)
-      : commonColumns;
+      ? resortColumns(allLoansGridModel.orderColumns, allLoansColumns)
+      : allLoansColumns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join('')]);
 

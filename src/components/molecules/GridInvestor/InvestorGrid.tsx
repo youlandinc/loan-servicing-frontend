@@ -1,6 +1,7 @@
 import {
   AllLoansPagination,
   commonColumns,
+  defaultColumns,
   GroupLoans,
   resortColumns,
   transferFirstColumn,
@@ -79,33 +80,7 @@ export const InvestorGrid: FC = observer(() => {
   );
 
   const columns = useMemo(() => {
-    const allLoansColumns = commonColumns.concat({
-      accessorKey: 'investorRate',
-      header: 'Investor rate',
-      size: 140,
-      minSize: 110,
-      muiTableBodyCellProps: {
-        align: 'center',
-      },
-      muiTableHeadCellProps: {
-        align: 'center',
-      },
-      Cell: ({ renderedCellValue }) => {
-        return (
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue === 0
-              ? '0%'
-              : utils.formatPercent(renderedCellValue as number)}
-          </Typography>
-        );
-      },
-    });
+    const allLoansColumns = defaultColumns;
     return investorGridModel.orderColumns.length
       ? transferFirstColumn(
           resortColumns(investorGridModel.orderColumns, allLoansColumns),

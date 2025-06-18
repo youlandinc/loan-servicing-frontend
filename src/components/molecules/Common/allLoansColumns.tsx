@@ -585,3 +585,31 @@ export const maturityColumns = (type: MaturityTimeRangeEnum) => {
     ).concat(commonColumns),
   );
 };
+
+export const defaultColumns: MRT_ColumnDef<any>[] = commonColumns.concat({
+  accessorKey: 'investorRate',
+  header: 'Investor rate',
+  size: 140,
+  minSize: 110,
+  muiTableBodyCellProps: {
+    align: 'center',
+  },
+  muiTableHeadCellProps: {
+    align: 'center',
+  },
+  Cell: ({ renderedCellValue }) => {
+    return (
+      <Typography
+        fontSize={12}
+        sx={{
+          ...ellipsisStyle,
+          width: '100%',
+        }}
+      >
+        {renderedCellValue === 0
+          ? '0%'
+          : utils.formatPercent(renderedCellValue as number)}
+      </Typography>
+    );
+  },
+});

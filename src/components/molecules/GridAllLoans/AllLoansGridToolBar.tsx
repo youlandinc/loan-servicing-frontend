@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { enqueueSnackbar } from 'notistack';
-import { ElementType, FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import useSWR from 'swr';
 
 import {
@@ -12,7 +12,7 @@ import {
 } from '@/components/atoms';
 import {
   combineColumns,
-  commonColumns,
+  defaultColumns,
   GridMoreIconButton,
   SortButton,
 } from '@/components/molecules';
@@ -140,7 +140,7 @@ export const AllLoansGridToolBar: FC = observer(() => {
       )}
 
       <GridMoreIconButton
-        columns={combineColumns(commonColumns, allLoansGridModel.orderColumns)}
+        columns={combineColumns(defaultColumns, allLoansGridModel.orderColumns)}
         gridType={PortfolioGridTypeEnum.ALL_LOANS}
         handleSave={(columns) => {
           allLoansGridModel.updateOrderColumns(columns);

@@ -17,6 +17,7 @@ import {
   ColumnsHeaderMenus,
   commonColumns,
   defaultColumnPining,
+  defaultColumns,
   resortColumns,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
@@ -101,33 +102,7 @@ export const AllLoansGrid: FC = observer(() => {
   );
 
   const configColumns = useMemo(() => {
-    const allLoansColumns = commonColumns.concat({
-      accessorKey: 'investorRate',
-      header: 'Investor rate',
-      size: 140,
-      minSize: 110,
-      muiTableBodyCellProps: {
-        align: 'center',
-      },
-      muiTableHeadCellProps: {
-        align: 'center',
-      },
-      Cell: ({ renderedCellValue }) => {
-        return (
-          <Typography
-            fontSize={12}
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-          >
-            {renderedCellValue === 0
-              ? '0%'
-              : utils.formatPercent(renderedCellValue as number)}
-          </Typography>
-        );
-      },
-    });
+    const allLoansColumns = defaultColumns;
     return allLoansGridModel.orderColumns.length
       ? resortColumns(allLoansGridModel.orderColumns, allLoansColumns)
       : allLoansColumns;

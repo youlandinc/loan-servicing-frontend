@@ -1,4 +1,6 @@
-import { Stack } from '@mui/material';
+import { ellipsisStyle } from '@/styles';
+import { utils } from '@/utils';
+import { Stack, Typography } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
@@ -15,6 +17,7 @@ import {
   ColumnsHeaderMenus,
   commonColumns,
   defaultColumnPining,
+  defaultColumns,
   resortColumns,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
@@ -99,9 +102,10 @@ export const AllLoansGrid: FC = observer(() => {
   );
 
   const configColumns = useMemo(() => {
+    const allLoansColumns = defaultColumns;
     return allLoansGridModel.orderColumns.length
-      ? resortColumns(allLoansGridModel.orderColumns, commonColumns)
-      : commonColumns;
+      ? resortColumns(allLoansGridModel.orderColumns, allLoansColumns)
+      : allLoansColumns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join('')]);
 

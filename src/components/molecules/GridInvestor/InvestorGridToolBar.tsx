@@ -12,7 +12,7 @@ import {
 } from '@/components/atoms';
 import {
   combineColumns,
-  commonColumns,
+  defaultColumns,
   GridMoreIconButton,
   SortButton,
 } from '@/components/molecules';
@@ -141,7 +141,7 @@ export const InvestorGridToolBar: FC = observer(() => {
         />
       )}
       <GridMoreIconButton
-        columns={combineColumns(commonColumns, investorGridModel.orderColumns)}
+        columns={combineColumns(defaultColumns, investorGridModel.orderColumns)}
         gridType={PortfolioGridTypeEnum.BY_INVESTOR}
         handleSave={(columns) => {
           investorGridModel.updateOrderColumns(columns);

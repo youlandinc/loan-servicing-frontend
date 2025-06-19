@@ -39,7 +39,7 @@ export const utils = {
       !utils.notUndefined(percentageValue) ||
       !utils.notNull(percentageValue)
     ) {
-      return '-';
+      return '—';
     }
     if (!percentageValue) {
       if (radix === 0) {

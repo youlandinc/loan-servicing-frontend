@@ -1,6 +1,7 @@
 import {
   AllLoansPagination,
   commonColumns,
+  defaultColumns,
   GroupLoans,
   resortColumns,
   transferFirstColumn,
@@ -9,8 +10,10 @@ import {
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
+import { ellipsisStyle } from '@/styles';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { Stack } from '@mui/material';
+import { utils } from '@/utils';
+import { Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useMemo } from 'react';
 import useSWR from 'swr';
@@ -77,11 +80,12 @@ export const InvestorGrid: FC = observer(() => {
   );
 
   const columns = useMemo(() => {
+    const allLoansColumns = defaultColumns;
     return investorGridModel.orderColumns.length
       ? transferFirstColumn(
-          resortColumns(investorGridModel.orderColumns, commonColumns),
+          resortColumns(investorGridModel.orderColumns, allLoansColumns),
         )
-      : transferFirstColumn(commonColumns);
+      : transferFirstColumn(allLoansColumns);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configColumnsOrderKeysArr.join('')]);
 

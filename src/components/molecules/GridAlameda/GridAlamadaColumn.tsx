@@ -202,6 +202,28 @@ export const ALAMEDA_COLUMNS = (
       },
     },
     {
+      accessorKey: 'estClosingDate',
+      header: 'Funded date',
+      size: 140,
+      minSize: 110,
+      muiTableBodyCellProps: {
+        align: 'center',
+      },
+      muiTableHeadCellProps: {
+        align: 'center',
+      },
+      Cell: ({ renderedCellValue }) => {
+        return (
+          <Typography fontSize={12} sx={{ ...ellipsisStyle }}>
+            {typeof renderedCellValue === 'string' &&
+            isValid(new Date(renderedCellValue))
+              ? format(new Date(renderedCellValue), 'MM/dd/yyyy')
+              : '—'}
+          </Typography>
+        );
+      },
+    },
+    {
       accessorKey: 'daysDelinquent',
       header: 'Days delinquent',
       size: 140,

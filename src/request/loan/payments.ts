@@ -26,7 +26,7 @@ export const _updateOrCreatePaymentData = (
   params: Partial<{
     id: string | number | undefined;
     dataReceivedTime: string;
-    dateDue: string;
+    dateDue?: string;
     paymentMethod: PaymentMethod | undefined;
     defaultInterestReceived: number | undefined;
     lateChargesPaid: number | undefined;

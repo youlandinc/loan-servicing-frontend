@@ -256,7 +256,13 @@ export const LoanPaymentsGrid: FC<{
         dataReceivedTime: (
           paymentFormData.dataReceivedTime as Date
         ).toISOString(),
-        dateDue: paymentFormData?.dateDue ? paymentFormData.dateDue : dateDue,
+        dateDue: paymentFormData?.dateDue
+          ? paymentFormData.dateDue === 'NO_DATE'
+            ? undefined
+            : paymentFormData.dateDue
+          : dateDue === 'NO_DATE'
+            ? undefined
+            : dateDue,
         paymentMethod: paymentFormData.paymentMethod,
         defaultInterestReceived: paymentFormData.defaultInterestReceived,
         lateChargesPaid: paymentFormData.lateChargesPaid,
@@ -688,11 +694,16 @@ export const LoanPaymentsGrid: FC<{
                   dateDue: value.target.value as string,
                 });
               }}
-              options={
-                paymentAction === 'addPayment'
+              options={[
+                ...(paymentAction === 'addPayment'
                   ? dateDueOpts
-                  : originalDateDueOpts
-              }
+                  : originalDateDueOpts),
+                {
+                  label: 'No date due',
+                  value: 'NO_DATE',
+                  key: 'No date due',
+                },
+              ]}
               value={
                 paymentFormData.dateDue ? paymentFormData.dateDue : dateDue
               }

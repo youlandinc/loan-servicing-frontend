@@ -5,6 +5,7 @@ export enum LoanProductCategoryEnum {
   stabilized_bridge = 'STABILIZED_BRIDGE',
   fix_and_flip = 'FIX_AND_FLIP',
   ground_up_construction = 'GROUND_UP_CONSTRUCTION',
+  land = 'LAND',
 }
 
 export enum LoanPurposeEnum {

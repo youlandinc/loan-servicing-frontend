@@ -67,7 +67,7 @@ importers:
         version: 4.17.21
       material-react-table:
         specifier: 2.11.3
-        version: 2.11.3(446cr6q57jgtd45fkyftkqapbi)
+        version: 2.11.3(266759579c0468fa76112156e05b8dfb)
       material-ui-popup-state:
         specifier: 5.3.1
         version: 5.3.1(@mui/material@5.16.5(@emotion/react@11.11.1(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.0(@emotion/react@11.11.1(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -1689,8 +1689,8 @@ packages:
   camelize@1.0.1:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
 
-  caniuse-lite@1.0.30001655:
-    resolution: {integrity: sha512-jRGVy3iSGO5Uutn2owlb5gR6qsGngTw9ZTb4ali9f3glshcNmJ2noam4Mo9zia5P9Dk3jNNydy7vQjuE5dQmfg==}
+  caniuse-lite@1.0.30001734:
+    resolution: {integrity: sha512-uhE1Ye5vgqju6OI71HTQqcBCZrvHugk0MjLak7Q+HfoBgoq5Bi+5YnwjP4fjDgrtYr/l8MVRBvzz9dPD4KyK0A==}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -5270,7 +5270,7 @@ snapshots:
 
   browserslist@4.22.2:
     dependencies:
-      caniuse-lite: 1.0.30001655
+      caniuse-lite: 1.0.30001734
       electron-to-chromium: 1.4.613
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
@@ -5293,7 +5293,7 @@ snapshots:
 
   camelize@1.0.1: {}
 
-  caniuse-lite@1.0.30001655: {}
+  caniuse-lite@1.0.30001734: {}
 
   chalk@2.4.2:
     dependencies:
@@ -6454,7 +6454,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  material-react-table@2.11.3(446cr6q57jgtd45fkyftkqapbi):
+  material-react-table@2.11.3(266759579c0468fa76112156e05b8dfb):
     dependencies:
       '@emotion/react': 11.11.1(@types/react@18.3.3)(react@18.3.1)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
@@ -6557,7 +6557,7 @@ snapshots:
       '@next/env': 13.5.6
       '@swc/helpers': 0.5.2
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001655
+      caniuse-lite: 1.0.30001734
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

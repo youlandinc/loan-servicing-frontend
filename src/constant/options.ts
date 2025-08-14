@@ -30,6 +30,11 @@ export const LOAN_PRODUCT_CATEGORY: Option[] = [
     key: LoanProductCategoryEnum.fix_and_flip,
     value: LoanProductCategoryEnum.fix_and_flip,
   },
+  {
+    label: 'Land',
+    key: LoanProductCategoryEnum.land,
+    value: LoanProductCategoryEnum.land,
+  },
   //{
   //  label: 'Ground-up Construction',
   //  key: LoanProductCategoryEnum.ground_up_construction,
@@ -228,6 +233,11 @@ export const ProductCategoryOpt: Option[] = [
     label: 'Ground-up Construction',
     value: ProductCategoryEnum.ground,
   },
+  {
+    key: ProductCategoryEnum.land,
+    label: 'Land',
+    value: ProductCategoryEnum.land,
+  },
 ];
 
 export const EstFICOScoreOpt = [
@@ -306,6 +316,11 @@ export const PropertyTypeOpt: Option[] = [
     key: PropertyTypeEnum.UNITS24,
     label: '2 to 4 units',
     value: PropertyTypeEnum.UNITS24,
+  },
+  {
+    key: PropertyTypeEnum.LAND,
+    label: 'Land',
+    value: PropertyTypeEnum.LAND,
   },
 ];
 

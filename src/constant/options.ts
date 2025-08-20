@@ -476,12 +476,12 @@ export const PipelineExportType = [
 export const YES_NO: Option[] = [
   {
     label: 'Yes',
-    key: LoanAnswerEnum.YES,
-    value: LoanAnswerEnum.YES,
+    key: LoanAnswerEnum.yes,
+    value: LoanAnswerEnum.yes,
   },
   {
     label: 'No',
-    key: LoanAnswerEnum.NO,
-    value: LoanAnswerEnum.NO,
+    key: LoanAnswerEnum.no,
+    value: LoanAnswerEnum.no,
   },
 ];

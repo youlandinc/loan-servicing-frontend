@@ -3,6 +3,7 @@ import {
   DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
   ExtensionPaidTypeEnum,
+  LoanAnswerEnum,
   LoanDetailsPurposeEnum,
   LoanFicoScoreEnum,
   LoanStatus,
@@ -335,6 +336,16 @@ export const MATURITY_DATE: Option[] = [
     label: 'Extend by 6 months',
     value: MaturityDateTypeEnum.EXTEND_6,
   },
+  {
+    key: MaturityDateTypeEnum.EXTEND_9,
+    label: 'Extend by 9 months',
+    value: MaturityDateTypeEnum.EXTEND_9,
+  },
+  {
+    key: MaturityDateTypeEnum.EXTEND_12,
+    label: 'Extend by 12 months',
+    value: MaturityDateTypeEnum.EXTEND_12,
+  },
 ];
 
 /*ONE_THIRTY("ont - thirty", "1-30"),
@@ -460,4 +471,17 @@ export const PipelineExportType = [
   //   key: PipelineExportTypeEnum.MASTER_LOAN_TAPE,
   //   value: PipelineExportTypeEnum.MASTER_LOAN_TAPE,
   // },
+];
+
+export const YES_NO: Option[] = [
+  {
+    label: 'Yes',
+    key: LoanAnswerEnum.YES,
+    value: LoanAnswerEnum.YES,
+  },
+  {
+    label: 'No',
+    key: LoanAnswerEnum.NO,
+    value: LoanAnswerEnum.NO,
+  },
 ];

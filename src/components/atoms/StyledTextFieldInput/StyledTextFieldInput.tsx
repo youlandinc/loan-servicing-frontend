@@ -1,11 +1,14 @@
 import { FC } from 'react';
 import { OutlinedTextFieldProps, TextField } from '@mui/material';
 
-type StyledTextFieldInputProps = OutlinedTextFieldProps;
+type StyledTextFieldInputProps = Omit<OutlinedTextFieldProps, 'variant'> & {
+  variant?: 'outlined' | 'filled' | 'standard';
+};
 
 export const StyledTextFieldInput: FC<StyledTextFieldInputProps> = ({
   onChange,
   sx,
+  variant = 'outlined',
   ...rest
 }) => {
   return (
@@ -52,7 +55,7 @@ export const StyledTextFieldInput: FC<StyledTextFieldInputProps> = ({
         },
         ...sx,
       }}
-      variant={'outlined'}
+      variant={variant}
     />
   );
 };

@@ -26,9 +26,10 @@ import {
   StyledHeaderAddressInfo,
   StyledLoading,
   StyledSelect,
+  StyledTextFieldInput,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-import { ExtensionPaidTypeOpt, MATURITY_DATE } from '@/constant';
+import { ExtensionPaidTypeOpt, MATURITY_DATE, YES_NO } from '@/constant';
 
 import { useRenderPdf, useSwitch } from '@/hooks';
 
@@ -47,6 +48,8 @@ import { createFile, utils } from '@/utils';
 
 import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
 import ICON_DELETE from '@/svg/loan/extension/extension_delete.svg';
+import { StyledGoogleAutoComplete } from '@/components/atoms/StyledGoogleAutoComplete';
+import { Address, IAddress } from '@/models/common';
 
 export const LoanExtensionRequest: FC = () => {
   const router = useRouter();
@@ -66,6 +69,18 @@ export const LoanExtensionRequest: FC = () => {
   const [init, setInit] = useState(false);
   const { visible, open, close } = useSwitch();
   const [index, setIndex] = useState(0);
+  const [address] = useState<IAddress>(
+    Address.create({
+      formatAddress: '',
+      state: '',
+      street: '',
+      city: '',
+      aptNumber: '',
+      postcode: '',
+      isValid: false,
+      errors: {},
+    }),
+  );
 
   const {
     visible: confirmShow,
@@ -116,6 +131,14 @@ export const LoanExtensionRequest: FC = () => {
     'Execution date': isValid(executionDate)
       ? format(executionDate as Date, 'MM/dd/yyyy')
       : '',
+  };
+
+  const borrowerInfo: Record<string, any> = {
+    'Borrower name': 'Borrower name',
+    'Property address': value?.data?.propertyFullAddress || '',
+    'Current loan amount': '$1000000',
+    'Promissory note date': '01/01/2022',
+    'Current maturity date': '01/01/2022',
   };
 
   const [state, createExtensionPdf] = useAsyncFn(
@@ -216,25 +239,164 @@ export const LoanExtensionRequest: FC = () => {
   return (
     <Fade in={!!value?.data}>
       <Box overflow={'auto'}>
-        <Stack direction={'row'} justifyContent={'center'} p={6}>
+        <Stack direction={'row'} p={6}>
           {value?.data && (
-            <Stack maxWidth={900} spacing={3} width={'100%'}>
+            <Stack gap={3} width={'100%'}>
               <StyledHeaderAddressInfo
                 address={value.data.propertyFullAddress}
                 loanNumber={value.data.systemLoanNumber}
                 status={value.data.repaymentStatusEnum}
               />
-              <Typography color={'text.hover'} fontWeight={600}>
-                Extension agreement
-              </Typography>
+
               <Stack direction={'row'} gap={3}>
+                <Stack
+                  autoComplete={'off'}
+                  border={'1px solid #E4E7EF'}
+                  borderRadius={4}
+                  component={'form'}
+                  gap={3}
+                  minWidth={600}
+                  p={3}
+                  ref={formRef}
+                  width={'36%'}
+                >
+                  <Typography fontWeight={600} letterSpacing={0.32}>
+                    Generate extension agreement
+                  </Typography>
+                  <Stack flexDirection={'row'} gap={3} width={'100%'}>
+                    <StyledSelect
+                      fullWidth
+                      label={'Maturity date'}
+                      onChange={(e) => {
+                        setMaturityDate(e.target.value as MaturityDateTypeEnum);
+                      }}
+                      options={MATURITY_DATE}
+                      value={maturityDate}
+                    />
+                    <StyledTextFieldNumber
+                      decimalScale={0}
+                      disabled
+                      label={'Extension number'}
+                      required
+                      value={1}
+                    />
+                  </Stack>
+                  <Stack flexDirection={'row'} gap={3} width={'100%'}>
+                    <StyledTextFieldNumber
+                      label={'Extension fee'}
+                      onValueChange={(values) => {
+                        setExtensionFee(values.floatValue ?? 0);
+                      }}
+                      required
+                      suffix={'%'}
+                      value={extensionFee}
+                    />
+
+                    <StyledSelect
+                      label={'When does it get paid?'}
+                      onChange={(e) => {
+                        setPaidType(e.target.value as ExtensionPaidTypeEnum);
+                      }}
+                      options={ExtensionPaidTypeOpt}
+                      value={paidType}
+                    />
+                  </Stack>
+                  <Stack flexDirection={'row'} gap={3} width={'100%'}>
+                    <StyledSelect
+                      label={'Change the interest rate?'}
+                      onChange={(e) => {
+                        setPaidType(e.target.value as ExtensionPaidTypeEnum);
+                      }}
+                      options={YES_NO}
+                      value={paidType}
+                    />
+                    <StyledTextFieldNumber
+                      decimalScale={3}
+                      label={'Change the interest to'}
+                      onValueChange={(values) => {
+                        setChangeRate(values.floatValue ?? 0);
+                      }}
+                      required
+                      suffix={'%'}
+                      value={changeRate}
+                    />
+                  </Stack>
+                  <StyledDatePicker
+                    disableFuture={false}
+                    label={'Execution date'}
+                    onChange={(value) => {
+                      setExtensionDate(value);
+                    }}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
+                    value={executionDate}
+                  />
+                  <Stack
+                    bgcolor={'#D2D6E1'}
+                    height={'1px'}
+                    width={'100%'}
+                  ></Stack>
+                  <Stack flexDirection={'row'} gap={3}>
+                    <StyledTextFieldInput
+                      label={'First name'}
+                      variant={'outlined'}
+                    />
+                    <StyledTextFieldInput
+                      label={'Last name'}
+                      variant={'outlined'}
+                    />
+                  </Stack>
+                  <StyledGoogleAutoComplete
+                    address={address}
+                    fullAddress
+                    label={'Property address'}
+                  />
+                  <StyledTextFieldNumber
+                    disabled
+                    label={'Current loan amount'}
+                    prefix={'$'}
+                    value={''}
+                  />
+                  <Stack flexDirection={'row'} gap={3}>
+                    <StyledDatePicker
+                      disableFuture={false}
+                      label={'Promissory note date'}
+                      onChange={(value) => {
+                        setExtensionDate(value);
+                      }}
+                      slotProps={{
+                        textField: {
+                          required: true,
+                        },
+                      }}
+                      value={executionDate}
+                    />
+                    <StyledDatePicker
+                      disableFuture={false}
+                      label={'Current maturity date'}
+                      onChange={(value) => {
+                        setExtensionDate(value);
+                      }}
+                      slotProps={{
+                        textField: {
+                          required: true,
+                        },
+                      }}
+                      value={executionDate}
+                    />
+                  </Stack>
+                </Stack>
                 <Stack
                   bgcolor={'#F0F4FF'}
                   borderRadius={2}
                   component={'ul'}
+                  flex={1}
                   gap={1.5}
+                  height={'fit-content'}
                   p={3}
-                  width={'50%'}
                 >
                   {Object.keys(cardInfo).map((item, index) => (
                     <Stack
@@ -250,90 +412,54 @@ export const LoanExtensionRequest: FC = () => {
                       </Typography>
                     </Stack>
                   ))}
-                </Stack>
-                <Stack
-                  autoComplete={'off'}
-                  component={'form'}
-                  gap={1.25}
-                  ref={formRef}
-                  width={'50%'}
-                >
-                  <StyledSelect
-                    label={'Maturity date'}
-                    onChange={(e) => {
-                      setMaturityDate(e.target.value as MaturityDateTypeEnum);
+                  <Stack
+                    bgcolor={'#D2D6E1'}
+                    height={'1px'}
+                    width={'100%'}
+                  ></Stack>
+                  {Object.keys(borrowerInfo).map((item, index) => (
+                    <Stack
+                      direction={'row'}
+                      justifyContent={'space-between'}
+                      key={index}
+                    >
+                      <Typography color={'text.hover'} variant={'body2'}>
+                        {item}
+                      </Typography>
+                      <Typography variant={'subtitle2'}>
+                        {borrowerInfo[item]}
+                      </Typography>
+                    </Stack>
+                  ))}
+                  <StyledButton
+                    loading={state.loading}
+                    onClick={async () => {
+                      if (
+                        executionDate !== null &&
+                        typeof value?.data?.maturityDate === 'string'
+                      ) {
+                        await createExtensionPdf({
+                          loanId: parseInt(loanId as string),
+                          extendMonth: maturityDate,
+                          extensionFee,
+                          changeInterestRate: changeRate,
+                          executionDate: executionDate.toISOString(),
+                          maturityDate: value.data.maturityDate,
+                          extensionFeeAmount: 0,
+                          paidMode: paidType,
+                        });
+                        retry();
+                      }
                     }}
-                    options={MATURITY_DATE}
-                    value={maturityDate}
-                  />
-                  <StyledTextFieldNumber
-                    label={'Extension fee'}
-                    onValueChange={(values) => {
-                      setExtensionFee(values.floatValue ?? 0);
-                    }}
-                    required
-                    suffix={'%'}
-                    value={extensionFee}
-                  />
-                  <StyledSelect
-                    label={'When does it get paid?'}
-                    onChange={(e) => {
-                      setPaidType(e.target.value as ExtensionPaidTypeEnum);
-                    }}
-                    options={ExtensionPaidTypeOpt}
-                    value={paidType}
-                  />
-                  <StyledTextFieldNumber
-                    decimalScale={3}
-                    label={'Change the interest to'}
-                    onValueChange={(values) => {
-                      setChangeRate(values.floatValue ?? 0);
-                    }}
-                    required
-                    suffix={'%'}
-                    value={changeRate}
-                  />
-                  <StyledDatePicker
-                    disableFuture={false}
-                    label={'Execution date'}
-                    onChange={(value) => {
-                      setExtensionDate(value);
-                    }}
-                    slotProps={{
-                      textField: {
-                        required: true,
-                      },
-                    }}
-                    value={executionDate}
-                  />
+                    size={'small'}
+                    sx={{ alignSelf: 'center', width: 181 }}
+                    variant={'outlined'}
+                  >
+                    Generate agreement
+                  </StyledButton>
                 </Stack>
               </Stack>
-              <StyledButton
-                loading={state.loading}
-                onClick={async () => {
-                  if (
-                    executionDate !== null &&
-                    typeof value?.data?.maturityDate === 'string'
-                  ) {
-                    await createExtensionPdf({
-                      loanId: parseInt(loanId as string),
-                      extendMonth: maturityDate,
-                      extensionFee,
-                      changeInterestRate: changeRate,
-                      executionDate: executionDate.toISOString(),
-                      maturityDate: value.data.maturityDate,
-                      extensionFeeAmount: 0,
-                      paidMode: paidType,
-                    });
-                    retry();
-                  }
-                }}
-                size={'small'}
-                sx={{ alignSelf: 'flex-start', width: 181 }}
-                variant={'outlined'}
-              >
-                Generate agreement
-              </StyledButton>
+
               {!!value?.data?.genAgreement?.executionDate && (
                 <Fade in={!!value?.data?.genAgreement?.executionDate}>
                   <Box

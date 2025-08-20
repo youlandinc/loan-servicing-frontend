@@ -25,3 +25,7 @@ interface ClientUserProfile {
   accountId?: string;
   tenantId?: string;
 }
+
+interface Window {
+  google: any;
+}

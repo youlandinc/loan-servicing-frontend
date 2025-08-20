@@ -124,6 +124,8 @@ export enum PropertyTypeEnum {
 export enum MaturityDateTypeEnum {
   EXTEND_3 = 'EXTEND_THREE',
   EXTEND_6 = 'EXTEND_SIX',
+  EXTEND_9 = 'EXTEND_NINE',
+  EXTEND_12 = 'EXTEND_TWELVE',
 }
 
 export enum PortfolioGridTypeEnum {

@@ -10,3 +10,14 @@ export interface HttpError {
   header: string;
   variant: HttpVariantType;
 }
+
+export interface AddressData {
+  id?: string;
+  address: string;
+  aptNumber: string;
+  city: string;
+  state: string;
+  postcode: string;
+  lng?: number;
+  lat?: number;
+}

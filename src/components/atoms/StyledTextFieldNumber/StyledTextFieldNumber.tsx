@@ -12,7 +12,7 @@ import { StyledTextFieldInput } from '@/components/atoms';
 
 interface StyledTextFieldNumberProps {
   allowNegative?: boolean;
-  onValueChange: (values: NumberFormatValues) => void;
+  onValueChange?: (values: NumberFormatValues) => void;
   thousandSeparator?: boolean;
   prefix?: string;
   suffix?: string;
@@ -63,7 +63,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   const handledChange = (e: {
     target: { name: string; value: NumberFormatValues };
   }) => {
-    onValueChange(e.target.value);
+    onValueChange?.(e.target.value);
   };
 
   return (

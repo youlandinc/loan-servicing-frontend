@@ -262,7 +262,8 @@ export const LoanDetails: FC = () => {
   const loanDetailsInfo = () => {
     if (
       loanDetail?.loanPurpose === LoanPurposeEnum.purchase &&
-      loanDetail?.productCategory === ProductCategoryEnum.bridge
+      (loanDetail?.productCategory === ProductCategoryEnum.bridge ||
+        loanDetail?.productCategory === ProductCategoryEnum.land)
     ) {
       return stabilizedBridgePurchase;
     }

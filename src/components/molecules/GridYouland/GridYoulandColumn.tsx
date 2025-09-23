@@ -614,6 +614,28 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
+      header: 'Day 1 amount',
+      accessorKey: 'dayOneAmount', // 这里字段需要重新修改一下
+      muiTableHeadCellProps: { align: 'center' },
+      muiTableBodyCellProps: { align: 'left' },
+      size: 116,
+      Cell: ({ renderedCellValue }) => {
+        return (
+          <Typography
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              width: '100%',
+            }}
+            variant={'body3'}
+          >
+            {utils.formatDollar(renderedCellValue as number)}
+          </Typography>
+        );
+      },
+    },
+    {
       header: 'Buy rate',
       accessorKey: 'buyRate',
       muiTableBodyCellProps: { align: 'center' },

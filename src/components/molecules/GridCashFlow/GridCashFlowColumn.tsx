@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { MRT_ColumnDef } from 'material-react-table';
 import { Stack, Tooltip, Typography } from '@mui/material';
 
@@ -561,7 +561,7 @@ export const CASH_FLOW_COLUMNS = (
       size: 160,
       Cell: ({ renderedCellValue, row }) => {
         const { enqueueSnackbar } = useSnackbar();
-        const { visible, close, open } = useSwitch(false);
+        const { visible, close } = useSwitch(false);
         const [value, setValue] = useState<string | number | undefined>(
           utils.notNull(row.original.buyRate)
             ? row.original.buyRate

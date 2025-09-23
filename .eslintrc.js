@@ -19,6 +19,12 @@ module.exports = {
   rules: {
     // Possible errors
     'no-console': 'warn',
+    // Unused variables and imports
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+    ],
     // Best practices
     'dot-notation': 'error',
     'no-else-return': 'error',

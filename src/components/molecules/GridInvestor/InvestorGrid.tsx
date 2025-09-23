@@ -1,6 +1,5 @@
 import {
   AllLoansPagination,
-  commonColumns,
   defaultColumns,
   GroupLoans,
   resortColumns,
@@ -10,12 +9,12 @@ import {
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
-import { ellipsisStyle } from '@/styles';
+// import { ellipsisStyle } from '@/styles';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { utils } from '@/utils';
-import { Stack, Typography } from '@mui/material';
+// import { utils } from '@/utils';
+import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import useSWR from 'swr';
 
 const DEFAULT_SORT = [

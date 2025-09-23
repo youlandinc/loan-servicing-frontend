@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "clear-all": "rimraf ./.cache ./.next ./node_modules",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "lint-staged": "npx lint-staged"
   },
   "dependencies": {
     "@emotion/cache": "11.11.0",

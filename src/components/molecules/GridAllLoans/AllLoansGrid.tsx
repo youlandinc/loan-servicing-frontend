@@ -1,6 +1,4 @@
-import { ellipsisStyle } from '@/styles';
-import { utils } from '@/utils';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
@@ -15,7 +13,6 @@ import useSWR from 'swr';
 import {
   AllLoansPagination,
   ColumnsHeaderMenus,
-  commonColumns,
   defaultColumnPining,
   defaultColumns,
   resortColumns,

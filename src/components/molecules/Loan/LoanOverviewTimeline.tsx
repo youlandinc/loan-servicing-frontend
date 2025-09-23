@@ -160,7 +160,7 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
                 width={'100%'}
               >
                 <Typography color={'text.primary'} variant={'subtitle2'}>
-                  {item.monthAndYearOfDateDue}
+                  Due {utils.formatDate(item.dateDue, 'MM/dd/yyyy')}
                 </Typography>
                 {item.paidStatus === PaidStatusEnum.paid ? (
                   <Stack flexDirection={'row'} gap={1.25}>

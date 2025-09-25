@@ -1,4 +1,10 @@
-import { FC, forwardRef, useEffect, useState } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  FC,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react';
 import { SxProps } from '@mui/material';
 import {
   NumberFormatValues,
@@ -157,8 +163,14 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
   function NumericFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
+    // Type error issue fix: https://github.com/s-yadav/react-number-format/issues/880
     return (
-      <NumericFormat
+      <NumericFormat<
+        Omit<
+          ComponentPropsWithoutRef<'input'>,
+          'defaultValue' | 'value' | 'children'
+        >
+      >
         fixedDecimalScale
         getInputRef={ref}
         onValueChange={(values) => {

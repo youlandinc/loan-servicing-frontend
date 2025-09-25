@@ -5,3 +5,4 @@
 **/.next
 /tsconfig.json
 /package.json
+pnpm-lock.yaml

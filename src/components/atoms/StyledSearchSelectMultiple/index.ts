@@ -1,3 +1,1 @@
-export * from './StyledSearchSelectMultiple'
-
-
+export * from './StyledSearchSelectMultiple';

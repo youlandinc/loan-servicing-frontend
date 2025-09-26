@@ -594,7 +594,7 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
-      header: 'Loan amount',
+      header: 'Total loan amount',
       accessorKey: 'totalLoanAmount',
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
@@ -614,7 +614,7 @@ export const YOULAND_COLUMNS = (
       },
     },
     {
-      header: 'Day 1 amount',
+      header: 'Initial loan amount',
       accessorKey: 'dayOneAmount', // 这里字段需要重新修改一下
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },

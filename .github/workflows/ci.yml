@@ -1,0 +1,12 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  continuous-releases:
+    name: Continuous releases
+    uses: ./.github/workflows/ci-base.yml

@@ -72,5 +72,8 @@
     "lint-staged": "13.2.1",
     "prettier": "3.3.3",
     "typescript": "5.0.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

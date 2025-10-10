@@ -123,8 +123,16 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
         loanInfo.loanPurpose === LoanPurposeEnum.purchase
           ? result.concat([
               {
-                label: 'Rehab cost',
-                value: utils.formatDollar(loanInfo.rehabAmount),
+                label: 'Rehab budget',
+                value: utils.formatDollar(loanInfo.rehabBudget),
+              },
+              {
+                label: 'Amount drawn',
+                value: utils.formatDollar(loanInfo.amountDrawn),
+              },
+              {
+                label: 'Remaining rehab budget',
+                value: utils.formatDollar(loanInfo.remainingRehabBudget),
               },
               {
                 label: 'Loan to value',
@@ -154,6 +162,22 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
               },
             ]);
       break;
+    }
+    case LoanProductCategoryEnum.ground_up_construction: {
+      result = result.concat([
+        {
+          label: 'Rehab budget',
+          value: utils.formatDollar(loanInfo.rehabBudget),
+        },
+        {
+          label: 'Amount drawn',
+          value: utils.formatDollar(loanInfo.amountDrawn),
+        },
+        {
+          label: 'Remaining rehab budget',
+          value: utils.formatDollar(loanInfo.remainingRehabBudget),
+        },
+      ]);
     }
   }
   return result;

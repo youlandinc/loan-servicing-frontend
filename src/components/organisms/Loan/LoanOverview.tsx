@@ -137,10 +137,6 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
             ])
           : result.concat([
               {
-                label: 'Loan purpose',
-                value: utils.findLabel(LOAN_PURPOSE, loanInfo.loanPurpose),
-              },
-              {
                 label: 'Rehab cost',
                 value: utils.formatDollar(loanInfo.rehabAmount),
               },

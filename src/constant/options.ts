@@ -35,11 +35,16 @@ export const LOAN_PRODUCT_CATEGORY: Option[] = [
     key: LoanProductCategoryEnum.land,
     value: LoanProductCategoryEnum.land,
   },
-  //{
-  //  label: 'Ground-up Construction',
-  //  key: LoanProductCategoryEnum.ground_up_construction,
-  //  value: LoanProductCategoryEnum.ground_up_construction,
-  //},
+  {
+    label: 'Ground-up Construction',
+    key: LoanProductCategoryEnum.ground_up_construction,
+    value: LoanProductCategoryEnum.ground_up_construction,
+  },
+  {
+    label: 'DSCR',
+    key: LoanProductCategoryEnum.dscr_rental,
+    value: LoanProductCategoryEnum.dscr_rental,
+  },
 ];
 
 export const LOAN_PURPOSE: Option[] = [

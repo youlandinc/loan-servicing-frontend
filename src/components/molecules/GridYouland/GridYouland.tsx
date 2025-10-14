@@ -318,6 +318,7 @@ export const GridYouland: FC = observer(() => {
           borderColor: '#EDF1FF',
           '&:last-of-type': {
             borderRight: 'none',
+            px: 0,
           },
         },
         '&:hover': {

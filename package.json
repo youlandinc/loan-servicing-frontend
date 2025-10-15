@@ -58,7 +58,7 @@
     "@types/autosuggest-highlight": "3.2.3",
     "@types/crypto-js": "4.2.2",
     "@types/lodash": "4.17.7",
-    "@types/node": "^18.1.0",
+    "@types/node": "^20",
     "@types/nprogress": "0.2.0",
     "@types/react": "18.3.3",
     "@types/react-datepicker": "4.10.0",

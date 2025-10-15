@@ -44,6 +44,11 @@ jobs:
       - name: Run lint check
         run: pnpm lint
 
+      - name: Generate TypeScript trace
+        run: pnpm ts-trace
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+
       - name: Run TypeScript check
         run: npx tsc --noEmit
 

@@ -6,6 +6,7 @@ export enum LoanProductCategoryEnum {
   fix_and_flip = 'FIX_AND_FLIP',
   ground_up_construction = 'GROUND_UP_CONSTRUCTION',
   land = 'LAND',
+  dscr_rental = 'DSCR_RENTAL',
 }
 
 export enum LoanPurposeEnum {

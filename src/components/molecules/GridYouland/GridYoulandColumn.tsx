@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { Button, Stack, Tooltip, Typography } from '@mui/material';
 import { MoreHoriz } from '@mui/icons-material';
 import { format, isValid } from 'date-fns';
@@ -46,6 +46,26 @@ export const YOULAND_COLUMNS = (
   cb?: () => Promise<any>,
   investorOptions?: Array<Option & { bgColor: string; color: string }>,
 ) => {
+  const dollarCell = ({
+    renderedCellValue,
+  }: {
+    renderedCellValue: ReactNode;
+  }) => {
+    return (
+      <Typography
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          width: '100%',
+        }}
+        variant={'body3'}
+      >
+        {utils.formatDollar(renderedCellValue as number)}
+      </Typography>
+    );
+  };
+
   return [
     {
       header: '',
@@ -599,19 +619,7 @@ export const YOULAND_COLUMNS = (
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
       size: 116,
-      Cell: ({ renderedCellValue }) => {
-        return (
-          <Typography
-            sx={{
-              ...ellipsisStyle,
-              width: '100%',
-            }}
-            variant={'body3'}
-          >
-            {utils.formatDollar(renderedCellValue as number)}
-          </Typography>
-        );
-      },
+      Cell: dollarCell,
     },
     {
       header: 'Initial loan amount',
@@ -619,21 +627,31 @@ export const YOULAND_COLUMNS = (
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },
       size: 116,
-      Cell: ({ renderedCellValue }) => {
-        return (
-          <Typography
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              width: '100%',
-            }}
-            variant={'body3'}
-          >
-            {utils.formatDollar(renderedCellValue as number)}
-          </Typography>
-        );
-      },
+      Cell: dollarCell,
+    },
+    {
+      header: 'Rehab budget',
+      accessorKey: 'rehabBudget',
+      muiTableHeadCellProps: { align: 'center' },
+      muiTableBodyCellProps: { align: 'left' },
+      size: 116,
+      Cell: dollarCell,
+    },
+    {
+      header: 'Amount drawn',
+      accessorKey: 'amountDrawn',
+      muiTableHeadCellProps: { align: 'center' },
+      muiTableBodyCellProps: { align: 'left' },
+      size: 116,
+      Cell: dollarCell,
+    },
+    {
+      header: 'Remaining rehab budget',
+      accessorKey: 'remainingRehabBudget',
+      muiTableHeadCellProps: { align: 'center' },
+      muiTableBodyCellProps: { align: 'left' },
+      size: 180,
+      Cell: dollarCell,
     },
     {
       header: 'Buy rate',

@@ -140,6 +140,7 @@ export const GridYouland: FC = observer(() => {
   );
 
   const footerData = {
+    initialLoanAmount: data?.data?.initialLoanAmount,
     totalItems: data?.data?.totalItems,
     totalLoanAmount: data?.data?.totalLoanAmount,
     weightedAverageMargin: data?.data?.weightedAverageMargin,
@@ -318,6 +319,7 @@ export const GridYouland: FC = observer(() => {
           borderColor: '#EDF1FF',
           '&:last-of-type': {
             borderRight: 'none',
+            px: 0,
           },
         },
         '&:hover': {

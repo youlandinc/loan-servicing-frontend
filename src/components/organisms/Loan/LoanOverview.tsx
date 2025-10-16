@@ -119,40 +119,75 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
       break;
     }
     case LoanProductCategoryEnum.fix_and_flip: {
-      result =
-        loanInfo.loanPurpose === LoanPurposeEnum.purchase
-          ? result.concat([
-              {
-                label: 'Rehab cost',
-                value: utils.formatDollar(loanInfo.rehabAmount),
-              },
-              {
-                label: 'Loan to value',
-                value: utils.formatPercent(loanInfo.loanValue, 2),
-              },
-              {
-                label: 'Loan to cost',
-                value: utils.formatPercent(loanInfo.loanCost, 2),
-              },
-            ])
-          : result.concat([
-              {
-                label: 'Rehab cost',
-                value: utils.formatDollar(loanInfo.rehabAmount),
-              },
-              {
-                label: 'Cash-out amount',
-                value: utils.formatDollar(loanInfo.cashOutAmount),
-              },
-              {
-                label: 'Loan to value',
-                value: utils.formatPercent(loanInfo.loanValue, 2),
-              },
-              {
-                label: 'Loan to cost',
-                value: utils.formatPercent(loanInfo.loanCost, 2),
-              },
-            ]);
+      result = result.concat([
+        {
+          label: 'Rehab budget',
+          value: utils.formatDollar(loanInfo.rehabBudget),
+        },
+        {
+          label: 'Amount drawn',
+          value: utils.formatDollar(loanInfo.amountDrawn),
+        },
+        {
+          label: 'Amount available',
+          value: utils.formatDollar(loanInfo.remainingRehabBudget),
+        },
+        {
+          label: 'Initial LTC',
+          value: utils.formatPercent(loanInfo.loanValue, 2),
+        },
+        {
+          label: 'Final LTC',
+          value: utils.formatPercent(loanInfo.loanCost, 2),
+        },
+      ]);
+      break;
+    }
+    case LoanProductCategoryEnum.ground_up_construction: {
+      result = result.concat([
+        {
+          label: 'Rehab budget',
+          value: utils.formatDollar(loanInfo.rehabBudget),
+        },
+        {
+          label: 'Amount drawn',
+          value: utils.formatDollar(loanInfo.amountDrawn),
+        },
+        {
+          label: 'Amount available',
+          value: utils.formatDollar(loanInfo.remainingRehabBudget),
+        },
+        {
+          label: 'Initial LTC',
+          value: utils.formatPercent(loanInfo.loanValue, 2),
+        },
+        {
+          label: 'Final LTC',
+          value: utils.formatPercent(loanInfo.loanCost, 2),
+        },
+      ]);
+      break;
+    }
+    case LoanProductCategoryEnum.land: {
+      result = result.concat([
+        {
+          label: 'Loan to value',
+          value: utils.formatPercent(loanInfo.loanValue, 2),
+        },
+        {
+          label: 'Loan to cost',
+          value: utils.formatPercent(loanInfo.loanCost, 2),
+        },
+      ]);
+      break;
+    }
+    case LoanProductCategoryEnum.dscr_rental: {
+      result = result.concat([
+        {
+          label: 'Loan to value',
+          value: utils.formatPercent(loanInfo.loanValue, 2),
+        },
+      ]);
       break;
     }
   }

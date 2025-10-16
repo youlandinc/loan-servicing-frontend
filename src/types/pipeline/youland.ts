@@ -48,6 +48,7 @@ export interface GridInvestorItem {
 }
 
 interface GridSummaryProps {
+  initialLoanAmount: number | undefined;
   totalItems: number | undefined;
   totalLoanAmount: number | undefined;
   weightedAverageSheet: number | undefined;

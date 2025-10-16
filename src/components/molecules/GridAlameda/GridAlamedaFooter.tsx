@@ -37,6 +37,13 @@ export const GridAlamedaFooter: FC<GridAlamedaFooterProps> = ({
             ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
           }
         >
+          {`Initial loan amount: ${utils.formatDollar(footerData.initialLoanAmount)}`}
+        </Typography>
+        <Typography
+          variant={
+            ['xl', 'xxl'].includes(breakpoint) ? 'subtitle2' : 'subtitle3'
+          }
+        >
           Total amount: {utils.formatDollar(footerData.totalLoanAmount)}
         </Typography>
         <Typography

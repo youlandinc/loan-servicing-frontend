@@ -327,7 +327,7 @@ export const LoanOverview: FC = observer(() => {
             if (index === array.length - 1) {
               return acc + utils.formatUSPhoneToText(phone);
             }
-            return acc + utils.formatUSPhoneToText(phone) + ', ';
+            return `${acc + utils.formatUSPhoneToText(phone)}, `;
           }
           return acc;
         }, '');

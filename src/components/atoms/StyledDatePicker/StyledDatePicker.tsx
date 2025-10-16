@@ -63,7 +63,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
                   ? validate.map((item, index) => (
                       <Box
                         component={'span'}
-                        key={item + '_' + index}
+                        key={`${item}_${index}`}
                         sx={{
                           display: 'block',
                           m: 0,

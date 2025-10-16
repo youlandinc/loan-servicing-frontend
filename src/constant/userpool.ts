@@ -33,7 +33,7 @@ export const userpool = {
     localStorage.setItem(`${prefix}.idToken`, accessToken);
     localStorage.setItem(`${prefix}.accessToken`, accessToken);
     localStorage.setItem(`${prefix}.refreshToken`, refreshToken);
-    localStorage.setItem(`${prefix}.clockDrift`, expiredIn + '');
+    localStorage.setItem(`${prefix}.clockDrift`, `${expiredIn}`);
     localStorage.setItem(`${prefix}.lastAuthUser_email`, email as string);
     localStorage.setItem(
       `${prefix}.lastAuthUser_user_type`,

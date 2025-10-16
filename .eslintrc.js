@@ -170,6 +170,9 @@ module.exports = {
     'no-array-constructor': ['error'],
     'array-callback-return': ['error'],
     'prefer-destructuring': ['error', { array: false, object: true }],
+    'prefer-template': ['error'],
+    'no-eval': ['error'],
+    'no-useless-escape': ['error'],
   },
   settings: {
     react: {

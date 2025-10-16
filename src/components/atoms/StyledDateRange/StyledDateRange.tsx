@@ -92,7 +92,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
       >
         <Typography onClick={onOpen} variant={'subtitle1'}>
           {months[getMonth(date)]}
-          {'  ' + getYear(date)}
+          {`  ${getYear(date)}`}
           <IconButton>
             {visible ? <ArrowDropDown /> : <ArrowDropUp />}
           </IconButton>

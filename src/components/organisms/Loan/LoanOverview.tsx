@@ -129,7 +129,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
           value: utils.formatDollar(loanInfo.amountDrawn),
         },
         {
-          label: 'Remaining rehab budget',
+          label: 'Amount available',
           value: utils.formatDollar(loanInfo.remainingRehabBudget),
         },
         {
@@ -154,7 +154,7 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
           value: utils.formatDollar(loanInfo.amountDrawn),
         },
         {
-          label: 'Remaining rehab budget',
+          label: 'Amount available',
           value: utils.formatDollar(loanInfo.remainingRehabBudget),
         },
         {

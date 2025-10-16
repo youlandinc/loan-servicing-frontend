@@ -480,7 +480,7 @@ const TEMP = [
   },
 ];
 
-function mulberry32(a: number): () => number {
+const mulberry32 = (a: number): (() => number) => {
   return () => {
     /* eslint-disable */
     let t = (a += 0x6d2b79f5);
@@ -489,12 +489,16 @@ function mulberry32(a: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     /* eslint-enable */
   };
-}
+};
 
-function randomBetween(seed: number, min: number, max: number): () => number {
+const randomBetween = (
+  seed: number,
+  min: number,
+  max: number,
+): (() => number) => {
   const random = mulberry32(seed);
   return () => min + (max - min) * random();
-}
+};
 
 const SkeletonCell = styled(Box)(() => ({
   display: 'flex',
@@ -503,7 +507,7 @@ const SkeletonCell = styled(Box)(() => ({
   borderBottom: '1px solid #D2D6E1',
 }));
 
-function SkeletonLoadingOverlay() {
+const SkeletonLoadingOverlay = () => {
   const apiRef = useGridApiContext();
 
   const dimensions = apiRef.current?.getRootDimensions();
@@ -559,7 +563,7 @@ function SkeletonLoadingOverlay() {
       {children}
     </div>
   );
-}
+};
 
 const InsightsTable: FC<{
   loading: boolean;

@@ -168,7 +168,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
     );
   });
 
-  function Container({ className, children }: CalendarContainerProps) {
+  const Container = ({ className, children }: CalendarContainerProps) => {
     return (
       <CalendarContainer className={className}>
         <div style={{ position: 'relative' }}>
@@ -180,7 +180,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         </div>
       </CalendarContainer>
     );
-  }
+  };
 
   return (
     <Box

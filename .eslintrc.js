@@ -173,6 +173,13 @@ module.exports = {
     'prefer-template': ['error'],
     'no-eval': ['error'],
     'no-useless-escape': ['error'],
+    'func-style': ['error', 'expression'],
+    'func-names': ['error', 'as-needed'],
+    'no-loop-func': ['error'],
+    'prefer-rest-params': ['error'],
+    'no-new-func': ['error'],
+    'no-param-reassign': ['error'],
+    'prefer-spread': ['error'],
   },
   settings: {
     react: {

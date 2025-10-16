@@ -180,6 +180,14 @@ module.exports = {
     'no-new-func': ['error'],
     'no-param-reassign': ['error'],
     'prefer-spread': ['error'],
+    'prefer-arrow-callback': ['error'],
+    'no-useless-constructor': ['error'],
+    'no-dupe-class-members': ['error'],
+    'class-methods-use-this': ['error'],
+    'no-duplicate-imports': ['error', { includeExports: true }],
+    'import/no-mutable-exports': ['error'],
+    'import/first': ['error'],
+    'import/no-webpack-loader-syntax': ['error'],
   },
   settings: {
     react: {

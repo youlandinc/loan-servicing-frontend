@@ -160,7 +160,7 @@ interface CustomProps {
 }
 
 const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
-  function NumericFormatCustom(props, ref) {
+  (props, ref) => {
     const { onChange, ...other } = props;
 
     // Type error issue fix: https://github.com/s-yadav/react-number-format/issues/880

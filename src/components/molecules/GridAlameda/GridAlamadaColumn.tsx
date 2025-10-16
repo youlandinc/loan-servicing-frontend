@@ -716,7 +716,7 @@ export const ALAMEDA_COLUMNS = (
                     decimalScale={3}
                     label={'Buy rate'}
                     onValueChange={({ floatValue }) => setValue(floatValue)}
-                    percentage={true}
+                    percentage
                     suffix={'%'}
                     thousandSeparator={false}
                     value={value}

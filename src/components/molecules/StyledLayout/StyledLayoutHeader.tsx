@@ -525,7 +525,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
               Sign out of current account?
             </Typography>
           }
-          disableEscapeKeyDown={true}
+          disableEscapeKeyDown
           footer={
             <Stack flexDirection={'row'} gap={1.5}>
               <StyledButton

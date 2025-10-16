@@ -241,6 +241,6 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
         },
       }}
       {...rest}
-    ></StyledDialog>
+    />
   );
 };

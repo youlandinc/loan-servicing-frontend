@@ -577,7 +577,7 @@ const InsightsTable: FC<{
       disableDensitySelector
       disableRowSelectionOnClick
       getRowId={(row) => row.insightsStatus}
-      hideFooter={true}
+      hideFooter
       loading={loading}
       pagination
       rows={insightsTableData}

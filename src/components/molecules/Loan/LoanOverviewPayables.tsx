@@ -136,7 +136,7 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
       disableDensitySelector
       disableRowSelectionOnClick
       getRowId={(row) => row.id}
-      hideFooter={true}
+      hideFooter
       pagination
       rowHeight={40}
       rows={outstandingPayAbles}

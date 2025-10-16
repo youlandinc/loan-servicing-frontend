@@ -168,7 +168,7 @@ export const LoanDrawsGrid: FC = () => {
   const lastChildIndex = columns.length;
   return (
     <DataGrid
-      autoHeight={true}
+      autoHeight
       columnHeaderHeight={40}
       columns={columns}
       disableColumnFilter
@@ -177,7 +177,7 @@ export const LoanDrawsGrid: FC = () => {
       disableDensitySelector
       disableRowSelectionOnClick
       getRowId={(row) => row.id}
-      hideFooter={true}
+      hideFooter
       pagination
       rowHeight={40}
       rows={mockData}

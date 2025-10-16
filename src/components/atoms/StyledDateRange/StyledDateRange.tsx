@@ -199,7 +199,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         isClearable
         popperPlacement={'bottom'}
         renderCustomHeader={CustomHeader}
-        selectsRange={true}
+        selectsRange
         startDate={dateRange[0]}
         withPortal={['xs', 'sm'].includes(breakpoint)}
         {...rest}

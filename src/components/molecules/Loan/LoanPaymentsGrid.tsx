@@ -864,7 +864,7 @@ export const LoanPaymentsGrid: FC<{
 
             <StyledTextFieldNumber
               decimalScale={0}
-              disabled={true}
+              disabled
               label={'Number of draws'}
               onValueChange={() => {
                 return;
@@ -909,7 +909,7 @@ export const LoanPaymentsGrid: FC<{
             />
 
             <StyledTextFieldNumber
-              disabled={true}
+              disabled
               label={'Net funding'}
               onValueChange={() => {
                 return;

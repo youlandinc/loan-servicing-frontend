@@ -685,7 +685,7 @@ export const LoanOverview: FC = observer(() => {
                   >
                     {content.length > 0 ? (
                       content.map((item, index) => (
-                        <Fade in={true} key={`comment-${index}-${item.id}`}>
+                        <Fade in key={`comment-${index}-${item.id}`}>
                           <Box width={'100%'}>
                             <LoanOverviewComment
                               {...item}
@@ -861,7 +861,7 @@ export const LoanOverview: FC = observer(() => {
                 >
                   {content.length > 0 ? (
                     content.map((item, index) => (
-                      <Fade in={true} key={`comment-${index}-${item.id}`}>
+                      <Fade in key={`comment-${index}-${item.id}`}>
                         <Box width={'100%'}>
                           <LoanOverviewComment
                             {...item}

@@ -82,6 +82,81 @@ module.exports = {
     'no-void': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+
+    'react/no-multi-comp': ['error', { ignoreStateless: true }],
+    'react/forbid-prop-types': [
+      'error',
+      {
+        forbid: ['any', 'array', 'object'],
+        checkContextTypes: true,
+        checkChildContextTypes: true,
+      },
+    ],
+    'react/prefer-es6-class': ['error', 'always'],
+    'no-useless-constructor': 'error',
+    'react/prefer-stateless-function': [
+      'error',
+      { ignorePureComponents: true },
+    ],
+    'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
+    'react/jsx-pascal-case': [
+      'error',
+      {
+        allowAllCaps: false,
+        allowNamespace: true,
+        ignore: ['MRT_TableContainer', 'MRT_ExpandButton'],
+      },
+    ],
+    'react/jsx-closing-bracket-location': ['error', 'line-aligned'],
+    'react/jsx-closing-tag-location': ['error', 'line-aligned'],
+    'jsx-quotes': ['error', 'prefer-double'],
+    'no-multi-spaces': 'error',
+    'react/jsx-tag-spacing': [
+      'error',
+      {
+        closingSlash: 'never',
+        beforeSelfClosing: 'always',
+        afterOpening: 'never',
+        beforeClosing: 'proportional-always',
+      },
+    ],
+    'react/jsx-curly-spacing': [
+      'error',
+      {
+        when: 'never',
+        children: true,
+      },
+    ],
+    'react/jsx-boolean-value': ['error', 'never'],
+    'jsx-a11y/alt-text': [
+      'error',
+      {
+        elements: ['img'],
+        img: ['Image'],
+      },
+    ],
+    'jsx-a11y/img-redundant-alt': ['error'],
+    'jsx-a11y/no-access-key': ['error'],
+    'react/no-string-refs': ['error', { noTemplateLiterals: true }],
+    'react/jsx-wrap-multilines': [
+      'error',
+      {
+        declaration: 'parens-new-line',
+        assignment: 'parens-new-line',
+        return: 'parens-new-line',
+        arrow: 'parens-new-line',
+        condition: 'parens-new-line',
+        logical: 'parens-new-line',
+      },
+    ],
+    'react/self-closing-comp': ['error'],
+    'react/jsx-no-bind': [
+      'error',
+      { allowArrowFunctions: true, allowFunctions: true, allowBind: true },
+    ],
+    'react/require-render-return': ['error'],
+    'react/sort-comp': ['error'],
+    'react/no-is-mounted': ['error'],
   },
   settings: {
     react: {

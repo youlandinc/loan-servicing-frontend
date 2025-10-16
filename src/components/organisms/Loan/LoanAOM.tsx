@@ -71,7 +71,7 @@ export const LoanAOM: FC = () => {
     });
   }, [loanId]);
 
-  const value = aomState.value;
+  const { value } = aomState;
 
   const cardInfo: Record<string, any> = {
     'Loan number': value?.data?.systemLoanNumber,

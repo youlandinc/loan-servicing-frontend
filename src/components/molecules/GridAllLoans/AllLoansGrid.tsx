@@ -283,7 +283,7 @@ export const AllLoansGrid: FC = observer(() => {
     ...rowSelectConfigs,
   });
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const { columnSizing } = table.getState();
   const columnPining = table.getState().columnPinning;
   const rowSelection = Object.keys(table.getState().rowSelection).length
     ? Object.keys(table.getState().rowSelection).map((item) => Number(item))

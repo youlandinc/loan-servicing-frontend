@@ -336,7 +336,7 @@ export const GridAlameda: FC = observer(() => {
     },
   });
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const { columnSizing } = table.getState();
   const columnPining = table.getState().columnPinning;
 
   const [, setColumnWidth] = useAsyncFn(async (result: SetColumnWidthParam) => {

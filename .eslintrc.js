@@ -157,6 +157,19 @@ module.exports = {
     'react/require-render-return': ['error'],
     'react/sort-comp': ['error'],
     'react/no-is-mounted': ['error'],
+    // js
+    'prefer-const': ['error', { destructuring: 'all' }],
+    'no-const-assign': ['error'],
+    'no-var': ['error'],
+    'no-new-object': ['error'],
+    'object-shorthand': ['error', 'always'],
+    'object-shorthand': ['error', 'methods'],
+    'quote-props': ['error', 'as-needed'],
+    'no-prototype-builtins': ['error'],
+    'prefer-object-spread': ['error'],
+    'no-array-constructor': ['error'],
+    'array-callback-return': ['error'],
+    'prefer-destructuring': ['error', { array: false, object: true }],
   },
   settings: {
     react: {

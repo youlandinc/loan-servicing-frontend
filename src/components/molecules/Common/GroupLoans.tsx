@@ -327,8 +327,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     ...rest,
   });
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
-  const expanded = table.getState().expanded;
+  const { columnSizing, expanded } = table.getState();
 
   useDebounce(
     async () => {

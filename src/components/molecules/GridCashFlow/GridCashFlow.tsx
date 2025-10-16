@@ -437,7 +437,7 @@ export const GridCashFlow: FC = observer(() => {
     }),
   });
 
-  const expanded = table.getState().expanded;
+  const { expanded } = table.getState();
 
   const [, cancelUpdateGroupExpanded] = useDebounce(
     async () => {
@@ -463,7 +463,7 @@ export const GridCashFlow: FC = observer(() => {
     [expanded],
   );
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const { columnSizing } = table.getState();
 
   useDebounce(
     async () => {

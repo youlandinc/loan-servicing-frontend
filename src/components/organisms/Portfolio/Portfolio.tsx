@@ -252,9 +252,9 @@ export const Portfolio: FC = observer(() => {
             mutation.type === 'attributes' &&
             mutation.attributeName === 'class'
           ) {
-            const opacity = window.getComputedStyle(
+            const { opacity } = window.getComputedStyle(
               (ref.current as any).children?.[0],
-            ).opacity;
+            );
             if (opacity === '0') {
               (ref.current as any).style.marginLeft = '-40px';
             } else {
@@ -267,9 +267,9 @@ export const Portfolio: FC = observer(() => {
         attributes: true,
         attributeFilter: ['class'],
       });
-      const opacity = window.getComputedStyle(
+      const { opacity } = window.getComputedStyle(
         (ref.current as any).children?.[0],
-      ).opacity;
+      );
       if (opacity === '0') {
         (ref.current as any).style.marginLeft = '-40px';
       }

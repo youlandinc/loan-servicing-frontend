@@ -263,7 +263,7 @@ export const rootStore = RootStore.create(initialState);
 export type IRoot = Instance<typeof RootStore>;
 const RootStoreContext = createContext<null | IRoot>(null);
 
-export const Provider = RootStoreContext.Provider;
+export const { Provider } = RootStoreContext;
 
 export const useMst = () => {
   const store = useContext(RootStoreContext);

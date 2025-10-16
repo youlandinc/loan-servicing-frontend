@@ -140,6 +140,7 @@ export const GridYouland: FC = observer(() => {
   );
 
   const footerData = {
+    initialLoanAmount: data?.data?.initialLoanAmount,
     totalItems: data?.data?.totalItems,
     totalLoanAmount: data?.data?.totalLoanAmount,
     weightedAverageMargin: data?.data?.weightedAverageMargin,

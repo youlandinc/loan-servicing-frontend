@@ -86,11 +86,11 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
         }}
         sx={{
           ...StyledDatePickerStyles,
-          //'& .MuiPickersDay-root': {
+          // '& .MuiPickersDay-root': {
           //  '& .Mui-selected': {
           //    bgcolor: 'primary.darkest',
           //  },
-          //},
+          // },
           '& .MuiDateCalendar-root': {
             bgcolor: 'black',
           },

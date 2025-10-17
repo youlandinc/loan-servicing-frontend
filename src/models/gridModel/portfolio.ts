@@ -77,7 +77,7 @@ export const portfolioModel = types
           config.operaParams.SERVICING_CASH_FLOW.DROPDOWN,
         );
 
-        //all loans
+        // all loans
         if (
           utils.isNotEmptyOfObject(
             config.operaParams?.SERVICING_ALL_LOAN?.SEARCH,
@@ -95,7 +95,7 @@ export const portfolioModel = types
         self.allLoansGridModel.pinLeftColumns = cast(
           config.operaParams.SERVICING_ALL_LOAN.LEFT,
         );
-        //investor
+        // investor
         if (
           utils.isNotEmptyOfObject(
             config.operaParams?.SERVICING_BY_INVESTOR?.SEARCH,
@@ -116,7 +116,7 @@ export const portfolioModel = types
         self.investorGridModel.expandedColumns = cast(
           config.operaParams.SERVICING_BY_INVESTOR.DROPDOWN,
         );
-        //delinquent
+        // delinquent
         if (
           utils.isNotEmptyOfObject(
             config.operaParams?.SERVICING_DELINQUENT?.SEARCH,
@@ -137,7 +137,7 @@ export const portfolioModel = types
         self.delinquentGridModel.expandedColumns = cast(
           config.operaParams.SERVICING_DELINQUENT.DROPDOWN,
         );
-        //maturity
+        // maturity
         if (
           utils.isNotEmptyOfObject(
             config.operaParams?.SERVICING_MATURITY?.SEARCH,

@@ -36,10 +36,10 @@ import LOGO_PRODUCT_PRICE from './assets/logo_product_price.svg';
 import LOGO_PRODUCT_SERVING from './assets/logo_product_serving.svg';
 import LOGO_PRODUCT_CUSTOMER from './assets/logo_product_customer.svg';
 
-//import LOGO_HEADER_POS from './assets/logo_header_pos.svg';
-//import LOGO_HEADER_LOS from './assets/logo_header_los.svg';
-//import LOGO_HEADER_DOC from './assets/logo_header_doc.svg';
-//import LOGO_HEADER_PRICE from './assets/logo_header_price.svg';
+// import LOGO_HEADER_POS from './assets/logo_header_pos.svg';
+// import LOGO_HEADER_LOS from './assets/logo_header_los.svg';
+// import LOGO_HEADER_DOC from './assets/logo_header_doc.svg';
+// import LOGO_HEADER_PRICE from './assets/logo_header_price.svg';
 import LOGO_HEADER_SERVING from './assets/logo_header_serving.svg';
 import LOGO_HEADER_SETTING from './assets/logo_header_setting.svg';
 
@@ -220,7 +220,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                 },
               }}
             />
-            {/*according to different product replace counterpart icon*/}
+            {/* according to different product replace counterpart icon*/}
             <Icon
               component={isHomepage ? LOGO_HEADER_SETTING : LOGO_HEADER_SERVING}
               sx={{ height: '24px', width: 'auto' }}
@@ -374,7 +374,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
           </Stack>
         </Stack>
 
-        {/*product box*/}
+        {/* product box*/}
         <Popover
           anchorEl={anchorElProduct}
           anchorOrigin={{
@@ -463,14 +463,14 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
           </Stack>
         </Popover>
 
-        {/*user setting*/}
+        {/* user setting*/}
         <Popover
           anchorEl={anchorElUser}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          //anchorReference={'anchorEl'}
+          // anchorReference={'anchorEl'}
           id={'LAYOUT_HEADER_USER_POPOVER'}
           onClose={() => setAnchorElUser(null)}
           open={Boolean(anchorElUser)}

@@ -1,10 +1,10 @@
-//overview
+// overview
 export * from './LoanOverviewCard';
 export * from './LoanOverviewTimeline';
 export * from './LoanOverviewPayables';
 export * from './LoanOverviewComment';
 
-//payment
+// payment
 export * from './LoanPaymentsCard';
 export * from './LoanPaymentsGrid';
 export * from './LoanPaymentsGridFooter';

@@ -102,7 +102,7 @@ export const InvestorGrid: FC = observer(() => {
           handleSort={(param) => {
             investorGridModel.queryModel.updateSort([
               {
-                property: param.property, //.id as string,
+                property: param.property, // .id as string,
                 direction: SortDirection.DESC,
                 ignoreCase: true,
                 label: param.label,
@@ -121,7 +121,7 @@ export const InvestorGrid: FC = observer(() => {
           updateTime={data?.data?.dataUpdateTime}
         />
       </Stack>
-      {/*<ColumnsHeaderMenus*/}
+      {/* <ColumnsHeaderMenus*/}
       {/*  anchorEl={anchorEl}*/}
       {/*  handleSort={() => {*/}
       {/*    investorGridModel.queryModel.updateSort([*/}
@@ -136,7 +136,7 @@ export const InvestorGrid: FC = observer(() => {
       {/*  onClose={() => setAnchorEl(null)}*/}
       {/*  open={Boolean(anchorEl)}*/}
       {/*  type={'group'}*/}
-      {/*/>*/}
+      {/* />*/}
     </>
   );
 });

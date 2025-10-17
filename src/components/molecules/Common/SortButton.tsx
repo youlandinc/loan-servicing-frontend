@@ -21,7 +21,7 @@ export const SortButton: FC<SortButtonProps> = ({
 }) => {
   return (
     <>
-      {/*{Array.isArray(sortItems) && sortItems.length > 0 && (*/}
+      {/* {Array.isArray(sortItems) && sortItems.length > 0 && (*/}
       <StyledButton
         onClick={handleClick}
         sx={{
@@ -43,7 +43,7 @@ export const SortButton: FC<SortButtonProps> = ({
           <ClearIcon onClick={handleClear} sx={{ fontSize: 16 }} />
         </Stack>
       </StyledButton>
-      {/*)}*/}
+      {/* )}*/}
     </>
   );
 };

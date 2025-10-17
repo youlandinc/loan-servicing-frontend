@@ -5,7 +5,7 @@ import {
   Menu,
   MenuItem,
   Stack,
-  //Tooltip,
+  // Tooltip,
   Typography,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -178,7 +178,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
                 sx={{ m: '0 auto', color: '#E3E3EE' }}
               />
             ) : (
-              //<Tooltip title={item.label}>
+              // <Tooltip title={item.label}>
               <Typography
                 bgcolor={bgPalette[item.key as number | string]}
                 borderRadius={1}
@@ -202,7 +202,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
               >
                 {item.label}
               </Typography>
-              //</Tooltip>
+              // </Tooltip>
             )}
           </MenuItem>
         ))}

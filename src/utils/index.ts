@@ -48,8 +48,8 @@ export const utils = {
       return '0.000%';
     }
     let target = percentageValue;
-    //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (this?.TypeOf(target) === 'String') {
       target = parseFloat(target as string);
     }
@@ -74,8 +74,8 @@ export const utils = {
       return '0.00%';
     }
     let target = percentageValue;
-    //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (this?.TypeOf(target) === 'String') {
       target = parseFloat(target as string);
     }

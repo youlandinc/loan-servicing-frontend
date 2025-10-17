@@ -220,7 +220,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
           onOpen={async (e) => {
             e.stopPropagation();
             if (portfolioListType === PortfolioGridTypeEnum.DELINQUENT) {
-              /*await getDelinquentRangeOpt(
+              /* await getDelinquentRangeOpt(
                 delinquentGridModel.queryModel.searchCondition
                   .repaymentStatusList as unknown as string[],
               );*/

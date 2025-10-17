@@ -112,7 +112,7 @@ export const DelinquentGrid: FC = observer(() => {
         handleSort={(param) => {
           delinquentGridModel.queryModel.updateSort([
             {
-              property: param.property, //.id as string,
+              property: param.property, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: param.label,

@@ -29,7 +29,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
 
     const { visible, open, close } = useSwitch();
 
-    /*const [maturityDays, setMaturityDays] = useState<MaturityTimeRangeEnum>(
+    /* const [maturityDays, setMaturityDays] = useState<MaturityTimeRangeEnum>(
       MaturityTimeRangeEnum.ALREADY_END,
     );
 
@@ -211,7 +211,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
           }}
           onOpen={async () => {
             if (portfolioListType === PortfolioGridTypeEnum.MATURITY) {
-              /*await getMaturityRangeOpt(
+              /* await getMaturityRangeOpt(
                 maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList as unknown as string[],
               );*/

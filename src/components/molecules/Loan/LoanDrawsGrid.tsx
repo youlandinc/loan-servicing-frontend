@@ -187,8 +187,8 @@ export const LoanDrawsGrid: FC = () => {
             <Typography variant={'subtitle1'}>Funding draw history</Typography>
           </Stack>
         ),
-        //footer: () => <Stack pl={3}>123</Stack>,
-        //pagination: PortfolioGridPagination,
+        // footer: () => <Stack pl={3}>123</Stack>,
+        // pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

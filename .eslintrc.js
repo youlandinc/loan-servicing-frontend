@@ -17,6 +17,9 @@ module.exports = {
     '**/public/*',
   ],
   rules: {
+    // 测试用的
+    // 'no-undef': ['error'],
+    // 'import/prefer-default-export': ['error'],
     // Possible errors
     'no-console': 'warn',
     // Unused variables and imports
@@ -188,6 +191,16 @@ module.exports = {
     'import/no-mutable-exports': ['error'],
     'import/first': ['error'],
     'import/no-webpack-loader-syntax': ['error'],
+    'no-iterator': ['error'],
+    'no-restricted-syntax': ['error', 'WithStatement'],
+    'dot-notation': ['error'],
+    'prefer-exponentiation-operator': ['error'],
+    'prefer-const': ['error', { destructuring: 'all' }],
+    'no-multi-assign': ['error'],
+    eqeqeq: ['error', 'always'],
+    'no-case-declarations': ['error'],
+    'no-unneeded-ternary': ['error'],
+    'spaced-comment': ['error', 'always'],
   },
   settings: {
     react: {

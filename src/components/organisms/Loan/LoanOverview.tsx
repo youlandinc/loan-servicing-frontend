@@ -24,7 +24,7 @@ import {
 } from '@/constant';
 
 import { observer } from 'mobx-react-lite';
-//import { useMst } from '@/models/Root';
+// import { useMst } from '@/models/Root';
 import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
 import {
   LoanOverviewCard,
@@ -64,7 +64,7 @@ import OVERVIEW_MATURITY_DATE from '@/svg/loan/overview/overview-maturity-date.s
 import OVERVIEW_RESERVE_BALANCE from '@/svg/loan/overview/overview-reserve-balance.svg';
 
 import OVERVIEW_COMMENTS_VIEW from '@/svg/loan/overview/overview-comments-view.svg';
-//import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
+// import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
 import OVERVIEW_COMMENTS_NO_RESULT from '@/svg/loan/overview/overview-comments-no-result.svg';
 import OVERVIEW_COMMENTS_ADD from '@/svg/loan/overview/overview-comments-add.svg';
 import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
@@ -77,7 +77,7 @@ const INITIAL: LoanOverviewCardProps = {
   listData: [],
 };
 
-//const ACTION_BUTTONS = [
+// const ACTION_BUTTONS = [
 //  {
 //    icon: OVERVIEW_COMMENTS_VIEW,
 //    label: 'Add comments',
@@ -87,7 +87,7 @@ const INITIAL: LoanOverviewCardProps = {
 //    icon: OVERVIEW_COMMENTS_TOUCH_POINT,
 //    label: 'Touch point',
 //  },
-//];
+// ];
 
 const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
   let result: Array<any> = [
@@ -195,12 +195,12 @@ const loanListData: (loanInfo: any) => Array<any> = (loanInfo) => {
 };
 
 export const LoanOverview: FC = observer(() => {
-  //const {
+  // const {
   //  userSetting: { setting },
-  //} = useMst();
+  // } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  //const router = useRouter();
+  // const router = useRouter();
   const breakpoints = useBreakpoints();
 
   const popupState = usePopupState({
@@ -297,7 +297,7 @@ export const LoanOverview: FC = observer(() => {
                 ),
               },
             ].concat(
-              loanInfo.autoAch == AchEnum.enabled
+              loanInfo.autoAch === AchEnum.enabled
                 ? [
                     {
                       label: 'Auto ACH payment date',
@@ -448,12 +448,12 @@ export const LoanOverview: FC = observer(() => {
       }));
       setOutstandingPayAbles(reducedOutstandingPayAbles);
 
-      //const { paymentHistory } = data;
-      //const reducedPaymentHistory = paymentHistory.histories.map((item) => ({
+      // const { paymentHistory } = data;
+      // const reducedPaymentHistory = paymentHistory.histories.map((item) => ({
       //  ...item,
       //  id: uniqueId(),
-      //}));
-      //setLoanPayments({ ...paymentHistory, histories: reducedPaymentHistory });
+      // }));
+      // setLoanPayments({ ...paymentHistory, histories: reducedPaymentHistory });
 
       const { repaymentTimeLine } = data;
       setTimeline(repaymentTimeLine || []);
@@ -750,7 +750,7 @@ export const LoanOverview: FC = observer(() => {
                     </Typography>
                   </StyledButton>
 
-                  {/*<Stack*/}
+                  {/* <Stack*/}
                   {/*  alignItems={'center'}*/}
                   {/*  alignSelf={'flex-end'}*/}
                   {/*  bgcolor={'#303D6C'}*/}
@@ -766,21 +766,21 @@ export const LoanOverview: FC = observer(() => {
                   {/*  }}*/}
                   {/*  width={40}*/}
                   {/*  {...bindHover(popupState)}*/}
-                  {/*>*/}
+                  {/* >*/}
                   {/*  <Stack>*/}
                   {/*    <Icon*/}
                   {/*      component={OVERVIEW_COMMENTS_ADD}*/}
                   {/*      sx={{ height: 24, width: 24 }}*/}
                   {/*    />*/}
                   {/*  </Stack>*/}
-                  {/*</Stack>*/}
+                  {/* </Stack>*/}
 
-                  {/*<Popper*/}
+                  {/* <Popper*/}
                   {/*  placement={'top-end'}*/}
                   {/*  {...bindPopper(popupState)}*/}
                   {/*  sx={{ zIndex: 9999 }}*/}
                   {/*  transition*/}
-                  {/*>*/}
+                  {/* >*/}
                   {/*  {({ TransitionProps }) => (*/}
                   {/*    <Fade*/}
                   {/*      {...TransitionProps}*/}
@@ -820,7 +820,7 @@ export const LoanOverview: FC = observer(() => {
                   {/*      </Paper>*/}
                   {/*    </Fade>*/}
                   {/*  )}*/}
-                  {/*</Popper>*/}
+                  {/* </Popper>*/}
                 </Stack>
               </Stack>
             )}
@@ -932,7 +932,7 @@ export const LoanOverview: FC = observer(() => {
                   </Typography>
                 </StyledButton>
 
-                {/*<Stack*/}
+                {/* <Stack*/}
                 {/*  alignItems={'center'}*/}
                 {/*  alignSelf={'flex-end'}*/}
                 {/*  bgcolor={'#303D6C'}*/}
@@ -949,23 +949,23 @@ export const LoanOverview: FC = observer(() => {
                 {/*  }}*/}
                 {/*  width={40}*/}
                 {/*  {...bindHover(popupState)}*/}
-                {/*>*/}
+                {/* >*/}
                 {/*  <Stack>*/}
                 {/*    <Icon*/}
                 {/*      component={OVERVIEW_COMMENTS_ADD}*/}
                 {/*      sx={{ height: 24, width: 24, ml: '1px' }}*/}
                 {/*    />*/}
                 {/*  </Stack>*/}
-                {/*</Stack>*/}
+                {/* </Stack>*/}
 
-                {/*<Popper*/}
+                {/* <Popper*/}
                 {/*  placement={'top-end'}*/}
                 {/*  {...bindPopper(popupState)}*/}
                 {/*  sx={{*/}
                 {/*    zIndex: 9999,*/}
                 {/*  }}*/}
                 {/*  transition*/}
-                {/*>*/}
+                {/* >*/}
                 {/*  {({ TransitionProps }) => (*/}
                 {/*    <Fade*/}
                 {/*      {...TransitionProps}*/}
@@ -1005,7 +1005,7 @@ export const LoanOverview: FC = observer(() => {
                 {/*      </Paper>*/}
                 {/*    </Fade>*/}
                 {/*  )}*/}
-                {/*</Popper>*/}
+                {/* </Popper>*/}
               </Stack>
             </Drawer>
           </Stack>

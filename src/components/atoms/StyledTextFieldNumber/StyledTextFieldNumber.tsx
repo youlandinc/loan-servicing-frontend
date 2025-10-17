@@ -92,8 +92,8 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
           },
         }}
         name="numberformat"
-        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onChange={handledChange}
         sx={{
           width: '100%',

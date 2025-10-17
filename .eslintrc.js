@@ -201,6 +201,8 @@ module.exports = {
     'no-case-declarations': ['error'],
     'no-unneeded-ternary': ['error'],
     'spaced-comment': ['error', 'always'],
+    'no-new-wrappers': ['error'],
+    'no-restricted-globals': ['error', 'isNaN', 'isFinite'],
   },
   settings: {
     react: {

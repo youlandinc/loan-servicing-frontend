@@ -646,7 +646,7 @@ export const YOULAND_COLUMNS = (
       Cell: dollarCell,
     },
     {
-      header: 'Remaining rehab budget',
+      header: 'Amount available',
       accessorKey: 'remainingRehabBudget',
       muiTableHeadCellProps: { align: 'center' },
       muiTableBodyCellProps: { align: 'left' },

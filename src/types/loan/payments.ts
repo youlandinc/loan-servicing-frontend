@@ -8,6 +8,9 @@ export interface ResponsePaymentsDetails {
   interestReceived: number;
   reserveBalance: number;
   lateChargesReceived: number;
+  remainingRehabBudget: number;
+  rehabBudget: number;
+  amountDrawn: number;
 }
 
 export enum AbutmentSources {

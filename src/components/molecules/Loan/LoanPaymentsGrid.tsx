@@ -873,7 +873,7 @@ export const LoanPaymentsGrid: FC<{
             />
 
             <StyledTextFieldNumber
-              label={'Recommended draw'}
+              label={'Draw amount'}
               onValueChange={({ floatValue }) => {
                 setDrawFormData({
                   ...drawFormData,
@@ -1442,7 +1442,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
     },
     {
       accessorKey: 'drawNumber',
-      header: 'Number of draws',
+      header: 'Draw number',
       size: 140,
       muiTableBodyCellProps: { align: 'center' },
       muiTableHeadCellProps: { align: 'center' },

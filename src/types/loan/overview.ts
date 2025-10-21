@@ -56,6 +56,7 @@ export interface OverviewBalanceInformation {
   loanTerm: number;
   totalLoanAmount: number;
   remainingReserveBalance: number;
+  suspenseBalance: number;
 }
 
 export enum AchEnum {

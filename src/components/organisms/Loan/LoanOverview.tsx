@@ -62,6 +62,7 @@ import OVERVIEW_PAYOFF_DATE from '@/svg/loan/overview/overview-payoff-date.svg';
 import OVERVIEW_NEXT_DUE_DATE from '@/svg/loan/overview/overview-next-due-date.svg';
 import OVERVIEW_MATURITY_DATE from '@/svg/loan/overview/overview-maturity-date.svg';
 import OVERVIEW_RESERVE_BALANCE from '@/svg/loan/overview/overview-reserve-balance.svg';
+import OVERVIEW_SUSPENSE_BALANCE from '@/svg/loan/overview/overview-suspense-balance.svg';
 
 import OVERVIEW_COMMENTS_VIEW from '@/svg/loan/overview/overview-comments-view.svg';
 //import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
@@ -441,6 +442,22 @@ export const LoanOverview: FC = observer(() => {
         listData: [],
       });
 
+      setSuspenseBalance({
+        theme:
+          data.repaymentStatus === PipelineStatusEnum.FORECLOSURE
+            ? 'warning'
+            : 'light',
+        header: 'Suspense balance',
+        headerValue: utils.formatDollar(balanceInfo.suspenseBalance),
+        headerIcon: OVERVIEW_SUSPENSE_BALANCE,
+        listData: [
+          {
+            label: 'From FCI',
+            value: '',
+          },
+        ],
+      });
+
       const { outstandingPayAbles } = data;
       const reducedOutstandingPayAbles = outstandingPayAbles.map((item) => ({
         ...item,
@@ -506,6 +523,8 @@ export const LoanOverview: FC = observer(() => {
   const [nextDateDue, setNextDateDue] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [reserveBalance, setReserveBalance] =
+    useState<LoanOverviewCardProps>(INITIAL);
+  const [suspenseBalance, setSuspenseBalance] =
     useState<LoanOverviewCardProps>(INITIAL);
   const [loanPayAbles, setOutstandingPayAbles] =
     useState<LoanOverviewPayablesGridProps['outstandingPayAbles']>();
@@ -640,6 +659,7 @@ export const LoanOverview: FC = observer(() => {
                     <LoanOverviewCard {...nextDateDue} />
                     <LoanOverviewCard {...maturityDate} />
                     <LoanOverviewCard {...reserveBalance} />
+                    <LoanOverviewCard {...suspenseBalance} />
                   </Stack>
 
                   <LoanOverviewTimeline listData={timeline} />

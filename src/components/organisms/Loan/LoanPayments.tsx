@@ -1,6 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 //import { useRouter } from 'next/router';
-import { CircularProgress, Fade, Icon, Stack } from '@mui/material';
+import {
+  CircularProgress,
+  Divider,
+  Fade,
+  Icon,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
@@ -10,6 +18,7 @@ import { utils } from '@/utils';
 import { StyledHeaderAddressInfo } from '@/components/atoms';
 import {
   LoanPaymentsCard,
+  LoanPaymentsCard2,
   LoanPaymentsGrid,
   ServicingSide,
   StyledLayout,
@@ -22,6 +31,7 @@ import LOAN_CARD_01 from '@/svg/loan/payments/payment_card_01.svg';
 import LOAN_CARD_02 from '@/svg/loan/payments/payment_card_02.svg';
 import LOAN_CARD_03 from '@/svg/loan/payments/payment_card_03.svg';
 import LOAN_CARD_04 from '@/svg/loan/payments/payment_card_04.svg';
+import LOAN_CARD_05 from '@/svg/loan/payments/payment_card_05.svg';
 
 export const LoanPayments: FC = observer(() => {
   //const router = useRouter();
@@ -44,6 +54,25 @@ export const LoanPayments: FC = observer(() => {
         label: 'Interest received',
         icon: LOAN_CARD_01,
         content: utils.formatDollar(data.interestReceived),
+      },
+      {
+        label: 'Amount available',
+        icon: LOAN_CARD_05,
+        content: utils.formatDollar(data.remainingRehabBudget),
+        type: 'card2',
+        contentRight: (
+          <Stack justifyContent={'end'} mr={'10px'}>
+            <StyledTypographyInfo>Rehab budget</StyledTypographyInfo>
+            <StyledTypographyInfo>
+              {utils.formatDollar(data.rehabBudget)}
+            </StyledTypographyInfo>
+            <Divider sx={{ my: '4px', borderColor: '#D2D6E1' }} />
+            <StyledTypographyInfo>Amount drawn</StyledTypographyInfo>
+            <StyledTypographyInfo>
+              {utils.formatDollar(data.amountDrawn)}
+            </StyledTypographyInfo>
+          </Stack>
+        ),
       },
       {
         label: 'Reserve balance',
@@ -69,7 +98,13 @@ export const LoanPayments: FC = observer(() => {
     status: PipelineStatusEnum.PERFORMING,
   });
   const [summaries, setSummaries] = useState<
-    Array<{ label: string; icon: any; content: string }>
+    Array<{
+      label: string;
+      icon: any;
+      content: string;
+      type?: string;
+      contentRight?: ReactNode;
+    }>
   >([]);
 
   return (
@@ -97,19 +132,37 @@ export const LoanPayments: FC = observer(() => {
               px={6}
               width={'100%'}
             >
-              {summaries.map((item, index) => (
-                <LoanPaymentsCard
-                  content={item.content}
-                  icon={
-                    <Icon
-                      component={item.icon}
-                      sx={{ width: 32, height: 32 }}
+              {summaries.map((item, index) => {
+                if (item.type === 'card2') {
+                  return (
+                    <LoanPaymentsCard2
+                      content={item.content}
+                      contentRight={item.contentRight}
+                      icon={
+                        <Icon
+                          component={item.icon}
+                          sx={{ width: 32, height: 32 }}
+                        />
+                      }
+                      key={`${item.label}_${index}`}
+                      label={item.label}
                     />
-                  }
-                  key={`${item.label}_${index}`}
-                  label={item.label}
-                />
-              ))}
+                  );
+                }
+                return (
+                  <LoanPaymentsCard
+                    content={item.content}
+                    icon={
+                      <Icon
+                        component={item.icon}
+                        sx={{ width: 32, height: 32 }}
+                      />
+                    }
+                    key={`${item.label}_${index}`}
+                    label={item.label}
+                  />
+                );
+              })}
             </Stack>
 
             <Stack
@@ -126,4 +179,12 @@ export const LoanPayments: FC = observer(() => {
       )}
     </StyledLayout>
   );
+});
+
+const StyledTypographyInfo = styled(Typography)({
+  fontSize: '12px',
+  lineHeight: '18px',
+  letterSpacing: '0.24px',
+  color: '#202939',
+  textAlign: 'right',
 });

@@ -168,7 +168,7 @@ export const Insights: FC = observer(() => {
           gap={3}
           p={3}
         >
-          <Typography variant={'subtitle2'}>Loan delinquency</Typography>
+          <Typography variant={'subtitle2'}>Loan delinquent</Typography>
 
           <Stack flexDirection={'row'} gap={12}>
             <Stack height={350} width={300}>

@@ -90,7 +90,7 @@ export const PIPELINE_STATUS: Option[] = [
     value: PipelineStatusEnum.PERFORMING,
   },
   {
-    label: 'Delinquency',
+    label: 'Delinquent',
     key: PipelineStatusEnum.DELINQUENCY,
     value: PipelineStatusEnum.DELINQUENCY,
   },

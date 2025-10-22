@@ -27,7 +27,7 @@ export const REPAYMENT_STATUS_OPTIONS: Option[] = [
     value: PipelineStatusEnum.PERFORMING,
   },
   {
-    label: 'Delinquency',
+    label: 'Delinquent',
     key: PipelineStatusEnum.DELINQUENCY,
     value: PipelineStatusEnum.DELINQUENCY,
   },

@@ -22,10 +22,10 @@ export const _downloadExtensionPdf = (downloadId: number) => {
   });
 };
 
-export const _extensionConfirm = (param: IGetExtensionPdfParam) => {
+export const _extensionConfirm = (param: { loanId: number; id: number }) => {
   return post('/servicing/extension/confirm', param);
 };
 
-export const _deleteExtensionFile = (id: number) => {
-  return del(`/servicing/extension/${id}`);
+export const _deleteExtensionFile = (downloadId: number) => {
+  return del(`/servicing/extension/${downloadId}`);
 };

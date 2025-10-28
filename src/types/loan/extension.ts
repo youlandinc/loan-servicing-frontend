@@ -1,4 +1,3 @@
-import { IAddress } from '@/models/common';
 import {
   ExtensionPaidTypeEnum,
   LoanAnswerEnum,

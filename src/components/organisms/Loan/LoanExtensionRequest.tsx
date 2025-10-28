@@ -105,7 +105,6 @@ export const LoanExtensionRequest = observer(() => {
     state,
     postcode,
   } = address.getPostData();
-  console.log('🚀 ~ postData:', addressData);
 
   const { visible: undoShow, open: undoOpen, close: undoClose } = useSwitch();
 

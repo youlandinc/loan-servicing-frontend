@@ -13,7 +13,7 @@ import {
 } from './index';
 
 import { POSTypeOf } from '@/utils';
-import { useBreakpoints, useGooglePlacesSearch } from '@/hooks';
+import { useGooglePlacesSearch } from '@/hooks';
 import { OPTIONS_COMMON_STATE } from '@/constant';
 
 import {
@@ -180,7 +180,7 @@ export const StyledGoogleAutoComplete = observer<StyledGoogleAutoCompleteProps>(
                       if (!prev) {
                         return prev;
                       }
-                      const { city, ...rest } = prev;
+                      const { city: _removed, ...rest } = prev;
                       return Object.keys(rest).length > 0 ? rest : undefined;
                     });
                   }
@@ -282,11 +282,8 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
   value,
   disabled,
   label,
-  validate,
   ...rest
 }) => {
-  const breakpoints = useBreakpoints();
-
   const [selfValue, setSelfValue] = useState<PlaceType | null | string>(value);
 
   const { options, loading, getPlaceDetailsRequest, serviceLoaded } =

@@ -1,4 +1,10 @@
-import { FC, forwardRef, useEffect, useState } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  FC,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react';
 import { SxProps } from '@mui/material';
 import {
   NumberFormatValues,
@@ -12,7 +18,7 @@ import { StyledTextFieldInput } from '@/components/atoms';
 
 interface StyledTextFieldNumberProps {
   allowNegative?: boolean;
-  onValueChange: (values: NumberFormatValues) => void;
+  onValueChange?: (values: NumberFormatValues) => void;
   thousandSeparator?: boolean;
   prefix?: string;
   suffix?: string;
@@ -63,7 +69,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   const handledChange = (e: {
     target: { name: string; value: NumberFormatValues };
   }) => {
-    onValueChange(e.target.value);
+    onValueChange?.(e.target.value);
   };
 
   return (
@@ -158,7 +164,12 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
     const { onChange, ...other } = props;
 
     return (
-      <NumericFormat
+      <NumericFormat<
+        Omit<
+          ComponentPropsWithoutRef<'input'>,
+          'defaultValue' | 'value' | 'children'
+        >
+      >
         fixedDecimalScale
         getInputRef={ref}
         onValueChange={(values) => {

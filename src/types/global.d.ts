@@ -1,3 +1,5 @@
+type google = import('@types/google.maps');
+
 interface Option {
   key: string | number | null;
   value: string | number;
@@ -24,4 +26,8 @@ interface ClientUserProfile {
   loginType?: import('@/types/enum').LoginType | undefined;
   accountId?: string;
   tenantId?: string;
+}
+
+interface Window {
+  google: typeof google;
 }

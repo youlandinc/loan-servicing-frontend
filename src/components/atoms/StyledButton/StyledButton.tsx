@@ -1,4 +1,4 @@
-import {  FC } from 'react'
+import { FC } from 'react';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
 interface StyledButtonPropsWithDisabled extends ButtonProps {

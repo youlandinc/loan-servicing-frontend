@@ -229,7 +229,7 @@ export const LoanExtensionRequest = observer(() => {
       }
       await _extensionConfirm(param)
         .then(async (res) => {
-          enqueueSnackbar('Update Successful !', {
+          enqueueSnackbar('Loan extension applied successfully.', {
             variant: 'success',
           });
           return res;

@@ -37,8 +37,8 @@ export interface IExtensionInfo {
   currentInterestRate: number;
   createdTime: string | null;
   paidMode: ExtensionPaidTypeEnum | null;
-  extensionFee: number | null;
-  executionDate: string | null;
+  extensionFee: number;
+  executionDate: string;
   confirmAgreements: ExtensionDocItem[];
   genAgreement: ExtensionDocItem;
   borrowerName: string;
@@ -62,7 +62,7 @@ export interface IGetExtensionPdfParam {
   loanId: number;
   extensionFee: number;
   extensionFeeAmount?: number;
-  changeInterestRate: number;
+  changeInterestRate?: number;
   executionDate: string;
   maturityDate?: string;
   extendMonth: MaturityDateTypeEnum;

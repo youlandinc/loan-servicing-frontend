@@ -14,3 +14,4 @@ export * from './LoanDetailsCard';
 export * from './LoanDocumentsGrid';
 
 export * from './LoanDrawsGrid';
+export * from './LoanExtensionRequest';

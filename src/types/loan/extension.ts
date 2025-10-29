@@ -26,35 +26,29 @@ export type ExtensionDocItem = {
 };
 
 export interface IExtensionInfo {
-  downloadId: number | null;
-  loanId: number;
-  systemLoanNumber: string;
-  defaultRate: number;
-  maturityDate: string;
-  totalLoanAmount: number;
-  propertyFullAddress: string;
-  repaymentStatusEnum: PipelineStatusEnum;
-  currentInterestRate: number;
-  createdTime: string | null;
-  paidMode: ExtensionPaidTypeEnum | null;
-  extensionFee: number;
-  executionDate: string;
-  confirmAgreements: ExtensionDocItem[];
-  genAgreement: ExtensionDocItem;
-  borrowerName: string;
-  currentMaturityDate: string;
-  promissoryNoteDate: string;
-  currentBalance: number;
-  extensionNumber: number;
-  interestRate: number;
-  changeInterestRate: number;
-  extendMonth: MaturityDateTypeEnum;
-  paymentTiming: ExtensionPaidTypeEnum;
-  isChangeInterestRate: LoanAnswerEnum;
   address: string;
   aptNumber: string;
+  borrowerName: string;
+  changeInterestRate: number;
   city: string;
+  confirmAgreements: ExtensionDocItem[];
+  currentBalance: number;
+  currentMaturityDate: string;
+  defaultRate: number;
+  executionDate: string;
+  extendMonth: MaturityDateTypeEnum;
+  extensionFee: number;
+  extensionNumber: number;
+  genAgreement: ExtensionDocItem;
+  interestRate: number;
+  isChangeInterestRate: LoanAnswerEnum;
+  loanId: number;
+  paymentTiming: ExtensionPaidTypeEnum;
+  promissoryNoteDate: string;
+  propertyFullAddress: string;
+  repaymentStatusEnum: PipelineStatusEnum;
   state: string;
+  systemLoanNumber: string;
   zipCode: string;
 }
 

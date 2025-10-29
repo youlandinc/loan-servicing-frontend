@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useRef,
-  useState,
-} from 'react';
+import { MutableRefObject, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AxiosResponse } from 'axios';
 import { useAsyncFn, useAsyncRetry } from 'react-use';
@@ -24,14 +18,12 @@ import { createFile } from '@/utils';
 
 interface IUseLoanExtensionRequestFetchProps {
   resetFilter: (res: AxiosResponse<IExtensionInfo, any>) => void;
-  setInitLoading: Dispatch<SetStateAction<boolean>>;
   formRef: MutableRefObject<HTMLFormElement | null>;
   open: () => void;
 }
 
 export const useLoanExtensionRequestFetch = ({
   resetFilter,
-  setInitLoading,
   formRef,
   open,
 }: IUseLoanExtensionRequestFetchProps) => {
@@ -43,6 +35,7 @@ export const useLoanExtensionRequestFetch = ({
 
   const [generateAgreementLoading, setGenerateAgreementLoading] =
     useState(false);
+  const [initLoading, setInitLoading] = useState(true);
 
   const { value, retry } = useAsyncRetry(async () => {
     return typeof loanId === 'string'
@@ -171,5 +164,6 @@ export const useLoanExtensionRequestFetch = ({
     downloadExtensionPdf,
     deleteExtensionFileState,
     deleteExtensionFile,
+    initLoading,
   };
 };

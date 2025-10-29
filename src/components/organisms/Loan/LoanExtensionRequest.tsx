@@ -21,15 +21,15 @@ import { useRef, useState } from 'react';
 import {
   StyledButton,
   StyledDatePicker,
-  StyledDialog,
   StyledHeaderAddressInfo,
-  StyledLoading,
   StyledSelect,
   StyledTextFieldInput,
   StyledTextFieldNumber,
 } from '@/components/atoms';
 import { StyledGoogleAutoComplete } from '@/components/atoms/StyledGoogleAutoComplete';
 import {
+  LoanExtensionRequestDeleteDialog,
+  LoanExtensionRequestDialog,
   useLoanExtensionRequestFetch,
   useLoanExtensionRequestSelects,
 } from '@/components/molecules';
@@ -42,14 +42,6 @@ import {
 } from '@/constant';
 
 import { useSwitch } from '@/hooks';
-import {
-  _createExtensionPdf,
-  _deleteExtensionFile,
-  _downloadExtensionPdf,
-  _extensionConfirm,
-  _getExtensionInfo,
-  _viewExtensionPdf,
-} from '@/request';
 import {
   ExtensionPaidTypeEnum,
   LoanAnswerEnum,
@@ -86,7 +78,6 @@ export const LoanExtensionRequest = observer(() => {
     resetFilter,
   } = useLoanExtensionRequestSelects();
 
-  const [initLoading, setInitLoading] = useState(true);
   const {
     value,
     retry,
@@ -101,9 +92,9 @@ export const LoanExtensionRequest = observer(() => {
     downloadExtensionPdf,
     deleteExtensionFileState,
     deleteExtensionFile,
+    initLoading,
   } = useLoanExtensionRequestFetch({
     resetFilter,
-    setInitLoading,
     formRef,
     open,
   });
@@ -637,105 +628,33 @@ export const LoanExtensionRequest = observer(() => {
             </Stack>
           )}
         </Stack>
-        <StyledDialog
-          content={
-            <Box minHeight={300}>
-              {viewState.loading && (
-                <Stack
-                  alignItems={'center'}
-                  height={300}
-                  justifyContent={'center'}
-                  textAlign={'center'}
-                >
-                  <StyledLoading sx={{ color: '#D2D6E1' }} />
-                </Stack>
-              )}
-
-              <Box ref={pdfFile} />
-            </Box>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={3}>
-              <StyledButton
-                color={'info'}
-                onClick={close}
-                size={'small'}
-                variant={'outlined'}
-              >
-                Close
-              </StyledButton>
-              <StyledButton
-                color={'primary'}
-                loading={downloadState.loading}
-                onClick={async () => {
-                  if (
-                    typeof value?.data?.genAgreement?.downloadId === 'number'
-                  ) {
-                    await downloadExtensionPdf(
-                      value!.data.genAgreement.downloadId,
-                    );
-                  }
-                }}
-                size={'small'}
-                sx={{ width: 110 }}
-              >
-                Download
-              </StyledButton>
-            </Stack>
-          }
-          header={''}
-          onClose={close}
-          open={visible}
-          sx={{
-            '.MuiDialogContent-root': {
-              px: '0 !important',
-            },
+        <LoanExtensionRequestDialog
+          downloadLoading={downloadState.loading}
+          loading={viewState.loading}
+          onClickClose={close}
+          onClickDownload={async () => {
+            if (typeof value?.data?.genAgreement?.downloadId === 'number') {
+              await downloadExtensionPdf(value!.data.genAgreement.downloadId);
+            }
           }}
+          pdfFile={pdfFile}
+          visible={visible}
         />
-        <StyledDialog
-          content={
-            <Typography color={'#636A7C'} px={3} py={2} variant={'body2'}>
-              This will revert to the last saved interest rate.
-            </Typography>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={1.5}>
-              <StyledButton
-                color={'info'}
-                onClick={undoClose}
-                size={'small'}
-                variant={'outlined'}
-              >
-                Cancel
-              </StyledButton>
-              <StyledButton
-                color={'error'}
-                loading={deleteExtensionFileState.loading}
-                onClick={async () => {
-                  if (
-                    Array.isArray(value?.data?.confirmAgreements) &&
-                    !!value?.data.confirmAgreements.length
-                  ) {
-                    const [first] = value!.data.confirmAgreements;
-                    await deleteExtensionFile(first.downloadId);
-                    retry();
-                    undoClose();
-                  }
-                }}
-                size={'small'}
-              >
-                Undo
-              </StyledButton>
-            </Stack>
-          }
-          header={'Undo changes?'}
-          onClose={undoClose}
-          open={undoShow}
-          sx={{
-            '.MuiDialogContent-root': {
-              px: '0 !important',
-            },
+        <LoanExtensionRequestDeleteDialog
+          loading={deleteExtensionFileState.loading}
+          onClickUndo={async () => {
+            if (
+              Array.isArray(value?.data?.confirmAgreements) &&
+              !!value?.data.confirmAgreements.length
+            ) {
+              const [first] = value!.data.confirmAgreements;
+              await deleteExtensionFile(first.downloadId);
+              retry();
+              undoClose();
+            }
           }}
+          undoClose={undoClose}
+          undoShow={undoShow}
         />
       </Box>
     </Fade>

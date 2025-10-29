@@ -16,20 +16,23 @@ import {
 import { observer } from 'mobx-react-lite';
 import { format, isValid } from 'date-fns';
 import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 import { useRef, useState } from 'react';
-import { useAsyncFn, useAsyncRetry } from 'react-use';
 
 import {
   StyledButton,
   StyledDatePicker,
-  StyledDialog,
   StyledHeaderAddressInfo,
-  StyledLoading,
   StyledSelect,
   StyledTextFieldInput,
   StyledTextFieldNumber,
 } from '@/components/atoms';
+import { StyledGoogleAutoComplete } from '@/components/atoms/StyledGoogleAutoComplete';
+import {
+  LoanExtensionRequestDeleteDialog,
+  LoanExtensionRequestDialog,
+  useLoanExtensionRequestFetch,
+  useLoanExtensionRequestSelects,
+} from '@/components/molecules';
 import {
   ExtensionPaidTypeOpt,
   ExtensionPaidTypeOptToExtensionFee,
@@ -38,65 +41,67 @@ import {
   YES_NO,
 } from '@/constant';
 
-import { useRenderPdf, useSwitch } from '@/hooks';
-
-import {
-  _createExtensionPdf,
-  _deleteExtensionFile,
-  _downloadExtensionPdf,
-  _extensionConfirm,
-  _getExtensionInfo,
-  _viewExtensionPdf,
-} from '@/request';
+import { useSwitch } from '@/hooks';
 import {
   ExtensionPaidTypeEnum,
   LoanAnswerEnum,
   MaturityDateTypeEnum,
 } from '@/types/enum';
-
-import { IGetExtensionPdfParam } from '@/types/loan/extension';
-import { createFile, utils } from '@/utils';
+import { utils } from '@/utils';
 
 import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
-import { StyledGoogleAutoComplete } from '@/components/atoms/StyledGoogleAutoComplete';
-import { Address, IAddress } from '@/models/common';
 
 export const LoanExtensionRequest = observer(() => {
   const router = useRouter();
   const { loanId } = router.query;
   const formRef = useRef<HTMLFormElement | null>(null);
-  const pdfFile = useRef(null);
-  const { renderFile } = useRenderPdf(pdfFile);
-
-  const [changeRateShow, setChangeRateShow] = useState<LoanAnswerEnum>(
-    LoanAnswerEnum.no,
-  );
-  const [changeRate, setChangeRate] = useState(12);
-  const [extensionFee, setExtensionFee] = useState(1);
-  const [executionDate, setExtensionDate] = useState<Date | null>(new Date());
-  const [promissoryNoteDate, setPromissoryNoteDate] = useState<Date | null>(
-    new Date(),
-  );
-  const [maturityDate, setMaturityDate] = useState(
-    MaturityDateTypeEnum.EXTEND_3,
-  );
-  const [borrowerName, setBorrowerName] = useState('');
-  const [paidType, setPaidType] = useState(ExtensionPaidTypeEnum.Upfront);
-  const [init, setInit] = useState(false);
   const { visible, open, close } = useSwitch();
+
+  const {
+    maturityDate,
+    setMaturityDate,
+    paidType,
+    setPaidType,
+    extensionFee,
+    setExtensionFee,
+    changeRateShow,
+    setChangeRateShow,
+    changeRate,
+    setChangeRate,
+    executionDate,
+    setExtensionDate,
+    borrowerName,
+    setBorrowerName,
+    promissoryNoteDate,
+    setPromissoryNoteDate,
+    address,
+    resetFilter,
+  } = useLoanExtensionRequestSelects();
+
+  const {
+    value,
+    retry,
+    createExtensionPdf,
+    generateAgreementLoading,
+    confirmState,
+    extensionConfirm,
+    pdfFile,
+    viewState,
+    viewExtensionPdf,
+    downloadState,
+    downloadExtensionPdf,
+    deleteExtensionFileState,
+    deleteExtensionFile,
+    initLoading,
+  } = useLoanExtensionRequestFetch({
+    resetFilter,
+    formRef,
+    open,
+  });
+
   const [index, setIndex] = useState(0);
-  const [address] = useState<IAddress>(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
-  );
+
+  const { visible: undoShow, open: undoOpen, close: undoClose } = useSwitch();
 
   const {
     address: addressData,
@@ -105,60 +110,6 @@ export const LoanExtensionRequest = observer(() => {
     state,
     postcode,
   } = address.getPostData();
-
-  const { visible: undoShow, open: undoOpen, close: undoClose } = useSwitch();
-
-  const { value, retry } = useAsyncRetry(async () => {
-    return typeof loanId === 'string'
-      ? await _getExtensionInfo(parseInt(loanId as string))
-          .then((res) => {
-            if (res.data.paidMode) {
-              setPaidType(res.data.paidMode);
-            }
-            if (typeof res.data.extensionFee === 'number') {
-              setExtensionFee(res.data.extensionFee);
-            }
-            if (typeof res.data.executionDate === 'string') {
-              setExtensionDate(new Date(res.data.executionDate));
-            }
-            if (typeof res.data.changeInterestRate === 'number') {
-              setChangeRate(res.data.changeInterestRate);
-            }
-            if (typeof res.data.promissoryNoteDate === 'string') {
-              setPromissoryNoteDate(new Date(res.data.promissoryNoteDate));
-            }
-            if (res.data.borrowerName) {
-              setBorrowerName(res.data.borrowerName);
-            }
-            if (res.data.extendMonth) {
-              setMaturityDate(res.data.extendMonth as MaturityDateTypeEnum);
-            }
-            if (res.data.paymentTiming) {
-              setPaidType(res.data.paymentTiming as ExtensionPaidTypeEnum);
-            }
-            if (res.data.isChangeInterestRate) {
-              setChangeRateShow(
-                res.data.isChangeInterestRate as LoanAnswerEnum,
-              );
-            }
-            address.injectServerData({
-              address: res.data.address || '',
-              aptNumber: res.data.aptNumber || '',
-              city: res.data.city || '',
-              state: res.data.state || '',
-              postcode: res.data.zipCode || '',
-            });
-            setInit(true);
-            return res;
-          })
-          .catch(({ message, variant, header }) => {
-            enqueueSnackbar(message, { variant, isSimple: !header, header });
-          })
-          .finally(() => {
-            setInit(true);
-          })
-      : null;
-  }, [loanId]);
 
   const cardInfo: Record<string, any> = {
     'Extend by': MATURITY_DATE_LABEL[maturityDate],
@@ -195,103 +146,7 @@ export const LoanExtensionRequest = observer(() => {
       : '',
   };
 
-  const [generateAgreementLoading, setGenerateAgreementLoading] =
-    useState(false);
-  const [, createExtensionPdf] = useAsyncFn(
-    async (param: IGetExtensionPdfParam) => {
-      if (!formRef.current?.reportValidity()) {
-        return;
-      }
-      setGenerateAgreementLoading(true);
-      await _createExtensionPdf(param)
-        .then(async (res) => {
-          enqueueSnackbar('Generated successfully.', {
-            variant: 'success',
-          });
-          return res;
-        })
-        .catch(({ message, variant, header }) => {
-          enqueueSnackbar(message, { variant, isSimple: !header, header });
-        })
-        .finally(() => {
-          setTimeout(() => {
-            setGenerateAgreementLoading(false);
-          }, 1000);
-        });
-    },
-    [formRef.current],
-  );
-
-  const [confirmState, extensionConfirm] = useAsyncFn(
-    async (param: { loanId: number; id: number }) => {
-      if (!formRef.current?.reportValidity()) {
-        return;
-      }
-      await _extensionConfirm(param)
-        .then(async (res) => {
-          enqueueSnackbar('Loan extension applied successfully.', {
-            variant: 'success',
-          });
-          return res;
-        })
-        .catch(({ message, variant, header }) => {
-          enqueueSnackbar(message, { variant, isSimple: !header, header });
-        });
-    },
-    [formRef.current, loanId],
-  );
-
-  const [viewState, viewExtensionPdf] = useAsyncFn(
-    async (downloadId: number) => {
-      open();
-      return await _viewExtensionPdf(downloadId)
-        .then((res) => {
-          setTimeout(() => {
-            renderFile(res.data);
-          }, 500);
-        })
-        .catch(({ message, variant, header }) => {
-          enqueueSnackbar(message, { variant, isSimple: !header, header });
-        });
-    },
-    [],
-  );
-
-  const [downloadState, downloadExtensionPdf] = useAsyncFn(
-    async (downloadId: number) => {
-      await _downloadExtensionPdf(downloadId)
-        .then((res) => {
-          const fileName = res.headers['content-disposition']
-            .split(';')[1]
-            .split('filename=')[1];
-          const blob = new Blob([res.data], {
-            type: 'application/octet-stream',
-          });
-          createFile(blob, fileName);
-        })
-        .catch(({ message, variant, header }) => {
-          enqueueSnackbar(message, { variant, isSimple: !header, header });
-        });
-    },
-    [],
-  );
-
-  const [deleteExtensionFileState, deleteExtensionFile] = useAsyncFn(
-    async (downloadId: number) => {
-      await _deleteExtensionFile(downloadId)
-        .then(async () => {
-          enqueueSnackbar('Undone Successful', {
-            variant: 'success',
-          });
-        })
-        .catch(({ message, variant, header }) => {
-          enqueueSnackbar(message, { variant, isSimple: !header, header });
-        });
-    },
-    [],
-  );
-
-  if (!init) {
+  if (initLoading) {
     return (
       <Stack
         alignItems={'center'}
@@ -514,7 +369,9 @@ export const LoanExtensionRequest = observer(() => {
                             paymentTiming: paidType,
                             extensionFee,
                             isChangeInterestRate: changeRateShow,
-                            changeInterestRate: changeRate,
+                            ...(changeRateShow === LoanAnswerEnum.yes && {
+                              changeInterestRate: changeRate,
+                            }),
                             executionDate: executionDate.toISOString(),
                             borrowerName: value?.data?.borrowerName,
                             address: addressData,
@@ -600,10 +457,9 @@ export const LoanExtensionRequest = observer(() => {
                               typeof value?.data?.genAgreement?.downloadId ===
                                 'number'
                             ) {
-                              await extensionConfirm({
-                                loanId: parseInt(loanId as string),
-                                id: value.data.genAgreement.downloadId,
-                              });
+                              await extensionConfirm(
+                                value.data.genAgreement.downloadId,
+                              );
                               retry();
                             }
                           }}
@@ -772,105 +628,33 @@ export const LoanExtensionRequest = observer(() => {
             </Stack>
           )}
         </Stack>
-        <StyledDialog
-          content={
-            <Box minHeight={300}>
-              {viewState.loading && (
-                <Stack
-                  alignItems={'center'}
-                  height={300}
-                  justifyContent={'center'}
-                  textAlign={'center'}
-                >
-                  <StyledLoading sx={{ color: '#D2D6E1' }} />
-                </Stack>
-              )}
-
-              <Box ref={pdfFile} />
-            </Box>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={3}>
-              <StyledButton
-                color={'info'}
-                onClick={close}
-                size={'small'}
-                variant={'outlined'}
-              >
-                Close
-              </StyledButton>
-              <StyledButton
-                color={'primary'}
-                loading={downloadState.loading}
-                onClick={async () => {
-                  if (
-                    typeof value?.data?.genAgreement?.downloadId === 'number'
-                  ) {
-                    await downloadExtensionPdf(
-                      value!.data.genAgreement.downloadId,
-                    );
-                  }
-                }}
-                size={'small'}
-                sx={{ width: 110 }}
-              >
-                Download
-              </StyledButton>
-            </Stack>
-          }
-          header={''}
-          onClose={close}
-          open={visible}
-          sx={{
-            '.MuiDialogContent-root': {
-              px: '0 !important',
-            },
+        <LoanExtensionRequestDialog
+          downloadLoading={downloadState.loading}
+          loading={viewState.loading}
+          onClickClose={close}
+          onClickDownload={async () => {
+            if (typeof value?.data?.genAgreement?.downloadId === 'number') {
+              await downloadExtensionPdf(value!.data.genAgreement.downloadId);
+            }
           }}
+          pdfFile={pdfFile}
+          visible={visible}
         />
-        <StyledDialog
-          content={
-            <Typography color={'#636A7C'} px={3} py={2} variant={'body2'}>
-              This will revert to the last saved interest rate.
-            </Typography>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={1.5}>
-              <StyledButton
-                color={'info'}
-                onClick={undoClose}
-                size={'small'}
-                variant={'outlined'}
-              >
-                Cancel
-              </StyledButton>
-              <StyledButton
-                color={'error'}
-                loading={deleteExtensionFileState.loading}
-                onClick={async () => {
-                  if (
-                    Array.isArray(value?.data?.confirmAgreements) &&
-                    !!value?.data.confirmAgreements.length
-                  ) {
-                    const [first] = value!.data.confirmAgreements;
-                    await deleteExtensionFile(first.downloadId);
-                    retry();
-                    undoClose();
-                  }
-                }}
-                size={'small'}
-              >
-                Undo
-              </StyledButton>
-            </Stack>
-          }
-          header={'Undo changes?'}
-          onClose={undoClose}
-          open={undoShow}
-          sx={{
-            '.MuiDialogContent-root': {
-              px: '0 !important',
-            },
+        <LoanExtensionRequestDeleteDialog
+          loading={deleteExtensionFileState.loading}
+          onClickUndo={async () => {
+            if (
+              Array.isArray(value?.data?.confirmAgreements) &&
+              !!value?.data.confirmAgreements.length
+            ) {
+              const [first] = value!.data.confirmAgreements;
+              await deleteExtensionFile(first.downloadId);
+              retry();
+              undoClose();
+            }
           }}
+          undoClose={undoClose}
+          undoShow={undoShow}
         />
       </Box>
     </Fade>

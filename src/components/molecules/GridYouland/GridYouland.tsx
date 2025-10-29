@@ -336,7 +336,7 @@ export const GridYouland: FC = observer(() => {
     },
   });
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const { columnSizing } = table.getState();
   const columnPining = table.getState().columnPinning;
 
   const [, setColumnWidth] = useAsyncFn(async (result: SetColumnWidthParam) => {
@@ -362,7 +362,7 @@ export const GridYouland: FC = observer(() => {
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.YOULAND,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -419,7 +419,7 @@ export const GridYouland: FC = observer(() => {
         handleSort={() => {
           queryModel.updateSort([
             {
-              property: headerColumnId, //.id as string,
+              property: headerColumnId, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: headerTitle as string,

@@ -143,7 +143,7 @@ export const LoanOverviewComment: FC<
       </Stack>
       <Stack pl={4}>
         <StyledTextFieldInput
-          autoFocus={true}
+          autoFocus
           disabled={disabled}
           inputProps={{
             maxLength: 255,

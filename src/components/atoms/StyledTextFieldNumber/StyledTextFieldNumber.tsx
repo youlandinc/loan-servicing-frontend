@@ -92,8 +92,8 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
           },
         }}
         name="numberformat"
-        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onChange={handledChange}
         sx={{
           width: '100%',
@@ -160,7 +160,7 @@ interface CustomProps {
 }
 
 const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
-  function NumericFormatCustom(props, ref) {
+  (props, ref) => {
     const { onChange, ...other } = props;
 
     // Type error issue fix: https://github.com/s-yadav/react-number-format/issues/880

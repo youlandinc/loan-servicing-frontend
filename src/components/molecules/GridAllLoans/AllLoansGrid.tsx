@@ -123,12 +123,12 @@ export const AllLoansGrid: FC = observer(() => {
     columns: configColumns as MRT_ColumnDef<any>[],
     data: data?.data?.content || [],
     rowCount: rowsTotal,
-    enableExpandAll: false, //hide expand all double arrow in column header
+    enableExpandAll: false, // hide expand all double arrow in column header
     enableExpanding: false,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
+    paginateExpandedRows: true, // When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
     enableTopToolbar: false,
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
     enableColumnOrdering: false,
     enableSorting: false,
     enableColumnDragging: false,
@@ -146,9 +146,9 @@ export const AllLoansGrid: FC = observer(() => {
     initialState: {
       showProgressBars: false,
     },
-    getRowId: (row) => row.loanId, //default
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    getRowId: (row) => row.loanId, // default
+    rowVirtualizerOptions: { overscan: 5 }, // optionally customize the row virtualizer
+    columnVirtualizerOptions: { overscan: 5 }, // optionally customize the column virtualizer
     muiTableBodyRowProps: {
       sx: {
         '& .MuiTableCell-root:last-child': {
@@ -283,7 +283,7 @@ export const AllLoansGrid: FC = observer(() => {
     ...rowSelectConfigs,
   });
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const { columnSizing } = table.getState();
   const columnPining = table.getState().columnPinning;
   const rowSelection = Object.keys(table.getState().rowSelection).length
     ? Object.keys(table.getState().rowSelection).map((item) => Number(item))
@@ -316,7 +316,7 @@ export const AllLoansGrid: FC = observer(() => {
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.ALL_LOANS,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -387,7 +387,7 @@ export const AllLoansGrid: FC = observer(() => {
         handleSort={() => {
           allLoansGridModel.queryModel.updateSort([
             {
-              property: headerColumnId, //.id as string,
+              property: headerColumnId, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: headerTitle as string,

@@ -35,7 +35,7 @@ export const LoanAOM: FC = () => {
       ? await _getAOMInfo(parseInt(loanId as string))
           .then((res) => {
             if (res.data.investorId) {
-              setBuyer(res.data.investorId + '');
+              setBuyer(`${res.data.investorId}`);
             }
             if (typeof res.data.instrumentNumber === 'string') {
               setInstrumentNumber(res.data.instrumentNumber);
@@ -61,8 +61,8 @@ export const LoanAOM: FC = () => {
         setBuyersOpts(
           res.data.map((item) => ({
             label: item.investorName,
-            key: item.id + '',
-            value: item.id + '',
+            key: `${item.id}`,
+            value: `${item.id}`,
           })),
         );
       }
@@ -71,7 +71,7 @@ export const LoanAOM: FC = () => {
     });
   }, [loanId]);
 
-  const value = aomState.value;
+  const { value } = aomState;
 
   const cardInfo: Record<string, any> = {
     'Loan number': value?.data?.systemLoanNumber,

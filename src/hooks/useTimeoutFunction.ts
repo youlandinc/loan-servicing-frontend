@@ -7,7 +7,10 @@ export type UseTimeoutFnReturn = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function useTimeoutFunction(fn: Function, ms = 0): UseTimeoutFnReturn {
+export const useTimeoutFunction = (
+  fn: (...args: any[]) => void,
+  ms = 0,
+): UseTimeoutFnReturn => {
   const ready = useRef<boolean | null>(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>();
   const callback = useRef(fn);
@@ -45,4 +48,4 @@ export function useTimeoutFunction(fn: Function, ms = 0): UseTimeoutFnReturn {
   }, [clear, ms]);
 
   return [isReady, clear, set];
-}
+};

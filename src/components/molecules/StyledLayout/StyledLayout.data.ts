@@ -68,7 +68,7 @@ export const LAYOUT_SIDE_MENU: { [key in ServiceType]: LayoutSideMenuItem[] } =
     ],
   };
 
-//export const LAYOUT_HEADER_PRODUCT = {};
+// export const LAYOUT_HEADER_PRODUCT = {};
 
 export const LAYOUT_HEADER_TAB = [
   {
@@ -85,7 +85,7 @@ export const LAYOUT_HEADER_TAB = [
 
 const DOMAIN = 'corepass';
 
-//export const LAYOUT_HEADER_USER = {};
+// export const LAYOUT_HEADER_USER = {};
 export const URL_HOME = (domain: string) =>
   `https://${process.env.PREFIX_URL}app.${domain || DOMAIN}.com/`;
 

@@ -92,7 +92,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
       >
         <Typography onClick={onOpen} variant={'subtitle1'}>
           {months[getMonth(date)]}
-          {'  ' + getYear(date)}
+          {`  ${getYear(date)}`}
           <IconButton>
             {visible ? <ArrowDropDown /> : <ArrowDropUp />}
           </IconButton>
@@ -168,7 +168,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
     );
   });
 
-  function Container({ className, children }: CalendarContainerProps) {
+  const Container = ({ className, children }: CalendarContainerProps) => {
     return (
       <CalendarContainer className={className}>
         <div style={{ position: 'relative' }}>
@@ -180,7 +180,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         </div>
       </CalendarContainer>
     );
-  }
+  };
 
   return (
     <Box
@@ -199,7 +199,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         isClearable
         popperPlacement={'bottom'}
         renderCustomHeader={CustomHeader}
-        selectsRange={true}
+        selectsRange
         startDate={dateRange[0]}
         withPortal={['xs', 'sm'].includes(breakpoint)}
         {...rest}

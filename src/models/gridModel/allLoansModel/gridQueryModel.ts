@@ -20,7 +20,7 @@ const searchConditionModel = types.model({
   maturityStartDate: types.maybe(types.string),
   maturityEndDate: types.maybe(types.string),
   repaymentStatusList: types.array(
-    types.string, //types.enumeration(Object.values(RepaymentStatusEnum)),
+    types.string, // types.enumeration(Object.values(RepaymentStatusEnum)),
   ),
   delinquentDays: types.maybe(
     types.union(

@@ -21,7 +21,7 @@ import { _setOrderedColumns } from '@/request/common';
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
-type ColumnItem = /*GridColDef &*/ IOrderColumnsItem;
+type ColumnItem = /* GridColDef &*/ IOrderColumnsItem;
 
 type ChangeOrderOfColumnsDialogProps = StyledDialogProps & {
   columns: ColumnItem[];
@@ -207,7 +207,7 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
             color="primary"
             loading={state.loading}
             onClick={async () => {
-              /*const result = items.map((item, index) => {
+              /* const result = items.map((item, index) => {
                 return {
                   field: item.field,
                   headerName: item.headerName,
@@ -241,6 +241,6 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
         },
       }}
       {...rest}
-    ></StyledDialog>
+    />
   );
 };

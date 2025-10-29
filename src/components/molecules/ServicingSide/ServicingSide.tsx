@@ -10,9 +10,9 @@ import BACK from './assets/back.svg';
 
 import MENU_LOGO_01 from './assets/menu-01.svg';
 import MENU_LOGO_02 from './assets/menu-02.svg';
-//import MENU_LOGO_03 from './menu-03.svg';
+// import MENU_LOGO_03 from './menu-03.svg';
 import MENU_LOGO_04 from './assets/menu-04.svg';
-//import MENU_LOGO_05 from './menu-05.svg';
+// import MENU_LOGO_05 from './menu-05.svg';
 import MENU_LOGO_06 from './assets/menu-06.svg';
 import MENU_LOGO_07 from './assets/menu-07.svg';
 

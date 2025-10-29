@@ -169,13 +169,13 @@ export const GridCashFlow: FC = observer(() => {
   const table = useMaterialReactTable({
     columns: configColumns,
     data: data?.data?.content || [],
-    //rowCount,
-    enableExpandAll: true, //hide expand all double arrow in column header
+    // rowCount,
+    enableExpandAll: true, // hide expand all double arrow in column header
     enableExpanding: true,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
+    paginateExpandedRows: true, // When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
     enableTopToolbar: false,
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
     enableColumnOrdering: false,
     enableSorting: false,
     enableColumnDragging: false,
@@ -198,15 +198,15 @@ export const GridCashFlow: FC = observer(() => {
         return row.groupById;
       }
       return row.loanId;
-    }, //default
+    }, // default
     defaultColumn: {
       minSize: 140,
       size: 250,
     },
 
     getSubRows: (row) => row.servicingLoans,
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    rowVirtualizerOptions: { overscan: 5 }, // optionally customize the row virtualizer
+    columnVirtualizerOptions: { overscan: 5 }, // optionally customize the column virtualizer
     renderEmptyRowsFallback: () => {
       return (
         <Stack pl={8} pt={4} width={'100%'}>
@@ -437,7 +437,7 @@ export const GridCashFlow: FC = observer(() => {
     }),
   });
 
-  const expanded = table.getState().expanded;
+  const { expanded } = table.getState();
 
   const [, cancelUpdateGroupExpanded] = useDebounce(
     async () => {
@@ -463,12 +463,12 @@ export const GridCashFlow: FC = observer(() => {
     [expanded],
   );
 
-  const columnSizing: Record<string, number> = table.getState().columnSizing;
+  const { columnSizing } = table.getState();
 
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.CASH_FLOW,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -503,7 +503,7 @@ export const GridCashFlow: FC = observer(() => {
         handleSort={() => {
           queryModel.updateSort([
             {
-              property: headerColumnId, //.id as string,
+              property: headerColumnId, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: headerTitle,

@@ -53,7 +53,7 @@ export const UserSetting = types
     },
   }))
   .actions((self) => {
-    const fetchUserSetting = flow(function* () {
+    const fetchUserSetting = flow(function* fetchUserSettingGenerator() {
       self.loading = true;
       const accountId =
         self.accountId ||
@@ -75,24 +75,26 @@ export const UserSetting = types
       }
     });
 
-    const fetchUserLicensedProduct = flow(function* () {
-      self.loading = true;
-      try {
-        const { data } = yield _fetchUserLicensedProduct();
-        self.licensedProduct = data?.functions;
-        self.initialized = true;
-        self.loading = false;
-      } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
-        self.initialized = false;
-      }
-    });
+    const fetchUserLicensedProduct = flow(
+      function* fetchUserLicensedProductGenerator() {
+        self.loading = true;
+        try {
+          const { data } = yield _fetchUserLicensedProduct();
+          self.licensedProduct = data?.functions;
+          self.initialized = true;
+          self.loading = false;
+        } catch (err) {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+          self.initialized = false;
+        }
+      },
+    );
     return { fetchUserSetting, fetchUserLicensedProduct };
   });
 

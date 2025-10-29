@@ -178,7 +178,7 @@ export const LoanExtensionRequest = observer(() => {
                   borderRadius={4}
                   component={'form'}
                   gap={3}
-                  minWidth={600}
+                  minWidth={500}
                   p={3}
                   ref={formRef}
                   width={'36%'}
@@ -320,15 +320,21 @@ export const LoanExtensionRequest = observer(() => {
                     flexGrow={0}
                     gap={1.5}
                     height={'fit-content'}
+                    minWidth={500}
                     p={3}
                   >
                     {Object.keys(cardInfo).map((item, index) => (
                       <Stack
                         direction={'row'}
+                        gap={2}
                         justifyContent={'space-between'}
                         key={index}
                       >
-                        <Typography color={'text.hover'} variant={'body2'}>
+                        <Typography
+                          color={'text.hover'}
+                          variant={'body2'}
+                          whiteSpace={'nowrap'}
+                        >
                           {item}
                         </Typography>
                         <Typography variant={'subtitle2'}>

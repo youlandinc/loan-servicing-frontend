@@ -124,7 +124,7 @@ export const LoanExtensionRequest = observer(() => {
       extensionFee,
       2,
     )}  (${utils.formatDollar(
-      (value?.data?.totalLoanAmount || 0) * extensionFee * 0.01,
+      (value?.data?.currentBalance || 0) * extensionFee * 0.01,
     )})`,
     'Default rate': utils.formatPercent(value?.data?.defaultRate || 0),
     'Execution date': isValid(executionDate)

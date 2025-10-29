@@ -405,12 +405,21 @@ export const LoanExtensionRequest = observer(() => {
                         alignItems={'center'}
                         bgcolor={'#F4F4F6'}
                         borderRadius={'8px'}
-                        flexDirection={'row'}
+                        flexDirection={{
+                          xs: 'column',
+                          xl: 'row',
+                        }}
                         gap={3}
                         justifyContent={'space-between'}
                         p={3}
                       >
-                        <Stack>
+                        <Stack
+                          gap={1}
+                          maxWidth={{
+                            xs: '100%',
+                            xl: '60%',
+                          }}
+                        >
                           <Typography
                             onClick={async () => {
                               if (
@@ -441,7 +450,6 @@ export const LoanExtensionRequest = observer(() => {
                           </Typography>
                           <Typography
                             sx={{
-                              maxWidth: 560,
                               color: '#9095A3',
                               fontSize: '14px',
                               lineHeight: '20px',

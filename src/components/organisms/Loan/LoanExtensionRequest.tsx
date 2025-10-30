@@ -442,7 +442,7 @@ export const LoanExtensionRequest = observer(() => {
                             variant={'subtitle2'}
                           >
                             Extension agreement{' '}
-                            {value?.data?.genAgreement?.downloadId} -{' '}
+                            {value?.data?.genAgreement?.extensionNumber} -{' '}
                             {value?.data?.genAgreement?.propertyFullAddress} -{' '}
                             {utils.formatDate(
                               value?.data?.genAgreement?.createdTime,
@@ -545,7 +545,7 @@ export const LoanExtensionRequest = observer(() => {
                                       color={'info.main'}
                                       variant={'subtitle2'}
                                     >
-                                      Actions
+                                      Action
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -568,7 +568,8 @@ export const LoanExtensionRequest = observer(() => {
                                           paddingRight: 0,
                                         }}
                                       >
-                                        Extension agreement {row.downloadId} -{' '}
+                                        Extension agreement{' '}
+                                        {row.extensionNumber} -{' '}
                                         {row.propertyFullAddress} -{' '}
                                         {utils.formatDate(row.createdTime)}
                                       </TableCell>

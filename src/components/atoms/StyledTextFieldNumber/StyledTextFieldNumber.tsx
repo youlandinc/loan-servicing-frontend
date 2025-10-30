@@ -5,16 +5,16 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { SxProps } from '@mui/material';
 import {
   NumberFormatValues,
   NumericFormat,
   NumericFormatProps,
 } from 'react-number-format';
 
-import { utils } from '@/utils';
+import { SxProps } from '@mui/material';
 
 import { StyledTextFieldInput } from '@/components/atoms';
+import { utils } from '@/utils';
 
 interface StyledTextFieldNumberProps {
   allowNegative?: boolean;
@@ -92,8 +92,8 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
           },
         }}
         name="numberformat"
-        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onChange={handledChange}
         sx={{
           width: '100%',

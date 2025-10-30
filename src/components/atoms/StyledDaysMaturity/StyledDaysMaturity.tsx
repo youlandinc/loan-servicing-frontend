@@ -1,6 +1,8 @@
-import { MaturityTimeRangeEnum } from '@/types/enum';
-import { Box, Typography, TypographyProps } from '@mui/material';
 import { FC } from 'react';
+
+import { Box, Typography, TypographyProps } from '@mui/material';
+
+import { MaturityTimeRangeEnum } from '@/types/enum';
 
 interface StyledDaysMaturityProps extends TypographyProps {
   type: MaturityTimeRangeEnum;

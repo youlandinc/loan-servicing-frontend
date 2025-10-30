@@ -4,6 +4,7 @@ import {
   SetColumnWidthParam,
   SetExpandedParam,
 } from '@/types/common';
+
 import { del, post } from './axios';
 
 export const _setColumnWidth = (columnWidth: SetColumnWidthParam) => {

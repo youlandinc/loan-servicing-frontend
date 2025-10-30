@@ -1,5 +1,6 @@
-import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
+
+import { Box, Stack, SxProps, Typography } from '@mui/material';
 
 type RenderBoxProps = {
   data: Record<string, any>;

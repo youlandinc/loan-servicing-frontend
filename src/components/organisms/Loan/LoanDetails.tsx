@@ -1,3 +1,9 @@
+import { FC } from 'react';
+import { useAsync } from 'react-use';
+
+import { Box, CircularProgress, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+
 import { StyledHeaderAddressInfo, StyledTabs } from '@/components/atoms';
 import { LoanDetailsCard } from '@/components/molecules';
 import {
@@ -7,7 +13,6 @@ import {
   ProductCategoryOpt,
   PropertyTypeOpt,
 } from '@/constant';
-
 import { _getLoanDetails } from '@/request';
 import {
   BorrowerTypeEnum,
@@ -16,10 +21,6 @@ import {
 } from '@/types/enum';
 import { IBorrowerInfo } from '@/types/loan/details';
 import { utils } from '@/utils';
-import { Box, CircularProgress, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
-import { FC } from 'react';
-import { useAsync } from 'react-use';
 
 const wrapper = (val: unknown, formatFn: (val: any) => unknown) => {
   if (val === '' || val === null || val === undefined) {
@@ -74,7 +75,7 @@ export const LoanDetails: FC = () => {
       loanDetail?.interestRate ?? 0,
       utils.formatPercent,
     ),
-    Term: (loanDetail?.loanTerm ?? 0) + ' Months',
+    Term: `${loanDetail?.loanTerm ?? 0} Months`,
     'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
     'As-is property value': wrapper(
       loanDetail?.propertyValue,
@@ -122,7 +123,7 @@ export const LoanDetails: FC = () => {
       utils.formatPercent,
     ),
     'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
-    Term: (loanDetail?.loanTerm ?? 0) + ' Months',
+    Term: `${loanDetail?.loanTerm ?? 0} Months`,
     'Loan number': loanDetail?.loanNumber,
     'Extension option': loanDetail?.extensionOption,
     'Loan submission date': utils.formatDate(
@@ -165,7 +166,7 @@ export const LoanDetails: FC = () => {
       loanDetail?.interestRate ?? 0,
       utils.formatPercent,
     ),
-    Term: (loanDetail?.loanTerm ?? 0) + ' Months',
+    Term: `${loanDetail?.loanTerm ?? 0} Months`,
     'ARV (after repair value)': wrapper(loanDetail?.arv, utils.formatDollar),
     'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
     'ARLTV (after repair loan to value)': wrapper(
@@ -222,7 +223,7 @@ export const LoanDetails: FC = () => {
       utils.formatPercent,
     ),
     'Monthly payment': wrapper(loanDetail?.monthlyPayment, utils.formatDollar),
-    Term: (loanDetail?.loanTerm ?? 0) + ' Months',
+    Term: `${loanDetail?.loanTerm ?? 0} Months`,
     'ARV (after repair value)': wrapper(loanDetail?.arv, utils.formatDollar),
     'Loan number': loanDetail?.loanNumber,
     'ARLTV (after repair loan to value)': wrapper(

@@ -1,12 +1,13 @@
 import { forwardRef, useCallback, useMemo } from 'react';
+
+import { Close } from '@mui/icons-material';
 import { Icon, Stack, Typography } from '@mui/material';
 import { SnackbarContent, useSnackbar } from 'notistack';
-import { Close } from '@mui/icons-material';
 
+import NOTIFICATION_ERROR from './notification_error.svg';
 import NOTIFICATION_INFO from './notification_info.svg';
 import NOTIFICATION_SUCCESS from './notification_success.svg';
 import NOTIFICATION_WARNING from './notification_warning.svg';
-import NOTIFICATION_ERROR from './notification_error.svg';
 
 interface StyledNotificationProps {
   header?: string;

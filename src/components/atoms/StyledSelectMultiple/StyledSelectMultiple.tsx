@@ -1,8 +1,5 @@
-import { StyledCheckbox } from '@/components/atoms';
+import { FC, useEffect, useState } from 'react';
 
-import { useSessionStorageState } from '@/hooks';
-
-import { POSFindLabel, POSTypeOf } from '@/utils';
 import {
   Box,
   FormControl,
@@ -11,7 +8,10 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+
+import { StyledCheckbox } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
+import { POSFindLabel, POSTypeOf } from '@/utils';
 
 import { StyledSelectMultipleProps, StyledSelectMultipleStyle } from './index';
 
@@ -140,7 +140,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
               ? validate.map((item, index) => (
                   <Box
                     component={'span'}
-                    key={item + '_' + index}
+                    key={`${item}_${index}`}
                     sx={{ display: 'block', m: 0 }}
                   >
                     {item}

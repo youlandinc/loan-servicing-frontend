@@ -1,4 +1,5 @@
 import { IExtensionInfo, IGetExtensionPdfParam } from '@/types/loan/extension';
+
 import { del, get, post } from '../axios';
 
 export const _getExtensionInfo = (loanId: number) => {

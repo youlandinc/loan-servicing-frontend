@@ -1,5 +1,7 @@
 import { FC } from 'react';
+
 import { Stack, Tooltip, Typography } from '@mui/material';
+
 import {
   LoanTimelineStatusEnum,
   OverviewRepaymentTimeLine,
@@ -278,7 +280,7 @@ export const LoanOverviewTimeline: FC<LoanOverviewTimelineProps> = ({
               width={`calc(100% / ${
                 listData.length <= 18 ? listData.length : 18
               } - 2px)`}
-            ></Stack>
+            />
           </Tooltip>
         ))}
       </Stack>

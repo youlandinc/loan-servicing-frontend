@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Stack } from '@mui/material';
 
 import { StyledHeaderAddressInfo } from '@/components/atoms';
@@ -7,7 +8,6 @@ import {
   ServicingSide,
   StyledLayout,
 } from '@/components/molecules';
-
 import { PipelineStatusEnum } from '@/types/enum';
 
 export const LoanDraws: FC = () => {

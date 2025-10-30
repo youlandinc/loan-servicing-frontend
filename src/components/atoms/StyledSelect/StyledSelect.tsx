@@ -1,5 +1,7 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { FC } from 'react';
+
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+
 import { StyledSelectProps } from './StyledSelect.types';
 
 export const StyledSelect: FC<StyledSelectProps> = ({

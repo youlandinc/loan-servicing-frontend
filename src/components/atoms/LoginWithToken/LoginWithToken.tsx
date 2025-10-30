@@ -1,11 +1,11 @@
-import { CircularProgress, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
 import { FC, PropsWithChildren } from 'react';
 import { useAsync } from 'react-use';
 
+import { CircularProgress, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+
 import { rootStore, useMst } from '@/models/Root';
 import { _fetchUserInfoWithToken } from '@/request/user';
-
 import { utils } from '@/utils';
 
 export type LoginWithTokenProps = {

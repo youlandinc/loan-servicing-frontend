@@ -1,8 +1,8 @@
-import { LoginWithToken } from '@/components/atoms/LoginWithToken';
-import Head from 'next/head';
-import dynamic from 'next/dynamic';
-
 import { observer } from 'mobx-react-lite';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+
+import { LoginWithToken } from '@/components/atoms/LoginWithToken';
 
 const DynamicLoanOverview = dynamic(
   () =>

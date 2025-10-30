@@ -1,4 +1,5 @@
 import { IAllLoansQueryParam } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
 import { post } from '../axios';
 
 export const _getGroupByInvestor = (param: IAllLoansQueryParam) => {

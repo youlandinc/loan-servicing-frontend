@@ -1,9 +1,17 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
-import { LocationOnOutlined } from '@mui/icons-material';
-import parse from 'autosuggest-highlight/parse';
 
+import { LocationOnOutlined } from '@mui/icons-material';
+import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
+import parse from 'autosuggest-highlight/parse';
 import { observer } from 'mobx-react-lite';
+
+import {
+  StyledSelect,
+  StyledTextFieldInput as StyledTextField,
+} from '@/components/atoms';
+import { OPTIONS_COMMON_STATE } from '@/constant';
+import { useGooglePlacesSearch } from '@/hooks';
+import { POSTypeOf } from '@/utils';
 
 import {
   PlaceType,
@@ -11,15 +19,6 @@ import {
   StyledGoogleAutoCompleteProps,
   StyledGoogleAutoCompleteStyles,
 } from './index';
-
-import { POSTypeOf } from '@/utils';
-import { useGooglePlacesSearch } from '@/hooks';
-import { OPTIONS_COMMON_STATE } from '@/constant';
-
-import {
-  StyledSelect,
-  StyledTextFieldInput as StyledTextField,
-} from '@/components/atoms';
 
 export const StyledGoogleAutoComplete = observer<StyledGoogleAutoCompleteProps>(
   ({

@@ -1,7 +1,8 @@
+import React, { FC, useEffect, useRef } from 'react';
+
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { enqueueSnackbar } from 'notistack';
-import React, { FC, useEffect, useRef } from 'react';
 import useSWR from 'swr';
 
 import {

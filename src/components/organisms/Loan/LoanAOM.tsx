@@ -1,9 +1,10 @@
+import { FC, useRef, useState } from 'react';
+import { useAsync, useAsyncFn } from 'react-use';
+
 import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
-import { FC, useRef, useState } from 'react';
-import { useAsync, useAsyncFn } from 'react-use';
 
 import {
   StyledButton,
@@ -35,7 +36,7 @@ export const LoanAOM: FC = () => {
       ? await _getAOMInfo(parseInt(loanId as string))
           .then((res) => {
             if (res.data.investorId) {
-              setBuyer(res.data.investorId + '');
+              setBuyer(`${res.data.investorId}`);
             }
             if (typeof res.data.instrumentNumber === 'string') {
               setInstrumentNumber(res.data.instrumentNumber);
@@ -61,8 +62,8 @@ export const LoanAOM: FC = () => {
         setBuyersOpts(
           res.data.map((item) => ({
             label: item.investorName,
-            key: item.id + '',
-            value: item.id + '',
+            key: `${item.id}`,
+            value: `${item.id}`,
           })),
         );
       }

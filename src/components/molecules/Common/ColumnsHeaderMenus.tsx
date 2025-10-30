@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 
-import BorderLeftIcon from '@/svg/portfolio/freeze_pane.svg';
-import BorderClearIcon from '@/svg/portfolio/unfreeze_pane.svg';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 import { StyledActionsMenu, StyledActionsMenuProps } from '@/components/atoms';
+import BorderLeftIcon from '@/svg/portfolio/freeze_pane.svg';
+import BorderClearIcon from '@/svg/portfolio/unfreeze_pane.svg';
 
 interface ColumnsHeaderMenusProps extends StyledActionsMenuProps {
   // columns: MRT_ColumnDef<any>[];

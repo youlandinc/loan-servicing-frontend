@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { CircularProgress } from '@mui/material';
 
 import { StyledLoadingProps, StyledLoadingStyles } from './index';

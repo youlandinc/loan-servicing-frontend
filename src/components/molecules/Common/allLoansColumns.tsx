@@ -1,12 +1,12 @@
+import React from 'react';
+
 import { Box, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
-import React from 'react';
 
 import { StyledDaysDelinquent, StyledDaysMaturity } from '@/components/atoms';
 import { StyledLoanStatus } from '@/components/atoms/StyledLoanStatus';
 import { StyledMaturityStatus } from '@/components/atoms/StyledMaturityStatus';
-
 import { IOrderColumnsItem } from '@/models/gridModel';
 import { ellipsisStyle } from '@/styles';
 import {

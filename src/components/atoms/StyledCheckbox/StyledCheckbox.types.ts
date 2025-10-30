@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { CheckboxProps, SxProps } from '@mui/material';
 
 export interface StyledCheckboxProps extends CheckboxProps {

@@ -1,11 +1,12 @@
 import { FC } from 'react';
+
 import { Box } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { StyledDatePickerProps, StyledDatePickerStyles } from './index';
-
 import { Transitions } from '@/components/atoms';
+
+import { StyledDatePickerProps, StyledDatePickerStyles } from './index';
 
 export const StyledDatePicker: FC<StyledDatePickerProps> = ({
   onChange,
@@ -63,7 +64,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
                   ? validate.map((item, index) => (
                       <Box
                         component={'span'}
-                        key={item + '_' + index}
+                        key={`${item}_${index}`}
                         sx={{
                           display: 'block',
                           m: 0,
@@ -86,11 +87,11 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
         }}
         sx={{
           ...StyledDatePickerStyles,
-          //'& .MuiPickersDay-root': {
+          // '& .MuiPickersDay-root': {
           //  '& .Mui-selected': {
           //    bgcolor: 'primary.darkest',
           //  },
-          //},
+          // },
           '& .MuiDateCalendar-root': {
             bgcolor: 'black',
           },

@@ -1,6 +1,7 @@
+import { destroy, Instance, SnapshotOut, types } from 'mobx-state-tree';
+
 import { AddressData } from '@/types';
 import { formatPropertyAddress } from '@/utils/FormatUtils';
-import { destroy, Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 type AddressError = Partial<AddressData>;
 

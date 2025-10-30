@@ -1,35 +1,35 @@
 import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
+import { useAsync, useAsyncFn, useDebounce } from 'react-use';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { Stack, Typography } from '@mui/material';
 import {
   MRT_ExpandButton,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
-import { useAsync, useAsyncFn, useDebounce } from 'react-use';
+import { observer } from 'mobx-react-lite';
 import { enqueueSnackbar } from 'notistack';
 import useSWR from 'swr';
 
-import { observer } from 'mobx-react-lite';
+import {
+  ColumnsHeaderMenus,
+  resortColumns,
+  transferOrderColumnsKeys,
+} from '@/components/molecules';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
+import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
+import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
+import { SetColumnWidthParam } from '@/types/common';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 
 import {
   CASH_FLOW_COLUMNS,
   GridCashFlowFooter,
   reduceCashFlowColumn,
 } from './index';
-import {
-  ColumnsHeaderMenus,
-  resortColumns,
-  transferOrderColumnsKeys,
-} from '@/components/molecules';
-
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { SetColumnWidthParam } from '@/types/common';
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { _fetchCashFlowTableData, _fetchInvestorData } from '@/request';
-import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const GridCashFlow: FC = observer(() => {
   const {
@@ -170,13 +170,13 @@ export const GridCashFlow: FC = observer(() => {
   const table = useMaterialReactTable({
     columns: configColumns,
     data: data?.data?.content || [],
-    //rowCount,
-    enableExpandAll: true, //hide expand all double arrow in column header
+    // rowCount,
+    enableExpandAll: true, // hide expand all double arrow in column header
     enableExpanding: true,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
+    paginateExpandedRows: true, // When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
     enableTopToolbar: false,
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
     enableColumnOrdering: false,
     enableSorting: false,
     enableColumnDragging: false,
@@ -199,15 +199,15 @@ export const GridCashFlow: FC = observer(() => {
         return row.groupById;
       }
       return row.loanId;
-    }, //default
+    }, // default
     defaultColumn: {
       minSize: 140,
       size: 250,
     },
 
     getSubRows: (row) => row.servicingLoans,
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    rowVirtualizerOptions: { overscan: 5 }, // optionally customize the row virtualizer
+    columnVirtualizerOptions: { overscan: 5 }, // optionally customize the column virtualizer
     renderEmptyRowsFallback: () => {
       return (
         <Stack pl={8} pt={4} width={'100%'}>
@@ -469,7 +469,7 @@ export const GridCashFlow: FC = observer(() => {
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.CASH_FLOW,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -504,7 +504,7 @@ export const GridCashFlow: FC = observer(() => {
         handleSort={() => {
           queryModel.updateSort([
             {
-              property: headerColumnId, //.id as string,
+              property: headerColumnId, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: headerTitle,

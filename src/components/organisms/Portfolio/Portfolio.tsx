@@ -1,12 +1,9 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
-import dynamic from 'next/dynamic';
 import { useAsync, useAsyncFn } from 'react-use';
 
+import { Box, Fade, Icon, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
-
-import { useDebounceFn } from '@/hooks';
+import dynamic from 'next/dynamic';
 
 import {
   StyledActionsMenu,
@@ -14,17 +11,17 @@ import {
   StyledMaturitySelect,
 } from '@/components/atoms';
 import { StyledLayout } from '@/components/molecules';
-
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import { useDebounceFn } from '@/hooks';
+import { useMst } from '@/models/Root';
 import { _getAllGridConfig, setDisplayType } from '@/request';
-
 import ListIcon from '@/svg/portfolio/all_loans_list.svg';
 import InvestorIcon from '@/svg/portfolio/by_investor_list.svg';
 import DelinquentIcon from '@/svg/portfolio/delinquent_list.svg';
 import LOGO_ALAMEDA from '@/svg/portfolio/logo-alameda.svg';
-//import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
+// import LOGO_CASH_FLOW from '@/svg/portfolio/logo-cash-flow.svg';
 import LOGO_YOULAND from '@/svg/portfolio/logo-youland.svg';
 import MaturityIcon from '@/svg/portfolio/maturity_list.svg';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 const GridYouland = dynamic(
   () =>
@@ -42,20 +39,20 @@ const GridYoulandToolbar = dynamic(
   { ssr: false },
 );
 
-//const GridCashFlow = dynamic(
+// const GridCashFlow = dynamic(
 //  () =>
 //    import('@/components/molecules/GridCashFlow').then(
 //      (mode) => mode.GridCashFlow,
 //    ),
 //  { ssr: false },
-//);
-//const GridCashFlowToolbar = dynamic(
+// );
+// const GridCashFlowToolbar = dynamic(
 //  () =>
 //    import('@/components/molecules/GridCashFlow').then(
 //      (mode) => mode.GridCashFlowToolbar,
 //    ),
 //  { ssr: false },
-//);
+// );
 
 const GridAlameda = dynamic(
   () =>
@@ -175,13 +172,13 @@ export const Portfolio: FC = observer(() => {
 
   const menus = useMemo(
     () => [
-      //{
+      // {
       //  icon: LOGO_CASH_FLOW,
       //  label: 'Cash flow',
       //  key: PortfolioGridTypeEnum.CASH_FLOW,
       //  queryComponent: <GridCashFlowToolbar />,
       //  component: <GridCashFlow />,
-      //},
+      // },
       {
         icon: LOGO_YOULAND,
         label: 'Youland',
@@ -406,7 +403,7 @@ export const Portfolio: FC = observer(() => {
                       /*  borderTopLeftRadius: {
                         xs: index === 0 ? 0 : 16,
                         // xxl: index === 0 ? 0 : 16,
-                      },*/
+                      }, */
                       overflow: 'hidden',
                     }}
                   >

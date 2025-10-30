@@ -1,39 +1,38 @@
 import { useCallback, useState } from 'react';
-import { MRT_ColumnDef } from 'material-react-table';
+
+import { MoreHoriz } from '@mui/icons-material';
 import { Stack, Tooltip, Typography } from '@mui/material';
-
-import { utils } from '@/utils';
-import {
-  AUTO_HIDE_DURATION,
-  REPAYMENT_STATUS_OPTIONS,
-  TRADE_STATUS_BGCOLOR_PALETTE,
-  TRADE_STATUS_OPTIONS,
-} from '@/constant';
-import { ellipsisStyle } from '@/styles';
-
-import {
-  allLoansStatusBgcolor,
-  allLoansStatusColor,
-} from '@/styles/allLoansGridStyles';
-
-import {
-  GridActions,
-  GridDropDown,
-  GridDropDownButton,
-} from '@/components/molecules';
+import { format } from 'date-fns';
+import { MRT_ColumnDef } from 'material-react-table';
 import { useSnackbar } from 'notistack';
-import { useSwitch } from '@/hooks';
+
 import {
   StyledButton,
   StyledDatePicker,
   StyledDialog,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-import { format } from 'date-fns';
+import {
+  GridActions,
+  GridDropDown,
+  GridDropDownButton,
+} from '@/components/molecules';
+import {
+  AUTO_HIDE_DURATION,
+  REPAYMENT_STATUS_OPTIONS,
+  TRADE_STATUS_BGCOLOR_PALETTE,
+  TRADE_STATUS_OPTIONS,
+} from '@/constant';
+import { useSwitch } from '@/hooks';
 import { _deleteGridData, _updateTableData } from '@/request';
-import { HttpError } from '@/types/common';
-import { MoreHoriz } from '@mui/icons-material';
+import { ellipsisStyle } from '@/styles';
+import {
+  allLoansStatusBgcolor,
+  allLoansStatusColor,
+} from '@/styles/allLoansGridStyles';
 import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import { HttpError } from '@/types/common';
+import { utils } from '@/utils';
 
 export const CASH_FLOW_COLUMNS = (
   cb?: () => Promise<any>,
@@ -611,7 +610,7 @@ export const CASH_FLOW_COLUMNS = (
                     decimalScale={3}
                     label={'Buy rate'}
                     onValueChange={({ floatValue }) => setValue(floatValue)}
-                    percentage={true}
+                    percentage
                     suffix={'%'}
                     thousandSeparator={false}
                     value={value}

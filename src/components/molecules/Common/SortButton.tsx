@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
-import { Stack, Typography } from '@mui/material';
-import SouthIcon from '@mui/icons-material/South';
-import NorthIcon from '@mui/icons-material/North';
-import ClearIcon from '@mui/icons-material/Clear';
 
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import ClearIcon from '@mui/icons-material/Clear';
+import NorthIcon from '@mui/icons-material/North';
+import SouthIcon from '@mui/icons-material/South';
+import { Stack, Typography } from '@mui/material';
+
 import { StyledButton } from '@/components/atoms';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { SortDirection } from '@/types/enum';
 
 type SortButtonProps = {
@@ -21,7 +22,7 @@ export const SortButton: FC<SortButtonProps> = ({
 }) => {
   return (
     <>
-      {/*{Array.isArray(sortItems) && sortItems.length > 0 && (*/}
+      {/* {Array.isArray(sortItems) && sortItems.length > 0 && ( */}
       <StyledButton
         onClick={handleClick}
         sx={{
@@ -43,7 +44,7 @@ export const SortButton: FC<SortButtonProps> = ({
           <ClearIcon onClick={handleClear} sx={{ fontSize: 16 }} />
         </Stack>
       </StyledButton>
-      {/*)}*/}
+      {/* )} */}
     </>
   );
 };

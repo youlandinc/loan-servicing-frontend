@@ -1,28 +1,24 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-
-import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { Router } from 'next/router';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from '@/styles/createEmotionCache';
 import CssBaseline from '@mui/material/CssBaseline';
-import { lightTheme } from '@/theme';
-
-import NProgress from 'nprogress';
+import { ThemeProvider } from '@mui/material/styles';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { Router } from 'next/router';
+import Script from 'next/script';
 import { SnackbarProvider } from 'notistack';
+import NProgress from 'nprogress';
+
+import { StyledNotification } from '@/components/atoms';
+import { useBreakpoints } from '@/hooks';
+import { Provider, rootStore } from '@/models/Root';
+import createEmotionCache from '@/styles/createEmotionCache';
+import { lightTheme } from '@/theme';
 
 import 'normalize.css';
 import 'reset.css';
 import '@/styles/global.css';
-
-import { StyledNotification } from '@/components/atoms';
-
-import { useBreakpoints } from '@/hooks';
-
-import { Provider, rootStore } from '@/models/Root';
-import Script from 'next/script';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

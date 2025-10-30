@@ -1,11 +1,10 @@
 import { FC, forwardRef, useRef } from 'react';
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@mui/material';
+import ReactDatePicker, {
+  CalendarContainer,
+  CalendarContainerProps,
+  ReactDatePickerCustomHeaderProps,
+} from 'react-datepicker';
+
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -14,24 +13,25 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
 } from '@mui/icons-material';
-
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { getMonth, getYear } from 'date-fns';
 import { range } from 'lodash';
 
-import ReactDatePicker, {
-  CalendarContainer,
-  CalendarContainerProps,
-  ReactDatePickerCustomHeaderProps,
-} from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
+import { useBreakpoints, useSwitch } from '@/hooks';
 
 import {
   StyledDateRangeProps,
   StyledDateRangeStyles,
   StyledTextFieldStyles,
 } from './index';
-
-import { useBreakpoints, useSwitch } from '@/hooks';
 
 export const StyledDateRange: FC<StyledDateRangeProps> = ({
   sx,
@@ -92,7 +92,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
       >
         <Typography onClick={onOpen} variant={'subtitle1'}>
           {months[getMonth(date)]}
-          {'  ' + getYear(date)}
+          {`  ${getYear(date)}`}
           <IconButton>
             {visible ? <ArrowDropDown /> : <ArrowDropUp />}
           </IconButton>
@@ -199,7 +199,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         isClearable
         popperPlacement={'bottom'}
         renderCustomHeader={CustomHeader}
-        selectsRange={true}
+        selectsRange
         startDate={dateRange[0]}
         withPortal={['xs', 'sm'].includes(breakpoint)}
         {...rest}

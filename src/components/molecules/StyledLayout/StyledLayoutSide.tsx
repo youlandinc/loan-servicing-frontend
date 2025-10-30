@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 
+import { Box, Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
 
 import { LAYOUT_SIDE_MENU, ServiceType } from './index';
 

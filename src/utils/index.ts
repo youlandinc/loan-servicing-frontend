@@ -1,5 +1,6 @@
-import { format } from 'date-fns';
 import { ReactNode } from 'react';
+
+import { format } from 'date-fns';
 
 export * from './Handler';
 export * from './TypeOf';
@@ -48,14 +49,12 @@ export const utils = {
       return '0.000%';
     }
     let target = percentageValue;
-    //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (this?.TypeOf(target) === 'String') {
       target = parseFloat(target as string);
     }
-    return (
-      (Math.floor((target as number) * 1000000) / 1000000).toFixed(radix) + '%'
-    );
+    return `${(Math.floor((target as number) * 1000000) / 1000000).toFixed(radix)}%`;
   },
   formatPercentHundred: (
     percentageValue: number | undefined | string | null,
@@ -76,15 +75,14 @@ export const utils = {
       return '0.00%';
     }
     let target = percentageValue;
-    //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (this?.TypeOf(target) === 'String') {
       target = parseFloat(target as string);
     }
-    return (
-      (Math.floor((target as number) * 100000000) / 1000000).toFixed(radix) +
-      '%'
-    );
+    return `${(Math.floor((target as number) * 100000000) / 1000000).toFixed(
+      radix,
+    )}%`;
   },
   formatDate: (
     date: string | Date | null,
@@ -106,7 +104,7 @@ export const utils = {
     if (utils.TypeOf(entry) === 'Null') {
       return '';
     }
-    const cleaned: string = ('' + entry).replace(/\D/g, '');
+    const cleaned: string = `${entry}`.replace(/\D/g, '');
     const match: RegExpMatchArray | null = cleaned.match(
       /^(\d{3})?(\d{3})(\d{4})$/,
     );
@@ -170,6 +168,6 @@ const getRadix = (value: number | undefined | string | null): number => {
   ) {
     return 2;
   }
-  const target = value + '';
+  const target = `${value}`;
   return target.substring(target.indexOf('.') + 1).length >= 3 ? 3 : 2;
 };

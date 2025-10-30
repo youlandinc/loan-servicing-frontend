@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+
 import { Box, Typography, TypographyProps } from '@mui/material';
 
 interface DaysDelinquentContentProps extends TypographyProps {
@@ -14,7 +15,7 @@ export const DaysDelinquentContent: FC<DaysDelinquentContentProps> = ({
       case days <= 0:
         return {
           color: 'text.secondary',
-          //backgroundColor: 'rgba(17, 52, 227, 0.10)',
+          // backgroundColor: 'rgba(17, 52, 227, 0.10)',
         };
       case days <= 30:
         return {

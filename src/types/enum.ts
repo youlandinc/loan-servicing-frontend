@@ -79,15 +79,15 @@ export enum PipelineStatusEnum {
 }
 
 export enum ProductCategoryEnum {
-  bridge = 'Stabilized Bridge', //'STABILIZED_BRIDGE',
-  fix = 'Fix and Flip', //'FIX_AND_FLIP',
-  ground = 'Ground-up Construction', //'GROUND_UP_CONSTRUCTION',
-  land = 'Land', //'LAND',
+  bridge = 'Stabilized Bridge', // 'STABILIZED_BRIDGE',
+  fix = 'Fix and Flip', // 'FIX_AND_FLIP',
+  ground = 'Ground-up Construction', // 'GROUND_UP_CONSTRUCTION',
+  land = 'Land', // 'LAND',
 }
 
 export enum LoanDetailsPurposeEnum {
-  purchase = 'Purchase', //'PURCHASE',
-  refinance = 'Refinance', //'REFINANCE',
+  purchase = 'Purchase', // 'PURCHASE',
+  refinance = 'Refinance', // 'REFINANCE',
 }
 
 export enum EstFICOScoreEnum {

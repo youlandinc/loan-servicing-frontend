@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import {
   Dialog,
   DialogActions,
@@ -31,7 +32,7 @@ export const StyledDialog: FC<StyledDialogProps> = ({
 
   return (
     <Dialog
-      fullWidth={true}
+      fullWidth
       open={open}
       sx={{
         ...StyledDialogStyles,

@@ -1,6 +1,7 @@
+import React, { FC, useMemo } from 'react';
+
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
 import useSWR from 'swr';
 
 import {
@@ -116,7 +117,7 @@ export const MaturityGrid: FC = observer(() => {
         handleSort={(param) => {
           maturityGridModel.queryModel.updateSort([
             {
-              property: param.property, //.id as string,
+              property: param.property, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: param.label,

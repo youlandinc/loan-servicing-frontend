@@ -360,11 +360,11 @@ export const MATURITY_DATE: Option[] = [
   },
 ];
 
-/*ONE_THIRTY("ont - thirty", "1-30"),
+/* ONE_THIRTY("ont - thirty", "1-30"),
     THIRTY_ONE_SIXTY("thirty one - sixty", "31-60"),
     SIXTY_ONE_NINETY("sixty one - ninety", "61-90"),
     NINETY_ONE_ONE_HUNDRED_TWENTY("ninety one - one hundred twenty", "91-120"),
-    ONE_HUNDRED_TWENTY_ADD("one hundred twenty add", "120+");*/
+    ONE_HUNDRED_TWENTY_ADD("one hundred twenty add", "120+"); */
 export const DelinquentTimeRangeOpt: Option[] = [
   {
     key: DelinquentTimeRangeEnum.ALL,

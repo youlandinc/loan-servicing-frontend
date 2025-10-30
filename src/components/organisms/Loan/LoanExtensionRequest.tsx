@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react';
+
 import {
   Box,
   CircularProgress,
@@ -13,10 +15,9 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 import { format, isValid } from 'date-fns';
+import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
 
 import {
   StyledButton,
@@ -40,16 +41,14 @@ import {
   MATURITY_DATE_LABEL,
   YES_NO,
 } from '@/constant';
-
 import { useSwitch } from '@/hooks';
+import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
 import {
   ExtensionPaidTypeEnum,
   LoanAnswerEnum,
   MaturityDateTypeEnum,
 } from '@/types/enum';
 import { utils } from '@/utils';
-
-import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
 
 export const LoanExtensionRequest = observer(() => {
   const router = useRouter();
@@ -263,11 +262,7 @@ export const LoanExtensionRequest = observer(() => {
                     }}
                     value={executionDate}
                   />
-                  <Stack
-                    bgcolor={'#D2D6E1'}
-                    height={'1px'}
-                    width={'100%'}
-                  ></Stack>
+                  <Stack bgcolor={'#D2D6E1'} height={'1px'} width={'100%'} />
                   <Stack flexDirection={'row'} gap={3}>
                     <StyledTextFieldInput
                       label={'Borrower name'}
@@ -336,11 +331,7 @@ export const LoanExtensionRequest = observer(() => {
                         </Typography>
                       </Stack>
                     ))}
-                    <Stack
-                      bgcolor={'#D2D6E1'}
-                      height={'1px'}
-                      width={'100%'}
-                    ></Stack>
+                    <Stack bgcolor={'#D2D6E1'} height={'1px'} width={'100%'} />
                     {Object.keys(borrowerInfo).map((item, index) => (
                       <Stack
                         direction={'row'}
@@ -375,9 +366,9 @@ export const LoanExtensionRequest = observer(() => {
                             executionDate: executionDate.toISOString(),
                             borrowerName: value?.data?.borrowerName,
                             address: addressData,
-                            city: city,
-                            state: state,
-                            aptNumber: aptNumber,
+                            city,
+                            state,
+                            aptNumber,
                             zipCode: postcode,
                             promissoryNoteDate:
                               promissoryNoteDate?.toISOString(),

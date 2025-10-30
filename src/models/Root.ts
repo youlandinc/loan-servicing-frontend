@@ -1,5 +1,6 @@
-import { Instance, types } from 'mobx-state-tree';
 import { createContext, useContext } from 'react';
+
+import { Instance, types } from 'mobx-state-tree';
 
 import { portfolioModel } from '@/models/gridModel';
 import {
@@ -8,7 +9,6 @@ import {
   PipelineMode,
   PortfolioGridTypeEnum,
 } from '@/types/enum';
-
 import { User } from '@/types/user';
 
 import { UserSetting } from './base';

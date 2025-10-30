@@ -1,29 +1,10 @@
 import { ReactNode, useCallback, useState } from 'react';
-import { Button, Stack, Tooltip, Typography } from '@mui/material';
+
 import { MoreHoriz } from '@mui/icons-material';
+import { Button, Stack, Tooltip, Typography } from '@mui/material';
 import { format, isValid } from 'date-fns';
-import { useSnackbar } from 'notistack';
 import { MRT_ColumnDef } from 'material-react-table';
-
-import {
-  AUTO_HIDE_DURATION,
-  REPAYMENT_STATUS_OPTIONS,
-  TRADE_STATUS_BGCOLOR_PALETTE,
-  TRADE_STATUS_OPTIONS,
-} from '@/constant';
-
-import { ellipsisStyle } from '@/styles';
-import { utils } from '@/utils';
-import { useSwitch } from '@/hooks';
-
-import {
-  allLoansStatusBgcolor,
-  allLoansStatusColor,
-} from '@/styles/allLoansGridStyles';
-import {
-  GridTradeConfirmEnum,
-  GridTradeStatusEnum,
-} from '@/types/pipeline/youland';
+import { useSnackbar } from 'notistack';
 
 import {
   StyledButton,
@@ -37,11 +18,26 @@ import {
   GridDropDown,
   GridDropDownButton,
 } from '@/components/molecules';
-
+import {
+  AUTO_HIDE_DURATION,
+  REPAYMENT_STATUS_OPTIONS,
+  TRADE_STATUS_BGCOLOR_PALETTE,
+  TRADE_STATUS_OPTIONS,
+} from '@/constant';
+import { useSwitch } from '@/hooks';
 import { _deleteGridData, _updateTableData } from '@/request';
-import { HttpError } from '@/types/common';
-
+import { ellipsisStyle } from '@/styles';
+import {
+  allLoansStatusBgcolor,
+  allLoansStatusColor,
+} from '@/styles/allLoansGridStyles';
 import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import { HttpError } from '@/types/common';
+import {
+  GridTradeConfirmEnum,
+  GridTradeStatusEnum,
+} from '@/types/pipeline/youland';
+import { utils } from '@/utils';
 
 export const ALAMEDA_COLUMNS = (
   cb?: () => Promise<any>,
@@ -716,7 +712,7 @@ export const ALAMEDA_COLUMNS = (
                     decimalScale={3}
                     label={'Buy rate'}
                     onValueChange={({ floatValue }) => setValue(floatValue)}
-                    percentage={true}
+                    percentage
                     suffix={'%'}
                     thousandSeparator={false}
                     value={value}

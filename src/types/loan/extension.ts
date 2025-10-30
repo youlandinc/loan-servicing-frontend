@@ -49,6 +49,7 @@ export interface IExtensionInfo {
   repaymentStatusEnum: PipelineStatusEnum;
   state: string;
   systemLoanNumber: string;
+  totalLoanAmount: number;
   zipCode: string;
 }
 

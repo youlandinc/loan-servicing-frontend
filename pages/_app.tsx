@@ -22,6 +22,7 @@ import { StyledNotification } from '@/components/atoms';
 import { useBreakpoints } from '@/hooks';
 
 import { Provider, rootStore } from '@/models/Root';
+import Script from 'next/script';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -57,39 +58,48 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   return (
-    <Provider value={rootStore}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta content="initial-scale=1, width=device-width" name="viewport" />
-          <meta
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-            name="viewport"
-          />
-          <link href={'/favicon.svg'} rel="icon" />
-          <title>Servicing Center</title>
-        </Head>
-        <ThemeProvider theme={lightTheme}>
-          <CssBaseline />
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: ['sm', 'xs'].includes(breakpoints)
-                ? 'center'
-                : 'right',
-            }}
-            Components={{
-              success: StyledNotification,
-              error: StyledNotification,
-              default: StyledNotification,
-              info: StyledNotification,
-              warning: StyledNotification,
-            }}
-            maxSnack={3}
-          >
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </ThemeProvider>
-      </CacheProvider>
-    </Provider>
+    <>
+      <Provider value={rootStore}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <meta
+              content="initial-scale=1, width=device-width"
+              name="viewport"
+            />
+            <meta
+              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+              name="viewport"
+            />
+            <link href={'/favicon.svg'} rel="icon" />
+            <title>Servicing Center</title>
+          </Head>
+          <ThemeProvider theme={lightTheme}>
+            <CssBaseline />
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: ['sm', 'xs'].includes(breakpoints)
+                  ? 'center'
+                  : 'right',
+              }}
+              Components={{
+                success: StyledNotification,
+                error: StyledNotification,
+                default: StyledNotification,
+                info: StyledNotification,
+                warning: StyledNotification,
+              }}
+              maxSnack={3}
+            >
+              <Component {...pageProps} />
+            </SnackbarProvider>
+          </ThemeProvider>
+        </CacheProvider>
+      </Provider>
+      <Script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbKnoaYuPycOQD4uQdPrc1nESFEVRH5-g&libraries=places,streetView,maps"
+        type="text/javascript"
+      />
+    </>
   );
 }

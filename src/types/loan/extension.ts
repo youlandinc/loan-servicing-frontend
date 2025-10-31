@@ -1,5 +1,6 @@
 import {
   ExtensionPaidTypeEnum,
+  LoanAnswerEnum,
   MaturityDateTypeEnum,
   PipelineStatusEnum,
 } from '@/types/enum';
@@ -19,33 +20,56 @@ export type ExtensionDocItem = {
   // "paidMode": "UPFRONT",
   createdTime: string;
   createdBy: string;
+  extensionNumber: number;
+  propertyFullAddress: string;
+  downloadId: number;
 };
 
 export interface IExtensionInfo {
-  downloadId: number | null;
-  loanId: number;
-  systemLoanNumber: string;
+  address: string;
+  aptNumber: string;
+  borrowerName: string;
+  changeInterestRate: number;
+  city: string;
+  confirmAgreements: ExtensionDocItem[];
+  currentBalance: number;
+  currentMaturityDate: string;
   defaultRate: number;
-  maturityDate: string;
-  totalLoanAmount: number;
+  executionDate: string;
+  extendMonth: MaturityDateTypeEnum;
+  extensionFee: number;
+  extensionNumber: number;
+  genAgreement: ExtensionDocItem;
+  interestRate: number;
+  isChangeInterestRate: LoanAnswerEnum;
+  loanId: number;
+  paymentTiming: ExtensionPaidTypeEnum;
+  promissoryNoteDate: string;
   propertyFullAddress: string;
   repaymentStatusEnum: PipelineStatusEnum;
-  currentInterestRate: number;
-  createdTime: string | null;
-  paidMode: ExtensionPaidTypeEnum | null;
-  extensionFee: number | null;
-  executionDate: string | null;
-  confirmAgreements: ExtensionDocItem[];
-  genAgreement: ExtensionDocItem;
+  state: string;
+  systemLoanNumber: string;
+  totalLoanAmount: number;
+  zipCode: string;
 }
 
 export interface IGetExtensionPdfParam {
   loanId: number;
   extensionFee: number;
-  extensionFeeAmount: number;
-  changeInterestRate: number;
+  extensionFeeAmount?: number;
+  changeInterestRate?: number;
   executionDate: string;
-  maturityDate: string;
+  maturityDate?: string;
   extendMonth: MaturityDateTypeEnum;
-  paidMode: ExtensionPaidTypeEnum;
+  paidMode?: ExtensionPaidTypeEnum;
+  paymentTiming?: ExtensionPaidTypeEnum;
+  isChangeInterestRate?: LoanAnswerEnum;
+  borrowerName?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  aptNumber?: string;
+  zipCode?: string;
+  promissoryNoteDate?: string;
+  confirm?: string;
 }

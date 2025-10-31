@@ -3,6 +3,7 @@ import {
   DelinquentTimeRangeEnum,
   EstFICOScoreEnum,
   ExtensionPaidTypeEnum,
+  LoanAnswerEnum,
   LoanDetailsPurposeEnum,
   LoanFicoScoreEnum,
   LoanStatus,
@@ -90,7 +91,7 @@ export const PIPELINE_STATUS: Option[] = [
     value: PipelineStatusEnum.PERFORMING,
   },
   {
-    label: 'Delinquency',
+    label: 'Delinquent',
     key: PipelineStatusEnum.DELINQUENCY,
     value: PipelineStatusEnum.DELINQUENCY,
   },
@@ -329,16 +330,33 @@ export const PropertyTypeOpt: Option[] = [
   },
 ];
 
+export const MATURITY_DATE_LABEL: Record<MaturityDateTypeEnum, string> = {
+  [MaturityDateTypeEnum.EXTEND_3]: 'Extend by 3 months',
+  [MaturityDateTypeEnum.EXTEND_6]: 'Extend by 6 months',
+  [MaturityDateTypeEnum.EXTEND_9]: 'Extend by 9 months',
+  [MaturityDateTypeEnum.EXTEND_12]: 'Extend by 12 months',
+};
+
 export const MATURITY_DATE: Option[] = [
   {
     key: MaturityDateTypeEnum.EXTEND_3,
-    label: 'Extend by 3 months',
+    label: MATURITY_DATE_LABEL[MaturityDateTypeEnum.EXTEND_3],
     value: MaturityDateTypeEnum.EXTEND_3,
   },
   {
     key: MaturityDateTypeEnum.EXTEND_6,
-    label: 'Extend by 6 months',
+    label: MATURITY_DATE_LABEL[MaturityDateTypeEnum.EXTEND_6],
     value: MaturityDateTypeEnum.EXTEND_6,
+  },
+  {
+    key: MaturityDateTypeEnum.EXTEND_9,
+    label: MATURITY_DATE_LABEL[MaturityDateTypeEnum.EXTEND_9],
+    value: MaturityDateTypeEnum.EXTEND_9,
+  },
+  {
+    key: MaturityDateTypeEnum.EXTEND_12,
+    label: MATURITY_DATE_LABEL[MaturityDateTypeEnum.EXTEND_12],
+    value: MaturityDateTypeEnum.EXTEND_12,
   },
 ];
 
@@ -411,6 +429,11 @@ export const ExtensionPaidTypeOpt: Option[] = [
   },
 ];
 
+export const ExtensionPaidTypeOptToExtensionFee = {
+  [ExtensionPaidTypeEnum.Upfront]: 0.5,
+  [ExtensionPaidTypeEnum.Deferred]: 1,
+};
+
 export const APPLICATION_FICO_SCORE: Option[] = [
   {
     label: 'FICO not available',
@@ -465,4 +488,17 @@ export const PipelineExportType = [
   //   key: PipelineExportTypeEnum.MASTER_LOAN_TAPE,
   //   value: PipelineExportTypeEnum.MASTER_LOAN_TAPE,
   // },
+];
+
+export const YES_NO: Option[] = [
+  {
+    label: 'Yes',
+    key: LoanAnswerEnum.yes,
+    value: LoanAnswerEnum.yes,
+  },
+  {
+    label: 'No',
+    key: LoanAnswerEnum.no,
+    value: LoanAnswerEnum.no,
+  },
 ];

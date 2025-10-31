@@ -1,11 +1,13 @@
 import { FC, useMemo, useState } from 'react';
-import { CommentItemData } from '@/types/loan/overview';
+
 import { Avatar, Icon, Stack, Typography } from '@mui/material';
+
 import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
-import { utils } from '@/utils';
 import { useSwitch } from '@/hooks';
+import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -18,8 +20,7 @@ import {
   _updateOverviewComment,
 } from '@/request/loan/overview';
 import { HttpError } from '@/types/common';
-
-import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
+import { CommentItemData } from '@/types/loan/overview';
 
 export const LoanOverviewComment: FC<
   CommentItemData & {
@@ -143,7 +144,7 @@ export const LoanOverviewComment: FC<
       </Stack>
       <Stack pl={4}>
         <StyledTextFieldInput
-          autoFocus={true}
+          autoFocus
           disabled={disabled}
           inputProps={{
             maxLength: 255,

@@ -1,27 +1,29 @@
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { Stack, Switch, Typography } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import React, { FC, useEffect, useState } from 'react';
+
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { Stack, Switch, Typography } from '@mui/material';
+
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from '@hello-pangea/dnd';
+import { enqueueSnackbar } from 'notistack';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
+
+import { IOrderColumnsItem } from '@/models/gridModel';
 
 import {
   StyledButton,
   StyledDialog,
   StyledDialogProps,
 } from '@/components/atoms';
-import { IOrderColumnsItem } from '@/models/gridModel';
 
 import { _setOrderedColumns } from '@/request/common';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-
-type ColumnItem = /*GridColDef &*/ IOrderColumnsItem;
+type ColumnItem = /* GridColDef & */ IOrderColumnsItem;
 
 type ChangeOrderOfColumnsDialogProps = StyledDialogProps & {
   columns: ColumnItem[];
@@ -207,7 +209,7 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
             color="primary"
             loading={state.loading}
             onClick={async () => {
-              /*const result = items.map((item, index) => {
+              /* const result = items.map((item, index) => {
                 return {
                   field: item.field,
                   headerName: item.headerName,
@@ -215,7 +217,7 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
                   visibility: item.visibility,
                   sort: index,
                 };
-              });*/
+              }); */
               // save request
               await setLosPipelineColumns();
             }}
@@ -241,6 +243,6 @@ export const ColumnsOrderDialog: FC<ChangeOrderOfColumnsDialogProps> = ({
         },
       }}
       {...rest}
-    ></StyledDialog>
+    />
   );
 };

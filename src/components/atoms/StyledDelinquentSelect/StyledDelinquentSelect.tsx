@@ -1,18 +1,22 @@
-import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
-import { enqueueSnackbar } from 'notistack';
 import React, { FC, useState } from 'react';
-import useSWR from 'swr';
-
-import { StyledButton, StyledSelect } from '@/components/atoms';
-import { DelinquentTimeRangeOpt } from '@/constant';
-
-import { useSwitch } from '@/hooks';
-import { useMst } from '@/models/Root';
-import { _getDelinquentRangeOpt } from '@/request/portfolio/delinquen';
-import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+
+import { enqueueSnackbar } from 'notistack';
+import useSWR from 'swr';
+
+import { useMst } from '@/models/Root';
+
+import { DelinquentTimeRangeOpt } from '@/constant';
+import { useSwitch } from '@/hooks';
+
+import { StyledButton, StyledSelect } from '@/components/atoms';
+
+import { _getDelinquentRangeOpt } from '@/request/portfolio/delinquen';
+import { DelinquentTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 interface StyledDelinquentSelectProps {
   sx?: SxProps;
@@ -69,7 +73,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
         });
       },
       [],
-    );*/
+    ); */
 
     const { data, isLoading } = useSWR(
       portfolioListType === PortfolioGridTypeEnum.DELINQUENT
@@ -140,7 +144,7 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
           '',
         ),
       ],
-    );*/
+    ); */
 
     return (
       <StyledButton
@@ -220,10 +224,10 @@ export const StyledDelinquentSelect: FC<StyledDelinquentSelectProps> = observer(
           onOpen={async (e) => {
             e.stopPropagation();
             if (portfolioListType === PortfolioGridTypeEnum.DELINQUENT) {
-              /*await getDelinquentRangeOpt(
+              /* await getDelinquentRangeOpt(
                 delinquentGridModel.queryModel.searchCondition
                   .repaymentStatusList as unknown as string[],
-              );*/
+              ); */
               open();
             }
           }}

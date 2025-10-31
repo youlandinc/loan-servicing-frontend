@@ -1,4 +1,7 @@
 import { FC, ReactNode, useMemo, useState } from 'react';
+
+import { useRouter } from 'next/router';
+
 import {
   Avatar,
   Icon,
@@ -7,11 +10,27 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
+
 import { useMst } from '@/models/Root';
 
+import { useSwitch } from '@/hooks';
+
+import { StyledButton, StyledDialog } from '@/components/atoms';
+
+import LOGO_SIGN_OUT from './assets/logo_auth_out.svg';
+import LOGO_SETTING from './assets/logo_auth_setting.svg';
+import LOGO_HEADER_SERVING from './assets/logo_header_serving.svg';
+import LOGO_HEADER_SETTING from './assets/logo_header_setting.svg';
+import LOGO_PRODUCT_BOX from './assets/logo_product_box.svg';
+import LOGO_PRODUCT_CUSTOMER from './assets/logo_product_customer.svg';
+import LOGO_PRODUCT_DOC from './assets/logo_product_doc.svg';
+import LOGO_PRODUCT_HOME from './assets/logo_product_home.svg';
+import LOGO_PRODUCT_LOS from './assets/logo_product_los.svg';
+import LOGO_PRODUCT_POS from './assets/logo_product_pos.svg';
+import LOGO_PRODUCT_PRICE from './assets/logo_product_price.svg';
+import LOGO_PRODUCT_SERVING from './assets/logo_product_serving.svg';
 import {
   LAYOUT_HEADER_TAB,
   LayoutProductTypeEnums,
@@ -23,28 +42,11 @@ import {
   URL_PRICING,
   URL_SETTINGS,
 } from './index';
-import { useSwitch } from '@/hooks';
 
-import { StyledButton, StyledDialog } from '@/components/atoms';
-
-import LOGO_PRODUCT_BOX from './assets/logo_product_box.svg';
-import LOGO_PRODUCT_HOME from './assets/logo_product_home.svg';
-import LOGO_PRODUCT_POS from './assets/logo_product_pos.svg';
-import LOGO_PRODUCT_LOS from './assets/logo_product_los.svg';
-import LOGO_PRODUCT_DOC from './assets/logo_product_doc.svg';
-import LOGO_PRODUCT_PRICE from './assets/logo_product_price.svg';
-import LOGO_PRODUCT_SERVING from './assets/logo_product_serving.svg';
-import LOGO_PRODUCT_CUSTOMER from './assets/logo_product_customer.svg';
-
-//import LOGO_HEADER_POS from './assets/logo_header_pos.svg';
-//import LOGO_HEADER_LOS from './assets/logo_header_los.svg';
-//import LOGO_HEADER_DOC from './assets/logo_header_doc.svg';
-//import LOGO_HEADER_PRICE from './assets/logo_header_price.svg';
-import LOGO_HEADER_SERVING from './assets/logo_header_serving.svg';
-import LOGO_HEADER_SETTING from './assets/logo_header_setting.svg';
-
-import LOGO_SETTING from './assets/logo_auth_setting.svg';
-import LOGO_SIGN_OUT from './assets/logo_auth_out.svg';
+// import LOGO_HEADER_POS from './assets/logo_header_pos.svg';
+// import LOGO_HEADER_LOS from './assets/logo_header_los.svg';
+// import LOGO_HEADER_DOC from './assets/logo_header_doc.svg';
+// import LOGO_HEADER_PRICE from './assets/logo_header_price.svg';
 
 export interface LayoutHeaderProps {
   isHomepage: boolean;
@@ -220,7 +222,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
                 },
               }}
             />
-            {/*according to different product replace counterpart icon*/}
+            {/* according to different product replace counterpart icon */}
             <Icon
               component={isHomepage ? LOGO_HEADER_SETTING : LOGO_HEADER_SERVING}
               sx={{ height: '24px', width: 'auto' }}
@@ -374,7 +376,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
           </Stack>
         </Stack>
 
-        {/*product box*/}
+        {/* product box */}
         <Popover
           anchorEl={anchorElProduct}
           anchorOrigin={{
@@ -463,14 +465,14 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
           </Stack>
         </Popover>
 
-        {/*user setting*/}
+        {/* user setting */}
         <Popover
           anchorEl={anchorElUser}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          //anchorReference={'anchorEl'}
+          // anchorReference={'anchorEl'}
           id={'LAYOUT_HEADER_USER_POPOVER'}
           onClose={() => setAnchorElUser(null)}
           open={Boolean(anchorElUser)}
@@ -525,7 +527,7 @@ export const StyledLayoutHeader: FC<LayoutHeaderProps> = observer(
               Sign out of current account?
             </Typography>
           }
-          disableEscapeKeyDown={true}
+          disableEscapeKeyDown
           footer={
             <Stack flexDirection={'row'} gap={1.5}>
               <StyledButton

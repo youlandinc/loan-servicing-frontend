@@ -1,5 +1,12 @@
-import { IconButton } from '@mui/material';
 import { FC, useState } from 'react';
+
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
+import { IconButton } from '@mui/material';
+
+import { IOrderColumnsItem } from '@/models/gridModel';
+
+import { useSwitch } from '@/hooks';
 
 import {
   ActionMenuProps,
@@ -7,12 +14,7 @@ import {
   StyledActionsMenu,
 } from '@/components/atoms';
 
-import { useSwitch } from '@/hooks';
-import { IOrderColumnsItem } from '@/models/gridModel';
 import { PortfolioGridTypeEnum } from '@/types/enum';
-
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 
 interface GridMoreIconButtonProps {
   columns: IOrderColumnsItem[];

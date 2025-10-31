@@ -1,8 +1,8 @@
 import { cast, detach, SnapshotOut, types } from 'mobx-state-tree';
 
-import { ColumnPiningDirectionEnum } from '@/types/enum';
-
 import { allLoansGridQueryModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
+import { ColumnPiningDirectionEnum } from '@/types/enum';
 
 export const orderColumnsItem = types.model({
   columnWidth: types.maybeNull(types.number),

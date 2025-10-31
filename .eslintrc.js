@@ -82,6 +82,95 @@ module.exports = {
     'no-void': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    'prefer-template': 'error',
+    'spaced-comment': ['error', 'always', { block: { balanced: true } }],
+    eqeqeq: 'warn',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling', 'index'],
+          'object',
+          'type',
+          'unknown',
+        ],
+        pathGroups: [
+          {
+            pattern: '{react,react-dom,react/**}',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '{next,next/**}',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@mui/**',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '{mobx-react-lite,mobx-state-tree}',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@/models/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: '@/components/**',
+            group: 'parent',
+            position: 'before',
+          },
+          {
+            pattern: '{@/request,@/types,@/request/**,@/types/**}',
+            group: 'parent',
+            position: 'before',
+          },
+          // Fuzzy matches are placed last
+          {
+            pattern: '@/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: '*/**/*.css',
+            group: 'type',
+            position: 'after',
+          },
+        ],
+        pathGroupsExcludedImportTypes: [],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
+    'no-restricted-syntax': [
+      'warn',
+      {
+        selector: 'ForInStatement',
+        message:
+          'for...in loops are not allowed. Use Object.keys() or Object.entries() instead.',
+      },
+      {
+        selector: 'ForOfStatement',
+        message:
+          'for...of loops are not allowed. Use .forEach() or .map() instead.',
+      },
+    ],
+    'react/jsx-boolean-value': 'error',
+    'object-shorthand': 'error',
+    'react/self-closing-comp': 'error',
+    'react/no-unused-prop-types': 'warn',
+    'import/newline-after-import': 'error',
   },
   settings: {
     react: {

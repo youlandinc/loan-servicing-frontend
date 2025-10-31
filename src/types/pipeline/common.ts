@@ -1,5 +1,6 @@
 import { IExpandedItem, IOrderColumnsItem } from '@/models/gridModel';
 import { IAllLoansQueryParam } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
 import { PortfolioGridTypeEnum } from '@/types/enum';
 
 type CommonGridConfig = {

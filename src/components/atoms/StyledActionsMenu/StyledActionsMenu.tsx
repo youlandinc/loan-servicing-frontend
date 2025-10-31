@@ -1,3 +1,5 @@
+import React, { FC, ReactNode } from 'react';
+
 import {
   Icon,
   Menu,
@@ -7,7 +9,6 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
-import React, { FC, ReactNode } from 'react';
 
 export interface ActionMenuProps {
   label: ReactNode;

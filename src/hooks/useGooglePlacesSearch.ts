@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+
 import throttle from 'lodash/throttle';
 
 const autocompleteService: {
@@ -98,9 +99,9 @@ export const useGooglePlacesSearch = (
           let newOptions: google.maps.places.AutocompletePrediction[] = [];
 
           // This will push the selected item into options , but autoComplete filterSelectedOptions props will hide the selected options from the list box.
-          //if (autoCompleteValue) {
+          // if (autoCompleteValue) {
           //  newOptions = [autoCompleteValue];
-          //}
+          // }
 
           if (results) {
             newOptions = [...newOptions, ...results];

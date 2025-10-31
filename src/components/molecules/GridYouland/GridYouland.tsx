@@ -1,20 +1,20 @@
 import React, { FC, useMemo, useState } from 'react';
+
 import { Stack, Typography } from '@mui/material';
-import { useAsync, useAsyncFn, useDebounce } from 'react-use';
+
+import { observer } from 'mobx-react-lite';
+
 import {
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
 import { enqueueSnackbar } from 'notistack';
+import { useAsync, useAsyncFn, useDebounce } from 'react-use';
 import useSWR from 'swr';
 
-import { observer } from 'mobx-react-lite';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
-import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
-
-import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
 import {
   ColumnsHeaderMenus,
   defaultColumnPining,
@@ -22,13 +22,16 @@ import {
   transferOrderColumnsKeys,
 } from '@/components/molecules';
 
+import { _fetchInvestorData, _fetchYoulandTableData } from '@/request';
+import { _setColumnPining, _setColumnWidth } from '@/request/common';
 import {
   SetColumnWidthParam,
   UpdateColumnPiningParamType,
 } from '@/types/common';
-import { _setColumnPining, _setColumnWidth } from '@/request/common';
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { TableTypeEnum } from '@/types/pipeline/youland';
+
+import { GridYoulandFooter, YOULAND_COLUMNS } from './index';
 
 const defaultSort = [
   {
@@ -363,7 +366,7 @@ export const GridYouland: FC = observer(() => {
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.YOULAND,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -420,7 +423,7 @@ export const GridYouland: FC = observer(() => {
         handleSort={() => {
           queryModel.updateSort([
             {
-              property: headerColumnId, //.id as string,
+              property: headerColumnId, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: headerTitle as string,

@@ -1,13 +1,16 @@
 import { FC } from 'react';
+
 import { Box, Typography, TypographyProps } from '@mui/material';
 
+import { PIPELINE_STATUS } from '@/constant';
 import {
   allLoansStatusBgcolor,
   allLoansStatusColor,
 } from '@/styles/allLoansGridStyles';
-import { PipelineStatusEnum } from '@/types/enum';
-import { PIPELINE_STATUS } from '@/constant';
 import { utils } from '@/utils';
+
+import { PipelineStatusEnum } from '@/types/enum';
+
 interface StyledLoanStatusProps extends TypographyProps {
   status: PipelineStatusEnum | string;
 }

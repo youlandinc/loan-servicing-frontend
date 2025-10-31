@@ -1,11 +1,8 @@
-import { ColumnsHeaderMenus } from '@/components/molecules';
-
-import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
-import { SetColumnWidthParam } from '@/types/common';
-import { PortfolioGridTypeEnum } from '@/types/enum';
+import React, { CSSProperties, FC, useEffect, useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+
 import {
   MRT_Column,
   MRT_TableContainer,
@@ -13,8 +10,13 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { enqueueSnackbar } from 'notistack';
-import React, { CSSProperties, FC, useEffect, useState } from 'react';
 import { useAsyncFn, useDebounce } from 'react-use';
+
+import { ColumnsHeaderMenus } from '@/components/molecules';
+
+import { _setColumnWidth, _setGroupExpanded } from '@/request/common';
+import { SetColumnWidthParam } from '@/types/common';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 type GroupLoansProps = MRT_TableOptions<any> & {
   loading?: boolean;
@@ -26,7 +28,7 @@ type GroupLoansProps = MRT_TableOptions<any> & {
   gridType: PortfolioGridTypeEnum;
   expandedData?: Record<string, boolean>;
   handleSort?: (param: {
-    property: string; //.id as string,
+    property: string; // .id as string,
     label: string;
   }) => void;
 };
@@ -77,12 +79,12 @@ export const GroupLoans: FC<GroupLoansProps> = ({
     columns,
     data,
     rowCount,
-    enableExpandAll: true, //hide expand all double arrow in column header
+    enableExpandAll: true, // hide expand all double arrow in column header
     enableExpanding: true,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
+    paginateExpandedRows: true, // When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
     enableTopToolbar: false,
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
     enableColumnOrdering: false,
     enableSorting: false,
     enableColumnDragging: false,
@@ -109,10 +111,10 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         return row.groupById;
       }
       return row.loanId;
-    }, //default
+    }, // default
     getSubRows: (row) => row.servicingLoans,
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    rowVirtualizerOptions: { overscan: 5 }, // optionally customize the row virtualizer
+    columnVirtualizerOptions: { overscan: 5 }, // optionally customize the column virtualizer
     muiExpandButtonProps: () => ({
       sx: {
         width: 20,
@@ -319,7 +321,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         title: '',
         onClick: () => {
           props.table.toggleAllRowsExpanded();
-          //haneleExpandAllClick();
+          // haneleExpandAllClick();
           // set(props.table.toggleAllRowsExpanded, !props.table.getIsAllRowsExpanded());
         },
       };
@@ -333,7 +335,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: gridType,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -390,7 +392,7 @@ export const GroupLoans: FC<GroupLoansProps> = ({
         anchorEl={anchorEl}
         handleSort={() => {
           handleSort?.({
-            property: headerColumnId, //.id as string,
+            property: headerColumnId, // .id as string,
             label: headerTitle as string,
           });
         }}

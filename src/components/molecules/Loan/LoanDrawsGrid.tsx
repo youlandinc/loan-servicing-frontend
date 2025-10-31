@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
@@ -168,7 +169,7 @@ export const LoanDrawsGrid: FC = () => {
   const lastChildIndex = columns.length;
   return (
     <DataGrid
-      autoHeight={true}
+      autoHeight
       columnHeaderHeight={40}
       columns={columns}
       disableColumnFilter
@@ -177,7 +178,7 @@ export const LoanDrawsGrid: FC = () => {
       disableDensitySelector
       disableRowSelectionOnClick
       getRowId={(row) => row.id}
-      hideFooter={true}
+      hideFooter
       pagination
       rowHeight={40}
       rows={mockData}
@@ -187,8 +188,8 @@ export const LoanDrawsGrid: FC = () => {
             <Typography variant={'subtitle1'}>Funding draw history</Typography>
           </Stack>
         ),
-        //footer: () => <Stack pl={3}>123</Stack>,
-        //pagination: PortfolioGridPagination,
+        // footer: () => <Stack pl={3}>123</Stack>,
+        // pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

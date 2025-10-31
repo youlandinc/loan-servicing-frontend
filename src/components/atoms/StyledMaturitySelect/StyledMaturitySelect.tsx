@@ -1,17 +1,21 @@
-import { StyledButton, StyledSelect } from '@/components/atoms';
-import { MaturityTypeOpt } from '@/constant';
-
-import { useSwitch } from '@/hooks';
-import { useMst } from '@/models/Root';
-import { _getMaturityRangeOpt } from '@/request/portfolio/maturity';
-import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
-
-import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import useSWR from 'swr';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { CircularProgress, Stack, SxProps, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+
+import useSWR from 'swr';
+
+import { useMst } from '@/models/Root';
+
+import { MaturityTypeOpt } from '@/constant';
+import { useSwitch } from '@/hooks';
+
+import { StyledButton, StyledSelect } from '@/components/atoms';
+
+import { _getMaturityRangeOpt } from '@/request/portfolio/maturity';
+import { MaturityTimeRangeEnum, PortfolioGridTypeEnum } from '@/types/enum';
 
 interface StyledMaturitySelectProps {
   sx?: SxProps;
@@ -29,13 +33,13 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
 
     const { visible, open, close } = useSwitch();
 
-    /*const [maturityDays, setMaturityDays] = useState<MaturityTimeRangeEnum>(
+    /* const [maturityDays, setMaturityDays] = useState<MaturityTimeRangeEnum>(
       MaturityTimeRangeEnum.ALREADY_END,
     );
 
     if (value && value !== maturityDays) {
       setMaturityDays(value);
-    }*/
+    } */
 
     /* const [state, getMaturityRangeOpt] = useAsyncFn(
       async (status: string[]) => {
@@ -69,7 +73,7 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
         });
       },
       [],
-    );*/
+    ); */
 
     const { data, isLoading } = useSWR(
       portfolioListType === PortfolioGridTypeEnum.MATURITY
@@ -211,10 +215,10 @@ export const StyledMaturitySelect: FC<StyledMaturitySelectProps> = observer(
           }}
           onOpen={async () => {
             if (portfolioListType === PortfolioGridTypeEnum.MATURITY) {
-              /*await getMaturityRangeOpt(
+              /* await getMaturityRangeOpt(
                 maturityGridModel.queryModel.searchCondition
                   .repaymentStatusList as unknown as string[],
-              );*/
+              ); */
               open();
             }
           }}

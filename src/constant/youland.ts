@@ -1,6 +1,6 @@
-import { GridTradeStatusEnum } from '@/types/pipeline/youland';
 import { PipelineStatusEnum } from '@/types/enum';
 import { PaymentMethod } from '@/types/loan/payments';
+import { GridTradeStatusEnum } from '@/types/pipeline/youland';
 
 export const TRADE_STATUS_OPTIONS: Option[] = [
   {

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Box, Typography, TypographyProps } from '@mui/material';
 
 interface StyledDaysDelinquentProps extends TypographyProps {

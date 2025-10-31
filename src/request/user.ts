@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { post } from './axios';
+
 import { User } from '@/types/user';
+
+import { post } from './axios';
 
 export const _fetchUserInfoWithToken = (token: string | number) => {
   return axios({

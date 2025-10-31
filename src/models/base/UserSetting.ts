@@ -1,16 +1,16 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { enqueueSnackbar } from 'notistack';
 
-import { User } from '@/types/user';
-import { HttpError } from '@/types/common';
+import { enqueueSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
 
-import { LayoutProductTypeEnum, RoleTypeEnum } from '@/types/enum';
 import {
   _fetchUserDetailByAccountId,
   _fetchUserLicensedProduct,
 } from '@/request/user';
+import { HttpError } from '@/types/common';
+import { LayoutProductTypeEnum, RoleTypeEnum } from '@/types/enum';
+import { User } from '@/types/user';
 
 export const UserSetting = types
   .model({

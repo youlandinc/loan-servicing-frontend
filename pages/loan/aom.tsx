@@ -1,7 +1,8 @@
-import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 
 import { observer } from 'mobx-react-lite';
+
 import { ServicingSide, StyledLayout } from '@/components/molecules';
 
 const DynamicLoanAOM = dynamic(

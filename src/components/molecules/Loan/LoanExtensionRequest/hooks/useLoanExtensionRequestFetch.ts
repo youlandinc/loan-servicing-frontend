@@ -1,8 +1,13 @@
 import { MutableRefObject, useRef, useState } from 'react';
+
 import { useRouter } from 'next/router';
+
 import { AxiosResponse } from 'axios';
-import { useAsyncFn, useAsyncRetry } from 'react-use';
 import { enqueueSnackbar } from 'notistack';
+import { useAsyncFn, useAsyncRetry } from 'react-use';
+
+import { useRenderPdf } from '@/hooks';
+import { createFile } from '@/utils';
 
 import {
   _createExtensionPdf,
@@ -13,8 +18,6 @@ import {
   _viewExtensionPdf,
 } from '@/request';
 import { IExtensionInfo, IGetExtensionPdfParam } from '@/types/loan/extension';
-import { useRenderPdf } from '@/hooks';
-import { createFile } from '@/utils';
 
 interface IUseLoanExtensionRequestFetchProps {
   resetFilter: (res: AxiosResponse<IExtensionInfo, any>) => void;

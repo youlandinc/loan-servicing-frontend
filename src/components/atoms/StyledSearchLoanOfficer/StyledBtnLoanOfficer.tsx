@@ -1,5 +1,4 @@
-import { StyledButton } from '@/components/atoms';
-import { useSwitch } from '@/hooks';
+import React, { FC, useEffect, useState } from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -11,7 +10,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { FC, useEffect, useState } from 'react';
+
+import { useSwitch } from '@/hooks';
+
+import { StyledButton } from '@/components/atoms';
 
 type StyledBtnLoanOfficerProps = {
   autoCompleteLoading?: boolean;
@@ -132,7 +134,7 @@ export const StyledBtnLoanOfficer: FC<StyledBtnLoanOfficerProps> = ({
             p: 0,
           },
         }}
-        //fixed mui warning
+        // fixed mui warning
         value={value || ''}
       >
         {loanOfficersList.map((item) => (

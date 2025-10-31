@@ -1,7 +1,9 @@
-import { PipelineStatusEnum } from '@/types/enum';
+import { CSSProperties } from 'react';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import { CSSProperties } from 'react';
+
+import { PipelineStatusEnum } from '@/types/enum';
 
 export const defaultProps = {
   icons: {
@@ -92,7 +94,7 @@ export const defaultProps = {
       '&:hover': {
         bgcolor:
             pipelineMode === PipelineDisplayMode.LIST_MODE ? '#ececec' : 'none',
-      },*/
+      }, */
     },
   },
   muiTablePaperProps: {
@@ -176,7 +178,7 @@ export const defaultProps = {
                   },
           },
         };
-  },*/
+  }, */
 };
 
 export const listModeDefaultStyleProps = {
@@ -218,7 +220,7 @@ export const listModeDefaultStyleProps = {
                   },
           },
         };
-  },*/
+  }, */
 };
 
 export const allLoansStatusColor: Record<string, any> = {

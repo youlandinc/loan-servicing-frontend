@@ -1,19 +1,27 @@
 import { CSSProperties, FC, useCallback, useState } from 'react';
-import { Drawer, Icon, Stack, Tooltip, Typography } from '@mui/material';
+
+import { useRouter } from 'next/router';
+
 import { MoreHoriz } from '@mui/icons-material';
+import { Drawer, Icon, Stack, Tooltip, Typography } from '@mui/material';
+
+import { isValid } from 'date-fns';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
-import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
-import { isValid } from 'date-fns';
+import { useAsync } from 'react-use';
 
-import { utils } from '@/utils';
 import { AUTO_HIDE_DURATION, PAYMENT_METHODS_OPTIONS } from '@/constant';
+import { useSwitch } from '@/hooks';
 import { ellipsisStyle } from '@/styles';
+import LOGO_CLOSE from '@/svg/loan/payments/logo-close.svg';
+import LOGO_EDIT from '@/svg/loan/payments/logo-edit.svg';
+import LOGO_VIEW_ALL from '@/svg/loan/payments/logo-view-all.svg';
+import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -23,10 +31,8 @@ import {
   StyledSelect,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-
 import { GridActions, LoanPaymentsGridFooter } from '@/components/molecules';
 
-import { HttpError } from '@/types/common';
 import {
   _deletePaymentData,
   _fetchCurrentBill,
@@ -34,25 +40,20 @@ import {
   _fetchPaymentsHistory,
   _updateOrCreatePaymentData,
 } from '@/request/loan/payments';
+import { HttpError } from '@/types/common';
+import { LoanAnswerEnum } from '@/types/enum';
+import {
+  OverviewRepaymentTimeLine,
+  PaidStatusEnum,
+} from '@/types/loan/overview';
 import {
   AbutmentSources,
   PaymentHistoryItem,
   PaymentMethod,
   PaymentTypeEnum,
 } from '@/types/loan/payments';
-import { LoanAnswerEnum } from '@/types/enum';
-import { useSwitch } from '@/hooks';
 
-//import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
-import LOGO_CLOSE from '@/svg/loan/payments/logo-close.svg';
-import LOGO_EDIT from '@/svg/loan/payments/logo-edit.svg';
-import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
-import LOGO_VIEW_ALL from '@/svg/loan/payments/logo-view-all.svg';
-
-import {
-  OverviewRepaymentTimeLine,
-  PaidStatusEnum,
-} from '@/types/loan/overview';
+// import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 interface PaymentFormDataProps {
   id: string | number | undefined;
@@ -175,8 +176,8 @@ export const LoanPaymentsGrid: FC<{
         })`,
         totalPmt: data.accumulateTotalPmt,
         totalInterestReceived: data.accumulateTotalInterestReceived,
-        //defaultInterestReceived: data.accumulateDefaultInterestReceived,
-        //interestRateReceived: data.accumulateInterestRateReceived,
+        // defaultInterestReceived: data.accumulateDefaultInterestReceived,
+        // interestRateReceived: data.accumulateInterestRateReceived,
         principalReceived: data.accumulatePrincipalReceived,
         accruedLateCharges: data.accumulateAccruedLateCharges,
         waivedLateCharges: data.accumulateWaivedLateCharges,
@@ -395,19 +396,19 @@ export const LoanPaymentsGrid: FC<{
       cb,
     ),
     data: list,
-    //data: temp,
-    //rowCount: rowsTotal,
-    enableExpandAll: false, //hide expand all double arrow in column header
+    // data: temp,
+    // rowCount: rowsTotal,
+    enableExpandAll: false, // hide expand all double arrow in column header
     enableExpanding: false,
     enableSorting: false,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
+    paginateExpandedRows: true, // When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
     enableTopToolbar: false,
     enableGrouping: false,
 
     enableRowVirtualization: true,
 
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
     enableColumnOrdering: false,
     enableColumnDragging: false,
     enableColumnResizing: false,
@@ -428,9 +429,9 @@ export const LoanPaymentsGrid: FC<{
     initialState: {
       showProgressBars: false,
     },
-    getRowId: (row) => row.id, //default
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    getRowId: (row) => row.id, // default
+    rowVirtualizerOptions: { overscan: 5 }, // optionally customize the row virtualizer
+    columnVirtualizerOptions: { overscan: 5 }, // optionally customize the column virtualizer
 
     renderEmptyRowsFallback: () => {
       return (
@@ -615,34 +616,34 @@ export const LoanPaymentsGrid: FC<{
             >
               Add payment
             </StyledButton>
-            {/*<Stack*/}
-            {/*  alignItems={'center'}*/}
-            {/*  border={'1px solid'}*/}
-            {/*  borderColor={'#D2D6E1'}*/}
-            {/*  borderRadius={1}*/}
-            {/*  fontSize={14}*/}
-            {/*  justifyContent={'center'}*/}
-            {/*  onClick={() => {*/}
-            {/*    setDrawAction('addDraw');*/}
-            {/*    openDraw();*/}
-            {/*  }}*/}
-            {/*  px={2}*/}
-            {/*  py={1}*/}
-            {/*  sx={{*/}
-            {/*    border: '1px solid #D2D6E1',*/}
-            {/*    borderRadius: 2,*/}
-            {/*    cursor: 'pointer',*/}
-            {/*    fontSize: 14,*/}
-            {/*    fontWeight: 600,*/}
-            {/*    '&:hover': {*/}
-            {/*      borderColor: '#5B76BC',*/}
-            {/*      color: '#5B76BC',*/}
-            {/*      bgcolor: '#F0F4FF',*/}
-            {/*    },*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  Add draw*/}
-            {/*</Stack>*/}
+            {/* <Stack */}
+            {/*  alignItems={'center'} */}
+            {/*  border={'1px solid'} */}
+            {/*  borderColor={'#D2D6E1'} */}
+            {/*  borderRadius={1} */}
+            {/*  fontSize={14} */}
+            {/*  justifyContent={'center'} */}
+            {/*  onClick={() => { */}
+            {/*    setDrawAction('addDraw'); */}
+            {/*    openDraw(); */}
+            {/*  }} */}
+            {/*  px={2} */}
+            {/*  py={1} */}
+            {/*  sx={{ */}
+            {/*    border: '1px solid #D2D6E1', */}
+            {/*    borderRadius: 2, */}
+            {/*    cursor: 'pointer', */}
+            {/*    fontSize: 14, */}
+            {/*    fontWeight: 600, */}
+            {/*    '&:hover': { */}
+            {/*      borderColor: '#5B76BC', */}
+            {/*      color: '#5B76BC', */}
+            {/*      bgcolor: '#F0F4FF', */}
+            {/*    }, */}
+            {/*  }} */}
+            {/* > */}
+            {/*  Add draw */}
+            {/* </Stack> */}
           </Stack>
         )}
       </Stack>
@@ -864,7 +865,7 @@ export const LoanPaymentsGrid: FC<{
 
             <StyledTextFieldNumber
               decimalScale={0}
-              disabled={true}
+              disabled
               label={'Number of draws'}
               onValueChange={() => {
                 return;
@@ -909,7 +910,7 @@ export const LoanPaymentsGrid: FC<{
             />
 
             <StyledTextFieldNumber
-              disabled={true}
+              disabled
               label={'Net funding'}
               onValueChange={() => {
                 return;
@@ -1802,7 +1803,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                 }}
                 variant={'body2'}
               >
-                {/*todo:enum?*/}
+                {/* todo:enum? */}
                 {renderedCellValue}
               </Typography>
             </Tooltip>
@@ -1832,7 +1833,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
                 }}
                 variant={'body2'}
               >
-                {/*todo:enum?*/}
+                {/* todo:enum? */}
                 {renderedCellValue}
               </Typography>
             </Tooltip>
@@ -1867,7 +1868,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
         );
       },
     },
-    //{
+    // {
     //  accessorKey: 'defaultInterestReceived',
     //  header: 'Default interest received',
     //  size: 220,
@@ -1891,8 +1892,8 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
     //      </Tooltip>
     //    );
     //  },
-    //},
-    //{
+    // },
+    // {
     //  accessorKey: 'interestRateReceived',
     //  header: 'Interest rate received',
     //  size: 210,
@@ -1916,7 +1917,7 @@ const LOAN_PAYMENT_GRID_COLUMNS = (
     //      </Tooltip>
     //    );
     //  },
-    //},
+    // },
   ] as MRT_ColumnDef<any>[];
 
   return source.filter((item) =>

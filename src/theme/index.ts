@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 
 declare module 'notistack' {

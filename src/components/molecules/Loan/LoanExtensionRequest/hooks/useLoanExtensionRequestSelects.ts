@@ -1,12 +1,14 @@
 import { useCallback, useState } from 'react';
+
 import { AxiosResponse } from 'axios';
+
+import { Address, IAddress } from '@/models/common';
 
 import {
   ExtensionPaidTypeEnum,
   LoanAnswerEnum,
   MaturityDateTypeEnum,
 } from '@/types/enum';
-import { Address, IAddress } from '@/models/common';
 import { IExtensionInfo } from '@/types/loan/extension';
 
 // filter relevant configurations
@@ -65,9 +67,9 @@ export const useLoanExtensionRequestSelects = () => {
       setBorrowerName(borrowerName);
       address.injectServerData({
         address: resAddress,
-        aptNumber: aptNumber,
-        city: city,
-        state: state,
+        aptNumber,
+        city,
+        state,
         postcode: zipCode,
       });
       setPromissoryNoteDate(new Date(promissoryNoteDate));

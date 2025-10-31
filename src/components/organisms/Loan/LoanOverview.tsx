@@ -1,5 +1,4 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { useAsync } from 'react-use';
 
 import {
   Box,
@@ -10,25 +9,15 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+
 import { uniqueId } from 'lodash';
 import { usePopupState } from 'material-ui-popup-state/hooks';
-import { observer } from 'mobx-react-lite';
 import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
 
 // import { useMst } from '@/models/Root';
-import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
-import {
-  LoanOverviewCard,
-  LoanOverviewCardProps,
-  LoanOverviewComment,
-  LoanOverviewPayablesGrid,
-  LoanOverviewPayablesGridProps,
-  LoanOverviewTimeline,
-  LoanOverviewTimelineProps,
-  LoanPaymentsGrid,
-  ServicingSide,
-  StyledLayout,
-} from '@/components/molecules';
 import {
   APPLICATION_FICO_SCORE,
   AUTO_HIDE_DURATION,
@@ -37,11 +26,6 @@ import {
   LOAN_PURPOSE,
 } from '@/constant';
 import { useBreakpoints, useSwitch } from '@/hooks';
-import {
-  _addOverviewComment,
-  _fetchOverviewComments,
-  _fetchOverviewDetails,
-} from '@/request/loan/overview';
 import OVERVIEW_BORROWER_INFORMATION from '@/svg/loan/overview/overview-borrower-information.svg';
 import OVERVIEW_BROKER_INFORMATION from '@/svg/loan/overview/overview-broker-information.svg';
 import OVERVIEW_COMMENTS_ADD from '@/svg/loan/overview/overview-comments-add.svg';
@@ -55,7 +39,27 @@ import OVERVIEW_NEXT_DUE_DATE from '@/svg/loan/overview/overview-next-due-date.s
 import OVERVIEW_PAYOFF_DATE from '@/svg/loan/overview/overview-payoff-date.svg';
 import OVERVIEW_RESERVE_BALANCE from '@/svg/loan/overview/overview-reserve-balance.svg';
 import OVERVIEW_SUSPENSE_BALANCE from '@/svg/loan/overview/overview-suspense-balance.svg';
-// import OVERVIEW_COMMENTS_TOUCH_POINT from '@/svg/loan/overview/overview-comments-touch-point.svg';
+import { utils } from '@/utils';
+
+import { StyledButton, StyledHeaderAddressInfo } from '@/components/atoms';
+import {
+  LoanOverviewCard,
+  LoanOverviewCardProps,
+  LoanOverviewComment,
+  LoanOverviewPayablesGrid,
+  LoanOverviewPayablesGridProps,
+  LoanOverviewTimeline,
+  LoanOverviewTimelineProps,
+  LoanPaymentsGrid,
+  ServicingSide,
+  StyledLayout,
+} from '@/components/molecules';
+
+import {
+  _addOverviewComment,
+  _fetchOverviewComments,
+  _fetchOverviewDetails,
+} from '@/request/loan/overview';
 import { HttpError } from '@/types/common';
 import { PipelineStatusEnum } from '@/types/enum';
 import {
@@ -64,7 +68,6 @@ import {
   LoanProductCategoryEnum,
   LoanPurposeEnum,
 } from '@/types/loan/overview';
-import { utils } from '@/utils';
 
 const INITIAL: LoanOverviewCardProps = {
   header: '',

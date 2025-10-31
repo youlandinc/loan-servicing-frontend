@@ -2,12 +2,13 @@ import { FC } from 'react';
 
 import { Stack, Tooltip, Typography } from '@mui/material';
 
+import { utils } from '@/utils';
+
 import {
   LoanTimelineStatusEnum,
   OverviewRepaymentTimeLine,
   PaidStatusEnum,
 } from '@/types/loan/overview';
-import { utils } from '@/utils';
 
 export interface LoanOverviewTimelineProps {
   listData?: OverviewRepaymentTimeLine[];

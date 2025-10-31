@@ -1,7 +1,9 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
+
 import { enqueueSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
+
 import {
   _fetchUserDetailByAccountId,
   _fetchUserLicensedProduct,

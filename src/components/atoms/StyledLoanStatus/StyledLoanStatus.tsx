@@ -7,8 +7,9 @@ import {
   allLoansStatusBgcolor,
   allLoansStatusColor,
 } from '@/styles/allLoansGridStyles';
-import { PipelineStatusEnum } from '@/types/enum';
 import { utils } from '@/utils';
+
+import { PipelineStatusEnum } from '@/types/enum';
 
 interface StyledLoanStatusProps extends TypographyProps {
   status: PipelineStatusEnum | string;

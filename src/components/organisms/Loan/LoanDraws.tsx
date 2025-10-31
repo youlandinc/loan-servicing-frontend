@@ -8,6 +8,7 @@ import {
   ServicingSide,
   StyledLayout,
 } from '@/components/molecules';
+
 import { PipelineStatusEnum } from '@/types/enum';
 
 export const LoanDraws: FC = () => {

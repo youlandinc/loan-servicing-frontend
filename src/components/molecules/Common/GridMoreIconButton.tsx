@@ -4,13 +4,16 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 import { IconButton } from '@mui/material';
 
+import { IOrderColumnsItem } from '@/models/gridModel';
+
+import { useSwitch } from '@/hooks';
+
 import {
   ActionMenuProps,
   ColumnsOrderDialog,
   StyledActionsMenu,
 } from '@/components/atoms';
-import { useSwitch } from '@/hooks';
-import { IOrderColumnsItem } from '@/models/gridModel';
+
 import { PortfolioGridTypeEnum } from '@/types/enum';
 
 interface GridMoreIconButtonProps {

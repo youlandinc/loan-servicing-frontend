@@ -2,16 +2,19 @@ import { FC, useCallback, useEffect, useState } from 'react';
 
 import { LocationOnOutlined } from '@mui/icons-material';
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
-import parse from 'autosuggest-highlight/parse';
+
 import { observer } from 'mobx-react-lite';
+
+import parse from 'autosuggest-highlight/parse';
+
+import { OPTIONS_COMMON_STATE } from '@/constant';
+import { useGooglePlacesSearch } from '@/hooks';
+import { POSTypeOf } from '@/utils';
 
 import {
   StyledSelect,
   StyledTextFieldInput as StyledTextField,
 } from '@/components/atoms';
-import { OPTIONS_COMMON_STATE } from '@/constant';
-import { useGooglePlacesSearch } from '@/hooks';
-import { POSTypeOf } from '@/utils';
 
 import {
   PlaceType,

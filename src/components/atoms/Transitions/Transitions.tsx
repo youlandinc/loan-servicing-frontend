@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
+
 import { createUseStyles } from 'react-jss';
 
 import { TransitionsProps } from './index';

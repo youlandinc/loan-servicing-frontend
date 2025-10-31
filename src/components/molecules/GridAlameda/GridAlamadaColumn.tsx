@@ -2,9 +2,25 @@ import { ReactNode, useCallback, useState } from 'react';
 
 import { MoreHoriz } from '@mui/icons-material';
 import { Button, Stack, Tooltip, Typography } from '@mui/material';
+
 import { format, isValid } from 'date-fns';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useSnackbar } from 'notistack';
+
+import {
+  AUTO_HIDE_DURATION,
+  REPAYMENT_STATUS_OPTIONS,
+  TRADE_STATUS_BGCOLOR_PALETTE,
+  TRADE_STATUS_OPTIONS,
+} from '@/constant';
+import { useSwitch } from '@/hooks';
+import { ellipsisStyle } from '@/styles';
+import {
+  allLoansStatusBgcolor,
+  allLoansStatusColor,
+} from '@/styles/allLoansGridStyles';
+import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -18,26 +34,13 @@ import {
   GridDropDown,
   GridDropDownButton,
 } from '@/components/molecules';
-import {
-  AUTO_HIDE_DURATION,
-  REPAYMENT_STATUS_OPTIONS,
-  TRADE_STATUS_BGCOLOR_PALETTE,
-  TRADE_STATUS_OPTIONS,
-} from '@/constant';
-import { useSwitch } from '@/hooks';
+
 import { _deleteGridData, _updateTableData } from '@/request';
-import { ellipsisStyle } from '@/styles';
-import {
-  allLoansStatusBgcolor,
-  allLoansStatusColor,
-} from '@/styles/allLoansGridStyles';
-import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
 import { HttpError } from '@/types/common';
 import {
   GridTradeConfirmEnum,
   GridTradeStatusEnum,
 } from '@/types/pipeline/youland';
-import { utils } from '@/utils';
 
 export const ALAMEDA_COLUMNS = (
   cb?: () => Promise<any>,

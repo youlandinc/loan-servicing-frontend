@@ -1,8 +1,13 @@
 import { FC, useMemo } from 'react';
 
 import { Stack } from '@mui/material';
+
 import { observer } from 'mobx-react-lite';
+
 import useSWR from 'swr';
+
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+import { useMst } from '@/models/Root';
 
 import {
   AllLoansPagination,
@@ -12,8 +17,7 @@ import {
   transferFirstColumn,
   transferOrderColumnsKeys,
 } from '@/components/molecules';
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { useMst } from '@/models/Root';
+
 import { _getGroupByInvestor } from '@/request/portfolio/investor';
 // import { ellipsisStyle } from '@/styles';
 import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';

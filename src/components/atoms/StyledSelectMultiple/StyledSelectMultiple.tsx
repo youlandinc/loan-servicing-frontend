@@ -9,9 +9,10 @@ import {
   Select,
 } from '@mui/material';
 
-import { StyledCheckbox } from '@/components/atoms';
 import { useSessionStorageState } from '@/hooks';
 import { POSFindLabel, POSTypeOf } from '@/utils';
+
+import { StyledCheckbox } from '@/components/atoms';
 
 import { StyledSelectMultipleProps, StyledSelectMultipleStyle } from './index';
 

@@ -3,8 +3,9 @@ import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { useBreakpoints } from '@/hooks';
-import { GridAlamedaSummaryProps } from '@/types/pipeline/youland';
 import { utils } from '@/utils';
+
+import { GridAlamedaSummaryProps } from '@/types/pipeline/youland';
 
 interface GridCashFlowFooterProps {
   footerData: GridAlamedaSummaryProps;

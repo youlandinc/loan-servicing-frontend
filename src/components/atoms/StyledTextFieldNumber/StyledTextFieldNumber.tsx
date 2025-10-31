@@ -5,16 +5,18 @@ import {
   useEffect,
   useState,
 } from 'react';
+
+import { SxProps } from '@mui/material';
+
 import {
   NumberFormatValues,
   NumericFormat,
   NumericFormatProps,
 } from 'react-number-format';
 
-import { SxProps } from '@mui/material';
+import { utils } from '@/utils';
 
 import { StyledTextFieldInput } from '@/components/atoms';
-import { utils } from '@/utils';
 
 interface StyledTextFieldNumberProps {
   allowNegative?: boolean;

@@ -10,8 +10,9 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { GridRowsProp } from '@mui/x-data-grid/models/gridRows';
 // import { useRouter } from 'next/router';
 
-import { OverviewOutstandingPayAble } from '@/types/loan/overview';
 import { utils } from '@/utils';
+
+import { OverviewOutstandingPayAble } from '@/types/loan/overview';
 
 // import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 

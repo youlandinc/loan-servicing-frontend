@@ -3,11 +3,12 @@ import { FC } from 'react';
 import { Pagination, Stack, TablePagination, Typography } from '@mui/material';
 
 import { useBreakpoints } from '@/hooks';
+import { utils } from '@/utils';
+
 import {
   GridYoulandSummaryProps,
   ResponseGridYoulandTable,
 } from '@/types/pipeline/youland';
-import { utils } from '@/utils';
 
 interface GridYoulandFooterProps {
   footerData: GridYoulandSummaryProps;

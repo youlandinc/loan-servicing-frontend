@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from 'react';
+
 // import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
 
 import {
   CircularProgress,
@@ -11,7 +11,17 @@ import {
   styled,
   Typography,
 } from '@mui/material';
+
 import { observer } from 'mobx-react-lite';
+
+import { useAsync } from 'react-use';
+
+import LOAN_CARD_01 from '@/svg/loan/payments/payment_card_01.svg';
+import LOAN_CARD_02 from '@/svg/loan/payments/payment_card_02.svg';
+import LOAN_CARD_03 from '@/svg/loan/payments/payment_card_03.svg';
+import LOAN_CARD_04 from '@/svg/loan/payments/payment_card_04.svg';
+import LOAN_CARD_05 from '@/svg/loan/payments/payment_card_05.svg';
+import { utils } from '@/utils';
 
 import { StyledHeaderAddressInfo } from '@/components/atoms';
 import {
@@ -21,14 +31,9 @@ import {
   ServicingSide,
   StyledLayout,
 } from '@/components/molecules';
+
 import { _fetchPaymentsDetails } from '@/request/loan/payments';
-import LOAN_CARD_01 from '@/svg/loan/payments/payment_card_01.svg';
-import LOAN_CARD_02 from '@/svg/loan/payments/payment_card_02.svg';
-import LOAN_CARD_03 from '@/svg/loan/payments/payment_card_03.svg';
-import LOAN_CARD_04 from '@/svg/loan/payments/payment_card_04.svg';
-import LOAN_CARD_05 from '@/svg/loan/payments/payment_card_05.svg';
 import { PipelineStatusEnum } from '@/types/enum';
-import { utils } from '@/utils';
 
 export const LoanPayments: FC = observer(() => {
   // const router = useRouter();

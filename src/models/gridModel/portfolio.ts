@@ -1,9 +1,11 @@
 import { cast, types } from 'mobx-state-tree';
 
 import { allLoansModel } from '@/models/gridModel/allLoansModel/allLoansModel';
+
+import { utils } from '@/utils';
+
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { IAllGridConfig } from '@/types/pipeline';
-import { utils } from '@/utils';
 
 export const portfolioModel = types
   .model({

@@ -1,16 +1,28 @@
 import { CSSProperties, FC, useCallback, useState } from 'react';
-import { useAsync } from 'react-use';
+
+import { useRouter } from 'next/router';
 
 import { MoreHoriz } from '@mui/icons-material';
 import { Drawer, Icon, Stack, Tooltip, Typography } from '@mui/material';
+
 import { isValid } from 'date-fns';
 import {
   MRT_ColumnDef,
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
+import { AUTO_HIDE_DURATION, PAYMENT_METHODS_OPTIONS } from '@/constant';
+import { useSwitch } from '@/hooks';
+import { ellipsisStyle } from '@/styles';
+// import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
+import LOGO_CLOSE from '@/svg/loan/payments/logo-close.svg';
+import LOGO_EDIT from '@/svg/loan/payments/logo-edit.svg';
+import LOGO_VIEW_ALL from '@/svg/loan/payments/logo-view-all.svg';
+import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -21,8 +33,7 @@ import {
   StyledTextFieldNumber,
 } from '@/components/atoms';
 import { GridActions, LoanPaymentsGridFooter } from '@/components/molecules';
-import { AUTO_HIDE_DURATION, PAYMENT_METHODS_OPTIONS } from '@/constant';
-import { useSwitch } from '@/hooks';
+
 import {
   _deletePaymentData,
   _fetchCurrentBill,
@@ -30,12 +41,6 @@ import {
   _fetchPaymentsHistory,
   _updateOrCreatePaymentData,
 } from '@/request/loan/payments';
-import { ellipsisStyle } from '@/styles';
-// import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
-import LOGO_CLOSE from '@/svg/loan/payments/logo-close.svg';
-import LOGO_EDIT from '@/svg/loan/payments/logo-edit.svg';
-import LOGO_VIEW_ALL from '@/svg/loan/payments/logo-view-all.svg';
-import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
 import { HttpError } from '@/types/common';
 import { LoanAnswerEnum } from '@/types/enum';
 import {
@@ -48,7 +53,6 @@ import {
   PaymentMethod,
   PaymentTypeEnum,
 } from '@/types/loan/payments';
-import { utils } from '@/utils';
 
 interface PaymentFormDataProps {
   id: string | number | undefined;

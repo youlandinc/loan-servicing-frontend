@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { useAsync } from 'react-use';
 
-import { Box, CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { StyledHeaderAddressInfo, StyledTabs } from '@/components/atoms';
-import { LoanDetailsCard } from '@/components/molecules';
+import { Box, CircularProgress, Stack } from '@mui/material';
+
+import { useAsync } from 'react-use';
+
 import {
   BorrowerTypeOpt,
   EstFICOScoreOpt,
@@ -13,6 +13,11 @@ import {
   ProductCategoryOpt,
   PropertyTypeOpt,
 } from '@/constant';
+import { utils } from '@/utils';
+
+import { StyledHeaderAddressInfo, StyledTabs } from '@/components/atoms';
+import { LoanDetailsCard } from '@/components/molecules';
+
 import { _getLoanDetails } from '@/request';
 import {
   BorrowerTypeEnum,
@@ -20,7 +25,6 @@ import {
   ProductCategoryEnum,
 } from '@/types/enum';
 import { IBorrowerInfo } from '@/types/loan/details';
-import { utils } from '@/utils';
 
 const wrapper = (val: unknown, formatFn: (val: any) => unknown) => {
   if (val === '' || val === null || val === undefined) {

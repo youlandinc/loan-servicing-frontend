@@ -2,6 +2,7 @@ import { forwardRef, useCallback, useMemo } from 'react';
 
 import { Close } from '@mui/icons-material';
 import { Icon, Stack, Typography } from '@mui/material';
+
 import { SnackbarContent, useSnackbar } from 'notistack';
 
 import NOTIFICATION_ERROR from './notification_error.svg';

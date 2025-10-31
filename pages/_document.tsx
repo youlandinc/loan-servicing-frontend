@@ -1,5 +1,6 @@
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { Head, Html, Main, NextScript } from 'next/document';
+
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 
 export default function Document() {
   return (

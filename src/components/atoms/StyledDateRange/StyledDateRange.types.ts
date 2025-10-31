@@ -1,6 +1,6 @@
-import { ReactDatePickerProps } from 'react-datepicker';
-
 import { SxProps } from '@mui/material';
+
+import { ReactDatePickerProps } from 'react-datepicker';
 
 export interface StyledDateRangeProps
   extends Omit<ReactDatePickerProps, 'onChange'> {

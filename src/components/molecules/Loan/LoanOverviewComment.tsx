@@ -1,23 +1,26 @@
 import { FC, useMemo, useState } from 'react';
 
 import { Avatar, Icon, Stack, Typography } from '@mui/material';
+
 import { useSnackbar } from 'notistack';
+
+import { AUTO_HIDE_DURATION } from '@/constant';
+import { useSwitch } from '@/hooks';
+import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
   StyledDialog,
   StyledTextFieldInput,
 } from '@/components/atoms';
-import { AUTO_HIDE_DURATION } from '@/constant';
-import { useSwitch } from '@/hooks';
+
 import {
   _deleteOverviewComment,
   _updateOverviewComment,
 } from '@/request/loan/overview';
-import OVERVIEW_COMMENTS_DELETE from '@/svg/loan/overview/overview-comments-delete.svg';
 import { HttpError } from '@/types/common';
 import { CommentItemData } from '@/types/loan/overview';
-import { utils } from '@/utils';
 
 export const LoanOverviewComment: FC<
   CommentItemData & {

@@ -11,8 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 
-import { StyledButton } from '@/components/atoms';
 import { useSwitch } from '@/hooks';
+
+import { StyledButton } from '@/components/atoms';
 
 type StyledBtnLoanOfficerProps = {
   autoCompleteLoading?: boolean;

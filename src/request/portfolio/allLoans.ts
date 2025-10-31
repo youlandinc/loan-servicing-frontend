@@ -1,4 +1,5 @@
 import { IAllLoansQueryParam } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
 import { ListPaginationReturn } from '@/types/common';
 import { PortfolioGridTypeEnum } from '@/types/enum';
 import { IAllGridConfig } from '@/types/pipeline';

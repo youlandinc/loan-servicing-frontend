@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import {
   Box,
   CircularProgress,
@@ -15,9 +17,21 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { format, isValid } from 'date-fns';
+
 import { observer } from 'mobx-react-lite';
-import { useRouter } from 'next/router';
+
+import { format, isValid } from 'date-fns';
+
+import {
+  ExtensionPaidTypeOpt,
+  ExtensionPaidTypeOptToExtensionFee,
+  MATURITY_DATE,
+  MATURITY_DATE_LABEL,
+  YES_NO,
+} from '@/constant';
+import { useSwitch } from '@/hooks';
+import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -34,21 +48,12 @@ import {
   useLoanExtensionRequestFetch,
   useLoanExtensionRequestSelects,
 } from '@/components/molecules';
-import {
-  ExtensionPaidTypeOpt,
-  ExtensionPaidTypeOptToExtensionFee,
-  MATURITY_DATE,
-  MATURITY_DATE_LABEL,
-  YES_NO,
-} from '@/constant';
-import { useSwitch } from '@/hooks';
-import ICON_DOWNLOAD from '@/svg/loan/extension/extension_download.svg';
+
 import {
   ExtensionPaidTypeEnum,
   LoanAnswerEnum,
   MaturityDateTypeEnum,
 } from '@/types/enum';
-import { utils } from '@/utils';
 
 export const LoanExtensionRequest = observer(() => {
   const router = useRouter();

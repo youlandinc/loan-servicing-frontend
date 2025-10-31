@@ -1,10 +1,14 @@
 import { FC, useRef, useState } from 'react';
-import { useAsync, useAsyncFn } from 'react-use';
+
+import { useRouter } from 'next/router';
 
 import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
+
 import { format } from 'date-fns';
-import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
+import { useAsync, useAsyncFn } from 'react-use';
+
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -13,10 +17,10 @@ import {
   StyledSelect,
   StyledTextFieldInput,
 } from '@/components/atoms';
+
 import { _creatAomPdf, _getAOMInfo, _getAomInvestorList } from '@/request';
 import { HttpError } from '@/types';
 import { CreateAomPdfParam } from '@/types/loan/aom';
-import { utils } from '@/utils';
 
 export const LoanAOM: FC = () => {
   const router = useRouter();

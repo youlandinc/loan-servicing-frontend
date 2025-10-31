@@ -1,8 +1,10 @@
 import { FC } from 'react';
 
-import { Box, Icon, Stack, Typography } from '@mui/material';
-import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
+
+import { Box, Icon, Stack, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
 
 import { StyledButton } from '@/components/atoms';
 

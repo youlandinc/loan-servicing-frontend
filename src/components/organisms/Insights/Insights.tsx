@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
-import { useAsync } from 'react-use';
+
+import Router from 'next/router';
 
 import {
   Box,
@@ -17,15 +18,21 @@ import {
   gridColumnsTotalWidthSelector,
   useGridApiContext,
 } from '@mui/x-data-grid';
+
+import { observer } from 'mobx-react-lite';
+
 import { PieTooltipProps, ResponsivePie } from '@nivo/pie';
 import { PieCustomLayerProps } from '@nivo/pie/dist/types/types';
-import { observer } from 'mobx-react-lite';
-import Router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
+import { rootStore, useMst } from '@/models/Root';
+
+import { AUTO_HIDE_DURATION } from '@/constant';
+import { utils } from '@/utils';
 
 import { StyledLayout } from '@/components/molecules';
-import { AUTO_HIDE_DURATION } from '@/constant';
-import { rootStore, useMst } from '@/models/Root';
+
 import { _getAllGridConfig, setDisplayType } from '@/request';
 import {
   _fetchInsightsData,
@@ -35,7 +42,6 @@ import {
 import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
 import { HttpError } from '@/types/common';
 import { PortfolioGridTypeEnum } from '@/types/enum';
-import { utils } from '@/utils';
 
 import ICON_PIE from './assets/icon_pie.svg';
 

@@ -99,9 +99,45 @@ module.exports = {
         ],
         pathGroups: [
           {
-            pattern: 'react*',
+            pattern: '{react,react-dom,react/**}',
             group: 'external',
             position: 'before',
+          },
+          {
+            pattern: '{next,next/**}',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@mui/**',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '{mobx-react-lite,mobx-state-tree}',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@/models/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: '@/components/**',
+            group: 'parent',
+            position: 'before',
+          },
+          {
+            pattern: '{@/request,@/types,@/request/**,@/types/**}',
+            group: 'parent',
+            position: 'before',
+          },
+          // Fuzzy matches are placed last
+          {
+            pattern: '@/**',
+            group: 'internal',
+            position: 'after',
           },
           {
             pattern: '*/**/*.css',
@@ -109,7 +145,7 @@ module.exports = {
             position: 'after',
           },
         ],
-        pathGroupsExcludedImportTypes: ['react'],
+        pathGroupsExcludedImportTypes: [],
         'newlines-between': 'always',
         alphabetize: {
           order: 'asc',

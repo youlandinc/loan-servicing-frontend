@@ -5,8 +5,10 @@ import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 import { Stack, Typography } from '@mui/material';
 
-import { StyledButton } from '@/components/atoms';
 import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
+import { StyledButton } from '@/components/atoms';
+
 import { SortDirection } from '@/types/enum';
 
 type SortButtonProps = {

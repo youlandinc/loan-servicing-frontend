@@ -1,9 +1,4 @@
 import { FC, forwardRef, useRef } from 'react';
-import ReactDatePicker, {
-  CalendarContainer,
-  CalendarContainerProps,
-  ReactDatePickerCustomHeaderProps,
-} from 'react-datepicker';
 
 import {
   ArrowDropDown,
@@ -20,8 +15,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+
 import { getMonth, getYear } from 'date-fns';
 import { range } from 'lodash';
+import ReactDatePicker, {
+  CalendarContainer,
+  CalendarContainerProps,
+  ReactDatePickerCustomHeaderProps,
+} from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 

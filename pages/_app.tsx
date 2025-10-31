@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react';
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Router } from 'next/router';
 import Script from 'next/script';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+
+import { CacheProvider, EmotionCache } from '@emotion/react';
 import { SnackbarProvider } from 'notistack';
 import NProgress from 'nprogress';
 
-import { StyledNotification } from '@/components/atoms';
-import { useBreakpoints } from '@/hooks';
 import { Provider, rootStore } from '@/models/Root';
+
+import { useBreakpoints } from '@/hooks';
 import createEmotionCache from '@/styles/createEmotionCache';
 import { lightTheme } from '@/theme';
+
+import { StyledNotification } from '@/components/atoms';
 
 import 'normalize.css';
 import 'reset.css';

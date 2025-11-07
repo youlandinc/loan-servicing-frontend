@@ -1,18 +1,20 @@
 import { FC } from 'react';
+
 import {
-  //Icon,
+  // Icon,
   Stack,
   SxProps,
   Typography,
 } from '@mui/material';
-import { GridRowsProp } from '@mui/x-data-grid/models/gridRows';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-//import { useRouter } from 'next/router';
+import { GridRowsProp } from '@mui/x-data-grid/models/gridRows';
+// import { useRouter } from 'next/router';
 
 import { utils } from '@/utils';
+
 import { OverviewOutstandingPayAble } from '@/types/loan/overview';
 
-//import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
+// import TABLE_NO_RESULT from '@/svg/loan/table-no-result.svg';
 
 const mockData = [
   {
@@ -32,7 +34,7 @@ const mockData = [
 ];
 
 const columns: GridColDef[] = [
-  //{
+  // {
   //  field: 'description',
   //  headerName: 'Description',
   //  sortable: false,
@@ -42,7 +44,7 @@ const columns: GridColDef[] = [
   //  renderCell: ({ value }) => (
   //    <Typography variant={'body3'}>{value || '-'}</Typography>
   //  ),
-  //},
+  // },
   {
     field: 'dateDue',
     headerName: 'Date due',
@@ -123,7 +125,7 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
   sx = { minWidth: 682 },
   outstandingPayAbles = mockData,
 }) => {
-  //const router = useRouter();
+  // const router = useRouter();
   const lastChildIndex = columns.length;
 
   return (
@@ -136,7 +138,7 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
       disableDensitySelector
       disableRowSelectionOnClick
       getRowId={(row) => row.id}
-      hideFooter={true}
+      hideFooter
       pagination
       rowHeight={40}
       rows={outstandingPayAbles}
@@ -148,21 +150,21 @@ export const LoanOverviewPayablesGrid: FC<LoanOverviewPayablesGridProps> = ({
         ),
         noRowsOverlay: () => (
           <Stack
-            //alignItems={'center'}
-            //justifyContent={'center'}
+            // alignItems={'center'}
+            // justifyContent={'center'}
             height={'100%'}
             pl={8}
             pt={4}
             width={'100%'}
           >
-            {/*<Icon component={TABLE_NO_RESULT} sx={{ width: 120, height: 45 }} />*/}
+            {/* <Icon component={TABLE_NO_RESULT} sx={{ width: 120, height: 45 }} /> */}
             <Typography color={'text.secondary'} mt={1.5} variant={'subtitle2'}>
               No outstanding payables
             </Typography>
           </Stack>
         ),
-        //footer: PortfolioGridPagination,
-        //pagination: PortfolioGridPagination,
+        // footer: PortfolioGridPagination,
+        // pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

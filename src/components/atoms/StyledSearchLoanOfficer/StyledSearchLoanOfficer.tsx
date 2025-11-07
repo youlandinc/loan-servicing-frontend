@@ -1,10 +1,13 @@
-import { _getInvestorList } from '@/request/portfolio/allLoans';
 import React, { FC } from 'react';
+
 import { enqueueSnackbar } from 'notistack';
+import { useAsyncFn } from 'react-use';
+
+import { useSwitch } from '@/hooks';
+
+import { _getInvestorList } from '@/request/portfolio/allLoans';
 
 import { StyledBtnLoanOfficer } from './StyledBtnLoanOfficer';
-import { useSwitch } from '@/hooks';
-import { useAsyncFn } from 'react-use';
 
 type StyledSearchLoanOfficerProps = {
   handleChange?: (param: any) => void;

@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
-import { Stack, Tab, Tabs, Typography } from '@mui/material';
+
 import { GetAppOutlined, VisibilityOutlined } from '@mui/icons-material';
+import { Stack, Tab, Tabs, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { observer } from 'mobx-react-lite';
 
-//import { utils } from '@/utils';
+// import { utils } from '@/utils';
 
 const mockData = [
   {
@@ -136,8 +137,8 @@ export const LoanDocumentsGrid: FC = observer(() => {
       rows={mockData}
       slots={{
         toolbar: LoanDocumentsGridToolbar,
-        //footer: PortfolioGridPagination,
-        //pagination: PortfolioGridPagination,
+        // footer: PortfolioGridPagination,
+        // pagination: PortfolioGridPagination,
       }}
       sx={{
         m: '0 auto',

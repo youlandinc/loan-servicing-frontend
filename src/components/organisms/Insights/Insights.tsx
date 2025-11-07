@@ -1,4 +1,7 @@
 import React, { FC, useState } from 'react';
+
+import Router from 'next/router';
+
 import {
   Box,
   Icon,
@@ -8,9 +11,6 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useAsync } from 'react-use';
-import { PieTooltipProps, ResponsivePie } from '@nivo/pie';
-import { PieCustomLayerProps } from '@nivo/pie/dist/types/types';
 import {
   DataGrid,
   GridColDef,
@@ -18,27 +18,30 @@ import {
   gridColumnsTotalWidthSelector,
   useGridApiContext,
 } from '@mui/x-data-grid';
-import { utils } from '@/utils';
-import Router from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
+
+import { PieTooltipProps, ResponsivePie } from '@nivo/pie';
+import { PieCustomLayerProps } from '@nivo/pie/dist/types/types';
+import { enqueueSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
 import { rootStore, useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constant';
+import { utils } from '@/utils';
 
 import { StyledLayout } from '@/components/molecules';
 
+import { _getAllGridConfig, setDisplayType } from '@/request';
 import {
   _fetchInsightsData,
   InsightsEnum,
   InsightsResponseItemData,
 } from '@/request/insights';
-import { PortfolioGridTypeEnum } from '@/types/enum';
-
-import { HttpError } from '@/types/common';
-import { _getAllGridConfig, setDisplayType } from '@/request';
 import { _getGroupDelinquent } from '@/request/portfolio/delinquen';
+import { HttpError } from '@/types/common';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 
 import ICON_PIE from './assets/icon_pie.svg';
 
@@ -577,7 +580,7 @@ const InsightsTable: FC<{
       disableDensitySelector
       disableRowSelectionOnClick
       getRowId={(row) => row.insightsStatus}
-      hideFooter={true}
+      hideFooter
       loading={loading}
       pagination
       rows={insightsTableData}

@@ -1,12 +1,14 @@
 import { FC } from 'react';
+
 import { Pagination, Stack, TablePagination, Typography } from '@mui/material';
 
+import { useBreakpoints } from '@/hooks';
 import { utils } from '@/utils';
+
 import {
   GridAlamedaSummaryProps,
   ResponseGridAlamedaTable,
 } from '@/types/pipeline/youland';
-import { useBreakpoints } from '@/hooks';
 
 interface GridAlamedaFooterProps {
   footerData: GridAlamedaSummaryProps;

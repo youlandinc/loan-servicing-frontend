@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { DialogProps } from '@mui/material';
 
 export interface StyledDialogProps

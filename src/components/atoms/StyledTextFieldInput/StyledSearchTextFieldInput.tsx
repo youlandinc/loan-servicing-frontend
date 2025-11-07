@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
+
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   IconButton,
   InputAdornment,
   OutlinedTextFieldProps,
 } from '@mui/material';
-
-import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
 
 import { StyledTextFieldInput } from './StyledTextFieldInput';
 

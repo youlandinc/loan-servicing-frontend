@@ -1,7 +1,7 @@
-import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
-
 import Head from 'next/head';
+
+import { observer } from 'mobx-react-lite';
 
 const DynamicInsights = dynamic(
   () => import('@/components/organisms/Insights').then((mod) => mod.Insights),

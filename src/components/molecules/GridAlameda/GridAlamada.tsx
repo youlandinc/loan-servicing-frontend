@@ -1,17 +1,20 @@
 import { FC, useMemo, useState } from 'react';
+
 import { Stack, Typography } from '@mui/material';
-import { useAsync, useAsyncFn, useDebounce } from 'react-use';
+
+import { observer } from 'mobx-react-lite';
+
 import {
   MRT_TableContainer,
   useMaterialReactTable,
 } from 'material-react-table';
 import { enqueueSnackbar } from 'notistack';
+import { useAsync, useAsyncFn, useDebounce } from 'react-use';
 import useSWR from 'swr';
 
-import { observer } from 'mobx-react-lite';
+import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
 import { useMst } from '@/models/Root';
 
-import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 import {
   ColumnsHeaderMenus,
   defaultColumnPining,
@@ -19,15 +22,16 @@ import {
   transferOrderColumnsKeys,
 } from '@/components/molecules';
 
-import { ISortItemModel } from '@/models/gridModel/allLoansModel/gridQueryModel';
-import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
+import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
+import { _setColumnPining, _setColumnWidth } from '@/request/common';
 import {
   SetColumnWidthParam,
   UpdateColumnPiningParamType,
 } from '@/types/common';
-import { _fetchAlamedaTableData, _fetchInvestorData } from '@/request';
-import { _setColumnPining, _setColumnWidth } from '@/request/common';
+import { PortfolioGridTypeEnum, SortDirection } from '@/types/enum';
 import { TableTypeEnum } from '@/types/pipeline/youland';
+
+import { ALAMEDA_COLUMNS, GridAlamedaFooter } from './index';
 
 const defaultSort = [
   {
@@ -168,18 +172,18 @@ export const GridAlameda: FC = observer(() => {
   const table = useMaterialReactTable({
     columns: configColumns,
     data: data?.data?.content || [],
-    //rowCount: rowsTotal,
-    enableExpandAll: false, //hide expand all double arrow in column header
+    // rowCount: rowsTotal,
+    enableExpandAll: false, // hide expand all double arrow in column header
     enableExpanding: false,
     enableSorting: false,
-    enableBottomToolbar: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
-    paginateExpandedRows: true, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
+    enableBottomToolbar: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
+    paginateExpandedRows: true, // When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
     enableTopToolbar: false,
     enableGrouping: false,
 
     enableRowVirtualization: true,
     enableRowActions: false,
-    enableColumnActions: false, //pipelineType === PipelineDisplayMode.LIST_MODE,
+    enableColumnActions: false, // pipelineType === PipelineDisplayMode.LIST_MODE,
     enableColumnOrdering: false,
     enableColumnDragging: false,
     enableColumnResizing: true,
@@ -201,9 +205,9 @@ export const GridAlameda: FC = observer(() => {
     initialState: {
       showProgressBars: false,
     },
-    getRowId: (row) => row.loanId, //default
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 5 }, //optionally customize the column virtualizer
+    getRowId: (row) => row.loanId, // default
+    rowVirtualizerOptions: { overscan: 5 }, // optionally customize the row virtualizer
+    columnVirtualizerOptions: { overscan: 5 }, // optionally customize the column virtualizer
 
     renderEmptyRowsFallback: () => {
       return (
@@ -363,7 +367,7 @@ export const GridAlameda: FC = observer(() => {
   useDebounce(
     async () => {
       if (Object.keys(columnSizing).length) {
-        //handle column sizing
+        // handle column sizing
         await setColumnWidth({
           pageColumn: PortfolioGridTypeEnum.ALAMEDA,
           columnWidths: Object.keys(columnSizing).map((field) => ({
@@ -420,7 +424,7 @@ export const GridAlameda: FC = observer(() => {
         handleSort={() => {
           queryModel.updateSort([
             {
-              property: headerColumnId, //.id as string,
+              property: headerColumnId, // .id as string,
               direction: SortDirection.DESC,
               ignoreCase: true,
               label: headerTitle as string,

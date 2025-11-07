@@ -1,9 +1,10 @@
-import { PortfolioGridTypeEnum } from '@/types/enum';
-import { get, post } from '../axios';
-
 import { IAllLoansQueryParam } from '@/models/gridModel/allLoansModel/gridQueryModel';
+
 import { ListPaginationReturn } from '@/types/common';
+import { PortfolioGridTypeEnum } from '@/types/enum';
 import { IAllGridConfig } from '@/types/pipeline';
+
+import { get, post } from '../axios';
 
 interface _getAllLoansListReturn extends ListPaginationReturn {
   totalItems: number;

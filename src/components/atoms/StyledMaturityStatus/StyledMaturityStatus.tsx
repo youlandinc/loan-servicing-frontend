@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Typography, TypographyProps } from '@mui/material';
 
 import { MaturityStatusInDelinquentEnum } from '@/types/enum';

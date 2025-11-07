@@ -1,22 +1,24 @@
 import React, { FC, useState } from 'react';
+
 import {
   CircularProgress,
   Icon,
   Menu,
   MenuItem,
   Stack,
-  //Tooltip,
+  // Tooltip,
   Typography,
 } from '@mui/material';
+
 import { useSnackbar } from 'notistack';
 
-import { utils } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constant';
-
-import { HttpError } from '@/types/common';
-import { _updateTableData } from '@/request';
+import { utils } from '@/utils';
 
 import LOGO_EXPEND_MORE from '@/components/molecules/GridYouland/logo-expend-more.svg';
+
+import { _updateTableData } from '@/request';
+import { HttpError } from '@/types/common';
 
 interface GridDropDownProps {
   status: string;
@@ -178,7 +180,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
                 sx={{ m: '0 auto', color: '#E3E3EE' }}
               />
             ) : (
-              //<Tooltip title={item.label}>
+              // <Tooltip title={item.label}>
               <Typography
                 bgcolor={bgPalette[item.key as number | string]}
                 borderRadius={1}
@@ -202,7 +204,7 @@ export const GridDropDown: FC<GridDropDownProps> = ({
               >
                 {item.label}
               </Typography>
-              //</Tooltip>
+              // </Tooltip>
             )}
           </MenuItem>
         ))}

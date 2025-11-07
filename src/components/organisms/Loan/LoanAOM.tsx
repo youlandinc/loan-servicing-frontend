@@ -1,9 +1,14 @@
-import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
-import { format } from 'date-fns';
-import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 import { FC, useRef, useState } from 'react';
+
+import { useRouter } from 'next/router';
+
+import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
+
+import { format } from 'date-fns';
+import { enqueueSnackbar } from 'notistack';
 import { useAsync, useAsyncFn } from 'react-use';
+
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -12,10 +17,10 @@ import {
   StyledSelect,
   StyledTextFieldInput,
 } from '@/components/atoms';
+
 import { _creatAomPdf, _getAOMInfo, _getAomInvestorList } from '@/request';
 import { HttpError } from '@/types';
 import { CreateAomPdfParam } from '@/types/loan/aom';
-import { utils } from '@/utils';
 
 export const LoanAOM: FC = () => {
   const router = useRouter();
@@ -35,7 +40,7 @@ export const LoanAOM: FC = () => {
       ? await _getAOMInfo(parseInt(loanId as string))
           .then((res) => {
             if (res.data.investorId) {
-              setBuyer(res.data.investorId + '');
+              setBuyer(`${res.data.investorId}`);
             }
             if (typeof res.data.instrumentNumber === 'string') {
               setInstrumentNumber(res.data.instrumentNumber);
@@ -61,8 +66,8 @@ export const LoanAOM: FC = () => {
         setBuyersOpts(
           res.data.map((item) => ({
             label: item.investorName,
-            key: item.id + '',
-            value: item.id + '',
+            key: `${item.id}`,
+            value: `${item.id}`,
           })),
         );
       }

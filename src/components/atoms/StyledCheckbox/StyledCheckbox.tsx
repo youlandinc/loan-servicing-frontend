@@ -1,15 +1,15 @@
-import { POSFont } from '@/styles';
-import { lightTheme as theme } from '@/theme';
 import { FC } from 'react';
+
 import { Checkbox, FormControlLabel, Icon } from '@mui/material';
 
 import { useSessionStorageState } from '@/hooks';
+import { POSFont } from '@/styles';
+import { lightTheme as theme } from '@/theme';
 
-import { StyledCheckboxProps } from './index';
-
-import CHECKBOX_STATIC from './static.svg';
 import CHECKBOX_CHECKED from './checked.svg';
+import { StyledCheckboxProps } from './index';
 import CHECKBOX_INDETERMINATE from './intermediate.svg';
+import CHECKBOX_STATIC from './static.svg';
 
 export const StyledCheckbox: FC<StyledCheckboxProps> = ({
   checked = false,

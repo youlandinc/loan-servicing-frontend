@@ -1,9 +1,10 @@
+import { cast, SnapshotOut, types } from 'mobx-state-tree';
+
 import {
   DelinquentTimeRangeEnum,
   MaturityTimeRangeEnum,
   SortDirection,
 } from '@/types/enum';
-import { cast, SnapshotOut, types } from 'mobx-state-tree';
 
 const SortItemModel = types.model({
   direction: types.enumeration(Object.values(SortDirection)),
@@ -20,7 +21,7 @@ const searchConditionModel = types.model({
   maturityStartDate: types.maybe(types.string),
   maturityEndDate: types.maybe(types.string),
   repaymentStatusList: types.array(
-    types.string, //types.enumeration(Object.values(RepaymentStatusEnum)),
+    types.string, // types.enumeration(Object.values(RepaymentStatusEnum)),
   ),
   delinquentDays: types.maybe(
     types.union(

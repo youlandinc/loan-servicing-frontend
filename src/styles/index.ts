@@ -1,5 +1,6 @@
-import { SxProps } from '@mui/material';
 import { CSSProperties } from 'react';
+
+import { SxProps } from '@mui/material';
 
 export const ellipsisStyle = {
   overflow: 'hidden',

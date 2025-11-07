@@ -1,9 +1,11 @@
 import { ReactNode, useCallback, useState } from 'react';
-import { Button, Stack, Tooltip, Typography } from '@mui/material';
+
 import { MoreHoriz } from '@mui/icons-material';
+import { Button, Stack, Tooltip, Typography } from '@mui/material';
+
 import { format, isValid } from 'date-fns';
-import { useSnackbar } from 'notistack';
 import { MRT_ColumnDef } from 'material-react-table';
+import { useSnackbar } from 'notistack';
 
 import {
   AUTO_HIDE_DURATION,
@@ -11,19 +13,14 @@ import {
   TRADE_STATUS_BGCOLOR_PALETTE,
   TRADE_STATUS_OPTIONS,
 } from '@/constant';
-
-import { ellipsisStyle } from '@/styles';
-import { utils } from '@/utils';
 import { useSwitch } from '@/hooks';
-
+import { ellipsisStyle } from '@/styles';
 import {
   allLoansStatusBgcolor,
   allLoansStatusColor,
 } from '@/styles/allLoansGridStyles';
-import {
-  GridTradeConfirmEnum,
-  GridTradeStatusEnum,
-} from '@/types/pipeline/youland';
+import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import { utils } from '@/utils';
 
 import {
   StyledButton,
@@ -37,10 +34,13 @@ import {
   GridDropDown,
   GridDropDownButton,
 } from '@/components/molecules';
+
 import { _deleteGridData, _updateTableData } from '@/request';
 import { HttpError } from '@/types/common';
-
-import LOGO_DELETE from '@/svg/portfolio/logo-delete.svg';
+import {
+  GridTradeConfirmEnum,
+  GridTradeStatusEnum,
+} from '@/types/pipeline/youland';
 
 export const YOULAND_COLUMNS = (
   cb?: () => Promise<any>,
@@ -716,7 +716,7 @@ export const YOULAND_COLUMNS = (
                     decimalScale={3}
                     label={'Buy rate'}
                     onValueChange={({ floatValue }) => setValue(floatValue)}
-                    percentage={true}
+                    percentage
                     suffix={'%'}
                     thousandSeparator={false}
                     value={value}

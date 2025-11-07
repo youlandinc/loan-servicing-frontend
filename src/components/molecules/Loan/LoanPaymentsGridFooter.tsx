@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Pagination, Stack, TablePagination } from '@mui/material';
 
 interface LoanPaymentsGridFooterProps {
@@ -67,7 +68,7 @@ export const LoanPaymentsGridFooter: FC<LoanPaymentsGridFooterProps> = ({
                   '& .MuiMenuItem-root': {
                     fontSize: 12,
                     color: 'text.primary',
-                    //px: 1.5,
+                    // px: 1.5,
                   },
                 },
               },

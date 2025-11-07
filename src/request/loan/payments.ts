@@ -1,12 +1,12 @@
 import { del, get, post } from '@/request/axios';
+import { LoanAnswerEnum } from '@/types/enum';
+import { OverviewRepaymentTimeLine } from '@/types/loan/overview';
 import {
   PaymentMethod,
   PaymentTypeEnum,
   ResponsePaymentsDetails,
   ResponsePaymentsHistory,
 } from '@/types/loan/payments';
-import { LoanAnswerEnum } from '@/types/enum';
-import { OverviewRepaymentTimeLine } from '@/types/loan/overview';
 
 export const _fetchPaymentsDetails = (loanId: string | number) => {
   return get<ResponsePaymentsDetails>('/servicing/payment/detail', {

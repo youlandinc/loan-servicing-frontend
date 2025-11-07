@@ -131,7 +131,7 @@ export const utils = {
   },
   formatPhoneNumber: (number: string | undefined | null) => {
     return typeof number === 'string' && number.length === 10
-      ? `(${number.slice(0, 3)}) ${number.slice(3 - 6)}-${number.slice(6)}`
+      ? `(${number.slice(0, 3)}) ${number.slice(3, 6)}-${number.slice(6)}`
       : number;
   },
   formatSsn: (ssn: string | null | undefined) => {

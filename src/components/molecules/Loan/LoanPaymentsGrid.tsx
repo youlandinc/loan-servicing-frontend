@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useCallback, useState } from 'react';
+import { CSSProperties, FC, useCallback, useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -107,6 +107,8 @@ export const LoanPaymentsGrid: FC<{
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [excludeFunding, setExcludeFunding] = useState(false);
+
   const fetchDueDate = async () => {
     const { loanId } = utils.getParamsFromUrl(location.href);
     if (!loanId) {
@@ -160,6 +162,7 @@ export const LoanPaymentsGrid: FC<{
       loanId,
       page,
       size,
+      excludeFunding,
     };
     setFetchLoading(true);
     try {
@@ -383,6 +386,14 @@ export const LoanPaymentsGrid: FC<{
     await fetchData(currentPage - 1, page.size);
   };
 
+  useEffect(() => {
+    const fetchDataFn = async () => {
+      setPage((prev) => ({ ...prev, number: 1 }));
+      await fetchData(0, page.size);
+    };
+    fetchDataFn();
+  }, [excludeFunding]);
+
   const table = useMaterialReactTable({
     columns: LOAN_PAYMENT_GRID_COLUMNS(
       isEditable,
@@ -562,90 +573,68 @@ export const LoanPaymentsGrid: FC<{
             }}
           >
             View all
-            <Icon
-              component={LOGO_VIEW_ALL}
-              sx={{ width: 12, height: 12, mt: -0.25 }}
-            />
+            <Icon component={LOGO_VIEW_ALL} sx={{ width: 12, height: 12 }} />
           </Stack>
         )}
-        {isEditable && (
-          <Stack flexDirection={'row'} gap={3} mb={-1} ml={'auto'}>
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                const { loanId } = utils.getParamsFromUrl(location.href);
-                if (!loanId) {
-                  return;
-                }
-                const { data } = await _fetchNumberOfDraw(loanId);
-                setDrawFormData({
-                  ...drawFormData,
-                  drawNumber: data,
-                });
-                setDrawAction('addDraw');
-                openDraw();
-              }}
-              sx={{
-                fontSize: '14px !important',
-                borderWidth: '1px !important',
-                px: '16px !important',
-                py: '8px solid !important',
-                height: 'auto !important',
-                borderRadius: '8px !important',
-              }}
-              variant={'outlined'}
-            >
-              Add draw
-            </StyledButton>
+        <Stack flexDirection={'row'} gap={3} mb={-1} ml={'auto'}>
+          {isEditable && (
+            <>
+              <StyledButton
+                color={'info'}
+                onClick={async () => {
+                  const { loanId } = utils.getParamsFromUrl(location.href);
+                  if (!loanId) {
+                    return;
+                  }
+                  const { data } = await _fetchNumberOfDraw(loanId);
+                  setDrawFormData({
+                    ...drawFormData,
+                    drawNumber: data,
+                  });
+                  setDrawAction('addDraw');
+                  openDraw();
+                }}
+                sx={{
+                  fontSize: '14px !important',
+                  borderWidth: '1px !important',
+                  px: '16px !important',
+                  py: '8px solid !important',
+                  height: 'auto !important',
+                  borderRadius: '8px !important',
+                }}
+                variant={'outlined'}
+              >
+                Add draw
+              </StyledButton>
 
-            <StyledButton
-              color={'info'}
-              onClick={() => {
-                setPaymentAction('addPayment');
-                openPayment();
-              }}
-              sx={{
-                fontSize: '14px !important',
-                borderWidth: '1px !important',
-                px: '16px !important',
-                py: '8px solid !important',
-                height: 'auto !important',
-                borderRadius: '8px !important',
-              }}
-              variant={'outlined'}
-            >
-              Add payment
-            </StyledButton>
-            {/* <Stack */}
-            {/*  alignItems={'center'} */}
-            {/*  border={'1px solid'} */}
-            {/*  borderColor={'#D2D6E1'} */}
-            {/*  borderRadius={1} */}
-            {/*  fontSize={14} */}
-            {/*  justifyContent={'center'} */}
-            {/*  onClick={() => { */}
-            {/*    setDrawAction('addDraw'); */}
-            {/*    openDraw(); */}
-            {/*  }} */}
-            {/*  px={2} */}
-            {/*  py={1} */}
-            {/*  sx={{ */}
-            {/*    border: '1px solid #D2D6E1', */}
-            {/*    borderRadius: 2, */}
-            {/*    cursor: 'pointer', */}
-            {/*    fontSize: 14, */}
-            {/*    fontWeight: 600, */}
-            {/*    '&:hover': { */}
-            {/*      borderColor: '#5B76BC', */}
-            {/*      color: '#5B76BC', */}
-            {/*      bgcolor: '#F0F4FF', */}
-            {/*    }, */}
-            {/*  }} */}
-            {/* > */}
-            {/*  Add draw */}
-            {/* </Stack> */}
-          </Stack>
-        )}
+              <StyledButton
+                color={'info'}
+                onClick={() => {
+                  setPaymentAction('addPayment');
+                  openPayment();
+                }}
+                sx={{
+                  fontSize: '14px !important',
+                  borderWidth: '1px !important',
+                  px: '16px !important',
+                  py: '8px solid !important',
+                  height: 'auto !important',
+                  borderRadius: '8px !important',
+                }}
+                variant={'outlined'}
+              >
+                Add payment
+              </StyledButton>
+            </>
+          )}
+          <StyledCheckbox
+            checked={excludeFunding}
+            label={'Exclude Funding'}
+            onChange={(_, checked) => {
+              setExcludeFunding(checked);
+            }}
+          />
+        </Stack>
       </Stack>
 
       <MRT_TableContainer

@@ -536,7 +536,7 @@ export const LoanPaymentsGrid: FC<{
       width={'100%'}
     >
       <Stack
-        alignItems={'flex-end'}
+        alignItems={'center'}
         flexDirection={'row'}
         pt={isEditable ? 2 : 3}
         px={3}
@@ -576,7 +576,7 @@ export const LoanPaymentsGrid: FC<{
             <Icon component={LOGO_VIEW_ALL} sx={{ width: 12, height: 12 }} />
           </Stack>
         )}
-        <Stack flexDirection={'row'} gap={3} mb={-1} ml={'auto'}>
+        <Stack alignItems={'center'} flexDirection={'row'} gap={3} ml={'auto'}>
           {isEditable && (
             <>
               <StyledButton
@@ -632,6 +632,11 @@ export const LoanPaymentsGrid: FC<{
             label={'Exclude Funding'}
             onChange={(_, checked) => {
               setExcludeFunding(checked);
+            }}
+            sx={{
+              '& .MuiCheckbox-root': {
+                padding: '0 0 0 9px !important',
+              },
             }}
           />
         </Stack>
